@@ -1,0 +1,59 @@
+package com.example.htopstore.util.adapters
+
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.htopstore.R
+import com.example.htopstore.data.local.model.Product
+import com.example.htopstore.databinding.ArchiveItemBinding
+import com.example.htopstore.domain.useCase.CategoryLocalManager
+import java.io.File
+
+class ArchiveRecycler(private val data: ArrayList<Product>, val onDelete:(p: Product, position:Int)->Unit) :
+    RecyclerView.Adapter<ArchiveRecycler.pHolder>() {
+
+    // Create ViewHolder class
+    class pHolder(val binding: ArchiveItemBinding) : RecyclerView.ViewHolder(binding.root)
+
+    // Create ViewHolder and inflate the item layout
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): pHolder {
+        val binding = ArchiveItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return pHolder(binding)
+    }
+
+    // Bind data to the ViewHolder
+    override fun onBindViewHolder(holder: pHolder, position: Int) {
+       val d = data[position] ; val b = holder.binding
+        b.price.text = d.sellingPrice.toString()
+        Glide.with(b.productImg.context)
+            .load(File(d.productImage))
+            .placeholder(R.drawable.stock_bg)
+            .error(R.drawable.inc_dec_btn)
+            .into(b.productImg)
+        b.productBrand.text = d.name
+        b.productType.text = CategoryLocalManager.getCategoryNameLocal(d.category)
+        b.delete.setOnClickListener {
+            onDelete(d,position)
+        }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateAfterDeletion(position:Int){
+        data.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, data.size)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTheList(list:ArrayList<Product>){
+        this.data.clear()
+        this.data.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    // Return the size of the data list
+    override fun getItemCount(): Int {
+        return data.size
+    }
+}

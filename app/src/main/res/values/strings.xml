@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name" translatable="false">HTopStore</string>
+
+    <!-- General -->
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="archive">Archive</string>
+    <string name="all">All</string>
+    <string name="add_new">Add New</string>
+    <string name="home">Home</string>
+    <string name="report">Report</string>
+    <string name="cart">Cart</string>
+
+    <!-- Products -->
+    <string name="add_new_product">Add New Product</string>
+    <string name="add_new_products">Add New Products</string>
+    <string name="type">Category</string>
+    <string name="brand_name">Brand Name</string>
+    <string name="buying_price">Purchase Price</string>
+    <string name="selling_price">Selling Price</string>
+    <string name="count">Quantity</string>
+
+    <!-- Sales & Bills -->
+    <string name="sales">Sales</string>
+    <string name="sold">Sold</string>
+    <string name="sold_items">Sold Items</string>
+    <string name="bills">Bills</string>
+    <string name="returns">Returns</string>
+    <string name="total_is">Total:</string>
+    <string name="before_discount">Before Discount:</string>
+    <string name="discount">Discount</string>
+
+    <!-- Expenses -->
+    <string name="expenses">Expenses</string>
+    <string name="new_expense">New Expense</string>
+
+    <!-- QR Tools -->
+    <string name="qr_generator">QR Generator</string>
+    <string name="generate_qrs_pdf">Generate PDF</string>
+    <string name="generateqrcodes">Generate QR Codes</string>
+    <string name="scancode">Scan Code</string>
+
+    <!-- Store -->
+    <string name="store">Store</string>
+    <string name="l_e">L.E</string>
+    <string name="sell_now">Sell Now!</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">HTopStore</string>
+
+    <!-- عام -->
+    <string name="save">حفظ</string>
+    <string name="delete">حذف</string>
+    <string name="archive">أرشفة</string>
+    <string name="all">الكل</string>
+    <string name="add_new">إضافة جديد</string>
+    <string name="home">الرئيسية</string>
+    <string name="report">التقارير</string>
+    <string name="cart">عربة المشتريات</string>
+
+    <!-- المنتجات -->
+    <string name="add_new_product">إضافة منتج جديد</string>
+    <string name="add_new_products">إضافة منتجات جديدة</string>
+    <string name="type">التصنيف</string>
+    <string name="brand_name">اسم الماركة</string>
+    <string name="buying_price">سعر الشراء</string>
+    <string name="selling_price">سعر البيع</string>
+    <string name="count">الكمية</string>
+
+    <!-- المبيعات والفواتير -->
+    <string name="sales">المبيعات</string>
+    <string name="sold">تم البيع</string>
+    <string name="sold_items">المنتجات المباعة</string>
+    <string name="bills">الفواتير</string>
+    <string name="returns">المرتجعات</string>
+    <string name="total_is">الإجمالي:</string>
+    <string name="before_discount">قبل الخصم:</string>
+    <string name="discount">خصم</string>
+
+    <!-- المصروفات -->
+    <string name="expenses">المصروفات</string>
+    <string name="new_expense">مصروف جديد</string>
+
+    <!-- أدوات QR -->
+    <string name="qr_generator">مولد QR</string>
+    <string name="generate_qrs_pdf">إنشاء PDF</string>
+    <string name="generateqrcodes">إنشاء أكواد QR</string>
+    <string name="scancode">مسح الكود</string>
+
+    <!-- المخزن -->
+    <string name="store">المخزن</string>
+    <string name="l_e">ج.م</string>
+    <string name="sell_now">بيع الآن!</string>
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" /> <!-- Camera features -->
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HTopStore"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.ProductActivity"
+            android:exported="false" />
+        <!-- Activities -->
+        <activity
+            android:name=".ui.scan.ScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ReturnsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.expenses.ExpensesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.qrGen.QRCodeGenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.bills.BillDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.bills.BillsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.product.ProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.AddProductActivity"
+            android:exported="false" /> <!-- FileProvider -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider> <!-- Launcher Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

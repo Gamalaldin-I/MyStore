@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="money">#4169e1</color>
+    <color name="card">#FFFFFFFF</color>
+    <color name="background">#FFFFFE</color>
+    <color name="neon">#668FD7</color>
+    <color name="primaryBtnBg">#FCE0D6FB</color>
+    <color name="redHint">#2CDD0909</color>
+    <color name="dark">#172653</color>
+    <color name="backgroundLight">@color/white</color>
+    <color name="brand">@color/black</color>
+    <color name="code">#939292</color>
+    <color name="menu_item_color">@color/dark</color>
+    <color name="light_bg">#28666FD7</color>
+    <color name="new_blue">@color/neon</color>
+    <color name="income">#0F9961</color>
+
+    <!--for main -->
+    <color name="topCoverGradStartColor">#C9668FD7</color>
+
+
+
+
+</resources>

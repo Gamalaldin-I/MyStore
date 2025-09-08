@@ -1,0 +1,69 @@
+package com.example.htopstore.util.adapters
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.htopstore.R
+import com.example.htopstore.databinding.CartItemBinding
+import com.example.htopstore.domain.model.CartProduct
+import com.example.htopstore.domain.useCase.CategoryLocalManager
+import com.example.htopstore.util.NAE.ae
+import java.io.File
+
+class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item: CartProduct)-> Unit, val onIncOrDec :() ->Unit) :
+    RecyclerView.Adapter<CartRecycler.pHolder>() {
+
+    // Create ViewHolder class
+    class pHolder(val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root)
+
+    // Create ViewHolder and inflate the item layout
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): pHolder {
+        val binding = CartItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return pHolder(binding)
+    }
+
+    // Bind data to the ViewHolder
+    override fun onBindViewHolder(holder: pHolder, position: Int) {
+        val currentItem = data[position]
+        holder.binding.productBrand.text = currentItem.name
+        holder.binding.productType.text = CategoryLocalManager.getCategoryNameLocal(currentItem.type)
+        val imagePath = currentItem.image
+        val context = holder.binding.productImg.context
+        Glide.with(context)
+            .load(File(imagePath))
+            .placeholder(R.drawable.stock_bg)
+            .error(R.drawable.ic_camera)
+            .into(holder.binding.productImg)
+        holder.binding.price.text = currentItem.pricePerOne.toInt().ae()
+        holder.binding.count.text = currentItem.sellingCount.ae()
+        holder.binding.increment.setOnClickListener{
+            if (currentItem.sellingCount == currentItem.maxLimitCount) {
+                return@setOnClickListener
+            }
+            currentItem.sellingCount++
+            holder.binding.count.text = currentItem.sellingCount.ae()
+            holder.binding.price.text = (currentItem.pricePerOne * currentItem.sellingCount).toInt().ae()
+            onIncOrDec()
+        }
+        holder.binding.decrement.setOnClickListener{
+            if (currentItem.sellingCount > 1){
+                currentItem.sellingCount--
+                holder.binding.count.text = currentItem.sellingCount.ae()
+                holder.binding.price.text = (currentItem.pricePerOne * currentItem.sellingCount).toInt().ae()
+                 }
+            else {
+                data.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, data.size)
+                onDelete(currentItem)
+            }
+            onIncOrDec()
+
+    }}
+
+    // Return the size of the data list
+    override fun getItemCount(): Int {
+        return data.size
+    }
+}

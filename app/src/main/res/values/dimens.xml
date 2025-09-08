@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- عرض العنصر -->
+    <dimen name="pagerWidth">120dp</dimen>
+    <!-- المسافة بين العناصر -->
+    <dimen name="pageMargin">16dp</dimen>
+</resources>

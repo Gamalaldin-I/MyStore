@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="165dp"
+    android:layout_margin="5dp"
+    android:elevation="10dp"
+    android:background="@drawable/product_item_bg"
+    android:layout_height="wrap_content">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/product_img"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:scaleType="centerCrop"
+            android:src="#20000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/product_img" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:background="@drawable/count_bg"
+            android:text="10/20"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_margin="5dp"
+            android:textSize="12sp"
+            android:textColor="@color/menu_item_color"
+            android:padding="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/product_img"
+            app:layout_constraintEnd_toEndOf="@+id/product_img" />
+
+        <TextView
+            android:id="@+id/productBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_marginStart="7dp"
+            android:text="Zara"
+            android:layout_marginTop="5dp"
+            android:textColor="#C349494A"
+            android:textSize="15sp"
+
+            app:layout_constraintStart_toStartOf="@+id/product_img"
+            app:layout_constraintTop_toBottomOf="@+id/product_img" />
+
+        <TextView
+            android:id="@+id/product_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_marginTop="2dp"
+            android:text="Zara"
+            android:textColor="#8A545454"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/productBrand"
+            app:layout_constraintTop_toBottomOf="@+id/productBrand" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/product_type"
+            app:layout_constraintTop_toBottomOf="@+id/product_type">
+
+            <TextView
+                android:id="@+id/product_Price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="250"
+                android:textColor="@color/money"
+                android:textSize="15sp"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/l_e"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/bussinessb"
+                android:textColor="@color/money"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    <ImageView
+        android:id="@+id/addToCart"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+        app:tint="#C6C4C4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

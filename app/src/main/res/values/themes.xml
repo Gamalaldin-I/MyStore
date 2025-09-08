@@ -1,0 +1,58 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HTopStore" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/new_blue</item>
+        <item name="colorOnPrimary">@color/backgroundLight</item>
+        <item name="colorSecondary">@color/dark</item>
+        <item name="colorOnSecondary">@color/code</item>
+        <item name="colorTertiary">@color/code</item>
+        <item name="colorOnTertiary">@color/black</item>
+        <item name="colorError">@color/neon</item>
+        <item name="colorOnError">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/background</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/dark</item>
+        <item name="colorSurfaceVariant">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/code</item>
+        <!--item name="colorSecondaryContainer">#B5B9E8</item-->
+        <!--item name="fontFamily">@font/arabic_font</item-->
+    </style>
+
+    <style name="Theme.HTopStore" parent="Base.Theme.HTopStore" />
+
+    <style name="circular_img" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="product_img" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+ <!-- cart item img style-->
+    <style name="cart_item_img" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">15dp</item>
+        <item name="cornerSizeBottomLeft">15dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+    </style>
+    <style name="CustomTextAppearance" parent="">
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="CustomNumberPickerTheme" parent="ThemeOverlay.MaterialComponents.Light">
+        <!-- Change text color -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- Change text size -->
+        <item name="android:textAppearance">@style/CustomNumberPickerText</item>
+    </style>
+
+    <style name="CustomNumberPickerText" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/new_blue</item>
+    </style>
+
+</resources>
