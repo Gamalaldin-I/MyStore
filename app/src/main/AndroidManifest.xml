@@ -16,13 +16,11 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".HTopStoreApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HTopStore"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.ProductActivity"
-            android:exported="false" />
         <!-- Activities -->
         <activity
             android:name=".ui.scan.ScanActivity"
@@ -37,7 +35,7 @@
             android:name=".ui.qrGen.QRCodeGenActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.bills.BillDetailsActivity"
+            android:name=".ui.billDetails.BillDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.bills.BillsActivity"

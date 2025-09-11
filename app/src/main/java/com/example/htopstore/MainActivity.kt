@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.htopstore.data.local.repo.productRepo.ProductRepoImp
 import com.example.htopstore.databinding.ActivityMainBinding
-import com.example.htopstore.ui.Archive.ArchiveFragment
+import com.example.htopstore.ui.archive.ArchiveFragment
 import com.example.htopstore.ui.cart.CartFragment
 import com.example.htopstore.ui.main.MainFragment
 import com.example.htopstore.ui.stock.StoreFragment

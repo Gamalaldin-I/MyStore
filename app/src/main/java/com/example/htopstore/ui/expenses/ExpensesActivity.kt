@@ -5,7 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.htopstore.data.local.model.Expense
-import com.example.htopstore.data.local.repo.epenseRepo.ExpenseRepoImp
+import com.example.htopstore.data.local.repo.expenseRepo.ExpenseRepoImp
 import com.example.htopstore.databinding.ActivityExpensesBinding
 import com.example.htopstore.util.adapters.ExpenseAdapter
 import com.example.htopstore.util.DateHelper

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.htopstore.data.local.model.Product
 
 @Dao
@@ -38,6 +39,25 @@ interface ProductDao {
     suspend fun insertProduct(product: Product)
 
 
+    /**Product Activity queries*/
+    //get product by id
+    @Query("SELECT * FROM product WHERE id = :id")
+    suspend fun getProductById(id: String): Product?
+    //update product
+    @Update
+    suspend fun updateProduct(product: Product)
+    //delete product
+    @Query("DELETE FROM product WHERE id = :id")
+    suspend fun deleteProductById(id: String)
+
+
+    /**Bill Details Activity queries*/
+    //update product quantity after return
+    @Query("UPDATE product SET count = count + :quantity , soldCount = soldCount - :quantity WHERE id = :id")
+    suspend fun updateProductQuantityAfterReturn(id: String, quantity: Int)
+
+
+
 
 
 
@@ -47,11 +67,7 @@ interface ProductDao {
     @Query("SELECT * FROM product")
     suspend fun getAllProducts(): List<Product>
 
-    @Query("SELECT * FROM product WHERE id = :id")
-    suspend fun getProductById(id: String): Product?
 
-    @Query("DELETE FROM product WHERE id = :id")
-    suspend fun deleteProductById(id: String)
 
     @Query("DELETE FROM product")
     suspend fun deleteAllProducts()

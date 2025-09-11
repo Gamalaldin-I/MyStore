@@ -19,6 +19,7 @@ import com.example.htopstore.ui.AddProductActivity
 import com.example.htopstore.ui.ReturnsActivity
 import com.example.htopstore.ui.bills.BillsActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
+import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.ui.qrGen.QRCodeGenActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.util.adapters.Top5Adapter
@@ -67,7 +68,9 @@ class MainFragment : Fragment() {
     }
 
     private fun setupTop5Adapter() {
-        top5Adapter = Top5Adapter(top5)
+        top5Adapter = Top5Adapter(top5){
+            goToProductDetails(it.id)
+        }
         // make the adapter horizontal
         // Make it horizontal
         viewPager = binding.top5.viewPager
@@ -84,7 +87,7 @@ class MainFragment : Fragment() {
                 page.scaleX = 0.75f + r * 0.25f
             }
         })
-        viewPager.currentItem = 1
+        //viewPager.currentItem = 1
 
         viewPager.adapter = top5Adapter
 
@@ -93,7 +96,9 @@ class MainFragment : Fragment() {
     }
 
     private fun setupLowStockAdapter() {
-        lowStockAdapter = LowStockAdapter(lowStock)
+        lowStockAdapter = LowStockAdapter(lowStock){
+            goToProductDetails(it.id)
+        }
         // Make it horizontal
         binding.lowStock.adapter.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -175,6 +180,11 @@ class MainFragment : Fragment() {
 
         }
 
+    }
+    private fun goToProductDetails(productId: String) {
+        val intent = Intent(requireContext(), ProductActivity::class.java)
+        intent.putExtra("productId", productId)
+        startActivity(intent)
     }
 
 }

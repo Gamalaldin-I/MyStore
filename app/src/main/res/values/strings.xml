@@ -36,7 +36,7 @@
 
     <!-- QR Tools -->
     <string name="qr_generator">QR Generator</string>
-    <string name="generate_qrs_pdf">Generate PDF</string>
+    <string name="generate_qrs_pdf">Get PDF</string>
     <string name="generateqrcodes">Generate QR Codes</string>
     <string name="scancode">Scan Code</string>
 

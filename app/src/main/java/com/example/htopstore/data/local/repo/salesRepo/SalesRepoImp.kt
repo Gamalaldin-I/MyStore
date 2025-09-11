@@ -52,18 +52,6 @@ class SalesRepoImp(context: Context): SalesRepo {
         withContext(Dispatchers.IO){
         salesDao.getSalesByDate(date)}
 
-    override suspend fun getAllSalesWithDetails(): List<SalesOpsWithDetails> =
-         withContext(Dispatchers.IO){
-        salesDao.getAllSalesOpsWithDetails()}
-
-
-    override suspend fun getSaleWithDetails(saleId: String): SalesOpsWithDetails? =
-        withContext(Dispatchers.IO){
-        salesDao.getSalesOpWithDetails(saleId)}
-
-    override suspend fun getAllSellOp(): List<SellOp> =
-        withContext(Dispatchers.IO){
-        salesDao.getAllSalesOps()}
 
     override suspend fun deleteSaleById(saleId: String) {
         withContext(Dispatchers.IO){
@@ -87,9 +75,5 @@ class SalesRepoImp(context: Context): SalesRepo {
             salesDao.updateSaleCashAfterReturn(id, returnCash)}
         }
 
-    override suspend fun getSalesByDate(date: String): List<SellOp> {
-        return withContext(Dispatchers.IO){
-            salesDao.getAllSalesOpsByDate(date)}
 
-    }
 }

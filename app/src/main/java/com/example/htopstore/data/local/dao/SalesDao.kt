@@ -14,14 +14,49 @@ import com.example.htopstore.data.local.model.relation.SalesOpsWithDetails
 interface SalesDao {
     /**Home fragment*/
     //get the total sales of the day (total income)
-    @Query("SELECT SUM(totalCash) FROM sell_ops WHERE date = :date")
+    @Query("SELECT SUM(sellingPrice * quantity) FROM sales_details WHERE sellDate = :date and saleId is not null")
     suspend fun getTotalSalesOfToday(date: String): Double?
     // get the profit of the day
-
-    @Query("Select SUM((sellingPrice - price) * quantity) from sales_details where sellDate = :date")
+    @Query("Select SUM((sellingPrice - price) * quantity) from sales_details where sellDate = :date and saleId is not null")
     suspend fun getProfitOfToday(date: String): Double?
 
 
+
+    /**Bills Activity*/
+    //get all bills in the day
+    @Query("SELECT * FROM sell_ops WHERE date = :date order by time desc")
+    suspend fun getBillsByDate(date: String): List<SellOp>
+    //get all bills
+    @Query("SELECT * FROM sell_ops order by date,time desc")
+    suspend fun getAllBills(): List<SellOp>
+    //get all bills in the range
+    @Query("SELECT * FROM sell_ops WHERE date BETWEEN :since AND :to order by date,time desc")
+    suspend fun getBillsByDateRange(since: String, to:String): List<SellOp>
+    //get all bills till date
+    @Query("SELECT * FROM sell_ops WHERE date <= :date order by date,time desc")
+    suspend fun getBillsTillDate(date: String): List<SellOp>
+
+    /**Bill Details Activity*/
+
+    // get bill with details
+    @Transaction
+    @Query("SELECT * FROM sell_ops WHERE saleId = :id")
+    suspend fun getBillWithDetails(id:String): SalesOpsWithDetails
+
+    //update product quantity after return
+    @Query("Update sell_ops set totalCash = totalCash - :returnCash where saleId = :id")
+    suspend fun updateSaleCashAfterReturn(id: String, returnCash: Double)
+
+    //update product quantity after return
+    @Query("Update sales_details set quantity = quantity - :quantity where detailId = :id")
+    suspend fun updateBillProductQuantityAfterReturn( id:String, quantity: Int)
+
+    @Delete
+    suspend fun deleteSoldProduct(soldProduct: SoldProduct)
+
+    //delete the sale
+    @Query("DELETE FROM sell_ops WHERE saleId = :saleId")
+    suspend fun deleteSaleById(saleId: String)
 
 
 
@@ -42,16 +77,8 @@ interface SalesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSoldProduct(returns: SoldProduct)
 
-    @Query("SELECT * FROM sell_ops order by date,time desc")
-    suspend fun getAllSalesOps(): List<SellOp>
-    //get all sales ops with date
-    @Query("SELECT * FROM sell_ops WHERE date = :date order by time desc")
-    suspend fun getAllSalesOpsByDate(date: String): List<SellOp>
 
 
-    //delete the sale
-    @Query("DELETE FROM sell_ops WHERE saleId = :saleId")
-    suspend fun deleteSaleById(saleId: String)
 
     @Transaction
     @Query("SELECT * FROM sell_ops WHERE saleId = :saleId")
@@ -69,11 +96,7 @@ interface SalesDao {
     @Update
     suspend fun updateSoldProduct(soldProduct: SoldProduct)
 
-    @Query("Update sell_ops set totalCash = totalCash - :returnCash where saleId = :id")
-    suspend fun updateSaleCashAfterReturn(id: String, returnCash: Double)
 
-    @Delete
-    suspend fun deleteSoldProduct(soldProduct: SoldProduct)
 
 
 

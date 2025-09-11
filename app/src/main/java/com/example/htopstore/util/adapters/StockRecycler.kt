@@ -1,7 +1,5 @@
-package com.example.htopstore.util
+package com.example.htopstore.util.adapters
 
-//noinspection SuspiciousImport
-import android.R
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,13 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.htopstore.R
 import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.databinding.ItemCardBinding
 import com.example.htopstore.domain.useCase.CategoryLocalManager
+import com.example.htopstore.util.CartHelper
 import com.example.htopstore.util.NAE.ae
 import java.io.File
 
-class StockRecycler :
+class StockRecycler(private val onProductClick: (Product) -> Unit):
     ListAdapter<Product, StockRecycler.PHolder>(DiffCallback()) {
 
     class PHolder(val binding: ItemCardBinding) : RecyclerView.ViewHolder(binding.root)
@@ -40,8 +40,8 @@ class StockRecycler :
             // Glide auto-detect (URL, File path, or Uri string)
             Glide.with(context)
                 .load(File(imagePath))
-                .placeholder(com.example.htopstore.R.drawable.stock_bg)
-                .error(com.example.htopstore.R.drawable.ic_camera)
+                .placeholder(R.drawable.stock_bg)
+                .error(R.drawable.ic_camera)
                 .into(productImg)
 
             productBrand.text = item.name
@@ -51,6 +51,9 @@ class StockRecycler :
 
             addToCart.setOnClickListener {
                 CartHelper.addToTheCartList(item)
+            }
+            root.setOnClickListener {
+                onProductClick(item)
             }
         }
     }

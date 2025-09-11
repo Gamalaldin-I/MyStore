@@ -1,16 +1,18 @@
-package com.example.htopstore.ui.Archive
+package com.example.htopstore.ui.archive
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.htopstore.data.local.model.Product
-import com.example.htopstore.data.local.repo.productRepo.ProductRepoImp
+import com.example.htopstore.data.local.repo.archieve.ArchiveRepoImp
 import com.example.htopstore.databinding.FragmentArchiveBinding
-import com.example.htopstore.util.adapters.ArchiveRecycler
+import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.DialogBuilder
+import com.example.htopstore.util.adapters.ArchiveRecycler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,7 +21,7 @@ class ArchiveFragment : Fragment() {
     private lateinit var binding : FragmentArchiveBinding
     private  var products = ArrayList<Product>()
     private lateinit var adapter: ArchiveRecycler
-    private lateinit var productRepoImp: ProductRepoImp
+    private lateinit var archiveRepo: ArchiveRepoImp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,9 +33,12 @@ class ArchiveFragment : Fragment() {
     ): View? {
         binding = FragmentArchiveBinding.inflate(layoutInflater)
         val view = binding.root
-        productRepoImp = ProductRepoImp(requireContext())
-        adapter = ArchiveRecycler(products){ it, pos ->
-            showAlertDialog(it,pos)
+        archiveRepo = ArchiveRepoImp(requireContext())
+        adapter = ArchiveRecycler(
+            data = products,
+            onDelete = { it ,pos-> showAlertDialog(it,pos) })
+        { it->
+            goToProductActivity(it.id)
         }
         binding.archiveRecycler.adapter = adapter
         getUnAvailableProducts()
@@ -42,13 +47,14 @@ class ArchiveFragment : Fragment() {
 
     private fun getUnAvailableProducts(){
         lifecycleScope.launch(Dispatchers.IO) {
-            products = productRepoImp.getProductsNotAvailable() as ArrayList
-            if(products.isEmpty()){
-                binding.emptyHint.visibility = View.VISIBLE
-            }
-            else{
-                binding.emptyHint.visibility = View.GONE
+            products = archiveRepo.getArchiveProducts() as ArrayList
+
                 withContext(Dispatchers.Main){
+                    if(products.isEmpty()){
+                        binding.emptyHint.visibility = View.VISIBLE
+                    }
+                    else{
+                        binding.emptyHint.visibility = View.GONE
                 // Create the adapter
                 adapter.updateTheList(products)
             }
@@ -72,7 +78,7 @@ class ArchiveFragment : Fragment() {
 
     private fun onDelete(p: Product,pos: Int){
         lifecycleScope.launch(Dispatchers.IO) {
-            productRepoImp.deleteProductById(p.id,p.productImage)
+            archiveRepo.deleteProductFromArchive(p.id,p.productImage)
             //delete the pic file
             withContext(Dispatchers.Main){
                 products.remove(p)
@@ -83,5 +89,11 @@ class ArchiveFragment : Fragment() {
             }
 
         }
+    }
+    private fun goToProductActivity(id: String){
+        val intent = Intent(requireContext(), ProductActivity::class.java)
+        intent.putExtra("productId",id)
+        startActivity(intent)
+
     }
 }

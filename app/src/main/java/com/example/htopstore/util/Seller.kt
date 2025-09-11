@@ -1,6 +1,7 @@
 package com.example.htopstore.util
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.example.htopstore.data.local.SharedPref
 import com.example.htopstore.data.local.model.SellOp
@@ -32,6 +33,7 @@ object Seller {
         currentOperationId = IdGenerator.generateTimestampedId()
         currentDate = DateHelper.getCurrentDate()
         currentTime = DateHelper.getCurrentTime()
+        Log.d("SELL_ERROR", "from sell all items ${cartList.size}")
         // sell all the items one by one
         for (item in cartList){
             sellItem(item,discount)
@@ -47,6 +49,10 @@ object Seller {
         GlobalScope.launch(Dispatchers.IO){
             salesRepo.insertSale(saleOp)
             salesRepo.insertSaleDetails(salesDetailsList)
+            salesDetailsList.clear()
+            currentOperationId = ""
+            currentDate = ""
+            currentTime = ""
         }
         totalCash = 0.0
         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
@@ -76,6 +82,7 @@ object Seller {
             )
         totalCash+= (priceAfterDisCount * item.sellingCount)
         salesDetailsList.add(soldProduct)
+        Log.d("SELL_ERROR", "from sell item ${soldProduct.name} ${soldProduct.quantity}")
         GlobalScope.launch(Dispatchers.IO){
             productRepo.updateProductQuantity(item.id, item.sellingCount)
         }

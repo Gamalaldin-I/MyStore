@@ -11,7 +11,9 @@ import com.example.htopstore.databinding.ArchiveItemBinding
 import com.example.htopstore.domain.useCase.CategoryLocalManager
 import java.io.File
 
-class ArchiveRecycler(private val data: ArrayList<Product>, val onDelete:(p: Product, position:Int)->Unit) :
+class ArchiveRecycler(private val data: ArrayList<Product>,
+                      val onDelete:(p: Product, position:Int)->Unit,
+                      private val onClick:(p: Product)->Unit) :
     RecyclerView.Adapter<ArchiveRecycler.pHolder>() {
 
     // Create ViewHolder class
@@ -36,6 +38,9 @@ class ArchiveRecycler(private val data: ArrayList<Product>, val onDelete:(p: Pro
         b.productType.text = CategoryLocalManager.getCategoryNameLocal(d.category)
         b.delete.setOnClickListener {
             onDelete(d,position)
+        }
+        holder.itemView.setOnClickListener {
+            onClick(d)
         }
     }
     @SuppressLint("NotifyDataSetChanged")

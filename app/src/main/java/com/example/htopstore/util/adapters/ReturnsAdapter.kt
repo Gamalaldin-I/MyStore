@@ -9,7 +9,7 @@ import com.example.htopstore.R
 import com.example.htopstore.data.local.model.SoldProduct
 import com.example.htopstore.databinding.ReturnItemBinding
 
-class ReturnsAdapter(private val data: ArrayList<SoldProduct>) :
+class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(item:SoldProduct)->Unit) :
     RecyclerView.Adapter<ReturnsAdapter.RHolder>() {
 
     class RHolder(val binding: ReturnItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -47,6 +47,9 @@ class ReturnsAdapter(private val data: ArrayList<SoldProduct>) :
                 ContextCompat.getColor(context, R.color.neon)
             )
             holder.binding.container.setBackgroundResource(R.drawable.return_bg)
+        }
+        holder.binding.root.setOnClickListener {
+            onItemClick(data[position])
         }
     }
 

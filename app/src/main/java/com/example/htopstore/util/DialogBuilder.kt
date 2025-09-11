@@ -151,7 +151,7 @@ object DialogBuilder {
             val willBack = SoldProduct(
                 productId = soldProduct.productId,
                 saleId = soldProduct.saleId,
-                quantity = -numberPicker!!.value,
+                quantity = numberPicker!!.value,
                 type = soldProduct.type,
                 price = soldProduct.price,
                 sellingPrice = soldProduct.sellingPrice,

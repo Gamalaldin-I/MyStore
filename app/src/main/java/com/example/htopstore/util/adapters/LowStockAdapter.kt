@@ -9,7 +9,7 @@ import com.example.htopstore.R
 import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.databinding.LowStockItemBinding
 
-class LowStockAdapter(private val data: MutableList<Product>) :
+class LowStockAdapter(private val data: MutableList<Product>,private val onClick: (Product) -> Unit) :
     RecyclerView.Adapter<LowStockAdapter.THolder>() {
 
     // Create ViewHolder class
@@ -32,6 +32,9 @@ class LowStockAdapter(private val data: MutableList<Product>) :
         holder.binding.Name.text = product.name
         holder.binding.category.text = product.category
         holder.binding.quantity.text = product.count.toString()
+        holder.binding.root.setOnClickListener {
+            onClick(product)
+        }
     }
 
     // Return the size of the data list

@@ -22,11 +22,6 @@ interface SalesRepo {
     suspend fun getAllSalesAndReturnsByDate(date: String): List<SoldProduct>
     suspend fun getSoldOnlyByDate(date: String): List<SoldProduct>
 
-    //for sales details for bills Activity
-    suspend fun getAllSalesWithDetails(): List<SalesOpsWithDetails>
-    suspend fun getSalesByDate(date: String): List<SellOp>
-    suspend fun getSaleWithDetails(saleId: String): SalesOpsWithDetails?
-    suspend fun getAllSellOp(): List<SellOp>
 
     // manage sales
     suspend fun deleteSaleById(saleId: String)

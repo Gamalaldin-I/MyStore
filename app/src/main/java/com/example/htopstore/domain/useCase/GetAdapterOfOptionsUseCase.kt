@@ -2,15 +2,17 @@ package com.example.htopstore.domain.useCase
 
 import android.content.Context
 import android.widget.ArrayAdapter
+import com.example.htopstore.R
 import com.example.htopstore.domain.Category
 import com.example.htopstore.domain.ExpenseCategory
 import com.example.htopstore.domain.PaymentMethod
 import java.util.Locale
 
-class GetAdapterOfOptionsUseCase {
+abstract class GetAdapterOfOptionsUseCase {
     companion object{
         private fun getAdapter(context: Context,options:List<String>): ArrayAdapter<String>{
-            val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, options)
+            val adapter = ArrayAdapter(context, R.layout.spinner_item, options)
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown)
             return adapter
         }
     fun getCategoriesAdapter(context: Context): ArrayAdapter<String> {

@@ -1,4 +1,4 @@
-package com.example.htopstore.data.local.repo.epenseRepo
+package com.example.htopstore.data.local.repo.expenseRepo
 
 import android.content.Context
 import com.example.htopstore.data.local.model.Expense

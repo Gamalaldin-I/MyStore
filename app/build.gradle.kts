@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -63,20 +65,34 @@ dependencies {
     implementation ("com.google.zxing:core:3.5.3")
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
-        // CameraX
-        var  camerax_version = "1.3.4"
-        implementation ("androidx.camera:camera-core:$camerax_version")
-        implementation ("androidx.camera:camera-camera2:$camerax_version")
-        implementation ("androidx.camera:camera-lifecycle:$camerax_version")
-        implementation ("androidx.camera:camera-view:$camerax_version")
-        implementation ("androidx.camera:camera-extensions:$camerax_version")
+    // CameraX
+    var  camerax_version = "1.3.4"
+    implementation ("androidx.camera:camera-core:$camerax_version")
+    implementation ("androidx.camera:camera-camera2:$camerax_version")
+    implementation ("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation ("androidx.camera:camera-view:$camerax_version")
+    implementation ("androidx.camera:camera-extensions:$camerax_version")
 
-        // ML Kit Barcode
-        implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+    // ML Kit Barcode
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
 
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     //roundedimageview
     implementation("com.makeramen:roundedimageview:2.3.0")
+
+
+    // Lifecycle components (ViewModel + LiveData)
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+    //hilt
+    implementation ("com.google.dagger:hilt-android:2.51.1")
+    kapt ("com.google.dagger:hilt-compiler:2.51.1")
+
+
+
+
 
 
 

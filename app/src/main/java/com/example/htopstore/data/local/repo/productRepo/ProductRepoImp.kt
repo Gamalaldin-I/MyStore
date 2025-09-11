@@ -26,9 +26,7 @@ class ProductRepoImp(context: Context): ProductRepo {
     override suspend fun getAllProducts(): List<Product> = withContext(Dispatchers.IO) {  // all
         productDao.getAllProducts()
     }
-    override suspend fun getProductById(id: String): Product? = withContext(Dispatchers.IO) { // id
-        productDao.getProductById(id)
-    }
+
     override suspend fun getProductsByCategory(category: String): List<Product> = withContext(Dispatchers.IO) {
         // category
         productDao.getProductsByCategory(category)
@@ -43,16 +41,7 @@ class ProductRepoImp(context: Context): ProductRepo {
     }
 
     //delete
-    override suspend fun deleteProductById(id: String,image:String) {
-        withContext(Dispatchers.IO) {
-            productDao.deleteProductById(id)
-        }
-        //delete the pic file
-        val file = File(image)
-        if (file.exists()){
-        file.delete()
-        }
-    }
+
     override suspend fun deleteAllProducts() {
         withContext(Dispatchers.IO) {
             productDao.deleteAllProducts()

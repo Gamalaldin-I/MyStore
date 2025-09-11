@@ -24,10 +24,11 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Day 20-7-2025"
         android:fontFamily="@font/bussinessb"
+        android:text="Day 20-7-2025"
         android:textColor="@color/dark"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,23 +36,12 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/bussinessb"
         android:text="20:22"
         android:textColor="@color/code"
         android:textStyle="bold"
-        android:fontFamily="@font/bussinessb"
         app:layout_constraintStart_toEndOf="@id/date"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/receId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Receipt #123456"
-        android:fontFamily="@font/bussinessb"
-        android:textColor="@color/code"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/total" />
+        app:layout_constraintTop_toTopOf="@+id/date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

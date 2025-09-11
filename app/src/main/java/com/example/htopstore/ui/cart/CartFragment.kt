@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,14 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+        setControllers()
+
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         if(CartHelper.getAddedTOCartProducts().isEmpty()){
             false.view()
         }
@@ -51,10 +60,6 @@ class CartFragment : Fragment() {
                 onPriceOrDiscountChanged(total,discount)
             }
         }
-        setControllers()
-
-
-        return binding.root
     }
     private fun setControllers(){
         binding.increaseBtn.setOnClickListener {
@@ -94,7 +99,7 @@ class CartFragment : Fragment() {
             positiveButton = "Yes",
             negativeButton = "No",
             onConfirm = {
-
+                Log.d("SELL_ERROR", "from cart fragment on Sell Now ${cartHandler.getListOfCartProducts().size}")
                 Seller.sellAllItems(
                     context=requireContext(),
                     cartList = cartHandler.getListOfCartProducts(),

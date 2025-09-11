@@ -24,7 +24,6 @@ class BillsAdapter(private var data: List<SellOp>, val onItemClicked: (sellOpID:
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SHolder, position: Int) {
         val currentItem = data[position]
-        holder.binding.receId.text = "Bill ID: #${currentItem.saleId}"
         holder.binding.date.text = "Date: ${currentItem.date}"
         holder.binding.time.text = currentItem.time
         holder.binding.total.text = "${currentItem.totalCash} $"
@@ -36,6 +35,13 @@ class BillsAdapter(private var data: List<SellOp>, val onItemClicked: (sellOpID:
     // Return the size of the data list
     override fun getItemCount(): Int {
         return data.size
+    }
+    fun getSumOfBills(): Double {
+        var sum = 0.0
+        for (bill in data) {
+            sum += bill.totalCash
+        }
+        return sum
     }
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newList: List<SellOp>) {

@@ -10,14 +10,12 @@ interface ProductRepo {
 
     //get
     suspend fun getAllProducts(): List<Product>
-    suspend fun getProductById(id: String): Product?
     suspend fun getProductsByCategory(category: String): List<Product>
     suspend fun getProductsByName(name: String): List<Product>
     suspend fun getProductsByDate(date: String): List<Product>
 
 
     //delete
-    suspend fun deleteProductById(id: String,image:String)
     suspend fun deleteAllProducts()
 
     //update quantity

@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.stock
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +14,8 @@ import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.data.local.repo.productRepo.ProductRepoImp
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.domain.useCase.CategoryLocalManager
-import com.example.htopstore.util.StockRecycler
+import com.example.htopstore.ui.product.ProductActivity
+import com.example.htopstore.util.adapters.StockRecycler
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +26,12 @@ class StoreFragment : Fragment() {
 
     private lateinit var binding: FragmentStoreBinding
     private lateinit var productRepo: ProductRepoImp
-    private val adapter by lazy { StockRecycler() }
+    private val adapter by lazy { StockRecycler{
+        val intent = Intent(requireContext(), ProductActivity::class.java)
+        intent.putExtra("productId", it.id)
+        startActivity(intent)
+    }
+    }
     private lateinit var localLanguage: String
     private lateinit var all: String
 

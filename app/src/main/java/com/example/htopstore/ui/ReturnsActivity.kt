@@ -1,6 +1,8 @@
 package com.example.htopstore.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -8,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.htopstore.data.local.model.SoldProduct
 import com.example.htopstore.data.local.repo.salesRepo.SalesRepoImp
 import com.example.htopstore.databinding.ActivityReturnsBinding
+import com.example.htopstore.ui.billDetails.BillDetailsActivity
+import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.ReturnsAdapter
 import com.example.htopstore.util.DatePickerFragment
+import com.example.htopstore.util.DialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +27,7 @@ class ReturnsActivity : AppCompatActivity() {
     private lateinit var adapter: ReturnsAdapter
 
     private var filtered = false
-    private var date: String = ""   // لازم يكون بنفس فورمات التخزين في الداتا
+    private var date: String = ""
     private var selected = ALL_SALES
 
     companion object {
@@ -40,7 +45,9 @@ class ReturnsActivity : AppCompatActivity() {
         salesRepo = SalesRepoImp(this)
 
         // RecyclerView setup
-        adapter = ReturnsAdapter(ArrayList())
+        adapter = ReturnsAdapter(ArrayList()) {
+            onClick(it)
+        }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
@@ -48,7 +55,7 @@ class ReturnsActivity : AppCompatActivity() {
         controlDate()
 
         binding.allSales.isChecked = true
-        getData(selected) // أول تحميل
+        getData(selected)
     }
 
     private fun controlChips() {
@@ -115,5 +122,30 @@ class ReturnsActivity : AppCompatActivity() {
     private fun updateData(newList: List<SoldProduct>) {
         adapter.updateData(newList)
        // binding.rowNum.text = adapter.itemCount.toString()
+    }
+    private fun onClick(soldProduct: SoldProduct){
+        DialogBuilder.showAlertDialog(
+            context = this,
+            title ="Hello",
+            message = "How can i help you",
+            positiveButton = "View product",
+            negativeButton = "View Bill",
+            onConfirm = {
+                if(soldProduct.productId == null){
+                    Toast.makeText(this, "The product is not available now", Toast.LENGTH_SHORT).show()
+                    return@showAlertDialog }
+                val intent = Intent(this, ProductActivity::class.java)
+                intent.putExtra("productId", soldProduct.productId)
+                startActivity(intent)
+            },
+            onCancel = {
+                if(soldProduct.saleId == null){
+                    Toast.makeText(this, "The product has not been sold", Toast.LENGTH_SHORT).show()
+                    return@showAlertDialog }
+                val intent = Intent(this, BillDetailsActivity::class.java)
+                intent.putExtra("saleId", soldProduct.saleId)
+                startActivity(intent)
+            }
+        )
     }
 }
