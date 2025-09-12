@@ -7,31 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.htopstore.data.local.model.Product
-import com.example.htopstore.data.local.repo.productRepo.ProductRepoImp
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.domain.useCase.CategoryLocalManager
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.StockRecycler
 import com.google.android.material.chip.Chip
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
-
-class StoreFragment : Fragment() {
+@AndroidEntryPoint
+class StockFragment : Fragment() {
 
     private lateinit var binding: FragmentStoreBinding
-    private lateinit var productRepo: ProductRepoImp
     private val adapter by lazy { StockRecycler{
         val intent = Intent(requireContext(), ProductActivity::class.java)
         intent.putExtra("productId", it.id)
         startActivity(intent)
     }
     }
+    private val vm: StockViewModel by viewModels()
     private lateinit var localLanguage: String
     private lateinit var all: String
 
@@ -42,12 +39,11 @@ class StoreFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentStoreBinding.inflate(inflater, container, false)
-        productRepo = ProductRepoImp(requireContext())
         localLanguage = Locale.getDefault().language
         all = if (localLanguage == "ar") "الكل" else "All"
 
         setupRecycler()
-        loadProducts()
+        observeProducts()
 
         return binding.root
     }
@@ -56,7 +52,7 @@ class StoreFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
-            adapter = this@StoreFragment.adapter
+            adapter = this@StockFragment.adapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
                     outRect: Rect,
@@ -70,19 +66,17 @@ class StoreFragment : Fragment() {
             })
         }
     }
-    private fun loadProducts() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val products = productRepo.getProductsAvailable()
-            val distinctCategories = products.map { CategoryLocalManager.getCategoryNameLocal(it.category) }.distinct()
-
-            withContext(Dispatchers.Main) {
-                allProducts = products
+    private fun observeProducts() {
+            vm.getProducts() ; vm.products.observe(viewLifecycleOwner){
+            val distinctCategories = it.map { CategoryLocalManager.getCategoryNameLocal(it.category) }.distinct()
+                allProducts = it
                 categories = distinctCategories
                 adapter.submitList(allProducts)
                 setupChips()
             }
-        }
     }
+
+
 
     private fun setupChips() {
         binding.chipGroup.removeAllViews()

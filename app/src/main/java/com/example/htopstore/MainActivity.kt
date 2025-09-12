@@ -9,11 +9,12 @@ import com.example.htopstore.data.local.repo.productRepo.ProductRepoImp
 import com.example.htopstore.databinding.ActivityMainBinding
 import com.example.htopstore.ui.archive.ArchiveFragment
 import com.example.htopstore.ui.cart.CartFragment
-import com.example.htopstore.ui.main.MainFragment
-import com.example.htopstore.ui.stock.StoreFragment
+import com.example.htopstore.ui.main.HomeFragment
+import com.example.htopstore.ui.stock.StockFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var productRepo: ProductRepoImp
@@ -23,18 +24,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val cartFragment = CartFragment()
-        val storeFragment = StoreFragment()
-        val main = MainFragment()
+        val stockFragment = StockFragment()
+        val main = HomeFragment()
         val archive = ArchiveFragment()
         productRepo = ProductRepoImp(this)
-        replaceCurrentFragment(storeFragment)
+        replaceCurrentFragment(stockFragment)
 
 
         //set the bottom navigation view
         binding.mainNavigationBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.stock -> {
-                    replaceCurrentFragment(storeFragment)
+                    replaceCurrentFragment(stockFragment)
                     true
                 }
 

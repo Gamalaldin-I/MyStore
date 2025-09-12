@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.htopstore.databinding.FragmentCartBinding
 import com.example.htopstore.domain.useCase.CartHandler
 import com.example.htopstore.util.adapters.CartRecycler
@@ -22,6 +23,7 @@ class CartFragment : Fragment() {
     private var incrementValue = 1
     private var discountValue = 0.0
     private var total = 0.0
+    private val viewModel: CartViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

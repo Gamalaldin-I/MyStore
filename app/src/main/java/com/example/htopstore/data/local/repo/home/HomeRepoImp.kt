@@ -2,13 +2,13 @@
 package com.example.htopstore.data.local.repo.home
 
 import android.content.Context
-import com.example.htopstore.data.local.model.Expense
 import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.data.local.roomDb.AppDataBase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HomeRepoImp(context: Context): HomeRepo {
+class HomeRepoImp @Inject constructor(context: Context): HomeRepo {
 
     private val productDao = AppDataBase.getDatabase(context).productDao()
     private val expenseDao = AppDataBase.getDatabase(context).expenseDao()
