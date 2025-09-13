@@ -1,29 +1,22 @@
 package com.example.htopstore.ui.cart
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.htopstore.databinding.FragmentCartBinding
-import com.example.htopstore.domain.useCase.CartHandler
-import com.example.htopstore.util.adapters.CartRecycler
-import com.example.htopstore.util.CartHelper
 import com.example.htopstore.util.DialogBuilder
 import com.example.htopstore.util.NAE.ae
-import com.example.htopstore.util.Seller
-import kotlin.math.ceil
+import com.example.htopstore.util.adapters.CartRecycler
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
-    private lateinit var cartHandler: CartHandler
-    private var discount = 0
-    private var incrementValue = 1
-    private var discountValue = 0.0
-    private var total = 0.0
     private val viewModel: CartViewModel by viewModels()
+    private lateinit var cartAdapter: CartRecycler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,69 +24,85 @@ class CartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        setControllers()
-
-
+        setupUI()
+        setupObservers()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        if(CartHelper.getAddedTOCartProducts().isEmpty()){
-            false.view()
+        viewModel.initializeCart()
+    }
+
+    private fun setupUI() {
+        setupControllers()
+        setupRecyclerView()
+    }
+
+    private fun setupControllers() {
+        binding.increaseBtn.setOnClickListener {
+            viewModel.increaseDiscount()
         }
-        else{
-            cartHandler = CartHandler(CartHelper.getAddedTOCartProducts())
-            total = cartHandler.getTheTotalCartPrice()
-            onPriceOrDiscountChanged(total,discount)
-            binding.recyclerView.adapter = CartRecycler(cartHandler.getListOfCartProducts(),
-                onDelete = {
-                    cartHandler.deleteFromTheCartList(it)
-                    CartHelper.removeFromTheCartList(it.id)
-                    if(cartHandler.getListOfCartProducts().isEmpty()){
-                        false.view()
-                    }
-                }
-            )
-            {
-                total = cartHandler.getTheTotalCartPrice()
-                onPriceOrDiscountChanged(total,discount)
+
+        binding.decreaseBtn.setOnClickListener {
+            viewModel.decreaseDiscount()
+        }
+
+        binding.sellNow.setOnClickListener {
+            showSellConfirmationDialog()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        cartAdapter = CartRecycler(
+            arrayListOf(),
+            onDelete = { cartProduct ->
+                viewModel.deleteFromCart(cartProduct)
+            }
+        ) {
+            // On quantity changed callback
+            viewModel.onQuantityChanged()
+        }
+        binding.recyclerView.adapter = cartAdapter
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupObservers() {
+        viewModel.cartProducts.observe(viewLifecycleOwner) { products ->
+            cartAdapter.updateData(products)
+        }
+
+        viewModel.isCartEmpty.observe(viewLifecycleOwner) { isEmpty ->
+            updateViewVisibility(!isEmpty)
+        }
+
+        viewModel.total.observe(viewLifecycleOwner) { total ->
+            binding.totalValue.text = total.ae()
+        }
+
+        viewModel.discount.observe(viewLifecycleOwner) { discount ->
+            binding.percentageView.text = discount.ae()
+        }
+
+        viewModel.discountValue.observe(viewLifecycleOwner) { discountValue ->
+            binding.discountValue.text = discountValue.ae()
+        }
+
+        viewModel.totalAfterDiscount.observe(viewLifecycleOwner) { totalAfter ->
+            binding.totalAfter.text = totalAfter.toInt().ae()
+        }
+
+        viewModel.sellComplete.observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete) {
+                // Handle post-sell operations if needed
+                viewModel.resetSellComplete()
             }
         }
     }
-    private fun setControllers(){
-        binding.increaseBtn.setOnClickListener {
-            discount += incrementValue
-            if(discount > 50) discount = 50
-            onPriceOrDiscountChanged(total,discount)
-        }
-        binding.decreaseBtn.setOnClickListener {
-            discount -= incrementValue
-            if(discount < 0) discount = 0
-            onPriceOrDiscountChanged(total,discount)
-        }
-        binding.sellNow.setOnClickListener {
-            showAlertDialog()
-        }
-    }
-    fun onPriceOrDiscountChanged(newPrice: Double, newDiscount: Int = 0) {
-        total = newPrice
-        discount = newDiscount
-        discountValue = (total * discount) / 100
-        // Update the UI or perform any other necessary actions
-        binding.totalValue.text = total.ae()
-        binding.discountValue.text = discountValue.ae()
-        binding.percentageView.text = discount.ae()
-        binding.totalAfter.text = ceil(total - discountValue).toInt().ae()
-    }
 
-    private fun afterSellOperation(){
-        cartHandler.clearCartList()
-        false.view()
-    }
-    private fun showAlertDialog(){
+    private fun showSellConfirmationDialog() {
         DialogBuilder.showAlertDialog(
             context = requireContext(),
             message = "Sell all items?",
@@ -101,19 +110,16 @@ class CartFragment : Fragment() {
             positiveButton = "Yes",
             negativeButton = "No",
             onConfirm = {
-                Log.d("SELL_ERROR", "from cart fragment on Sell Now ${cartHandler.getListOfCartProducts().size}")
-                Seller.sellAllItems(
-                    context=requireContext(),
-                    cartList = cartHandler.getListOfCartProducts(),
-                    discount = discount)
-                afterSellOperation()
+                viewModel.sellAllItems(requireContext())
             },
-            onCancel = {  }
+            onCancel = {
+                // Do nothing on cancel
+            }
         )
     }
-    private fun Boolean.view() {
-        this@CartFragment.binding.operationView.visibility = if(this) View.VISIBLE else View.GONE
-        this@CartFragment.binding.hint.visibility = if(!this) View.VISIBLE else View.GONE
-    }
 
+    private fun updateViewVisibility(hasItems: Boolean) {
+        binding.operationView.visibility = if (hasItems) View.VISIBLE else View.GONE
+        binding.hint.visibility = if (!hasItems) View.VISIBLE else View.GONE
+    }
 }

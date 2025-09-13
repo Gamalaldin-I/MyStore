@@ -1,5 +1,6 @@
 package com.example.htopstore.util.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,7 @@ class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item:
         val context = holder.binding.productImg.context
         Glide.with(context)
             .load(File(imagePath))
-            .placeholder(R.drawable.stock_bg)
+            .placeholder(R.drawable.fighter)
             .error(R.drawable.ic_camera)
             .into(holder.binding.productImg)
         holder.binding.price.text = currentItem.pricePerOne.toInt().ae()
@@ -65,5 +66,11 @@ class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item:
     // Return the size of the data list
     override fun getItemCount(): Int {
         return data.size
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newData: List<CartProduct>) {
+        data.clear()
+        data.addAll(newData)
+        notifyDataSetChanged()
     }
 }

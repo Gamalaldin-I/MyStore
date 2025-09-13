@@ -6,22 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.example.htopstore.data.local.model.Product
-import com.example.htopstore.data.local.repo.archieve.ArchiveRepoImp
 import com.example.htopstore.databinding.FragmentArchiveBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.DialogBuilder
 import com.example.htopstore.util.adapters.ArchiveRecycler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ArchiveFragment : Fragment() {
+
     private lateinit var binding : FragmentArchiveBinding
+    private val vm: ArchiveViewModel by viewModels()
     private  var products = ArrayList<Product>()
     private lateinit var adapter: ArchiveRecycler
-    private lateinit var archiveRepo: ArchiveRepoImp
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,7 +33,6 @@ class ArchiveFragment : Fragment() {
     ): View? {
         binding = FragmentArchiveBinding.inflate(layoutInflater)
         val view = binding.root
-        archiveRepo = ArchiveRepoImp(requireContext())
         adapter = ArchiveRecycler(
             data = products,
             onDelete = { it ,pos-> showAlertDialog(it,pos) })
@@ -46,19 +45,16 @@ class ArchiveFragment : Fragment() {
     }
 
     private fun getUnAvailableProducts(){
-        lifecycleScope.launch(Dispatchers.IO) {
-            products = archiveRepo.getArchiveProducts() as ArrayList
-
-                withContext(Dispatchers.Main){
-                    if(products.isEmpty()){
-                        binding.emptyHint.visibility = View.VISIBLE
-                    }
-                    else{
-                        binding.emptyHint.visibility = View.GONE
-                // Create the adapter
-                adapter.updateTheList(products)
+        vm.getArchiveProducts()
+        vm.products.observe(viewLifecycleOwner){
+            if(it.isEmpty()){
+                binding.emptyHint.visibility = View.VISIBLE
             }
-        }
+            else{
+                binding.emptyHint.visibility = View.GONE
+
+                adapter.updateTheList(it as ArrayList<Product>)
+            }
         }
     }
 
@@ -77,19 +73,18 @@ class ArchiveFragment : Fragment() {
 
 
     private fun onDelete(p: Product,pos: Int){
-        lifecycleScope.launch(Dispatchers.IO) {
-            archiveRepo.deleteProductFromArchive(p.id,p.productImage)
-            //delete the pic file
-            withContext(Dispatchers.Main){
-                products.remove(p)
+        vm.deleteProduct(p.id,p.productImage)
+        vm.deleted.observe(viewLifecycleOwner){
+            products.remove(p)
                 adapter.updateAfterDeletion(pos)
                 if(products.isEmpty()){
                     binding.emptyHint.visibility = View.VISIBLE
                 }
             }
-
-        }
     }
+
+
+
     private fun goToProductActivity(id: String){
         val intent = Intent(requireContext(), ProductActivity::class.java)
         intent.putExtra("productId",id)
