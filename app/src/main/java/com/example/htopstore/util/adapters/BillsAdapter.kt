@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.htopstore.data.local.model.SellOp
+import com.example.domain.model.Bill
 import com.example.htopstore.databinding.BillItemBinding
 
-class BillsAdapter(private var data: List<SellOp>, val onItemClicked: (sellOpID: String) -> Unit
+class BillsAdapter(private var data: List<Bill>, val onItemClicked: (sellOpID: String) -> Unit
 ) :
     RecyclerView.Adapter<BillsAdapter.SHolder>() {
 
@@ -44,7 +44,7 @@ class BillsAdapter(private var data: List<SellOp>, val onItemClicked: (sellOpID:
         return sum
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newList: List<SellOp>) {
+    fun updateData(newList: List<Bill>) {
         this.data = newList
         notifyDataSetChanged()
     }

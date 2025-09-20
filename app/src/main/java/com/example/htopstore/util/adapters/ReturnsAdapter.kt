@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.SoldProduct
 import com.example.htopstore.R
-import com.example.htopstore.data.local.model.SoldProduct
 import com.example.htopstore.databinding.ReturnItemBinding
 
 class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(item:SoldProduct)->Unit) :

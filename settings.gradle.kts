@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "HTopStore"
 include(":app")
- 
+include(":data")
+include(":domain")

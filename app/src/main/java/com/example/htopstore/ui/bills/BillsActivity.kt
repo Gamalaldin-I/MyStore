@@ -5,38 +5,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.htopstore.data.local.repo.bills.BillRepoImp
 import com.example.htopstore.databinding.ActivityBillsBinding
 import com.example.htopstore.ui.billDetails.BillDetailsActivity
-import com.example.htopstore.util.DatePickerFragment
+import com.example.htopstore.ui.widgets.DatePickerFragment
 import com.example.htopstore.util.adapters.BillsAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+@AndroidEntryPoint
 class BillsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBillsBinding
-    private lateinit var billsRepo: BillRepoImp
     private lateinit var adapter: BillsAdapter
-
-    private var sinceDate: LocalDate? = null
-    private var toDate: LocalDate? = null
-    private var chosenReq = 0
+    private val viewModel: BillViewModel by viewModels()
 
     companion object {
-        const val ALL_BILLS_REQ = 0
-        const val FILTERED_BY_DATE_BILLS_REQ = 1
-        const val FILTERED_BY_DATE_RANGE_BILLS_REQ = 2
-        const val FILTERED_BY_DATE_TILL_DATE_BILLS_REQ = 3
-
         private val displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
-        private val dbFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,14 +33,14 @@ class BillsActivity : AppCompatActivity() {
         binding = ActivityBillsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        billsRepo = BillRepoImp(this)
-        controlDate()
         setupRecyclerView()
+        setupObservers()
+        controlDate()
     }
 
     override fun onResume() {
         super.onResume()
-        getBillsByRequestCode(chosenReq)
+        viewModel.refreshBills()
     }
 
     private fun setupRecyclerView() {
@@ -60,6 +48,31 @@ class BillsActivity : AppCompatActivity() {
             navigateToBillDetails(saleId)
         }
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun setupObservers() {
+        // Observe bills data
+        viewModel.bills.observe(this) { bills ->
+            adapter.updateData(bills)
+        }
+
+        // Observe loading state
+        viewModel.isLoading.observe(this) { isLoading ->
+            //binding.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        // Observe error messages
+        viewModel.errorMessage.observe(this) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearError()
+            }
+        }
+
+        // Observe total sum
+        viewModel.totalSum.observe(this) { sum ->
+            updateSum(sum)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -70,111 +83,39 @@ class BillsActivity : AppCompatActivity() {
         binding.reset.setOnClickListener {
             binding.since.text = "Since"
             binding.to.text = "To"
-            sinceDate = null
-            toDate = null
-            getBillsByRequestCode(ALL_BILLS_REQ)
+            viewModel.resetFilters()
         }
     }
 
     private fun setupDatePicker(view: android.widget.TextView, isSince: Boolean) {
         view.setOnClickListener {
             val datePicker = DatePickerFragment { day, month, year ->
-
                 val pickedDate = LocalDate.of(year, month, day)
-                if (isSince) {
-                    if (toDate != null && pickedDate.isAfter(toDate)) {
-                        Toast.makeText(this, "Since date must be before To date", Toast.LENGTH_SHORT).show()
-                        return@DatePickerFragment
-                    }
-                    sinceDate = pickedDate
+
+                val errorMessage = if (isSince) {
                     binding.since.text = pickedDate.format(displayFormatter)
+                    viewModel.setSinceDate(pickedDate)
                 } else {
-                    if (sinceDate != null && pickedDate.isBefore(sinceDate)) {
-                        Toast.makeText(this, "To date must be after Since date", Toast.LENGTH_SHORT).show()
-                        return@DatePickerFragment
-                    }
-                    toDate = pickedDate
                     binding.to.text = pickedDate.format(displayFormatter)
+                    viewModel.setToDate(pickedDate)
                 }
 
-                getBillsByRequestCode(getUseCaseCode())
+                errorMessage?.let { error ->
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                    // Reset the text if there was an error
+                    if (isSince) {
+                        binding.since.text = "Since"
+                    } else {
+                        binding.to.text = "To"
+                    }
+                }
             }
             datePicker.show(supportFragmentManager, "datePicker")
         }
     }
 
-    private fun getUseCaseCode() = when {
-        sinceDate == null && toDate == null -> ALL_BILLS_REQ
-        sinceDate != null && toDate == null -> FILTERED_BY_DATE_BILLS_REQ
-        sinceDate != null && toDate != null -> FILTERED_BY_DATE_RANGE_BILLS_REQ
-        else -> FILTERED_BY_DATE_TILL_DATE_BILLS_REQ
-    }
-
-    private fun getFilteredByDay(date: LocalDate) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val list = billsRepo.getBillsByDate(date.format(dbFormatter))
-                withContext(Dispatchers.Main) { adapter.updateData(list);updateSum() }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@BillsActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun getBillsByDateRange(since: LocalDate, to: LocalDate) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val list = billsRepo.getBillsByDateRange(since.format(dbFormatter), to.format(dbFormatter))
-                withContext(Dispatchers.Main) { adapter.updateData(list);updateSum() }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@BillsActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun getAllBillsTillDate(date: LocalDate) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val list = billsRepo.getBillsTillDate(date.format(dbFormatter))
-                withContext(Dispatchers.Main) { adapter.updateData(list) ; updateSum()}
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@BillsActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun getAllBills() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val list = billsRepo.getAllBills()
-                withContext(Dispatchers.Main) { adapter.updateData(list);updateSum()}
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@BillsActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun getBillsByRequestCode(requestCode: Int) {
-        when (requestCode) {
-            ALL_BILLS_REQ -> getAllBills()
-            FILTERED_BY_DATE_BILLS_REQ -> sinceDate?.let { getFilteredByDay(it) }
-            FILTERED_BY_DATE_RANGE_BILLS_REQ -> if (sinceDate != null && toDate != null) {
-                getBillsByDateRange(sinceDate!!, toDate!!)
-            }
-            FILTERED_BY_DATE_TILL_DATE_BILLS_REQ -> toDate?.let { getAllBillsTillDate(it) }
-        }
-        chosenReq = requestCode
-    }
-    private fun updateSum(){
-        binding.total.text = adapter.getSumOfBills().toString()
+    private fun updateSum(sum: Double) {
+        binding.total.text = sum.toString()
         binding.totalIcon.animate().apply {
             duration = 1000
             rotationBy(360f)

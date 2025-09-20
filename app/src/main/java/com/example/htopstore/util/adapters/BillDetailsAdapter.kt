@@ -4,15 +4,16 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.SoldProduct
+import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
-import com.example.htopstore.data.local.model.SoldProduct
 import com.example.htopstore.databinding.SoldItemBinding
-import com.example.htopstore.domain.useCase.CategoryLocalManager
 
 class BillDetailsAdapter(
     private var data: MutableList<SoldProduct>,
     private val onItemClicked: (SoldProduct) -> Unit
 ) : RecyclerView.Adapter<BillDetailsAdapter.SDHolder>() {
+    val catTrans = GetCategoryLocalName()
 
     class SDHolder(val binding: SoldItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -27,7 +28,7 @@ class BillDetailsAdapter(
         val context = holder.binding.root.context
 
         holder.binding.pos.text = (position + 1).toString()
-        holder.binding.brandName.text = "${item.name} (${CategoryLocalManager.getCategoryNameLocal(item.type)})"
+        holder.binding.brandName.text = "${item.name} (${catTrans(item.type)})"
         holder.binding.priceUnit.text = "UP: ${item.sellingPrice} $"
 
         if (item.quantity > 0) {

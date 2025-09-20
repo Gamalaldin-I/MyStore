@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.domain.model.Product
 import com.example.htopstore.R
-import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.databinding.LowStockItemBinding
 
 class LowStockAdapter(private val data: MutableList<Product>,private val onClick: (Product) -> Unit) :

@@ -6,18 +6,18 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.htopstore.data.local.model.SoldProduct
-import com.example.htopstore.data.local.model.relation.SalesOpsWithDetails
+import com.example.domain.model.BillWithDetails
+import com.example.domain.model.SoldProduct
 import com.example.htopstore.databinding.ActivityBillDetailsBinding
-import com.example.htopstore.util.DialogBuilder
 import com.example.htopstore.util.adapters.BillDetailsAdapter
+import com.example.htopstore.util.helper.DialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BillDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBillDetailsBinding
-    private lateinit var sellOp: SalesOpsWithDetails
+    private lateinit var sellOp: BillWithDetails
     private lateinit var adapter: BillDetailsAdapter
     private val viewModel: BillDetViewModel by viewModels()
 
@@ -33,7 +33,7 @@ class BillDetailsActivity : AppCompatActivity() {
 
     private fun getBill(){
         val id = intent.getStringExtra("saleId")!!
-        viewModel.getSellOp(id,onEmptyProducts = {
+        viewModel.getBill(id,onEmptyProducts = {
             Toast.makeText(this, "Bill deleted", Toast.LENGTH_SHORT).show()
             finish()
         })
@@ -59,14 +59,14 @@ class BillDetailsActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun fetchSellOp() {
-        binding.discount.text = "${sellOp.saleOp.discount} %"
-        binding.afterDiscount.text = "${sellOp.saleOp.totalCash} $"
-        binding.billId.text = "Bill ID: #${sellOp.saleOp.saleId}"
-        binding.date.text = "Date: ${sellOp.saleOp.date}"
-        binding.time.text = sellOp.saleOp.time
+        binding.discount.text = "${sellOp.bill.discount} %"
+        binding.afterDiscount.text = "${sellOp.bill.totalCash} $"
+        binding.billId.text = "Bill ID: #${sellOp.bill.saleId}"
+        binding.date.text = "Date: ${sellOp.bill.date}"
+        binding.time.text = sellOp.bill.time
 
         val totalBefore =
-            (sellOp.saleOp.totalCash * 100 / (100 - sellOp.saleOp.discount)).toInt()
+            (sellOp.bill.totalCash * 100 / (100 - sellOp.bill.discount)).toInt()
         binding.beforeDis.text = "$totalBefore $"
 
         if (sellOp.soldProducts.isNotEmpty()) {

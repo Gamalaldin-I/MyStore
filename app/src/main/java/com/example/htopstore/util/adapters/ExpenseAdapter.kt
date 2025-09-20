@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.htopstore.data.local.model.Expense
+import com.example.domain.model.Expense
 import com.example.htopstore.databinding.ExpenseItemBinding
 
 class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: (expense: Expense)-> Unit) :

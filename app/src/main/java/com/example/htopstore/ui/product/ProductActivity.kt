@@ -4,26 +4,22 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.htopstore.data.local.model.Product
-import com.example.htopstore.data.local.repo.product.ProductRepoImp
+import com.example.domain.model.Product
+import com.example.domain.useCase.localize.NAE.ae
+import com.example.domain.util.CartHelper
 import com.example.htopstore.databinding.ActivityProductBinding
-import com.example.htopstore.domain.useCase.CartHandler
-import com.example.htopstore.domain.useCase.GetAdapterOfOptionsUseCase
-import com.example.htopstore.util.CartHelper
-import com.example.htopstore.util.DialogBuilder
-import com.example.htopstore.util.NAE.ae
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.htopstore.util.helper.AutoCompleteHelper
+import com.example.htopstore.util.helper.DialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-
+@AndroidEntryPoint
 class ProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductBinding
     private lateinit var product: Product
-    private lateinit var productRepo: ProductRepoImp
+    private val vm: ProductViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,7 +28,13 @@ class ProductActivity : AppCompatActivity() {
 
 
         setControllers()
+        opsMsg()
         fetchProduct()
+    }
+    private fun opsMsg(){
+        vm.message.observe(this){
+            Toast.makeText(this, it , Toast.LENGTH_SHORT).show()
+        }
     }
 
 
@@ -53,17 +55,13 @@ class ProductActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun fetchProduct() {
-        // get the id from the intent
         val id = intent.getStringExtra("productId")
-        // get the product of the database
-        productRepo = ProductRepoImp(this)
-        lifecycleScope.launch(Dispatchers.IO) {
-            product = productRepo.getProductById(id!!)!!
-            // set the product to the view
-            withContext(Dispatchers.Main) {
-                Glide.with(binding.productImage)
-                    .load(File(product.productImage))
-                    .into(binding.productImage)
+        vm.getProduct(id ?:"")
+        vm.product.observe(this){  product->
+            this.product = product!!
+        Glide.with(binding.productImage)
+            .load(File(product.productImage))
+            .into(binding.productImage)
                 binding.type.text = product.category
                 binding.name.text = product.name
                 binding.quantityExist.text = product.count.toInt().ae()
@@ -75,14 +73,12 @@ class ProductActivity : AppCompatActivity() {
                 binding.buyingPriceET.setText(product.buyingPrice.toInt().ae())
                 binding.sellingPriceET.setText(product.sellingPrice.toInt().ae())
                 binding.countET.setText(product.count.ae())
-                binding.typeTv.setAdapter(GetAdapterOfOptionsUseCase.getCategoriesAdapter(this@ProductActivity))
+                binding.typeTv.setAdapter(AutoCompleteHelper.getCategoriesAdapter(this@ProductActivity))
             }
-        }
     }
 
+
     private fun updateProduct() {
-        if (!allFieldsDone()) return
-        // get the new values from the form
         val type = binding.typeTv.text.toString()
         val brand = binding.productBrandET.text.toString()
         val buyingPrice = binding.buyingPriceET.text.toString().toInt()
@@ -94,12 +90,8 @@ class ProductActivity : AppCompatActivity() {
         product.buyingPrice = buyingPrice.toDouble()
         product.sellingPrice = sellingPrice.toDouble()
         product.count = count
-        lifecycleScope.launch(Dispatchers.IO) {
-            productRepo.updateProduct(product)
-            withContext(Dispatchers.Main) {
-                finish()
-            }
-
+        vm.updateProduct(product){
+            finish()
         }
     }
 
@@ -114,55 +106,11 @@ class ProductActivity : AppCompatActivity() {
     }
 
     private fun deleteProduct() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            productRepo.deleteProductById(product.id, product.productImage)
-            withContext(Dispatchers.Main) {
-                CartHelper.removeFromTheCartList(product.id)
-                finish()
-            }
-        }
+        vm.deleteProduct(product){
+            finish()
     }
-    private fun allFieldsDone(): Boolean {
-        if (binding.typeTv.text.toString().isEmpty()) {
-            Toast.makeText(this, "Please select a type", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.productBrandET.text.toString().isEmpty()) {
-            Toast.makeText(this, "Please enter a brand", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.buyingPriceET.text.toString().isEmpty()) {
-            Toast.makeText(this, "Please enter a buying price", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.sellingPriceET.text.toString().isEmpty()) {
-            Toast.makeText(this, "Please enter a selling price", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.countET.text.toString().isEmpty()) {
-            Toast.makeText(this, "Please enter a count", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.countET.text.toString().toInt() <= 0) {
-            Toast.makeText(this, "Invalid count", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.buyingPriceET.text.toString().toDouble() <= 0) {
-            Toast.makeText(this, "Invalid buying price", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.sellingPriceET.text.toString().toDouble() <= 0) {
-            Toast.makeText(this, "Invalid selling price", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.sellingPriceET.text.toString().toDouble() <=
-            binding.buyingPriceET.text.toString().toDouble()
-        ) {
-            Toast.makeText(this, "Selling price must be > buying price", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
     }
+
 
     private fun ProductActivity.onAddToCart() {
         CartHelper.addToTheCartList(product = product)

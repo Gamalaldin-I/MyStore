@@ -1,0 +1,44 @@
+package com.example.htopstore.di.module
+
+import android.content.Context
+import androidx.room.Room
+import com.example.data.local.dao.ExpenseDao
+import com.example.data.local.dao.ProductDao
+import com.example.data.local.dao.SalesDao
+import com.example.data.local.roomDb.AppDataBase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DataModule {
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
+        return Room.databaseBuilder(
+            context,
+            AppDataBase::class.java,
+            AppDataBase.Companion.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductDao(db: AppDataBase): ProductDao {
+        return db.productDao()
+    }
+    @Provides
+    @Singleton
+    fun provideSalesDao(db: AppDataBase): SalesDao {
+        return db.salesDao()
+    }
+    @Provides
+    @Singleton
+    fun provideExpenseDao(db: AppDataBase): ExpenseDao {
+        return db.expenseDao()
+    }
+}

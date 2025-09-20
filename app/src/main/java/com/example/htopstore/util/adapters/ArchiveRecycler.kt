@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.domain.model.Product
+import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
-import com.example.htopstore.data.local.model.Product
 import com.example.htopstore.databinding.ArchiveItemBinding
-import com.example.htopstore.domain.useCase.CategoryLocalManager
 import java.io.File
 
 class ArchiveRecycler(private val data: ArrayList<Product>,
                       val onDelete:(p: Product, position:Int)->Unit,
                       private val onClick:(p: Product)->Unit) :
-    RecyclerView.Adapter<ArchiveRecycler.pHolder>() {
+    RecyclerView.Adapter<ArchiveRecycler.pHolder>(){
+        val categoryTrans = GetCategoryLocalName()
 
     // Create ViewHolder class
     class pHolder(val binding: ArchiveItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -35,7 +36,7 @@ class ArchiveRecycler(private val data: ArrayList<Product>,
             .error(R.drawable.inc_dec_btn)
             .into(b.productImg)
         b.productBrand.text = d.name
-        b.productType.text = CategoryLocalManager.getCategoryNameLocal(d.category)
+        b.productType.text = categoryTrans(d.category)
         b.delete.setOnClickListener {
             onDelete(d,position)
         }

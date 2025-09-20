@@ -1,39 +1,38 @@
 package com.example.htopstore.ui.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.htopstore.databinding.FragmentMainBinding
-import com.example.htopstore.ui.AddProductActivity
-import com.example.htopstore.ui.ReturnsActivity
+import com.example.htopstore.databinding.FragmentHomeBinding
+import com.example.htopstore.ui.adding.AddProductActivity
 import com.example.htopstore.ui.bills.BillsActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
+import com.example.htopstore.ui.genCode.GenCodeActivity
 import com.example.htopstore.ui.product.ProductActivity
-import com.example.htopstore.ui.qrGen.QRCodeGenActivity
+import com.example.htopstore.ui.sales.SalesActivity
 import com.example.htopstore.ui.scan.ScanActivity
-import com.example.htopstore.util.Animator.animateGridItem
 import com.example.htopstore.util.adapters.LowStockAdapter
 import com.example.htopstore.util.adapters.Top5Adapter
+import com.example.htopstore.util.helper.Animator.animateGridItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
+@Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
-    private lateinit var viewPager:ViewPager2
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewPager: ViewPager2
     private lateinit var top5Adapter: Top5Adapter
     private lateinit var lowStockAdapter: LowStockAdapter
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,18 +45,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
 
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         setControllers()
 
+        setupTop5Adapter()
+        setupLowStockAdapter()
 
         return binding.root
     }
     fun initialize(){
-        setupTop5Adapter()
-        setupLowStockAdapter()
         getTop5InSales()
         getLowStock()
-        getTodayBrief()
 
     }
 
@@ -67,7 +65,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupTop5Adapter() {
-        top5Adapter = Top5Adapter(mutableListOf()){
+        top5Adapter = Top5Adapter(mutableListOf()) {
             goToProductDetails(it.id)
         }
         // make the adapter horizontal
@@ -92,7 +90,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupLowStockAdapter() {
-        lowStockAdapter = LowStockAdapter(mutableListOf()){
+        lowStockAdapter = LowStockAdapter(mutableListOf()) {
             goToProductDetails(it.id)
         }
         // Make it horizontal
@@ -106,10 +104,10 @@ class HomeFragment : Fragment() {
     }
 
     fun goTo(button: View, onClick : () -> Unit){
-            button.animateGridItem {
-                onClick()
-            }
+        button.animateGridItem {
+        onClick()
         }
+    }
 
     private fun handelMainMenu(){
         val add = binding.grid.addProducts
@@ -121,20 +119,28 @@ class HomeFragment : Fragment() {
 
         add.setOnClickListener {
             goTo(add){
-                startActivity(Intent(requireContext(), AddProductActivity::class.java))}
+                startActivity(Intent(requireContext(), AddProductActivity::class.java))
+            }
         }
         bills.setOnClickListener {
-            goTo(bills){startActivity(Intent(requireContext(), BillsActivity::class.java))
+            goTo(bills){
+                 startActivity(Intent(requireContext(), BillsActivity::class.java))
+
             }}
         generate.setOnClickListener {
-            goTo(generate) {startActivity(Intent(requireContext(), QRCodeGenActivity::class.java))
+            goTo(generate) {
+                startActivity(Intent(requireContext(), GenCodeActivity::class.java))
+
             }}
         expenses.setOnClickListener {
-            goTo(expenses){ startActivity(Intent(requireContext(), ExpensesActivity::class.java))
-            }}
+            goTo(expenses){
+                startActivity(Intent(requireContext(), ExpensesActivity::class.java))
+            }
+        }
         sales.setOnClickListener {
             goTo(sales){
-                startActivity(Intent(requireContext(), ReturnsActivity::class.java))}
+                 startActivity(Intent(requireContext(), SalesActivity::class.java))}
+
         }
         scan.setOnClickListener {
             goTo(scan) {
@@ -157,15 +163,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun getTodayBrief(){
-        viewModel.getTodayBrief()
-        viewModel.todayBrief.observe(viewLifecycleOwner){
-            binding.today.salesValue.text = "${it.income} $"
-            binding.today.expenses.text = "${it.expenses} $"
-            binding.today.profit.text = "${it.profit} $"
-            }
-        }
+
 
     private fun goToProductDetails(productId: String) {
         val intent = Intent(requireContext(), ProductActivity::class.java)

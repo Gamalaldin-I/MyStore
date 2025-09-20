@@ -6,16 +6,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.domain.model.SelectionQrProduct
+import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ProductSelectionItemBinding
-import com.example.htopstore.domain.model.SelectionQrProduct
-import com.example.htopstore.domain.useCase.CategoryLocalManager
 import java.io.File
 
 class QrSelectAdapter(private var data: MutableList<SelectionQrProduct>,val context: Context) :
     RecyclerView.Adapter<QrSelectAdapter.SHolder>() {
     private val selected = ArrayList<SelectionQrProduct>()
-
+    private val catTrans = GetCategoryLocalName()
     // Create ViewHolder class
     class SHolder(val binding: ProductSelectionItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -31,7 +31,7 @@ class QrSelectAdapter(private var data: MutableList<SelectionQrProduct>,val cont
         val item = data[position]
         holder.binding.apply {
             productBrand.text = item.name
-            productType.text = CategoryLocalManager.getCategoryNameLocal(item.type)
+            productType.text = catTrans(item.type)
             checked.isChecked = item.selected
         }
         Glide.with(holder.binding.productImg.context)
