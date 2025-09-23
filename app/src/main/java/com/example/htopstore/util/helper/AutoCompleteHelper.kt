@@ -2,8 +2,8 @@ package com.example.htopstore.util.helper
 
 import android.content.Context
 import android.widget.ArrayAdapter
-import com.example.domain.model.ExpenseCategory
-import com.example.domain.model.PaymentMethod
+import com.example.domain.model.category.ExpenseCategory
+import com.example.domain.model.category.PaymentMethod
 import com.example.domain.useCase.localize.GetCategoriesUseCase
 import com.example.htopstore.R
 import java.util.Locale

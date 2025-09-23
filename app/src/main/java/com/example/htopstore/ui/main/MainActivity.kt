@@ -2,23 +2,23 @@ package com.example.htopstore.ui.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val vm: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        showOfArchiveLen()
         val cartFragment = CartFragment()
         val stockFragment = StockFragment()
         val main = HomeFragment()
@@ -52,16 +52,18 @@ class MainActivity : AppCompatActivity() {
             }
     }
     private fun showOfArchiveLen(){
-        lifecycleScope.launch(Dispatchers.IO) {
-            val len = 2//productRepo.getArchiveLength()
-            runOnUiThread {
-                if (len>0){
-                var badge = binding.mainNavigationBar.getOrCreateBadge(R.id.archive)
-                badge.isVisible = true
-                badge.text = len.toString()}
-        }
+        vm.archiveSize.observe(this){
+            if(it == 0){
+                binding.mainNavigationBar.removeBadge(R.id.archive)
+                return@observe
+            }
+        var badge = binding.mainNavigationBar.getOrCreateBadge(R.id.archive)
+        badge.isVisible = true
+        badge.text = it.toString()
         }
     }
+
+
 
     fun replaceCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
@@ -70,8 +72,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        showOfArchiveLen()
-    }
+
 }

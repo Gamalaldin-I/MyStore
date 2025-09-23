@@ -32,8 +32,8 @@ class ArchiveRecycler(private val data: ArrayList<Product>,
         b.price.text = d.sellingPrice.toString()
         Glide.with(b.productImg.context)
             .load(File(d.productImage))
-            .placeholder(R.drawable.stock_bg)
-            .error(R.drawable.inc_dec_btn)
+            .placeholder(R.drawable.fighter)
+            .error(R.drawable.fighter)
             .into(b.productImg)
         b.productBrand.text = d.name
         b.productType.text = categoryTrans(d.category)

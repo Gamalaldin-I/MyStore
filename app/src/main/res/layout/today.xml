@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_link"
             android:fontFamily="@font/kahroop"
 
             android:text="To" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/kahroop"
             android:textSize="25sp"
-            android:textColor="@color/dark"
+            android:textColor="@color/text_primary"
             android:layout_height="wrap_content"
             android:text="day" />
 
@@ -52,7 +52,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/background_surface_dark"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="500"
-                    android:textColor="@color/money"
+                    android:textColor="@color/revenue_positive"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Sales value"
-                    android:textColor="@color/money"
+                    android:textColor="@color/revenue_positive"
                     android:textSize="12sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -87,7 +87,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/background_surface_dark"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100"
-                    android:textColor="#E15941"
+                    android:textColor="@color/revenue_negative"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Expenses"
-                    android:textColor="#E15941"
+                    android:textColor="@color/revenue_negative"
                     android:textSize="12sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -118,7 +118,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/background_surface_dark"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="150"
-                    android:textColor="#1BB28E"
+                    android:textColor="@color/profit_margin"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Net profit"
-                    android:textColor="#1BB18D"
+                    android:textColor="@color/profit_margin"
                     android:textSize="12sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

@@ -9,6 +9,7 @@ import com.example.domain.model.Bill
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.SalesRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class SalesRepoImp(private val salesDao: SalesDao,private val productDao: ProductDao): SalesRepo {
@@ -16,6 +17,7 @@ class SalesRepoImp(private val salesDao: SalesDao,private val productDao: Produc
         withContext(Dispatchers.IO) {
             salesDao.getReturns().map { it.toSoldProduct() }
         }
+
 
     override suspend fun insertBill(bill: Bill) {
         salesDao.insertBill(bill.toBillEntity())

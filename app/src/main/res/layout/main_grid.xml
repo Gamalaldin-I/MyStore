@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="250dp"
     android:columnCount="3"
@@ -7,7 +8,7 @@
     android:useDefaultMargins="false">
 
     <LinearLayout
-        android:id="@+id/addProducts"
+        android:id="@+id/generateQrs"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_row="0"
@@ -18,6 +19,7 @@
         android:orientation="vertical"
         android:background="@drawable/bg_top_left"
         android:gravity="center"
+        android:backgroundTint="@color/background_surface_dark"
         android:padding="10dp">
 
         <ImageView
@@ -25,20 +27,20 @@
             android:layout_height="50dp"
             android:background="@drawable/grid_item_img_bg"
             android:padding="10dp"
-            android:src="@drawable/grid_add"/>
+            android:src="@drawable/grid_code" />
 
         <TextView
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_new"
-            android:textColor="@color/neon"
+            android:text="Generate codes"
+            android:textColor="@color/text_white"
             android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/generate"
+        android:id="@+id/addProducts"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_row="0"
@@ -56,15 +58,15 @@
             android:layout_height="50dp"
             android:background="@drawable/grid_item_img_bg"
             android:padding="10dp"
-            android:src="@drawable/grid_code" />
+            android:src="@drawable/grid_add" />
 
         <TextView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Generate"
+            android:text="@string/add_new"
             android:textSize="12sp"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_secondary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -88,14 +90,15 @@
             android:layout_height="50dp"
             android:background="@drawable/grid_item_img_bg"
             android:padding="10dp"
-            android:src="@drawable/grid_outcome" />
+            android:src="@drawable/grid_outcome"
+            app:tint="@color/text_white" />
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:text="Expenses"
             android:textSize="12sp"
-            android:textColor="@color/white"
+            android:textColor="@color/text_white"
             android:gravity="center" />
     </LinearLayout>
 
@@ -119,14 +122,15 @@
             android:layout_height="50dp"
             android:background="@drawable/grid_item_img_bg"
             android:padding="10dp"
-            android:src="@drawable/grid_sales" />
+            android:src="@drawable/grid_sales"
+            app:tint="@color/text_white" />
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:text="Sales"
             android:textSize="12sp"
-            android:textColor="@color/white"
+            android:textColor="@color/text_white"
             android:gravity="center" />
     </LinearLayout>
 
@@ -157,7 +161,7 @@
             android:layout_height="wrap_content"
             android:text="Bills"
             android:textSize="12sp"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_secondary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -170,6 +174,7 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_margin="1dp"
+        android:backgroundTint="@color/background_surface_dark"
         android:orientation="vertical"
         android:background="@drawable/bg_bottom_right"
         android:gravity="center"
@@ -189,7 +194,7 @@
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:text="Scan Code"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_white"
             android:gravity="center" />
     </LinearLayout>
 

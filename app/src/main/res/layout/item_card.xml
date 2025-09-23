@@ -30,7 +30,7 @@
             android:paddingEnd="5dp"
             android:layout_margin="5dp"
             android:textSize="12sp"
-            android:textColor="@color/menu_item_color"
+            android:textColor="@color/text_primary"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/product_img"
             app:layout_constraintEnd_toEndOf="@+id/product_img" />
@@ -43,7 +43,7 @@
             android:layout_marginStart="7dp"
             android:text="Zara"
             android:layout_marginTop="5dp"
-            android:textColor="#C349494A"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
 
             app:layout_constraintStart_toStartOf="@+id/product_img"
@@ -56,7 +56,7 @@
             android:maxLines="1"
             android:layout_marginTop="2dp"
             android:text="Zara"
-            android:textColor="#8A545454"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/productBrand"
             app:layout_constraintTop_toBottomOf="@+id/productBrand" />
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="250"
-                android:textColor="@color/money"
+                android:textColor="@color/text_primary"
                 android:textSize="15sp"
                  />
 
@@ -85,7 +85,7 @@
                 android:text="@string/l_e"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/bussinessb"
-                android:textColor="@color/money"
+                android:textColor="@color/text_tertiary"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -97,6 +97,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout2"
-        app:tint="#C6C4C4" />
+        app:tint="@color/button_primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

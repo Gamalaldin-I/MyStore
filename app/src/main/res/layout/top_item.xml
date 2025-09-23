@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:background="@drawable/bg_top5"
         android:layout_height="match_parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Shirt"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_white"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:gravity="end"
             android:maxLines="1"
             android:text="Zara"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/category"
@@ -56,11 +56,11 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:background="@drawable/ic_badge"
-            android:backgroundTint="@color/neon"
+            android:backgroundTint="@color/chart_primary"
             android:gravity="center"
             android:padding="10dp"
             android:text="999"
-            android:textColor="@color/white"
+            android:textColor="@color/text_white"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/product_img"

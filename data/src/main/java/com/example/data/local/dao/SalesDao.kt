@@ -6,20 +6,20 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import com.example.data.local.model.entities.BillEntity
 import com.example.data.local.model.entities.SoldProductEntity
 import com.example.data.local.model.relation.SalesOpsWithDetails
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SalesDao {
     /**Home fragment*/
     //get the total sales of the day (total income)
     @Query("SELECT SUM(sellingPrice * quantity) FROM sales_details WHERE sellDate = :date and saleId is not null")
-     suspend fun getTotalSalesOfToday(date: String): Double?
+      fun getTotalSalesOfToday(date: String): Flow<Double?>
     // get the profit of the day
     @Query("Select SUM((sellingPrice - price) * quantity) from sales_details where sellDate = :date and saleId is not null")
-     suspend fun getProfitOfToday(date: String): Double?
+      fun getProfitOfToday(date: String): Flow<Double?>
 
 
 
@@ -28,7 +28,7 @@ interface SalesDao {
     @Query("SELECT * FROM sell_ops WHERE date = :date order by time desc")
     suspend fun getBillsByDate(date: String): List<BillEntity>
     //get all bills
-    @Query("SELECT * FROM sell_ops order by date,time desc")
+    @Query("SELECT * FROM sell_ops order by date desc ,time desc")
     suspend fun getAllBills(): List<BillEntity>
     //get all bills in the range
     @Query("SELECT * FROM sell_ops WHERE date BETWEEN :since AND :to order by date,time desc")
@@ -77,25 +77,6 @@ interface SalesDao {
     //insert return
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSoldProduct(returns: SoldProductEntity)
-
-
-
-
-    @Transaction
-    @Query("SELECT * FROM sell_ops WHERE saleId = :saleId")
-    suspend fun getSalesOpWithDetails(saleId: String): SalesOpsWithDetails?
-
-    // get all the sales ops with details
-    @Transaction
-    @Query("SELECT * FROM sell_ops  order by date,time desc")
-    suspend fun getAllSalesOpsWithDetails(): List<SalesOpsWithDetails>
-    // get all the sales ops with details with date
-    @Transaction
-    @Query("SELECT * FROM sell_ops WHERE date = :date order by time desc" )
-    suspend fun getAllSalesOpsWithDetailsByDate(date: String): List<SalesOpsWithDetails>
-
-    @Update
-    suspend fun updateSoldProduct(soldProduct: SoldProductEntity)
 
 
 

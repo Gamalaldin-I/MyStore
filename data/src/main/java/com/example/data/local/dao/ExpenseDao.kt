@@ -6,13 +6,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.data.local.model.entities.ExpenseEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {
     /**home Fragment queries*/
     //get the expenses of the day
     @Query("SELECT SUM(amount) FROM expenses WHERE date = :date")
-     suspend fun getExpensesToday(date: String): Double?
+      fun getExpensesByDate(date: String): Flow<Double?>
 
 
 

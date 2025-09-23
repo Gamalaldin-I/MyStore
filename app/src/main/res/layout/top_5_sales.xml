@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_link"
             android:fontFamily="@font/kahroop"
 
             android:text="T" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/kahroop"
             android:textSize="25sp"
-            android:textColor="@color/dark"
+            android:textColor="@color/text_primary"
             android:layout_height="wrap_content"
             android:text="OP" />
 
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kahroop"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_link"
             android:textSize="25sp"
             android:layout_marginStart="7dp"
             android:text="5" />

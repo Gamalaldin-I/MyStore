@@ -13,6 +13,8 @@ import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.util.CartHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ItemCardBinding
+import com.example.htopstore.util.helper.Animator.animateAddToCart
+import com.example.htopstore.util.helper.Animator.animateStockItem
 import java.io.File
 
 class StockRecycler(private val onProductClick: (Product) -> Unit):
@@ -40,8 +42,8 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
             // Glide auto-detect (URL, File path, or Uri string)
             Glide.with(context)
                 .load(File(imagePath))
-                .placeholder(R.drawable.stock_bg)
-                .error(R.drawable.ic_camera)
+                .placeholder(R.drawable.fighter)
+                .error(R.drawable.fighter)
                 .into(productImg)
 
             productBrand.text = item.name
@@ -50,10 +52,15 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
             count.text = "${item.count}/${(item.count + item.soldCount)}"
 
             addToCart.setOnClickListener {
+                addToCart.animateAddToCart{
                 CartHelper.addToTheCartList(item)
+                }
+
             }
             root.setOnClickListener {
+                root.animateStockItem {
                 onProductClick(item)
+                }
             }
         }
     }

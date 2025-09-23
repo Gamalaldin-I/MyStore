@@ -24,7 +24,7 @@ class BillsAdapter(private var data: List<Bill>, val onItemClicked: (sellOpID: S
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SHolder, position: Int) {
         val currentItem = data[position]
-        holder.binding.date.text = "Date: ${currentItem.date}"
+        holder.binding.date.text = currentItem.date
         holder.binding.time.text = currentItem.time
         holder.binding.total.text = "${currentItem.totalCash} $"
         holder.binding.root.setOnClickListener {

@@ -26,14 +26,14 @@ tools:context=".ui.sales.SalesActivity">
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/back_arrow"
-            app:tint="@color/dark" />
+            app:tint="@color/primary_accent_blue" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kahroop"
             android:text="@string/sales"
-            android:textColor="@color/dark"
+            android:textColor="@color/text_primary"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -100,7 +100,7 @@ tools:context=".ui.sales.SalesActivity">
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/select_day_btn_bg"
                 android:text="Pick day"
-                android:textColor="@color/neon"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
 
             <TextView
@@ -108,7 +108,7 @@ tools:context=".ui.sales.SalesActivity">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/neon" />
+                android:textColor="@color/text_secondary" />
 
             <Button
                 android:id="@+id/reset"

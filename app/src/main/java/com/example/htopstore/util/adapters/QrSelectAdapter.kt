@@ -36,8 +36,8 @@ class QrSelectAdapter(private var data: MutableList<SelectionQrProduct>,val cont
         }
         Glide.with(holder.binding.productImg.context)
             .load(File(item.image))
-            .error(R.drawable.stock_bg)
-            .placeholder(R.drawable.ic_camera)
+            .error(R.drawable.fighter)
+            .placeholder(R.drawable.fighter)
             .into(holder.binding.productImg)
         holder.binding.checked.setOnClickListener {
             item.selected = !item.selected

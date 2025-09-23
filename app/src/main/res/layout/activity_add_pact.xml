@@ -26,28 +26,29 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/back_arrow"
-                app:tint="@color/dark" />
+                app:tint="@color/primary_accent_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/add_new_product"
-                android:textColor="@color/dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp" />
         </LinearLayout>
 
         <!-- Product Image -->
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/product_img"
         android:layout_width="150dp"
+        app:riv_corner_radius="30dp"
         android:layout_height="150dp"
         android:scaleType="centerCrop"
         android:layout_marginBottom="20dp"
         android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:shapeAppearanceOverlay="@style/product_img" />
+         />
 
         <!-- Card Container -->
     <androidx.cardview.widget.CardView
@@ -55,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:backgroundTint="@color/dark"
+        android:backgroundTint="@color/cardview_light_background"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,13 +75,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/type"
-                android:textColorHint="@color/white"
-                app:boxBackgroundColor="@color/neon"
+                android:textColorHint="@color/text_tertiary"
+                app:boxBackgroundColor="@color/input_background"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="@color/white"
+                app:boxStrokeColor="@color/input_border_focus"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="2dp">
 
@@ -89,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -101,17 +102,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/brand_name"
-                app:boxStrokeColor="@color/neon"
-                app:cursorColor="@color/white"
-                app:hintTextColor="@color/neon"
-                app:placeholderTextColor="@color/neon">
+                app:boxStrokeColor="@color/input_border_focus"
+                app:cursorColor="@color/text_tertiary"
+                app:hintTextColor="@color/text_tertiary"
+                app:placeholderTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/productBrandET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Buying Price -->
@@ -121,17 +122,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/buying_price"
-                app:boxStrokeColor="@color/neon"
-                app:cursorColor="@color/white"
-                app:hintTextColor="@color/neon"
-                app:placeholderTextColor="@color/neon">
+                app:boxStrokeColor="@color/input_border_focus"
+                app:cursorColor="@color/text_tertiary"
+                app:hintTextColor="@color/text_tertiary"
+                app:placeholderTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/buyingPriceET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Selling Price -->
@@ -141,17 +142,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/selling_price"
-                app:boxStrokeColor="@color/neon"
-                app:cursorColor="@color/white"
-                app:hintTextColor="@color/neon"
-                app:placeholderTextColor="@color/neon">
+                app:boxStrokeColor="@color/input_border_focus"
+                app:cursorColor="@color/text_tertiary"
+                app:hintTextColor="@color/text_tertiary"
+                app:placeholderTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sellingPriceET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Count -->
@@ -161,28 +162,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/count"
-                app:boxStrokeColor="@color/neon"
-                app:cursorColor="@color/white"
-                app:hintTextColor="@color/neon"
-                app:placeholderTextColor="@color/neon">
+                app:boxStrokeColor="@color/input_border_focus"
+                app:cursorColor="@color/text_tertiary"
+                app:hintTextColor="@color/text_tertiary"
+                app:placeholderTextColor="@color/text_secondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/countET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Add Button -->
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_bg"
                 android:text="@string/save"
-                android:textColor="@color/white" />
+                />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

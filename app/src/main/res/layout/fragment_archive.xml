@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layoutDirection="ltr"
             android:layout_marginTop="40dp"
-            android:background="@color/white"
+            android:background="@color/background_white"
             android:gravity="center|start"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,14 +32,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/kahroop"
                 android:text="A"
-                android:textColor="@color/neon"
+                android:textColor="@color/text_link"
                 android:textSize="25sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/kahroop"
                 android:text="rchive"
-                android:textColor="@color/dark"
+                android:textColor="@color/text_primary"
                 android:textSize="25sp" />
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -61,7 +61,7 @@
             android:text="Archive is empty"
             android:gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/neon"
+            android:textColor="@color/text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

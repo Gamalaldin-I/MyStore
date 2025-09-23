@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.domain.model.category
 
 enum class Category(val eLabel: String, val aLabel: String) {
     TShirt("T-shirt","تيشيرت"),

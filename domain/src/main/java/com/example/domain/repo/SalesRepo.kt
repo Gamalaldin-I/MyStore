@@ -4,6 +4,7 @@ import com.example.domain.model.Bill
 import com.example.domain.model.SoldProduct
 
 interface SalesRepo{
+
     //for sell operation
     suspend fun insertBill(bill: Bill)
     suspend fun insertBillDetails(soldProducts: List<SoldProduct>)

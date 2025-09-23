@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.domain.model.category
 
 enum class ExpenseCategory(val category: String)  {
     Electricity("Electricity"),

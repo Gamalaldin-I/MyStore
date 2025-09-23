@@ -6,21 +6,23 @@ import com.example.data.local.dao.ProductDao
 import com.example.data.local.model.entities.ProductEntity
 import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.io.File
 
 class ProductRepoImp (private val productDao: ProductDao): ProductRepo {
 
-    override suspend fun getProducts(): List<Product> =
+    override  fun getProducts():Flow<List<Product>> =
         productDao.getProducts().mapData()
 
     override suspend fun getProductById(id: String): Product? =
         productDao.getProductById(id)?.toDomain()
 
 
-    override suspend fun getAvailableProducts(): List<Product> =
+    override  fun getAvailableProducts(): Flow<List<Product>> =
         productDao.getAvailableProducts().mapData()
 
-    override suspend fun getArchiveProducts(): List<Product> =
+    override  fun getArchiveProducts(): Flow<List<Product>> =
         productDao.getArchiveProducts().mapData()
 
     override suspend fun addProduct(product: Product) =
@@ -36,12 +38,16 @@ class ProductRepoImp (private val productDao: ProductDao): ProductRepo {
         }
     }
 
-    override suspend fun getLowStock(): List<Product> =
-        productDao.getLowStock().mapData()
+    override  fun getArchiveLength(): Flow<Int> {
+        return productDao.getArchiveLength()
+    }
 
-    override suspend fun getTop5InSales(): List<Product> =
-        productDao.getTop5InSales().mapData()
-
-    fun List<ProductEntity>.mapData():List<Product> = this.map{it.toDomain()}
+    fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {
+        return this.map {
+            it.map {
+                it.toDomain()
+            }
+        }
+    }
 
 }

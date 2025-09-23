@@ -26,14 +26,14 @@
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/back_arrow"
-            app:tint="@color/dark" />
+            app:tint="@color/primary_accent_blue" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kahroop"
             android:text="@string/expenses"
             android:textStyle="bold"
-            android:textColor="@color/dark"
+            android:textColor="@color/text_primary"
             android:textSize="25sp" />
     </LinearLayout>
 
@@ -50,12 +50,11 @@
         app:layout_constraintTop_toBottomOf="@+id/header"
         tools:listitem="@layout/expense_item" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/AddNewExpense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_new"
-        android:textColor="@color/neon"
         android:textStyle="bold"
         android:background="@drawable/primary_btn"
         android:layout_margin="15dp"

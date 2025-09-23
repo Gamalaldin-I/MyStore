@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="false">
         <shape>
-            <stroke android:color="@color/neon" android:width="1dp"/>
-            <solid android:color="@color/card"/>
+            <stroke android:color="@color/primary_accent_blue" android:width="1dp"/>
+            <solid android:color="@color/cardview_light_background"/>
             <corners android:radius="2dp"/>
         </shape>
     </item>

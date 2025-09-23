@@ -36,7 +36,7 @@ class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(i
             holder.binding.total.text = "Total: ${item.sellingPrice * item.quantity} $"
             holder.binding.container.setBackgroundResource(R.drawable.sold_bg)
             holder.binding.total.setTextColor(
-                ContextCompat.getColor(context, R.color.income)
+                ContextCompat.getColor(context, R.color.revenue_positive)
             )
         } else {
             // Return
@@ -44,7 +44,7 @@ class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(i
             holder.binding.count.text = "Return: $absQuantity"
             holder.binding.total.text = "Total: ${item.sellingPrice * absQuantity} $"
             holder.binding.total.setTextColor(
-                ContextCompat.getColor(context, R.color.neon)
+                ContextCompat.getColor(context, R.color.revenue_negative)
             )
             holder.binding.container.setBackgroundResource(R.drawable.return_bg)
         }

@@ -1,6 +1,6 @@
 package com.example.domain.useCase.localize
 
-import com.example.domain.model.Category
+import com.example.domain.model.category.Category
 import java.util.Locale
 
 class GetCategoryLocalName(){

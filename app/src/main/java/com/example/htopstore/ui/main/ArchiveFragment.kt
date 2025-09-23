@@ -45,7 +45,7 @@ class ArchiveFragment : Fragment() {
     }
 
     private fun getUnAvailableProducts(){
-        vm.products.observe(viewLifecycleOwner){
+        vm.archive.observe(viewLifecycleOwner){
             if(it.isEmpty()){
                 binding.emptyHint.visibility = View.VISIBLE
             }
@@ -90,8 +90,5 @@ class ArchiveFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        vm.getArchiveProducts()
-    }
+
 }

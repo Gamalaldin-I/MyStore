@@ -26,7 +26,6 @@ class GenCodeActivity : AppCompatActivity() {
         adapter = QrSelectAdapter(li,this)
         binding.recyclerView.adapter = adapter
         setContentView(binding.root)
-        vm.getAvailableProducts()
     }
     private fun setControllers(){
         binding.generateQrs.setOnClickListener {// can get QR or barcode

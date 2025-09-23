@@ -1,26 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="money">#4169e1</color>
-    <color name="card">#FFFFFFFF</color>
-    <color name="background">#FFFFFE</color>
-    <color name="neon">#668FD7</color>
-    <color name="primaryBtnBg">#FCE0D6FB</color>
-    <color name="redHint">#2CDD0909</color>
-    <color name="dark">#172653</color>
-    <color name="backgroundLight">@color/white</color>
-    <color name="brand">@color/black</color>
-    <color name="code">#939292</color>
-    <color name="menu_item_color">@color/dark</color>
-    <color name="light_bg">#28666FD7</color>
-    <color name="new_blue">@color/neon</color>
-    <color name="income">#0F9961</color>
+    <!-- Primary Corporate Colors -->
+    <color name="primary_navy_blue">#FF1B365D</color>
+    <color name="primary_slate_blue">#FF334155</color>
+    <color name="primary_steel_blue">#FF475569</color>
+    <color name="primary_accent_blue">#FF3B82F6</color>
 
-    <!--for main -->
-    <color name="topCoverGradStartColor">#C9668FD7</color>
+    <!-- Secondary Professional Colors -->
+    <color name="secondary_charcoal">#FF374151</color>
+    <color name="secondary_pewter">#FF6B7280</color>
+    <color name="secondary_sage">#FF059669</color>
 
+    <!-- Background Colors -->
+    <color name="background_white">#FFFFFFFF</color>
+    <color name="background_light_gray">#FFF9FAFB</color>
+    <color name="background_neutral_gray">#FFF3F4F6</color>
+    <color name="background_card">#FFFEFEFE</color>
+    <color name="background_dark">#FF111827</color>
+    <color name="background_surface_dark">#FF1F2937</color>
 
+    <!-- Professional Text Colors -->
+    <color name="text_primary">#FF111827</color>
+    <color name="text_secondary">#FF374151</color>
+    <color name="text_tertiary">#FF6B7280</color>
+    <color name="text_disabled">#FF9CA3AF</color>
+    <color name="text_white">#FFFFFFFF</color>
+    <color name="text_link">#FF3B82F6</color>
 
+    <!-- Category Colors (Subtle & Professional) -->
+    <color name="category_womens_wear">#FF7C3AED</color>
+    <color name="category_mens_wear">#FF1E40AF</color>
+    <color name="category_formal_wear">#FF1F2937</color>
+    <color name="category_casual_wear">#FF0F766E</color>
+    <color name="category_outerwear">#FF92400E</color>
+    <color name="category_footwear">#FF7C2D12</color>
+    <color name="category_accessories">#FFB45309</color>
+    <color name="category_activewear">#FF166534</color>
 
+    <!-- Size Classification Colors -->
+    <color name="size_extra_small">#FFDC2626</color>
+    <color name="size_small">#FFEA580C</color>
+    <color name="size_medium">#FF059669</color>
+    <color name="size_large">#FF3B82F6</color>
+    <color name="size_extra_large">#FF7C3AED</color>
+    <color name="size_plus_size">#FFBE185D</color>
+
+    <!-- Inventory Status Colors -->
+    <color name="stock_available">#FF16A34A</color>
+    <color name="stock_limited">#FFD97706</color>
+    <color name="stock_unavailable">#FFDC2626</color>
+    <color name="stock_reserved">#FF3B82F6</color>
+    <color name="stock_discontinued">#FF6B7280</color>
+    <color name="stock_incoming">#FF0891B2</color>
+
+    <!-- Business Priority Colors -->
+    <color name="priority_high">#FFDC2626</color>
+    <color name="priority_medium">#FFD97706</color>
+    <color name="priority_low">#FF16A34A</color>
+    <color name="priority_normal">#FF6B7280</color>
+
+    <!-- Financial Status Colors -->
+    <color name="revenue_positive">#42C0F2</color>
+    <color name="revenue_negative">#DC6F26</color>
+    <color name="cost_standard">#FF3B82F6</color>
+    <color name="profit_margin">#14BE8A</color>
+    <color name="budget_allocated">#FF7C3AED</color>
+
+    <!-- Professional Action Colors -->
+    <color name="action_primary">#FF3B82F6</color>
+    <color name="action_success">#FF16A34A</color>
+    <color name="action_warning">#FFD97706</color>
+    <color name="action_danger">#FFDC2626</color>
+    <color name="action_info">#FF0891B2</color>
+    <color name="action_neutral">#FF6B7280</color>
+
+    <!-- Business Process Colors -->
+    <color name="process_pending">#FFD97706</color>
+    <color name="process_approved">#FF16A34A</color>
+    <color name="process_rejected">#FFDC2626</color>
+    <color name="process_review">#FF7C3AED</color>
+    <color name="process_completed">#FF059669</color>
+
+    <!-- Department Colors -->
+    <color name="dept_procurement">#FF1E40AF</color>
+    <color name="dept_inventory">#FF059669</color>
+    <color name="dept_sales">#FF7C3AED</color>
+    <color name="dept_logistics">#FF92400E</color>
+    <color name="dept_finance">#FFBE185D</color>
+    <color name="dept_marketing">#FF0891B2</color>
+
+    <!-- Quality Grade Colors -->
+    <color name="quality_premium">#FF1F2937</color>
+    <color name="quality_standard">#FF3B82F6</color>
+    <color name="quality_basic">#FF6B7280</color>
+    <color name="quality_outlet">#FFD97706</color>
+
+    <!-- Corporate UI Elements -->
+    <color name="button_primary">#FF3B82F6</color>
+    <color name="button_secondary">#FF6B7280</color>
+    <color name="button_success">#FF16A34A</color>
+    <color name="button_danger">#FFDC2626</color>
+    <color name="button_outline">#FFE5E7EB</color>
+    <color name="button_disabled">#FFF3F4F6</color>
+
+    <!-- Data Visualization Colors -->
+    <color name="chart_primary">#FF3B82F6</color>
+    <color name="chart_secondary">#FF7C3AED</color>
+    <color name="chart_tertiary">#FF059669</color>
+    <color name="chart_quaternary">#FFD97706</color>
+    <color name="chart_quinary">#FFDC2626</color>
+    <color name="chart_senary">#FF0891B2</color>
+
+    <!-- Professional Neutrals -->
+    <color name="neutral_50">#FFF9FAFB</color>
+    <color name="neutral_100">#FFF3F4F6</color>
+    <color name="neutral_200">#FFE5E7EB</color>
+    <color name="neutral_300">#FFD1D5DB</color>
+    <color name="neutral_400">#FF9CA3AF</color>
+    <color name="neutral_500">#FF6B7280</color>
+    <color name="neutral_600">#FF4B5563</color>
+    <color name="neutral_700">#FF374151</color>
+    <color name="neutral_800">#FF1F2937</color>
+    <color name="neutral_900">#FF111827</color>
+
+    <!-- Seasonal Business Colors -->
+    <color name="season_q1">#FF3B82F6</color>
+    <color name="season_q2">#FF16A34A</color>
+    <color name="season_q3">#FFD97706</color>
+    <color name="season_q4">#FF7C3AED</color>
+
+    <!-- Alert & Notification Colors -->
+    <color name="alert_critical">#FF991B1B</color>
+    <color name="alert_warning">#FF92400E</color>
+    <color name="alert_info">#FF1E40AF</color>
+    <color name="alert_success">#FF166534</color>
+
+    <!-- Border & Divider Colors -->
+    <color name="border_light">#FFE5E7EB</color>
+    <color name="border_medium">#FFD1D5DB</color>
+    <color name="border_dark">#FF9CA3AF</color>
+    <color name="divider_subtle">#FFF3F4F6</color>
+
+    <!-- Surface & Elevation Colors -->
+    <color name="surface_elevated">#FFFFFFFF</color>
+    <color name="surface_overlay">#80FFFFFF</color>
+    <color name="shadow_subtle">#10000000</color>
+    <color name="shadow_medium">#20000000</color>
+
+    <!-- Professional Gradient Colors -->
+    <color name="gradient_blue_start">#FF1E40AF</color>
+    <color name="gradient_blue_end">#FF3B82F6</color>
+    <color name="gradient_gray_start">#FF374151</color>
+    <color name="gradient_gray_end">#FF6B7280</color>
+
+    <!-- Navigation & Menu Colors -->
+    <color name="nav_active">#FF3B82F6</color>
+    <color name="nav_inactive">#FF9CA3AF</color>
+    <color name="nav_background">#FFFFFFFF</color>
+    <color name="nav_border">#FFE5E7EB</color>
+
+    <!-- Form Elements -->
+    <color name="input_background">#FFFFFFFF</color>
+    <color name="input_border">#FFD1D5DB</color>
+    <color name="input_border_focus">#FF3B82F6</color>
+    <color name="input_error">#FFDC2626</color>
+    <color name="input_disabled">#FFF3F4F6</color>
 </resources>

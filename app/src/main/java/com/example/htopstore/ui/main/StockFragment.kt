@@ -15,38 +15,47 @@ import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.StockRecycler
+import com.example.htopstore.util.helper.Animator.animateSelectedChip
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+
 @AndroidEntryPoint
 class StockFragment : Fragment() {
-    val vm: MainViewModel by activityViewModels()
-    private val getCatLocalName = GetCategoryLocalName()
+
+    private var checkedId = -1
     private lateinit var binding: FragmentStoreBinding
+    private val vm: MainViewModel by activityViewModels()
+    private val getCatLocalName = GetCategoryLocalName()
     private val adapter by lazy {
-        StockRecycler {
+        StockRecycler { product ->
             val intent = Intent(requireContext(), ProductActivity::class.java)
-            intent.putExtra("productId", it.id)
+            intent.putExtra("productId", product.id)
             startActivity(intent)
         }
     }
+
     private lateinit var localLanguage: String
-    private lateinit var all: String
+    private lateinit var allText: String
 
     private var allProducts = emptyList<Product>()
     private var categories = emptyList<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentStoreBinding.inflate(inflater, container, false)
-        localLanguage = Locale.getDefault().language
-        all = if (localLanguage == "ar") "الكل" else "All"
-
+        initLocalText()
         setupRecycler()
         observeProducts()
-
         return binding.root
+    }
+
+    // --------------------- Initialization ---------------------
+    private fun initLocalText() {
+        localLanguage = Locale.getDefault().language
+        allText = if (localLanguage == "ar") "الكل" else "All"
     }
 
     private fun setupRecycler() {
@@ -67,60 +76,73 @@ class StockFragment : Fragment() {
             })
         }
     }
+
+    // --------------------- Observers ---------------------
     private fun observeProducts() {
-        vm.products.observe(viewLifecycleOwner){
-            val distinctCategories = it.map { getCatLocalName(it.category) }.distinct()
-            allProducts = it
-            categories = distinctCategories
+        vm.products.observe(viewLifecycleOwner) { products ->
+            allProducts = products
+            categories = products.map { getCatLocalName(it.category) }.distinct()
             adapter.submitList(allProducts)
             setupChips()
         }
     }
 
-
-
+    // --------------------- Chip Logic ---------------------
     private fun setupChips() {
         binding.chipGroup.removeAllViews()
 
-        // Chip "All"
-        val chipAll = Chip(requireContext()).apply {
-            text = all
-            isCheckable = true
-            isChecked = true
-            id = View.generateViewId()
-        }
-        binding.chipGroup.addView(chipAll)
+        // Add "All" chip
+        addChip(allText, isChecked = true)
 
+        // Add category chips
         categories.forEach { category ->
-            val chip = Chip(requireContext()).apply {
-                text = category
-                isCheckable = true
-                id = View.generateViewId()
-            }
-            binding.chipGroup.addView(chip)
+            addChip(category)
         }
 
+        // Handle chip selection
         binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            if (checkedIds.isEmpty()) {
-                adapter.submitList(allProducts)
-                return@setOnCheckedStateChangeListener
-            }
-
-            val selectedChip = group.findViewById<Chip>(checkedIds.first())
-            val selectedCategory = selectedChip.text.toString()
-
-            val filtered = if (selectedCategory == all) {
-                allProducts
-            } else {
-                allProducts.filter{getCatLocalName(it.category) == selectedCategory }
-            }
-
-            adapter.submitList(filtered)
+            handleChipSelection(group, checkedIds)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        vm.getStockProducts()
+    private fun addChip(text: String, isChecked: Boolean = false) {
+        val chip = Chip(requireContext()).apply {
+            this.text = text
+            this.isCheckable = true
+            this.isChecked = isChecked
+            this.id = View.generateViewId()
+        }
+        binding.chipGroup.addView(chip)
+    }
+
+    private fun handleChipSelection(group: ViewGroup, checkedIds: List<Int>) {
+        if (checkedIds.isEmpty()) {
+            adapter.submitList(allProducts)
+            checkedId = -1
+            return
+        }
+
+        val newCheckedId = checkedIds.first()
+        if (checkedId != newCheckedId) {
+            // Deselect previous chip
+            if (checkedId != -1) {
+                val previousChip = group.findViewById<Chip>(checkedId)
+                previousChip?.animateSelectedChip(false)
+            }
+
+            // Select new chip
+            checkedId = newCheckedId
+            val selectedChip = group.findViewById<Chip>(checkedId)
+            selectedChip?.animateSelectedChip(true)
+
+            // Filter products
+            val selectedCategory = selectedChip?.text.toString()
+            val filtered = if (selectedCategory == allText) {
+                allProducts
+            } else {
+                allProducts.filter { getCatLocalName(it.category) == selectedCategory }
+            }
+            adapter.submitList(filtered)
+        }
     }
 }

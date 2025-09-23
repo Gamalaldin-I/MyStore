@@ -50,19 +50,11 @@ class HomeFragment : Fragment() {
 
         setupTop5Adapter()
         setupLowStockAdapter()
+        observe()
 
         return binding.root
     }
-    fun initialize(){
-        getTop5InSales()
-        getLowStock()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initialize()
-    }
 
     private fun setupTop5Adapter() {
         top5Adapter = Top5Adapter(mutableListOf()) {
@@ -112,7 +104,7 @@ class HomeFragment : Fragment() {
     private fun handelMainMenu(){
         val add = binding.grid.addProducts
         val bills = binding.grid.bills
-        val generate = binding.grid.generate
+        val generate = binding.grid.generateQrs
         val expenses = binding.grid.expenses
         val sales = binding.grid.sales
         val scan = binding.grid.scan
@@ -149,19 +141,29 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getTop5InSales(){
-        viewModel.getTop5InSales()
+    private fun observe(){
         viewModel.top5.observe(viewLifecycleOwner){
             top5Adapter.updateData(it)
         }
-    }
-
-    private fun getLowStock(){
-        viewModel.getLowStock()
         viewModel.lowStock.observe(viewLifecycleOwner){
             lowStockAdapter.updateData(it)
         }
+        viewModel.profit.observe(viewLifecycleOwner){
+            val profit = it ?: 0.0
+            binding.today.profit.text = profit.toString()
+        }
+        viewModel.totalExpenses.observe(viewLifecycleOwner){ it->
+            val expenses = it ?: 0.0
+            binding.today.expenses.text =  expenses.toString()
+        }
+        viewModel.totalSales.observe(viewLifecycleOwner){
+            val sales = it ?: 0.0
+            binding.today.salesValue.text = sales.toString()
+        }
     }
+
+
+
 
 
 

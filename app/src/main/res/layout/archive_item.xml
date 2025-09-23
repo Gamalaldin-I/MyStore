@@ -47,7 +47,6 @@
                 android:id="@+id/productType"
                 android:layout_width="wrap_content"
                 android:textSize="15sp"
-                android:textColor="@color/code"
                 android:layout_height="wrap_content"
                 android:text="t-shirt"/>
 
@@ -55,7 +54,6 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/neon"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:text="250"/>
