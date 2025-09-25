@@ -21,12 +21,18 @@ interface SalesDao {
     @Query("Select SUM((sellingPrice - price) * quantity) from sales_details where sellDate = :date and saleId is not null")
       fun getProfitOfToday(date: String): Flow<Double?>
 
+    @Query("SELECT DISTINCT date FROM sell_ops ORDER BY date DESC LIMIT 60")
+      suspend fun getWorkDays(): List<String>
+
+    @Query("SELECT Distinct date FROM sell_ops WHERE date = :day")
+      suspend fun getSpecificDay(day: String): String
+
 
 
     /**Bills Activity*/
     //get all bills in the day
     @Query("SELECT * FROM sell_ops WHERE date = :date order by time desc")
-    suspend fun getBillsByDate(date: String): List<BillEntity>
+     fun getBillsByDate(date: String): Flow<List<BillEntity>>
     //get all bills
     @Query("SELECT * FROM sell_ops order by date desc ,time desc")
     suspend fun getAllBills(): List<BillEntity>
@@ -94,7 +100,7 @@ interface SalesDao {
     suspend fun getReturns(): List<SoldProductEntity>
     //filter by date
     @Query("SELECT * FROM sales_details WHERE quantity <0 AND sellDate = :date order by sellTime desc")
-    suspend fun getReturnsByDate(date: String): List<SoldProductEntity>
+     fun getReturnsByDate(date: String): Flow<List<SoldProductEntity>>
 
     //getSales
     @Query("SELECT * FROM sales_details WHERE quantity > 0 AND saleId IS NOT NULL ORDER BY sellDate DESC, sellTime DESC")

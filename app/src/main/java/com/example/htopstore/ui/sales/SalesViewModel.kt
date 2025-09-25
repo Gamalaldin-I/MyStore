@@ -1,9 +1,5 @@
 package com.example.htopstore.ui.sales
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.domain.model.SoldProduct
 import com.example.domain.useCase.sales.GetAllSalesAndReturnsByDateUseCase
 import com.example.domain.useCase.sales.GetAllSalesAndReturnsUseCase
 import com.example.domain.useCase.sales.GetReturnsByDateUseCase
@@ -11,8 +7,6 @@ import com.example.domain.useCase.sales.GetReturnsUseCase
 import com.example.domain.useCase.sales.GetSoldOnlyByDateUseCase
 import com.example.domain.useCase.sales.GetSoldOnlyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +19,7 @@ class SalesViewModel @Inject constructor(
     private val getAllSalesAndReturnsByDateUseCase: GetAllSalesAndReturnsByDateUseCase
 ) : ViewModel() {
 
-    // LiveData for sales data
+   /* // LiveData for sales data
     private val _salesData = MutableLiveData<List<SoldProduct>>()
     val salesData: LiveData<List<SoldProduct>> = _salesData
 
@@ -181,5 +175,5 @@ class SalesViewModel @Inject constructor(
     sealed class ValidationResult {
         object Success : ValidationResult()
         data class Error(val message: String) : ValidationResult()
-    }
+    }*/
 }

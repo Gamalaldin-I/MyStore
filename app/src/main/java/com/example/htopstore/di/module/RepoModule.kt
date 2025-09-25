@@ -44,8 +44,8 @@ object RepoModule {
     }
 
     @Provides
-    fun provideBillDetRepo(salesDao: SalesDao,productDao: ProductDao): BillDetailsRepo {
-        return BillDetailsRepoImp(salesDao,productDao)
+    fun provideBillDetRepo(salesDao: SalesDao,productDao: ProductDao,expenseDao: ExpenseDao): BillDetailsRepo {
+        return BillDetailsRepoImp(salesDao,productDao,expenseDao)
     }
     @Provides
     fun provideAnalysisRepo(expenseDao: ExpenseDao,productDao: ProductDao,salesDao: SalesDao): AnalysisRepo {

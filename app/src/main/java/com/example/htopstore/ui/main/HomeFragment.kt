@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +14,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.htopstore.databinding.FragmentHomeBinding
 import com.example.htopstore.ui.adding.AddProductActivity
-import com.example.htopstore.ui.bills.BillsActivity
+import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
 import com.example.htopstore.ui.product.ProductActivity
@@ -91,8 +92,11 @@ class HomeFragment : Fragment() {
         binding.lowStock.adapter.adapter = lowStockAdapter
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setControllers(){
         handelMainMenu()
+        binding.today.to.text ="To"
+        binding.today.day.text ="day"
     }
 
     fun goTo(button: View, onClick : () -> Unit){
@@ -116,7 +120,7 @@ class HomeFragment : Fragment() {
         }
         bills.setOnClickListener {
             goTo(bills){
-                 startActivity(Intent(requireContext(), BillsActivity::class.java))
+                 startActivity(Intent(requireContext(), DaysActivity::class.java))
 
             }}
         generate.setOnClickListener {

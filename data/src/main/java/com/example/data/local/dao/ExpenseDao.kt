@@ -13,7 +13,7 @@ interface ExpenseDao {
     /**home Fragment queries*/
     //get the expenses of the day
     @Query("SELECT SUM(amount) FROM expenses WHERE date = :date")
-      fun getExpensesByDate(date: String): Flow<Double?>
+      fun getTotalExpensesForDate(date: String): Flow<Double?>
 
 
 
@@ -24,6 +24,13 @@ interface ExpenseDao {
     suspend fun getAllExpenses(): List<ExpenseEntity>
     @Update
     suspend fun updateExpense(expense: ExpenseEntity)
+    @Query("DELETE FROM expenses WHERE expenseId = :id")
+    suspend fun deleteExpense(id: String)
+
+    @Query("SELECT * FROM expenses WHERE date = :date")
+    suspend fun getExpensesListByDate(date: String): List<ExpenseEntity>
+
+
 
 
 }

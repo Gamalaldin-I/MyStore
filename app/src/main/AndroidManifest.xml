@@ -11,17 +11,22 @@
         android:required="false" />
 
     <application
+        android:name=".di.AppDI"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".di.AppDI"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HTopStore"
         tools:targetApi="31">
-        <!-- Activities -->
+        <activity
+            android:name=".ui.dayDetails.DayDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.days.DaysActivity"
+            android:exported="false" /> <!-- Activities -->
         <activity
             android:name=".ui.scan.ScanActivity"
             android:exported="false" />

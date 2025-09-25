@@ -11,4 +11,8 @@ interface AnalysisRepo {
     //for product analysis
     fun getLowStock(): Flow<List<Product>>
     fun getTop5InSales(): Flow<List<Product>>
+
+    suspend fun getTheDaysOfSales():List<String>
+    suspend fun getSpecificDay(day:String):String
+
 }

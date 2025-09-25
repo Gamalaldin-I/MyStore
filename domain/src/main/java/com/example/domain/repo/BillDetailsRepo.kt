@@ -1,6 +1,7 @@
 package com.example.domain.repo
 
 import com.example.domain.model.BillWithDetails
+import com.example.domain.model.Expense
 import com.example.domain.model.SoldProduct
 
 interface BillDetailsRepo{
@@ -11,5 +12,7 @@ interface BillDetailsRepo{
     suspend fun updateBillProductQuantityAfterReturn(id: String, quantity:Int)
     suspend fun deleteSoldProduct(soldProduct: SoldProduct)
     suspend fun deleteSaleById(id: String)
+    suspend fun isProductInStock(id: String): Boolean
+    suspend fun insertExpense(expense: Expense)
 
 }

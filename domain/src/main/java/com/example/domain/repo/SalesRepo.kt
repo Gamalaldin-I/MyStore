@@ -2,6 +2,7 @@ package com.example.domain.repo
 
 import com.example.domain.model.Bill
 import com.example.domain.model.SoldProduct
+import kotlinx.coroutines.flow.Flow
 
 interface SalesRepo{
 
@@ -16,5 +17,5 @@ interface SalesRepo{
     suspend fun getSoldOnly(): List<SoldProduct>
     suspend fun getSoldOnlyByDate(date: String): List<SoldProduct>
     suspend fun getReturns(): List<SoldProduct>
-    suspend fun getReturnsByDate(date: String): List<SoldProduct>
+     fun getReturnsByDate(date: String): Flow<List<SoldProduct>>
 }

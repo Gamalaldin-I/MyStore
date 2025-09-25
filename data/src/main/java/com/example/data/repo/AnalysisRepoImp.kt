@@ -16,7 +16,7 @@ class AnalysisRepoImp(
     private val productDao: ProductDao
 ) : AnalysisRepo {
     override fun getExpensesByDate(date: String): Flow<Double?> =
-        expenseDao.getExpensesByDate(date)
+        expenseDao.getTotalExpensesForDate(date)
 
 
     override fun getTotalSalesOfToday(date: String): Flow<Double?> =
@@ -32,6 +32,13 @@ class AnalysisRepoImp(
 
     override  fun getTop5InSales(): Flow<List<Product>> =
         productDao.getTop5InSales().mapData()
+
+    override suspend fun getTheDaysOfSales(): List<String> =
+        salesDao.getWorkDays()
+
+    override suspend fun getSpecificDay(day: String): String =
+        salesDao.getSpecificDay(day)
+
 
 
     fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {

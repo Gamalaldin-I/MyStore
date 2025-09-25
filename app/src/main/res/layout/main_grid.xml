@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:background="@drawable/bg_top_left"
         android:gravity="center"
-        android:backgroundTint="@color/background_surface_dark"
+        android:backgroundTint="@color/surface_elevated"
         android:padding="10dp">
 
         <ImageView
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Generate codes"
-            android:textColor="@color/text_white"
+            android:textColor="@color/action_primary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -174,7 +174,7 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_margin="1dp"
-        android:backgroundTint="@color/background_surface_dark"
+        android:backgroundTint="@color/surface_elevated"
         android:orientation="vertical"
         android:background="@drawable/bg_bottom_right"
         android:gravity="center"
@@ -194,7 +194,7 @@
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:text="Scan Code"
-            android:textColor="@color/text_white"
+            android:textColor="@color/action_primary"
             android:gravity="center" />
     </LinearLayout>
 

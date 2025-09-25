@@ -51,6 +51,6 @@ interface ProductDao {
     @Query("SELECT COUNT(*) FROM product WHERE count = 0")
      fun getArchiveLength(): Flow<Int>
 
-
-
+     @Query("SELECT count FROM product WHERE id = :id")
+     suspend fun isProductInStock(id: String): Int?
 }

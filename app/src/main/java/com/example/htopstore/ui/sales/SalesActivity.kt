@@ -1,26 +1,12 @@
 package com.example.htopstore.ui.sales
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.SoldProduct
-import com.example.htopstore.databinding.ActivityReturnsBinding
-import com.example.htopstore.ui.billDetails.BillDetailsActivity
-import com.example.htopstore.ui.product.ProductActivity
-import com.example.htopstore.ui.widgets.DatePickerFragment
-import com.example.htopstore.util.adapters.ReturnsAdapter
-import com.example.htopstore.util.helper.DialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
 class SalesActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityReturnsBinding
+   /* private lateinit var binding: ActivityReturnsBinding
     private lateinit var adapter: ReturnsAdapter
     private val viewModel: SalesViewModel by viewModels()
 
@@ -197,5 +183,5 @@ class SalesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.refreshCurrentData()
-    }
+    }*/
 }

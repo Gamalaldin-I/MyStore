@@ -16,21 +16,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:textColor="@color/text_link"
             android:fontFamily="@font/kahroop"
-
-            android:text="To" />
+            android:text="" />
 
         <TextView
+            android:id="@+id/day"
             android:layout_width="wrap_content"
             android:fontFamily="@font/kahroop"
             android:textSize="25sp"
             android:textColor="@color/text_primary"
             android:layout_height="wrap_content"
-            android:text="day" />
+            android:text="" />
 
     </LinearLayout>
 
@@ -47,12 +48,12 @@
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:cardCornerRadius="20sp">
+            app:cardCornerRadius="7sp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_surface_dark"
+                android:background="@color/button_outline"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -82,12 +83,12 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            app:cardCornerRadius="20sp">
+            app:cardCornerRadius="7sp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_surface_dark"
+                android:background="@color/button_outline"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -113,12 +114,12 @@
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:cardCornerRadius="20sp">
+            app:cardCornerRadius="7sp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_surface_dark"
+                android:background="@color/button_outline"
                 android:gravity="center"
                 android:orientation="vertical">
 

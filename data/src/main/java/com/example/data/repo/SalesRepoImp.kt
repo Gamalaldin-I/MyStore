@@ -10,6 +10,7 @@ import com.example.domain.model.SoldProduct
 import com.example.domain.repo.SalesRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class SalesRepoImp(private val salesDao: SalesDao,private val productDao: ProductDao): SalesRepo {
@@ -43,10 +44,11 @@ class SalesRepoImp(private val salesDao: SalesDao,private val productDao: Produc
             salesDao.getSales().map { it.toSoldProduct() }
         }
 
-    override suspend fun getReturnsByDate(date: String): List<SoldProduct> =
-        withContext(Dispatchers.IO) {
-            salesDao.getReturnsByDate(date).map { it.toSoldProduct() }
-        }
+    override  fun getReturnsByDate(date: String): Flow<List<SoldProduct>> =
+            salesDao.getReturnsByDate(date).map { list->
+                list.map { it.toSoldProduct() }
+            }
+
 
     override suspend fun getAllSalesAndReturnsByDate(date: String): List<SoldProduct> =
         withContext(Dispatchers.IO) {
