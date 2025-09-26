@@ -45,8 +45,13 @@ class ReturnsFragment private constructor(): Fragment() {
     private fun getReturnsOfDay(date:String){
         vm.getReturnsOfDay(date)
         vm.returns.observe(viewLifecycleOwner){
+            if(it.isEmpty())
+                binding.emptyHint.visibility = View.VISIBLE
+            else
+            {binding.emptyHint.visibility = View.GONE
             binding.recyclerView.adapter = ReturnsAdapter(it as ArrayList<SoldProduct>){
 
+            }
             }
         }
 

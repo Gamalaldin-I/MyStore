@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.FragmentHomeBinding
 import com.example.htopstore.ui.adding.AddProductActivity
+import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
 import com.example.htopstore.ui.product.ProductActivity
-import com.example.htopstore.ui.sales.SalesActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.util.adapters.LowStockAdapter
 import com.example.htopstore.util.adapters.Top5Adapter
@@ -95,8 +96,21 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setControllers(){
         handelMainMenu()
-        binding.today.to.text ="To"
-        binding.today.day.text ="day"
+        binding.today.expenses.setOnClickListener {
+            goTo(binding.today.expenses) {
+                goToDayDetails()
+            }
+        }
+        binding.today.salesValue.setOnClickListener {
+            goTo(binding.today.salesValue){
+                goToDayDetails()
+            }
+        }
+        binding.today.profit.setOnClickListener {
+            goTo(binding.today.profit){
+                goToDayDetails()
+            }
+        }
     }
 
     fun goTo(button: View, onClick : () -> Unit){
@@ -135,7 +149,8 @@ class HomeFragment : Fragment() {
         }
         sales.setOnClickListener {
             goTo(sales){
-                 startActivity(Intent(requireContext(), SalesActivity::class.java))}
+               //  startActivity(Intent(requireContext(), ::class.java))
+            }
 
         }
         scan.setOnClickListener {
@@ -174,6 +189,12 @@ class HomeFragment : Fragment() {
     private fun goToProductDetails(productId: String) {
         val intent = Intent(requireContext(), ProductActivity::class.java)
         intent.putExtra("productId", productId)
+        startActivity(intent)
+    }
+    private fun goToDayDetails() {
+        val day = DateHelper.getCurrentDate()
+        val intent = Intent(requireContext(), DayDetailsActivity::class.java)
+        intent.putExtra("day", day)
         startActivity(intent)
     }
 

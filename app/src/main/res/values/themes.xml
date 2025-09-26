@@ -25,7 +25,7 @@
             <item name="colorOnErrorContainer">@color/alert_critical</item>
 
             <!-- Background Colors -->
-            <item name="android:colorBackground">@color/background_white</item>
+            <item name="android:colorBackground">#F2F1F1</item>
             <item name="colorOnBackground">@color/text_primary</item>
             <item name="colorSurface">@color/surface_elevated</item>
             <item name="colorOnSurface">@color/text_primary</item>

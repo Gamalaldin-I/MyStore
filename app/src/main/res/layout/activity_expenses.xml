@@ -31,34 +31,131 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kahroop"
-            android:text="@string/expenses"
+            android:text="New expense"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:textSize="25sp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:padding="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/AddNewExpense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        tools:listitem="@layout/expense_item" />
-
-    <Button
-        android:id="@+id/AddNewExpense"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_new"
-        android:textStyle="bold"
-        android:background="@drawable/primary_btn"
-        android:layout_margin="15dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+        <!-- Buying Price -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amountLo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Amount"
+            app:boxStrokeColor="@color/text_primary"
+            app:cursorColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary"
+            app:placeholderTextColor="@color/text_primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amountET"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- Type (AutoComplete) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/categoryLo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Category"
+            android:textColorHint="@color/text_primary"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/input_border"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:placeholderTextColor="@color/text_primary">
+
+            <AutoCompleteTextView
+                android:id="@+id/categoryEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/methodLo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Method"
+            android:textColorHint="@color/text_primary"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/input_border"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:placeholderTextColor="@color/text_link">
+
+            <AutoCompleteTextView
+                android:id="@+id/methodET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Brand -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/desLo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Descripe"
+            app:boxStrokeColor="@color/text_primary"
+            app:cursorColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary"
+            app:placeholderTextColor="@color/text_primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/desET"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_margin="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

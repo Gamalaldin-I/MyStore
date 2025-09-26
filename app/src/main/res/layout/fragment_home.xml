@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F1F1"
     tools:context=".ui.main.HomeFragment">
 
     <!-- Header -->
@@ -23,18 +24,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/kahroop"
-            android:text="H"
-            android:textColor="@color/text_link"
-            android:textSize="25sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/kahroop"
-            android:text="ome"
+            android:text="Home"
+            android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -58,10 +51,10 @@
             <include
                 android:id="@+id/grid"
                 layout="@layout/main_grid"
-                android:layout_marginTop="10dp"
+                android:layout_margin="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
-                android:layout_margin="10dp" />
+                android:layout_height="270dp"
+                 />
             <include layout="@layout/today"
                 android:id="@+id/today"
                 android:layout_width="match_parent"

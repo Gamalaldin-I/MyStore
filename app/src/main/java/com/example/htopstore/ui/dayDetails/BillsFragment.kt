@@ -46,8 +46,13 @@ class BillsFragment private constructor(): Fragment() {
     fun getBillsOfDay(date:String){
         vm.getBillsOfDay(date)
         vm.bills.observe(viewLifecycleOwner){
+            if(it.isEmpty())
+                binding.emptyHint.visibility = View.VISIBLE
+            else
+            { binding.emptyHint.visibility = View.GONE
             binding.recyclerView.adapter = BillsAdapter(it){ saleId ->
                 navigateToBillDetails(saleId)
+            }
             }
         }
 

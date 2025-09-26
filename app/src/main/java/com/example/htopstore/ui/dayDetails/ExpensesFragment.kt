@@ -42,7 +42,10 @@ class ExpensesFragment private constructor(): Fragment() {
     private fun getExpenses(date:String){
         vm.getExpensesListByDate(date)
         vm.expensesList.observe(viewLifecycleOwner){
+            if(it.isEmpty()) binding.emptyHint.visibility = View.VISIBLE
+            else {binding.emptyHint.visibility = View.GONE
             binding.adapter.adapter = ExpenseAdapter(it as ArrayList<Expense>,::onItemClick) }
+        }
     }
     private fun onItemClick(expense: Expense) {
         DialogBuilder.showExpensesDetailsDialog(expense, requireContext())

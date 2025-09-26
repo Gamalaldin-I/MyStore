@@ -10,28 +10,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textColor="@color/text_link"
-            android:fontFamily="@font/kahroop"
-            android:text="" />
 
         <TextView
             android:id="@+id/day"
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/kahroop"
-            android:textSize="25sp"
-            android:textColor="@color/text_primary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text="Today"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            />
 
     </LinearLayout>
 
@@ -39,21 +32,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_day_brief"
+        android:layout_margin ="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:cardCornerRadius="7sp">
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/button_outline"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -71,24 +60,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Sales value"
-                    android:textColor="@color/revenue_positive"
                     android:textSize="12sp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="7sp">
+        <View
+            android:layout_width="2dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_day_brief"
+            android:backgroundTint="@color/neutral_100"
+            android:layout_height="match_parent"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/button_outline"
+                android:layout_weight="1"
+
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -106,21 +92,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Expenses"
-                    android:textColor="@color/revenue_negative"
                     android:textSize="12sp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:cardCornerRadius="7sp">
+        <View
+            android:layout_width="2dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_day_brief"
+            android:backgroundTint="@color/neutral_100"
+            android:layout_height="match_parent"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/button_outline"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
                 android:gravity="center"
+                android:layout_weight="1"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -137,10 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Net profit"
-                    android:textColor="@color/profit_margin"
                     android:textSize="12sp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

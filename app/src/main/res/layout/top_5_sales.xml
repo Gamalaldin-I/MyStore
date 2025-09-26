@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,28 +18,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textColor="@color/text_link"
-            android:fontFamily="@font/kahroop"
-
-            android:text="T" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/kahroop"
-            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:textColor="@color/text_primary"
-            android:layout_height="wrap_content"
-            android:text="OP" />
+            android:text="Top5" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/kahroop"
-            android:textColor="@color/text_link"
-            android:textSize="25sp"
-            android:layout_marginStart="7dp"
-            android:text="5" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -49,7 +32,7 @@
         android:paddingBottom="20dp"
         android:paddingStart="70dp"
         android:paddingEnd="70dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />

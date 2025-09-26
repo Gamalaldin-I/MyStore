@@ -22,6 +22,9 @@
         android:theme="@style/Theme.HTopStore"
         tools:targetApi="31">
         <activity
+            android:name=".ui.analysis.AnalysisActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.dayDetails.DayDetailsActivity"
             android:exported="false" />
         <activity

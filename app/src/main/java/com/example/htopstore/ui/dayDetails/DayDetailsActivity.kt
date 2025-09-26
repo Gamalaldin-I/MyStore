@@ -50,7 +50,6 @@ class DayDetailsActivity : AppCompatActivity() {
 
 
     private fun getDetails(day:String){
-        binding.dayDet.to.text = day
         vm.getExpensesOfDay(day)
         vm.getProfitOfDay(day)
         vm.getTotalSalesOfDay(day)

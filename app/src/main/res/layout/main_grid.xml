@@ -2,8 +2,9 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="270dp"
     android:columnCount="3"
+    android:layout_margin="20dp"
     android:rowCount="2"
     android:useDefaultMargins="false">
 
@@ -15,18 +16,18 @@
         android:layout_column="0"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_top_left"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:backgroundTint="@color/surface_elevated"
         android:padding="10dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
+            android:padding="15dp"
             android:src="@drawable/grid_code" />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Generate codes"
-            android:textColor="@color/action_primary"
+            android:textColor="@color/text_primary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -47,17 +48,17 @@
         android:layout_column="1"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_middle_l"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:padding="10dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
+            android:padding="15dp"
             android:src="@drawable/grid_add" />
 
         <TextView
@@ -78,27 +79,26 @@
         android:layout_column="2"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_top_right"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:padding="10dp">
 
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
-            android:src="@drawable/grid_outcome"
-            app:tint="@color/text_white" />
+            android:padding="15dp"
+            android:src="@drawable/grid_outcome" />
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="Expenses"
+            android:text="Add outcome"
             android:textSize="12sp"
-            android:textColor="@color/text_white"
+            android:textColor="@color/text_primary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -110,27 +110,27 @@
         android:layout_column="0"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_bottom_left"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:padding="10dp">
 
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
-            android:src="@drawable/grid_sales"
-            app:tint="@color/text_white" />
+            android:padding="15dp"
+            android:src="@drawable/nav_report"
+             />
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="Sales"
+            android:text="Analysis"
             android:textSize="12sp"
-            android:textColor="@color/text_white"
+            android:textColor="@color/text_primary"
             android:gravity="center" />
     </LinearLayout>
 
@@ -138,28 +138,30 @@
         android:id="@+id/bills"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_row="1"
         android:layout_column="1"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_middle_l"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:padding="10dp">
 
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
+            android:padding="15dp"
             android:src="@drawable/grid_bills" />
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="Bills"
+            android:text="Nota"
             android:textSize="12sp"
             android:textColor="@color/text_secondary"
             android:gravity="center" />
@@ -173,18 +175,18 @@
         android:layout_column="2"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        android:layout_margin="1dp"
+        android:layout_margin="5dp"
         android:backgroundTint="@color/surface_elevated"
         android:orientation="vertical"
-        android:background="@drawable/bg_bottom_right"
+        android:background="@drawable/bg_grid_item"
         android:gravity="center"
         android:padding="10dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/grid_item_img_bg"
-            android:padding="10dp"
+            android:padding="15dp"
             android:textSize="12sp"
             android:src="@drawable/grid_scan" />
 
@@ -194,7 +196,7 @@
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:text="Scan Code"
-            android:textColor="@color/action_primary"
+            android:textColor="@color/text_primary"
             android:gravity="center" />
     </LinearLayout>
 

@@ -15,4 +15,16 @@ interface AnalysisRepo {
     suspend fun getTheDaysOfSales():List<String>
     suspend fun getSpecificDay(day:String):String
 
+    //for analysis activity
+    //for product analysis
+    suspend fun getTheProductsWithHighestProfit():List<Product>
+    suspend fun getProductsThatHaveNotBeenSold():List<Product>
+    suspend fun getTheMostSellingCategory():String
+    suspend fun getTheLeastSellingCategory():String
+    //for day analysis
+    suspend fun getTheHoursWithHighestSales():List<String>
+    suspend fun getTheDaysWithHighestSales():List<String>
+
+
+
 }
