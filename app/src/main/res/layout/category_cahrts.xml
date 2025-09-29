@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            android:backgroundTint="#D7D7D7"
+            android:background="@drawable/bg_day_brief"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/sellingCategories"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:textSize="18sp"
+                android:textColor="@color/text_secondary"
+                android:layout_height="wrap_content"
+                android:text="Selling Categories"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/sellingCategoriesChart"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_day_brief"
+                android:layout_margin="10dp"
+                android:layout_height="250dp"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:backgroundTint="#D7D7D7"
+        android:background="@drawable/bg_day_brief"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/text_secondary"
+            android:layout_height="wrap_content"
+            android:text="Returning Categories"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/returningCategories"
+            android:layout_width="match_parent"
+            android:background="@drawable/bg_day_brief"
+            android:layout_margin="10dp"
+            android:layout_height="250dp"/>
+    </LinearLayout>
+</LinearLayout>

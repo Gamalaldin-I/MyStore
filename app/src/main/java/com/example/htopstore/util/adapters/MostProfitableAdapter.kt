@@ -7,26 +7,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.Product
 import com.example.htopstore.R
-import com.example.htopstore.databinding.LowStockItemBinding
+import com.example.htopstore.databinding.TopItemBinding
 
-class LowStockAdapter(private val data: MutableList<Product>, private val forLow: Boolean = true, private val onClick: (Product) -> Unit) :
-    RecyclerView.Adapter<LowStockAdapter.THolder>() {
+class MostProfitableAdapter(private val data: MutableList<Product>,private val onClick: (Product) -> Unit) :
+    RecyclerView.Adapter<MostProfitableAdapter.MHolder>() {
 
     // Create ViewHolder class
-    class THolder(val binding: LowStockItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class MHolder(val binding: TopItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     // Create ViewHolder and inflate the item layout
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): THolder {
-        val binding = LowStockItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return THolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MHolder {
+        val binding = TopItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MHolder(binding)
     }
 
     // Bind data to the ViewHolder
-    override fun onBindViewHolder(holder: THolder, position: Int) {
+    override fun onBindViewHolder(holder: MHolder, position: Int) {
         val product = data[position]
-        if(!forLow){
-            holder.binding.cover.setBackgroundResource(R.drawable.have_not_sold_cover)
-        }
         Glide.with(holder.binding.productImg)
             .load(product.productImage)
             .error(R.drawable.fighter)
@@ -34,7 +31,7 @@ class LowStockAdapter(private val data: MutableList<Product>, private val forLow
             .into(holder.binding.productImg)
         holder.binding.Name.text = product.name
         holder.binding.category.text = product.category
-        holder.binding.quantity.text = product.count.toString()
+        holder.binding.quantity.text = ((product.sellingPrice - product.buyingPrice)*product.soldCount).toString()
         holder.binding.root.setOnClickListener {
             onClick(product)
         }
@@ -51,4 +48,5 @@ class LowStockAdapter(private val data: MutableList<Product>, private val forLow
         notifyDataSetChanged()
 
     }
+
 }

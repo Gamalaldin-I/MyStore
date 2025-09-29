@@ -6,9 +6,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
-import com.example.domain.useCase.analisys.GetLowStockUseCase
+import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
-import com.example.domain.useCase.analisys.GetTop5UseCase
+import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase

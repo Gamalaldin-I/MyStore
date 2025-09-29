@@ -9,6 +9,7 @@ import androidx.room.Transaction
 import com.example.data.local.model.entities.BillEntity
 import com.example.data.local.model.entities.SoldProductEntity
 import com.example.data.local.model.relation.SalesOpsWithDetails
+import com.example.domain.model.CategorySales
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -108,4 +109,46 @@ interface SalesDao {
     //filter by date
     @Query("SELECT * FROM sales_details WHERE quantity > 0 AND saleId IS NOT NULL AND sellDate = :date ORDER BY sellTime DESC")
     suspend fun getSalesByDate(date: String): List<SoldProductEntity>
+
+
+    /**for analysis*/
+    // Example for a specific range (startDate to endDate)
+        @Query("""
+        SELECT type, SUM(quantity) as totalSold
+        FROM SALES_DETAILS
+        WHERE sellDate BETWEEN :startDate AND :endDate AND saleId IS NOT NULL
+        GROUP BY type
+    """)
+        fun getSellingCategoriesByDate(startDate: String, endDate: String): List<CategorySales>
+
+        //get returns category
+        @Query("""
+        SELECT type, SUM(quantity) as totalSold
+        FROM SALES_DETAILS
+        WHERE sellDate BETWEEN :startDate AND :endDate AND saleId IS  NULL AND quantity < 0
+        GROUP BY type
+    """)
+        fun getReturningCategoriesByDate(startDate: String, endDate: String): List<CategorySales>
+
+    @Query("""
+    SELECT type
+    FROM SALES_DETAILS
+    WHERE sellDate BETWEEN :startDate AND :endDate AND saleId IS NOT NULL
+    GROUP BY type
+    ORDER BY SUM(quantity) DESC
+    LIMIT 1
+""")
+    fun getTheMostSellingCategoryByDate(startDate: String, endDate: String): String
+    @Query("""
+    SELECT type
+    FROM SALES_DETAILS
+    WHERE sellDate BETWEEN :startDate AND :endDate AND saleId IS NOT NULL
+    GROUP BY type
+    ORDER BY SUM(quantity) 
+    LIMIT 1
+""")
+    fun getTheLeastSellingCategoryByDate(startDate: String, endDate: String): String
+
+
+
 }

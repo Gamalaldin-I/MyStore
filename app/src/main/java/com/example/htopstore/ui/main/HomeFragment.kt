@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.FragmentHomeBinding
 import com.example.htopstore.ui.adding.AddProductActivity
+import com.example.htopstore.ui.analysis.AnalysisActivity
 import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
@@ -58,10 +59,12 @@ class HomeFragment : Fragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun setupTop5Adapter() {
         top5Adapter = Top5Adapter(mutableListOf()) {
             goToProductDetails(it.id)
         }
+        binding.top5.title.text = "Top 5"
         // make the adapter horizontal
         // Make it horizontal
         viewPager = binding.top5.viewPager
@@ -83,7 +86,9 @@ class HomeFragment : Fragment() {
         viewPager.adapter = top5Adapter
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupLowStockAdapter() {
+        binding.lowStock.title.text = "Low Stock"
         lowStockAdapter = LowStockAdapter(mutableListOf()) {
             goToProductDetails(it.id)
         }
@@ -149,7 +154,7 @@ class HomeFragment : Fragment() {
         }
         sales.setOnClickListener {
             goTo(sales){
-               //  startActivity(Intent(requireContext(), ::class.java))
+                startActivity(Intent(requireContext(), AnalysisActivity::class.java))
             }
 
         }

@@ -1,33 +1,43 @@
 package com.example.htopstore.ui.analysis
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
-import com.example.htopstore.R
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.ViewPager2
+import com.example.domain.model.CategorySales
+import com.example.domain.util.DateHelper.DAY
+import com.example.domain.util.DateHelper.MONTH
+import com.example.domain.util.DateHelper.WEEK
+import com.example.domain.util.DateHelper.YEAR
+import com.example.htopstore.databinding.FragmentProductAnalysisBinding
+import com.example.htopstore.ui.product.ProductActivity
+import com.example.htopstore.util.Visualiser.drawPieChart
+import com.example.htopstore.util.adapters.LowStockAdapter
+import com.example.htopstore.util.adapters.MostProfitableAdapter
+import com.example.htopstore.util.helper.AutoCompleteHelper
+import com.github.mikephil.charting.data.PieEntry
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.abs
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProductAnalysisFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ProductAnalysisFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var topProfitAdapter: MostProfitableAdapter
+    private lateinit var haveNotSoldAdapter: LowStockAdapter
+    private lateinit var viewPager: ViewPager2
+     private lateinit var binding: FragmentProductAnalysisBinding
+     private val vm: AnalysisViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -35,26 +45,113 @@ class ProductAnalysisFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_analysis, container, false)
+         binding = FragmentProductAnalysisBinding.inflate(inflater, container, false)
+        val autoComplete: AutoCompleteTextView = binding.autoComplete
+
+        val options = listOf(DAY,WEEK,MONTH,YEAR)
+        autoComplete.setAdapter(AutoCompleteHelper.getDurationAdapter(requireContext()))
+
+        autoComplete.setText(WEEK, false)
+        vm.getProductsAnalysis(WEEK)
+        setUpMostProfitAdapter()
+        setupLowStockAdapter()
+        vm.getHaveNotSoldProducts()
+        vm.getTheHighestProfitProducts()
+
+        autoComplete.setOnItemClickListener { parent, view, position, id ->
+            val selected = options[position]
+            // handle logic according to selected option
+            vm.getProductsAnalysis(selected)
+
+        }
+         observeViewModel()
+
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProductAnalysisFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductAnalysisFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun setUpMostProfitAdapter() {
+        topProfitAdapter = MostProfitableAdapter(mutableListOf()) {
+            goToProductDetails(it.id)
+        }
+        // make the adapter horizontal
+        // Make it horizontal
+        binding.top5.title.text = "Most Profitable"
+        viewPager = binding.top5.viewPager
+        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        viewPager.offscreenPageLimit = 3
+
+        viewPager.clipToPadding = false
+        viewPager.clipChildren = false
+        (viewPager.getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        viewPager.setPageTransformer(CompositePageTransformer().apply {
+            addTransformer { page, position ->
+                val r = 1 - abs(position)
+                page.scaleY = 0.75f + r * 0.25f
+                page.scaleX = 0.75f + r * 0.25f
             }
+        })
+        //viewPager.currentItem = 1
+
+        viewPager.adapter = topProfitAdapter
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupLowStockAdapter() {
+        binding.haveNotSold.title.text = "Have Not Sold"
+        haveNotSoldAdapter = LowStockAdapter(mutableListOf(),false) {
+            goToProductDetails(it.id)
+        }
+        // Make it horizontal
+        binding.haveNotSold.adapter.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.haveNotSold.adapter.adapter = haveNotSoldAdapter
+    }
+
+    private fun observeViewModel(){
+        vm.sellingCategory.observe(viewLifecycleOwner){ it->
+            binding.charts.sellingCategoriesChart.data = null
+            binding.charts.sellingCategoriesChart.invalidate()
+            binding.charts.sellingCategoriesChart.clear()
+            drawPieChart(binding.charts.sellingCategoriesChart,it.mapToListOfPieEntry(),"")
+        }
+        vm.returningCategories.observe(viewLifecycleOwner){ it ->
+            binding.charts.returningCategories.data = null
+            binding.charts.returningCategories.invalidate()
+            binding.charts.returningCategories.clear()
+            drawPieChart(binding.charts.returningCategories,it.mapToListOfPieEntry(),"")
+        }
+
+        vm.haveNotSoldProducts.observe(viewLifecycleOwner){
+            haveNotSoldAdapter.updateData(it)
+        }
+        vm.theHighestProfitProducts.observe(viewLifecycleOwner){
+            topProfitAdapter.updateData(it)
+        }
+        vm.theLeastSellingCategory.observe(viewLifecycleOwner){
+            binding.numbers.theLeastSellingCategory.text = it
+        }
+        vm.theMostSellingCategory.observe(viewLifecycleOwner){
+            binding.numbers.mostSalesCategory.text = it
+        }
+    }
+
+    private fun List<CategorySales>?.mapToListOfPieEntry(): List<PieEntry> {
+        return this!!.map {
+            val totalSold = abs( it.totalSold)
+            PieEntry(totalSold.toFloat(), it.type)
+        }
+    }
+    private fun goToProductDetails(productId: String) {
+        val intent = Intent(requireContext(), ProductActivity::class.java)
+        intent.putExtra("productId", productId)
+        startActivity(intent)
+    }
+
+
+
+
 }

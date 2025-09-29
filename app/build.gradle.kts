@@ -97,6 +97,9 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     testImplementation(libs.androidx.room.testing)
     implementation (libs.androidx.room.paging)
+    //for charts visualisation
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 
 
 }

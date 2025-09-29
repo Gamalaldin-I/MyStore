@@ -5,6 +5,10 @@ import android.widget.ArrayAdapter
 import com.example.domain.model.category.ExpenseCategory
 import com.example.domain.model.category.PaymentMethod
 import com.example.domain.useCase.localize.GetCategoriesUseCase
+import com.example.domain.util.DateHelper.DAY
+import com.example.domain.util.DateHelper.MONTH
+import com.example.domain.util.DateHelper.WEEK
+import com.example.domain.util.DateHelper.YEAR
 import com.example.htopstore.R
 import java.util.Locale
 
@@ -27,6 +31,10 @@ object AutoCompleteHelper {
     }
     fun getExpenseCategoryAdapter(context: Context): ArrayAdapter<String> {
         val options = ExpenseCategory.entries.map {it.category.capitalize(Locale.ROOT)}
+        return getAdapter(context,options)
+    }
+    fun getDurationAdapter(context: Context): ArrayAdapter<String> {
+        val options = listOf(DAY,WEEK,MONTH,YEAR)
         return getAdapter(context,options)
     }
     }

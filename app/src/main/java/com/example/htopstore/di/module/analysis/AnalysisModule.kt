@@ -1,13 +1,13 @@
-package com.example.htopstore.di.module
+package com.example.htopstore.di.module.analysis
 
 import com.example.domain.repo.AnalysisRepo
 import com.example.domain.useCase.analisys.GetDaysOfWorkUseCase
-import com.example.domain.useCase.analisys.GetLowStockUseCase
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetSpecificDayUseCase
-import com.example.domain.useCase.analisys.GetTop5UseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
+import com.example.domain.useCase.analisys.product.GetLowStockUseCase
+import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,14 +28,7 @@ object AnalysisModule {
     fun provideGetProfitByDayUseCase(repo: AnalysisRepo): GetProfitByDayUseCase {
         return GetProfitByDayUseCase(repo)
     }
-    @Provides
-    fun provideGetTop5UseCase(repo: AnalysisRepo): GetTop5UseCase {
-        return GetTop5UseCase(repo)
-    }
-    @Provides
-    fun provideGetLowStockUseCase(repo: AnalysisRepo): GetLowStockUseCase {
-        return GetLowStockUseCase(repo)
-    }
+
     @Provides
     fun provideGetDaysOfSalesUseCase(repo: AnalysisRepo): GetDaysOfWorkUseCase {
         return GetDaysOfWorkUseCase(repo)

@@ -5,10 +5,53 @@
     android:layout_height="match_parent"
     tools:context=".ui.analysis.ProductAnalysisFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scroller"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_margin="25dp"
+                android:layout_height="wrap_content"
+                android:hint="Choose a duration"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:id="@+id/autoComplete"
+                    android:inputType="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <include layout="@layout/product_analysis_grid"
+                android:id="@+id/numbers"
+                android:layout_height="100dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="25dp"
+                android:layout_width="match_parent" />
+            <include layout="@layout/category_cahrts"
+                android:id="@+id/charts"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+            <include layout="@layout/top_5_sales"
+                android:id="@+id/top5"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+            <include layout="@layout/low_stock_layout"
+                android:id="@+id/haveNotSold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
 </FrameLayout>
