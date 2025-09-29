@@ -66,11 +66,11 @@ class AnalysisRepoImp(
         salesDao.getReturningCategoriesByDate(startDate, endDate)
 
     override suspend fun getTheHoursWithHighestSales(): List<String> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     override suspend fun getTheDaysWithHighestSales(): List<String> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
 
