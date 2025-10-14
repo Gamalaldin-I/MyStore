@@ -8,5 +8,6 @@ interface ExpensesRepo {
     suspend fun updateExpense(expense: Expense)
     suspend fun deleteExpense(id: String)
     suspend fun getExpensesByDate(date: String): List<Expense>
+    suspend fun getTotalOfExpensesByDateRange(start: String, end:String): Double?
 
 }

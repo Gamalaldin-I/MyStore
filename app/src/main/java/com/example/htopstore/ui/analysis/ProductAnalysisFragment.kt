@@ -111,18 +111,29 @@ class ProductAnalysisFragment : Fragment() {
         binding.haveNotSold.adapter.adapter = haveNotSoldAdapter
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeViewModel(){
         vm.sellingCategory.observe(viewLifecycleOwner){ it->
+            if(it.isNullOrEmpty()){
+                binding.charts.salesChartLo.visibility = View.GONE
+            }
+            else{
+            binding.charts.salesChartLo.visibility = View.VISIBLE
             binding.charts.sellingCategoriesChart.data = null
             binding.charts.sellingCategoriesChart.invalidate()
             binding.charts.sellingCategoriesChart.clear()
             drawPieChart(binding.charts.sellingCategoriesChart,it.mapToListOfPieEntry(),"")
-        }
+        }}
         vm.returningCategories.observe(viewLifecycleOwner){ it ->
+            if(it.isNullOrEmpty()){
+                binding.charts.returningChartLO.visibility = View.GONE
+            }
+            else{
+            binding.charts.returningChartLO.visibility = View.VISIBLE
             binding.charts.returningCategories.data = null
             binding.charts.returningCategories.invalidate()
             binding.charts.returningCategories.clear()
-            drawPieChart(binding.charts.returningCategories,it.mapToListOfPieEntry(),"")
+            drawPieChart(binding.charts.returningCategories,it.mapToListOfPieEntry(),"")}
         }
 
         vm.haveNotSoldProducts.observe(viewLifecycleOwner){
@@ -132,10 +143,14 @@ class ProductAnalysisFragment : Fragment() {
             topProfitAdapter.updateData(it)
         }
         vm.theLeastSellingCategory.observe(viewLifecycleOwner){
-            binding.numbers.theLeastSellingCategory.text = it
+            if(it.isNullOrEmpty()){
+                binding.numbers.theLeastSellingCategory.text = "No data"
+            }else binding.numbers.theLeastSellingCategory.text = it
         }
         vm.theMostSellingCategory.observe(viewLifecycleOwner){
-            binding.numbers.mostSalesCategory.text = it
+            if(it.isNullOrEmpty()){
+                binding.numbers.mostSalesCategory.text = "No data"
+            }else binding.numbers.mostSalesCategory.text = it
         }
     }
 

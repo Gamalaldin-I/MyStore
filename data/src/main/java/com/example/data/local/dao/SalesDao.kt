@@ -9,7 +9,10 @@ import androidx.room.Transaction
 import com.example.data.local.model.entities.BillEntity
 import com.example.data.local.model.entities.SoldProductEntity
 import com.example.data.local.model.relation.SalesOpsWithDetails
+import com.example.domain.model.BeStSellingDay
+import com.example.domain.model.BestSellingPeriod
 import com.example.domain.model.CategorySales
+import com.example.domain.model.SalesProfitByPeriod
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -72,10 +75,6 @@ interface SalesDao {
 
 
 
-
-
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBill(saleOp: BillEntity)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -84,9 +83,6 @@ interface SalesDao {
     //insert return
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSoldProduct(returns: SoldProductEntity)
-
-
-
 
 
     //get for Sales Activity
@@ -110,8 +106,12 @@ interface SalesDao {
     @Query("SELECT * FROM sales_details WHERE quantity > 0 AND saleId IS NOT NULL AND sellDate = :date ORDER BY sellTime DESC")
     suspend fun getSalesByDate(date: String): List<SoldProductEntity>
 
+    @Query("SELECT * FROM sales_details")
+    suspend fun getAllForUpdateTheDate(): List<SoldProductEntity>
+
 
     /**for analysis*/
+    //for product analysis
     // Example for a specific range (startDate to endDate)
         @Query("""
         SELECT type, SUM(quantity) as totalSold
@@ -149,6 +149,109 @@ interface SalesDao {
 """)
     fun getTheLeastSellingCategoryByDate(startDate: String, endDate: String): String
 
+    //for sales analysis
+    @Query("""
+    SELECT sellTime AS period,
+           SUM(sellingPrice * quantity) AS total,
+           SUM((sellingPrice - price) * quantity) AS profit
+    FROM sales_details
+    WHERE sellDate = :date and saleId is not null
+    GROUP BY sellTime
+    ORDER BY sellTime
+""")
+    suspend fun getSalesAndProfitGroupedByDay(date: String): List<SalesProfitByPeriod>
 
+    @Query("""
+    SELECT sellDate AS period,
+           SUM(sellingPrice * quantity) AS total,
+           SUM((sellingPrice - price) * quantity) AS profit
+    FROM sales_details
+    WHERE sellDate BETWEEN :startDate AND :endDate and saleId is not null
+    GROUP BY sellDate
+    ORDER BY period
+""")
+    suspend fun getSalesAndProfitGroupedByPeriod(startDate: String, endDate: String): List<SalesProfitByPeriod>
+
+
+
+    @Query("""
+        Select SUM(totalCash) from sell_ops where date between :startDate and :endDate
+    """)
+    suspend fun getTotalSalesValue(startDate: String, endDate: String): Double
+
+    @Query("""
+        Select count(*) from sell_ops 
+        where date between :startDate and :endDate
+    """)
+    suspend fun getNumberOfSales(startDate: String, endDate: String): Int
+
+    @Query("""
+        Select
+        SUM((sellingPrice - price) * quantity)
+        from sales_details
+        where sellDate between :startDate and :endDate  and saleId is not null""")
+    suspend fun getProfit(startDate: String, endDate: String): Double
+
+    @Query("""
+        Select Avg(sellingPrice) from sales_details
+        where sellDate between :startDate and :endDate  and saleId is not null
+
+    """)
+    suspend fun getAvg(startDate: String, endDate: String): Double
+
+    @Query("""
+    SELECT 
+        CASE 
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 6 AND 11 THEN 'صباح'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 12 AND 14 THEN 'ظهر'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 15 AND 17 THEN 'عصر'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 18 AND 20 THEN 'مساء'
+            ELSE 'ليل'
+        END AS period,
+        SUM(quantity) AS totalQuantity
+    FROM sales_details
+    WHERE sellDate BETWEEN :startDate AND :endDate
+    GROUP BY period
+    ORDER BY totalQuantity DESC
+    LIMIT 1
+""")
+    suspend fun getTheBestPeriodOfDaySelling(
+        startDate: String,
+        endDate: String
+    ): BestSellingPeriod?
+        @Query("""
+        SELECT 
+            CASE strftime('%w', sellDate)
+                WHEN '0' THEN 'الأحد'
+                WHEN '1' THEN 'الاثنين'
+                WHEN '2' THEN 'الثلاثاء'
+                WHEN '3' THEN 'الأربعاء'
+                WHEN '4' THEN 'الخميس'
+                WHEN '5' THEN 'الجمعة'
+                WHEN '6' THEN 'السبت'
+            END AS dayOfWeek,
+            SUM(quantity) AS totalQuantity
+        FROM sales_details
+        WHERE sellDate BETWEEN :startDate AND :endDate
+        GROUP BY dayOfWeek
+        ORDER BY totalQuantity DESC
+        LIMIT 1
+    """)
+        suspend fun getTheBestWeekDayOfSelling(
+            startDate: String,
+            endDate: String
+        ): BeStSellingDay?
+
+    @Query("""
+        Select SUM(sellingPrice * quantity) from sales_details 
+        where sellDate between :s and :e and saleId is not null
+    """)
+    suspend fun getTheTotalOfSalesByDateRange(s: String, e: String): Double?
+
+    @Query("""
+        Select Sum((sellingPrice - price)*quantity) from sales_details
+        where sellDate between :s and :e and saleId is not null
+    """)
+    suspend fun getTheTotalOfProfitByRange(s:String,e:String): Double?
 
 }

@@ -37,7 +37,6 @@ class HomeFragment : Fragment() {
     private lateinit var lowStockAdapter: LowStockAdapter
     private val viewModel: MainViewModel by activityViewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +49,8 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         setControllers()
+
+        //getAllAndUpdate()
 
         setupTop5Adapter()
         setupLowStockAdapter()
@@ -202,5 +203,7 @@ class HomeFragment : Fragment() {
         intent.putExtra("day", day)
         startActivity(intent)
     }
+
+
 
 }

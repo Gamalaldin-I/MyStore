@@ -32,6 +32,11 @@ class ExpenseRepoImp (private val expenseDao: ExpenseDao): ExpensesRepo {
     override suspend fun getExpensesByDate(date: String): List<Expense> =
             expenseDao.getExpensesListByDate(date).map { it.toExpense() }
 
+    override suspend fun getTotalOfExpensesByDateRange(
+        start: String,
+        end: String,
+    ): Double? = expenseDao.getTheTotalOfExpensesByRange(start, end)
+
 
 
 }

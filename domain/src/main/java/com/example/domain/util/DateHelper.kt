@@ -16,7 +16,7 @@ object DateHelper {
 
 
     fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val date = Date()
         return dateFormat.format(date)
     }
@@ -39,7 +39,7 @@ object DateHelper {
                 YEAR -> today.withDayOfYear(1) to today  // أول يوم في السنة
                 else -> today.minusWeeks(1) to today
             }
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val start = startDate.format(formatter)
         val end = endDate.format(formatter)
         return Pair(start, end)

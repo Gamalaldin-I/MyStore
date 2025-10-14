@@ -1,9 +1,7 @@
 package com.example.domain.useCase.billDetails
 
-import com.example.domain.model.Expense
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.BillDetailsRepo
-import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -40,9 +38,8 @@ class ReturnProductUseCase(
                 val insertReturn = async { localRepo.insertReturn(returnedItem) }
                 val productRestore = async { updateProductQuantityAfterReturn(returnRequest) }
                 val cashUpdate = async { updateTotalCashOfBillAfterReturn(soldProduct, returnRequest) }
-                val onDiffDay = async { doOnDiffDayOfReturn(soldProduct, returnRequest) }
 
-                awaitAll(insertReturn, productRestore, cashUpdate, onDiffDay)
+                awaitAll(insertReturn, productRestore, cashUpdate)
             }
 
             updateBillProduct(soldProduct, returnRequest)
@@ -82,22 +79,5 @@ class ReturnProductUseCase(
         }
     }
 
-    private suspend fun doOnDiffDayOfReturn(soldProduct: SoldProduct, returnRequest: SoldProduct) {
-        if (soldProduct.sellDate == returnRequest.sellDate) return
 
-        val expense = Expense(
-            expenseId = IdGenerator.generateTimestampedId(),
-            date = DateHelper.getCurrentDate(),
-            time = DateHelper.getCurrentTime(),
-            description = "Return of ${soldProduct.name} at ${DateHelper.getCurrentDate()}",
-            category = "Return",
-            amount = returnRequest.sellingPrice * abs(returnRequest.quantity),
-            paymentMethod = "Cash"
-        )
-        insertExpense(expense)
-    }
-
-    private suspend fun insertExpense(expense: Expense) {
-        localRepo.insertExpense(expense)
-    }
 }

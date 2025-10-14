@@ -22,7 +22,7 @@ class DaysActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDaysBinding
     private lateinit var adapter: DaysAdapter
     companion object {
-        private val displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
+        private val displayFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

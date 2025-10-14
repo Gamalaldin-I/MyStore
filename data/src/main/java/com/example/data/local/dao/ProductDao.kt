@@ -15,6 +15,7 @@ interface ProductDao {
     @Query("SELECT * FROM product")
      fun getProducts(): Flow<List<ProductEntity>>
 
+
     @Query("SELECT * FROM product WHERE id = :id")
     suspend fun getProductById(id: String): ProductEntity?
 
@@ -74,5 +75,6 @@ interface ProductDao {
     where soldCount = 0 and count > 0
 """)
     fun getProductsThatHaveNotBeenSold(): List<ProductEntity>
+
 
 }

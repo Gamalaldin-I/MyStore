@@ -6,8 +6,11 @@ import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
 import com.example.data.local.model.entities.ProductEntity
 import com.example.domain.model.CategorySales
+import com.example.domain.model.ExpensesWithCategory
 import com.example.domain.model.Product
+import com.example.domain.model.SalesProfitByPeriod
 import com.example.domain.repo.AnalysisRepo
+import com.example.domain.util.DateHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -40,6 +43,37 @@ class AnalysisRepoImp(
     override suspend fun getSpecificDay(day: String): String =
         salesDao.getSpecificDay(day)
 
+    override suspend fun getTheHoursWithHighestSales(period: String): String? {
+        val (startDate,endDate) = DateHelper.giveStartAndEndDateFromToDay(duration = period)
+        return salesDao.getTheBestPeriodOfDaySelling(startDate, endDate)?.period ?: ""
+    }
+
+    override suspend fun getTheDaysWithHighestSales(period: String): String? {
+        val (startDate,endDate) = DateHelper.giveStartAndEndDateFromToDay(duration = period)
+        return salesDao.getTheBestWeekDayOfSelling(startDate, endDate)?.dayOfWeek ?: ""
+    }
+
+    override suspend fun getTheAvgOfSales(period: String): Double? {
+        val (s,e) = DateHelper.giveStartAndEndDateFromToDay(period)
+        return salesDao.getAvg(s,e)
+    }
+
+    override suspend fun getNumberOfSales(period: String): Int ?{
+        val (s,e) = DateHelper.giveStartAndEndDateFromToDay(period)
+       return salesDao.getNumberOfSales(s,e)
+    }
+
+
+    override suspend fun getTheProfit(period: String): Double?{
+        val (s,e) = DateHelper.giveStartAndEndDateFromToDay(period)
+        return salesDao.getProfit(s,e)
+    }
+
+    override suspend fun getTheTotalSales(period: String): Double? {
+        val (s,e) = DateHelper.giveStartAndEndDateFromToDay(period)
+        return salesDao.getTotalSalesValue(s,e)
+    }
+
     override suspend fun getTheProductsWithHighestProfit(): List<Product> =
         productDao.getProductsByHighestProfit().mapData()
 
@@ -65,14 +99,21 @@ class AnalysisRepoImp(
     ): List<CategorySales> =
         salesDao.getReturningCategoriesByDate(startDate, endDate)
 
-    override suspend fun getTheHoursWithHighestSales(): List<String> {
-        return emptyList()
+
+    override suspend fun getTheSalesAndProfitGroupedByPeriod(period: String): List<SalesProfitByPeriod>? {
+        val (startDate, endDate) = DateHelper.giveStartAndEndDateFromToDay(period)
+        return when (period) {
+            "Day" ->  salesDao.getSalesAndProfitGroupedByDay(startDate)
+            else ->  salesDao.getSalesAndProfitGroupedByPeriod(startDate,endDate)
+        }
     }
 
-    override suspend fun getTheDaysWithHighestSales(): List<String> {
-        return emptyList()
+    override suspend fun getExpensesListByPeriod(
+        startDate: String,
+        endDate: String,
+    ): List<ExpensesWithCategory> {
+       return expenseDao.getTheExpensesByCategories(startDate,endDate)
     }
-
 
     fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {
         return this.map {

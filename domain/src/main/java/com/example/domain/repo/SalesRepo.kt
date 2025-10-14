@@ -18,4 +18,8 @@ interface SalesRepo{
     suspend fun getSoldOnlyByDate(date: String): List<SoldProduct>
     suspend fun getReturns(): List<SoldProduct>
      fun getReturnsByDate(date: String): Flow<List<SoldProduct>>
+    suspend fun getTotalOfSalesByDateRange(start: String, end:String): Double?
+    suspend fun getTotalOfProfitByDateRange(start: String, end:String): Double?
+
+
 }

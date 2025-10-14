@@ -4,11 +4,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.analysis.SalesAnalysisFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scroller"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_margin="25dp"
+                android:layout_height="wrap_content"
+                android:hint="Choose a duration"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:id="@+id/autoComplete"
+                    android:inputType="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <include layout="@layout/sales_profit_curve"
+                android:id="@+id/curves"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
 
+            <include layout="@layout/sales_analysis_grid"
+                android:id="@+id/numbers"
+                android:layout_height="400dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="25dp"
+                android:layout_width="match_parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No sales found"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:id="@+id/hint"/>
+            <LinearLayout
+                android:id="@+id/expensesLo"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="20dp"
+                android:backgroundTint="#D7D7D7"
+                android:background="@drawable/bg_day_brief"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/expenses"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_height="wrap_content"
+                    android:text="Expenses"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/expensesChart"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_day_brief"
+                    android:layout_margin="10dp"
+                    android:layout_height="250dp"/>
+            </LinearLayout>
+            <include layout="@layout/expences_grid_layout"
+                android:id="@+id/expensesGrid"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"/>
+        </LinearLayout>
+
+    </ScrollView>
 </FrameLayout>

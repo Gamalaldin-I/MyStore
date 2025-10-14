@@ -49,6 +49,16 @@ class SalesRepoImp(private val salesDao: SalesDao,private val productDao: Produc
                 list.map { it.toSoldProduct() }
             }
 
+    override suspend fun getTotalOfSalesByDateRange(
+        start: String,
+        end: String,
+    ): Double? = salesDao.getTheTotalOfSalesByDateRange(start, end)
+
+    override suspend fun getTotalOfProfitByDateRange(
+        start: String,
+        end: String,
+    ): Double? = salesDao.getTheTotalOfProfitByRange(start, end)
+
 
     override suspend fun getAllSalesAndReturnsByDate(date: String): List<SoldProduct> =
         withContext(Dispatchers.IO) {

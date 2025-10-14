@@ -1,7 +1,9 @@
 package com.example.domain.repo
 
 import com.example.domain.model.CategorySales
+import com.example.domain.model.ExpensesWithCategory
 import com.example.domain.model.Product
+import com.example.domain.model.SalesProfitByPeriod
 import kotlinx.coroutines.flow.Flow
 
 interface AnalysisRepo {
@@ -26,8 +28,16 @@ interface AnalysisRepo {
     suspend fun getTheDaysOfSales():List<String>
     suspend fun getSpecificDay(day:String):String
     //for day analysis
-    suspend fun getTheHoursWithHighestSales():List<String>
-    suspend fun getTheDaysWithHighestSales():List<String>
+    suspend fun getTheHoursWithHighestSales(period:String):String?
+    suspend fun getTheDaysWithHighestSales(period:String):String?
+    suspend fun getTheAvgOfSales(period:String):Double?
+    suspend fun getNumberOfSales(period: String):Int?
+    suspend fun getTheProfit(period:String):Double?
+    suspend fun getTheTotalSales(period:String):Double?
+    suspend fun getTheSalesAndProfitGroupedByPeriod(period:String):List<SalesProfitByPeriod>?
+    //for expenses
+    suspend fun getExpensesListByPeriod(date:String,endDate: String):List<ExpensesWithCategory>?
+
 
 
 

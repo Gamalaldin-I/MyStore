@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.data.local.model.entities.ExpenseEntity
+import com.example.domain.model.ExpensesWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -31,6 +32,19 @@ interface ExpenseDao {
     suspend fun getExpensesListByDate(date: String): List<ExpenseEntity>
 
 
+    @Query("""
+        Select amount,category
+        from expenses 
+        where date between :start and :end
+        group by category
+        order by amount
+    """)
+    suspend fun getTheExpensesByCategories(start: String, end:String): List<ExpensesWithCategory>
 
+    @Query("""
+        Select SUM(amount) from expenses 
+        where date between :start and :end
+    """)
+    suspend fun getTheTotalOfExpensesByRange(start: String,end: String): Double?
 
 }
