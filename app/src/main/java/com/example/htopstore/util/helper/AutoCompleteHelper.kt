@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import com.example.domain.model.category.ExpenseCategory
 import com.example.domain.model.category.PaymentMethod
+import com.example.domain.model.category.UserRoles
 import com.example.domain.useCase.localize.GetCategoriesUseCase
 import com.example.domain.util.DateHelper.DAY
 import com.example.domain.util.DateHelper.MONTH
@@ -37,4 +38,9 @@ object AutoCompleteHelper {
         val options = listOf(DAY,WEEK,MONTH,YEAR)
         return getAdapter(context,options)
     }
+    fun getRolesAdapter(context: Context): ArrayAdapter<String>{
+        val options = UserRoles.entries.map {it.roleName.capitalize(Locale.ROOT)}
+        return getAdapter(context,options)
+    }
+
     }

@@ -3,6 +3,7 @@ package com.example.htopstore.di.module
 import com.example.data.local.dao.ExpenseDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
+import com.example.data.remote.RemoteProductRepo
 import com.example.data.repo.AnalysisRepoImp
 import com.example.data.repo.BillDetailsRepoImp
 import com.example.data.repo.BillRepoImp
@@ -25,8 +26,8 @@ import dagger.hilt.components.SingletonComponent
 object RepoModule {
 
     @Provides
-    fun provideProductRepo(productDao: ProductDao): ProductRepo {
-        return ProductRepoImp(productDao)
+    fun provideProductRepo(productDao: ProductDao, remote: RemoteProductRepo): ProductRepo {
+        return ProductRepoImp(productDao,remote)
     }
 
     @Provides

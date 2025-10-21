@@ -22,6 +22,7 @@ import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.ui.scan.ScanActivity
+import com.example.htopstore.ui.staff.StaffActivity
 import com.example.htopstore.util.adapters.LowStockAdapter
 import com.example.htopstore.util.adapters.Top5Adapter
 import com.example.htopstore.util.helper.Animator.animateGridItem
@@ -132,6 +133,7 @@ class HomeFragment : Fragment() {
         val expenses = binding.grid.expenses
         val sales = binding.grid.sales
         val scan = binding.grid.scan
+        val stuff = binding.staff
 
         add.setOnClickListener {
             goTo(add){
@@ -164,6 +166,12 @@ class HomeFragment : Fragment() {
                 startActivity(Intent(requireContext(), ScanActivity::class.java))
             }
         }
+        stuff.setOnClickListener {
+            goTo(stuff){
+                startActivity(Intent(requireContext(), StaffActivity::class.java))
+            }
+        }
+
     }
 
     private fun observe(){
@@ -186,11 +194,6 @@ class HomeFragment : Fragment() {
             binding.today.salesValue.text = sales.toString()
         }
     }
-
-
-
-
-
 
     private fun goToProductDetails(productId: String) {
         val intent = Intent(requireContext(), ProductActivity::class.java)

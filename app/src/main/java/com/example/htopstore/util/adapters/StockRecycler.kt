@@ -55,7 +55,6 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
                 addToCart.animateAddToCart{
                 CartHelper.addToTheCartList(item)
                 }
-
             }
             root.setOnClickListener {
                 root.animateStockItem {

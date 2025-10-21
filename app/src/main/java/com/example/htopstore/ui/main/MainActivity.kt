@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
         val stockFragment = StockFragment()
         val main = HomeFragment()
         val archive = ArchiveFragment()
+        val profile = ProfileFragment()
         replaceCurrentFragment(stockFragment)
+
 
 
         //set the bottom navigation view
@@ -46,6 +48,10 @@ class MainActivity : AppCompatActivity() {
                     replaceCurrentFragment(archive)
                     true
                 }
+                R.id.profile -> {
+                    replaceCurrentFragment(profile)
+                    true
+                }
 
                 else -> false
             }
@@ -62,8 +68,6 @@ class MainActivity : AppCompatActivity() {
         badge.text = it.toString()
         }
     }
-
-
 
     fun replaceCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {

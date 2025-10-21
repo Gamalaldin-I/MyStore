@@ -22,8 +22,13 @@ import com.example.domain.useCase.analisys.sales.GetTheMostSellingDayByPeriodUse
 import com.example.domain.useCase.analisys.sales.GetTheMostSellingHourByPeriodUseCase
 import com.example.domain.useCase.analisys.sales.GetTheNumOfSalesOpsUseCase
 import com.example.domain.useCase.analisys.sales.GetTheTotalSalesUseCase
+import com.example.domain.useCase.expenses.GetTotalOfExpensesByRangeOfDateUseCase
+import com.example.domain.useCase.sales.GetTheTotalOfTheProfitByRangeOfDaysUseCase
+import com.example.domain.useCase.sales.GetTotalOfSalesByRageOfDaysUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,7 +51,11 @@ class AnalysisViewModel
         private val getTheDaysWithHighestSalesUseCase: GetTheMostSellingDayByPeriodUseCase,
         private val getProfitByPeriod: GetProfitByPeriodUseCase,
         //for expenses
-        private val getExpensesWithCategoryUseCase: GetExpensesWithCategoryUseCase
+        private val getExpensesWithCategoryUseCase: GetExpensesWithCategoryUseCase,
+        //for accountant
+        private val getTotalOfExpensesByRangeOfDateUseCase: GetTotalOfExpensesByRangeOfDateUseCase,
+        private val getTheTotalOfSalesByRangeOfDateUseCase: GetTotalOfSalesByRageOfDaysUseCase,
+        private val getTheTotalOfProfitByRangeOfDateUseCase: GetTheTotalOfTheProfitByRangeOfDaysUseCase,
 
     ): ViewModel() {
 
@@ -175,6 +184,23 @@ class AnalysisViewModel
     fun getExpensesWithCategory(duration:String){
         viewModelScope.launch(Dispatchers.IO){
             _expensesWithCat.postValue(getExpensesWithCategoryUseCase(duration))
+        }
+    }
+
+    // for accountant
+    //vars
+    private val _brief = MutableLiveData< List<Double>>()
+
+    val brief: LiveData<List<Double>> = _brief
+
+
+    fun getBrief(from:String,to: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val sales =async { getTheTotalOfSalesByRangeOfDateUseCase(from, to)}
+            val expenses = async { getTotalOfExpensesByRangeOfDateUseCase(from, to) }
+            val profit =async { getTheTotalOfProfitByRangeOfDateUseCase(from, to) }
+            val list = listOf(sales,expenses,profit).awaitAll()
+            _brief.postValue(list)
         }
     }
 

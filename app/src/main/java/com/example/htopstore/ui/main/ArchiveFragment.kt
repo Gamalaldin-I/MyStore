@@ -57,7 +57,6 @@ class ArchiveFragment : Fragment() {
         }
     }
 
-
     private fun showAlertDialog(p: Product, pos:Int){
         DialogBuilder.showAlertDialog(
             context = requireContext(),
@@ -70,7 +69,6 @@ class ArchiveFragment : Fragment() {
         )
     }
 
-
     private fun onDelete(p: Product, pos: Int){
         vm.deleteProduct(p.id,p.productImage){
             adapter.updateAfterDeletion(pos)
@@ -80,8 +78,6 @@ class ArchiveFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun goToProductActivity(id: String){
         val intent = Intent(requireContext(), ProductActivity::class.java)

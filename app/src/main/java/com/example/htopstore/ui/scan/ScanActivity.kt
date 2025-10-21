@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -31,7 +32,7 @@ class ScanActivity : AppCompatActivity() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
         observeMessage()
-
+        val fromAdding = intent.getBooleanExtra("fromAdding", false)
 
         cameraHelper = CameraHelper(
             context = this,
@@ -39,13 +40,20 @@ class ScanActivity : AppCompatActivity() {
             previewView = binding.previewView,
             executor = Executors.newSingleThreadExecutor(),
             onBarcodeDetected = { type, value ->
+                if(fromAdding){
+                    val prob = fixEan13(value)
+                    vm.onAddProduct(prob)
+                    playBeep()
+                    cameraHelper.pauseAnalysis()
+                    finish()
+                }else{
                 runOnUiThread {
                     val prob = fixEan13(value)
                     vm.onScanned(prob)
                     playBeep()
-
                     cameraHelper.pauseAnalysis()
                 }
+            }
             }
         )
 
@@ -84,6 +92,7 @@ class ScanActivity : AppCompatActivity() {
     private fun observeMessage() {
         vm.message.observe(this) {
             binding.scannedTV.text = it
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
     }
 

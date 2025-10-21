@@ -6,6 +6,7 @@ import com.example.data.local.dao.ExpenseDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
 import com.example.data.local.roomDb.AppDataBase
+import com.example.data.local.sharedPrefs.SharedPref
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,11 @@ object DataModule {
             AppDataBase::class.java,
             AppDataBase.Companion.DATABASE_NAME
         ).build()
+    }
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPref {
+        return SharedPref(context)
     }
 
     @Provides

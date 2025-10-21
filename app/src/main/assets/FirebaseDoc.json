@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288889154483",
+    "project_id": "htopstore-d25bc",
+    "storage_bucket": "htopstore-d25bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288889154483:android:a22598d3d00cf8c4a139c6",
+        "android_client_info": {
+          "package_name": "com.example.htopstore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa_x2fC6Jj9_QJq9YoZrukljvPMtOcjSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,11 +4,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.analysis.AccountantFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scroller"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Accountant"
+                android:layout_margin="15dp"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"/>
+            <TableLayout
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="From"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/PickFrom"
+                        android:layout_width="match_parent"
+                        android:text="Pick date"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        />
 
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/pickTo"
+                        android:layout_width="match_parent"
+                        android:text="Pick date"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        />
+
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    >
+                    <Button
+                        android:id="@+id/reset"
+                        android:layout_width="match_parent"
+                        android:text="Reset"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                    />
+
+                    <Button
+                        android:id="@+id/calculate"
+                        android:layout_width="match_parent"
+                        android:text="Calculate"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        />
+
+                </TableRow>
+            </TableLayout>
+            <include
+                android:id="@+id/accountBrief"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                layout="@layout/accountant_brief_page"/>
+
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

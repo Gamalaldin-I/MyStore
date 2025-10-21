@@ -11,6 +11,7 @@ import com.example.domain.model.Product
 import com.example.domain.useCase.product.AddProductUseCase
 import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
+import com.example.htopstore.util.BarcodeGenerator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +40,6 @@ class AddProductViewModel
     val navigationEvent: LiveData<NavigationEvent> = _navigationEvent
 
     // Current product data
-    private var productId: String = IdGenerator.generateProductId()
     private var tempImageFile: File? = null
     private var tempImageUri: Uri? = null
 
@@ -73,7 +73,7 @@ class AddProductViewModel
                 val savedFile = saveFinalImage(context)
                 if (savedFile != null) {
                     val product = Product(
-                        id = productId,
+                        id = BarcodeGenerator.scannedCode?:IdGenerator.generateProductId(),
                         addingDate = DateHelper.getCurrentDate(),
                         productImage = savedFile.absolutePath,
                         category = category,
@@ -218,9 +218,9 @@ class AddProductViewModel
     }
 
     private fun resetForm() {
-        productId = IdGenerator.generateProductId()
         tempImageFile = null
         tempImageUri = null
+        BarcodeGenerator.scannedCode = null
         _uiState.value = AddProductUiState(shouldClearForm = true)
     }
 

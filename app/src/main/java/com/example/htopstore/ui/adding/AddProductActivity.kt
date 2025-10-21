@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityAddPactBinding
+import com.example.htopstore.ui.scan.ScanActivity
+import com.example.htopstore.util.BarcodeGenerator
 import com.example.htopstore.util.helper.AutoCompleteHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+
 @AndroidEntryPoint
 class AddProductActivity : AppCompatActivity() {
 
@@ -126,6 +130,15 @@ class AddProductActivity : AppCompatActivity() {
         binding.backArrow.setOnClickListener {
             viewModel.onBackPressed()
         }
+        binding.scanId.setOnClickListener {
+            startScan()
+        }
+        binding.clearId.setOnClickListener {
+            binding.id.text = ""
+            binding.clearId.visibility = View.GONE
+            binding.id.visibility = View.GONE
+            BarcodeGenerator.scannedCode = null
+        }
     }
 
     private fun askCameraPermission() {
@@ -136,6 +149,20 @@ class AddProductActivity : AppCompatActivity() {
             else -> {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
+        }
+    }
+    private fun startScan(){
+        val intent = Intent(this, ScanActivity::class.java)
+        intent.putExtra("fromAdding", true)
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(BarcodeGenerator.scannedCode!=null){
+            binding.id.text = BarcodeGenerator.scannedCode
+            binding.clearId.visibility = View.VISIBLE
+            binding.id.visibility = View.VISIBLE
         }
     }
 
@@ -150,4 +177,10 @@ class AddProductActivity : AppCompatActivity() {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         cameraLauncher.launch(intent)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        BarcodeGenerator.scannedCode = null
+    }
 }
+

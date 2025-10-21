@@ -14,7 +14,10 @@ object NAE {
         }
         return output
     }
-
+    @SuppressLint("DefaultLocale")
+    fun Double.digit(num:Int): String{
+        return String.format("%.${num}f",this)
+    }
 
     @SuppressLint("ConstantLocale")
     val local: String = Locale.getDefault().language

@@ -3,6 +3,7 @@ package com.example.htopstore.di.module
 import com.example.domain.repo.ExpensesRepo
 import com.example.domain.useCase.expenses.GetAllExpensesUseCase
 import com.example.domain.useCase.expenses.GetExpensesByDateUseCase
+import com.example.domain.useCase.expenses.GetTotalOfExpensesByRangeOfDateUseCase
 import com.example.domain.useCase.expenses.InsertNewExpenseUseCase
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,10 @@ object ExpensesModule {
     @Singleton
     fun provideGetExpensesByDateUseCase(expensesRepo: ExpensesRepo): GetExpensesByDateUseCase {
         return GetExpensesByDateUseCase(expensesRepo)
+    }
+    @Provides
+    fun provideGetExpensesByRange(expensesRepo: ExpensesRepo): GetTotalOfExpensesByRangeOfDateUseCase{
+        return GetTotalOfExpensesByRangeOfDateUseCase(expensesRepo)
     }
 
 }

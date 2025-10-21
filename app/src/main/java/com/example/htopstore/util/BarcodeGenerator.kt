@@ -8,18 +8,18 @@ import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
+import com.example.domain.model.SelectionQrProduct
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 import java.io.File
 import java.io.FileOutputStream
-import androidx.core.graphics.createBitmap
-import androidx.core.graphics.set
-import com.example.domain.model.SelectionQrProduct
 import kotlin.random.Random
 
 object BarcodeGenerator {
-
+    var scannedCode:String? = null
     fun generateProductBarcodesPDF(context: Context, products: List<SelectionQrProduct>, columns: Int = 4) {
         if (products.isEmpty()) {
             Toast.makeText(context, "No products to generate barcodes", Toast.LENGTH_SHORT).show()

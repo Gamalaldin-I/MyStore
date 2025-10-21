@@ -50,6 +50,35 @@
         app:layout_constraintStart_toStartOf="@+id/cardView"
          />
 
+    <Button
+        android:id="@+id/scanId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Scan code (optionally)"
+        app:layout_constraintStart_toStartOf="@+id/product_img"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <Button
+        android:id="@+id/clearId"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/scanId"
+        app:layout_constraintTop_toTopOf="@+id/scanId" />
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id:4456545"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/scanId"
+        app:layout_constraintStart_toStartOf="@+id/scanId"
+        app:layout_constraintTop_toBottomOf="@+id/scanId" />
+
         <!-- Card Container -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

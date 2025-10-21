@@ -10,9 +10,10 @@
     <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="40dp"
         android:gravity="center|start"
         android:layoutDirection="ltr"
@@ -25,9 +26,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
+            android:layout_weight="1"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/staff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Staff"
+            android:textStyle="bold"
+            />
 
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.genCode
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,12 @@ class GenCodeActivity : AppCompatActivity() {
             if (binding.radioGroup.checkedRadioButtonId == binding.barcode.id)
             {getQrsUseCase.getBarcodesPdf(adapter.getSelected())}
             else {getQrsUseCase.getQrsPdf(adapter.getSelected())}
+        }
+        binding.backArrow.setOnClickListener {
+            finish()
+        }
+        binding.printer.setOnClickListener {
+            Toast.makeText(this, "Will be implemented later", Toast.LENGTH_SHORT).show()
         }
     }
 

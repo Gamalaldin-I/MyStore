@@ -7,6 +7,8 @@ import com.example.domain.useCase.sales.GetReturnsByDateUseCase
 import com.example.domain.useCase.sales.GetReturnsUseCase
 import com.example.domain.useCase.sales.GetSoldOnlyByDateUseCase
 import com.example.domain.useCase.sales.GetSoldOnlyUseCase
+import com.example.domain.useCase.sales.GetTheTotalOfTheProfitByRangeOfDaysUseCase
+import com.example.domain.useCase.sales.GetTotalOfSalesByRageOfDaysUseCase
 import com.example.domain.useCase.sales.SellUseCase
 import dagger.Module
 import dagger.Provides
@@ -49,5 +51,13 @@ object SalesModule {
     @Provides
     fun provideGetReturnsByDateUseCase(salesRepo:SalesRepo): GetReturnsByDateUseCase {
         return GetReturnsByDateUseCase(salesRepo)
+    }
+    @Provides
+    fun provideGetTotalOfSalesUseCase(salesRepo: SalesRepo): GetTotalOfSalesByRageOfDaysUseCase{
+        return GetTotalOfSalesByRageOfDaysUseCase(salesRepo)
+    }
+    @Provides
+    fun provideGetTotalOfProfitUseCase(salesRepo: SalesRepo): GetTheTotalOfTheProfitByRangeOfDaysUseCase{
+        return GetTheTotalOfTheProfitByRangeOfDaysUseCase(salesRepo)
     }
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.useCase.product.GetProductByIdUseCase
+import com.example.domain.util.CartHelper
+import com.example.htopstore.util.BarcodeGenerator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,14 +23,26 @@ class ScanViewModel @Inject constructor(
 
 
     fun onScanned(id:String) =
-
         viewModelScope.launch(Dispatchers.IO){
             val product = getProductByIdUseCase(id)
             if (product != null) {
                 _message.postValue("Product found: ${product.name}")
+                CartHelper.addToTheCartList(product)
                 // Handle the product as needed
             } else {
                 _message.postValue("Product not found")
             }
         }
+
+    fun onAddProduct(scannedId:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val product = getProductByIdUseCase(scannedId)
+            if (product != null) {
+                _message.postValue("Product found: ${product.name}")
+                BarcodeGenerator.scannedCode = null
+            } else {
+                BarcodeGenerator.scannedCode = scannedId
+            }
+        }
+}
 }

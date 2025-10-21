@@ -4,13 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
-import com.example.domain.useCase.analisys.product.GetLowStockUseCase
+import com.example.domain.model.Store
+import com.example.domain.model.User
+import com.example.domain.model.category.UserRoles
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
-import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
+import com.example.domain.useCase.analisys.product.GetLowStockUseCase
+import com.example.domain.useCase.analisys.product.GetTop5UseCase
+import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
 import com.example.domain.useCase.product.GetArchiveSizeUseCase
@@ -25,6 +30,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    private val pref: SharedPref,
+    private val logoutUseCase: LogoutUseCase,
     getTop5InSalesUseCase: GetTop5UseCase,
     getLowStockUseCase: GetLowStockUseCase,
     getAvailableProductsUseCase: GetAvailableProductsUseCase,
@@ -72,4 +79,19 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+    fun getUserData():User{
+        return pref.getUser()
+    }
+    fun getStoreData():Store{
+        return pref.getStore()
+    }
+    fun getRole():String? {
+        val role = pref.getRole()
+        return UserRoles.entries.find { it.role == role }?.roleName
+    }
+
+    fun logout(onResult: (Boolean, String) -> Unit){
+        pref.clearPrefs()
+        logoutUseCase(onResult)
+        }
 }

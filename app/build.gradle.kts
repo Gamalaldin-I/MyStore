@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -87,7 +88,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-compiler:2.51.1")
 
-    // ✅ عشان ViewModel يشتغل مع Hilt
+    //  Hilt with view model
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
     //room
@@ -99,7 +100,11 @@ dependencies {
     implementation (libs.androidx.room.paging)
     //for charts visualisation
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
+    implementation ("com.google.guava:guava:31.1-android")
+    //firebase
+    implementation ("com.google.firebase:firebase-firestore:25.0.0")
+    implementation ("com.google.firebase:firebase-auth:23.1.0")
+    implementation ("com.google.firebase:firebase-storage:21.0.0")
 
 
 }

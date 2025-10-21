@@ -15,4 +15,8 @@
     android:title="@string/cart"
     android:icon="@drawable/nav_bag_smile"/>
 
+    <item android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/icon_profile"/>
+
 </menu>
