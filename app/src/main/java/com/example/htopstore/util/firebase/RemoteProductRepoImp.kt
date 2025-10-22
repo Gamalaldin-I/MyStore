@@ -1,11 +1,13 @@
 package com.example.htopstore.util.firebase
 
 import android.util.Log
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.RemoteProductRepo
 import com.example.domain.model.Product
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RemoteProductRepoImp(val db: FirebaseFirestore): RemoteProductRepo {
+class RemoteProductRepoImp(private val db: FirebaseFirestore,
+                           private val sharedPref: SharedPref): RemoteProductRepo {
     val fu = FirebaseUtils
     override fun addListOfProducts(products: List<Product>) {
         TODO("Not yet implemented")
@@ -24,7 +26,8 @@ class RemoteProductRepoImp(val db: FirebaseFirestore): RemoteProductRepo {
             fu.PRODUCT_SOLD_COUNT to product.soldCount,
         )
 
-        db.collection(fu.STORES).document(fu.STORE_ID)
+        db.collection(fu.OWNERS).document(sharedPref.getUser().id).collection(fu.STORES)
+            .document(sharedPref.getStore().id)
             .collection(fu.PRODUCTS).document(product.id).set(
                 remoteProduct
             ).addOnSuccessListener {

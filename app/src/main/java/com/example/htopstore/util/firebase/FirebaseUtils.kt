@@ -63,9 +63,8 @@ object FirebaseUtils {
     const val PRODUCT_SOLD_COUNT = "soldCount"
 
 
-
-
     const val EXPENSES="expenses"
     const val BILLS ="bills"
     const val SOLD_PRODUCTS="soldProducts"
+
 }

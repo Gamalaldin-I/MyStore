@@ -4,16 +4,16 @@ import kotlin.random.Random
 
 object IdGenerator {
 
-    private fun generateRandomId(length: Int = 6): String {
+     private fun generateRandomId(length: Int): String {
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         return (1..length)
             .map { chars.random()}
             .joinToString("")
     }
 
-    fun generateTimestampedId(): String {
+    fun generateTimestampedId(plusTime:Int = 6): String {
         val timestamp = System.currentTimeMillis().toString(36)
-        val randomPart = generateRandomId(6)
+        val randomPart = generateRandomId(plusTime)
         return "$timestamp-$randomPart"
     }
 

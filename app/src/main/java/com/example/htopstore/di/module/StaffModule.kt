@@ -1,0 +1,40 @@
+package com.example.htopstore.di.module
+
+import com.example.data.local.sharedPrefs.SharedPref
+import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.staff.AddStoreInviteUseCase
+import com.example.domain.useCase.staff.DeleteStoreInviteUseCase
+import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
+import com.example.domain.useCase.staff.GetStoreInvitesUseCase
+import com.example.htopstore.util.firebase.staff.StaffRepoImp
+import com.google.firebase.firestore.FirebaseFirestore
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object StaffModule {
+    @Singleton
+    @Provides
+    fun provideStaffRepo(db: FirebaseFirestore,pref: SharedPref): StaffRepo {
+        return StaffRepoImp(db,pref)
+    }
+    @Provides
+    fun provideInvitesUseCase(staffRepo: StaffRepo): GetStoreInvitesUseCase {
+        return GetStoreInvitesUseCase(staffRepo)}
+    @Provides
+    fun provideEmployeesUseCase(staffRepo: StaffRepo): GetStoreEmployeesUseCase{
+        return GetStoreEmployeesUseCase(staffRepo)
+    }
+    @Provides
+    fun provideDeleteInviteUseCase(staffRepo: StaffRepo): DeleteStoreInviteUseCase{
+        return DeleteStoreInviteUseCase(staffRepo)
+    }
+    @Provides
+    fun provideAddInviteUseCase(staffRepo: StaffRepo): AddStoreInviteUseCase{
+        return AddStoreInviteUseCase(staffRepo)
+    }
+}

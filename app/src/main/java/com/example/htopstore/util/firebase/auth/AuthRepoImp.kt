@@ -42,7 +42,7 @@ class AuthRepoImp(private val db: FirebaseFirestore,private val pref: SharedPref
                         storeLocation)
                     onResult(true,"Success")
                 }.addOnFailureListener {
-                    onResult(false,it.message.toString())
+                    onResult(false,"Error email or password")
                 }
         }
         }
@@ -57,49 +57,59 @@ class AuthRepoImp(private val db: FirebaseFirestore,private val pref: SharedPref
         storePhone: String,
         onResult: (Boolean, String) -> Unit,
     ) {
-        auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener { res ->
-            val ownerId = res.user!!.uid
-            val storeId = "${storeName}${ownerId}"
-            val owner = hashMapOf(
-                fu.OWNER_NAME to name,
-                fu.OWNER_EMAIL to email,
-                fu.OWNER_PASSWORD to password,
-                fu.OWNER_ID to ownerId,
-                fu.OWNER_STORE_ID to storeId,
-                fu.OWNER_ROLE to OWNER_ROLE,
-                fu.OWNER_CREATED_AT to FieldValue.serverTimestamp())
-            //add owner to owners collection
-            db.collection(fu.OWNERS).document(ownerId).set(owner).addOnSuccessListener {
-                //add store to stores collections
-                val store = hashMapOf(
-                    fu.STORE_NAME to storeName,
-                    fu.STORE_LOCATION to storeLocation,
-                    fu.STORE_PHONE to storePhone)
-                db.collection(fu.STORES).document(storeId).set(store).addOnSuccessListener {
-                    onResult(true,"Success")
-                    //save data in shared pref
-                    pref.setLogin()
-                    pref.saveUser(
-                        ownerId,
-                        name,
-                        OWNER_ROLE,
-                        email,
-                        password
-                    )
-                    pref.saveStore(
-                        storeId,
-                        storeName,
-                        storePhone,
-                        storeLocation)
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnSuccessListener { res ->
+                val ownerId = res.user!!.uid
+                val storeId = "${storeName}${ownerId}"
+                val owner = hashMapOf(
+                    fu.OWNER_NAME to name,
+                    fu.OWNER_EMAIL to email,
+                    fu.OWNER_PASSWORD to password,
+                    fu.OWNER_ID to ownerId,
+                    fu.OWNER_STORE_ID to storeId,
+                    fu.OWNER_ROLE to OWNER_ROLE,
+                    fu.OWNER_CREATED_AT to FieldValue.serverTimestamp()
+                )
 
-                }.addOnFailureListener {
-                    onResult(false,it.message.toString())
-                }
-            }.addOnFailureListener {
-                onResult(false,it.message.toString())
+                db.collection(fu.OWNERS).whereEqualTo(fu.OWNER_EMAIL, email).get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (querySnapshot.isEmpty) {
+                            db.collection(fu.OWNERS).document(ownerId).set(owner)
+                                .addOnSuccessListener {
+                                    val store = hashMapOf(
+                                        fu.STORE_NAME to storeName,
+                                        fu.STORE_LOCATION to storeLocation,
+                                        fu.STORE_PHONE to storePhone
+                                    )
+                                    db.collection(fu.OWNERS).document(ownerId)
+                                        .collection(fu.STORES).document(storeId).set(store)
+                                        .addOnSuccessListener {
+                                            pref.setLogin()
+                                            pref.saveUser(ownerId, name, OWNER_ROLE, email, password)
+                                            pref.saveStore(storeId, storeName, storePhone, storeLocation)
+                                            onResult(true, "Success")
+                                        }
+                                        .addOnFailureListener {
+                                            onResult(false, it.message ?: "Failed to create store")
+                                        }
+                                }
+                                .addOnFailureListener {
+                                    onResult(false, it.message ?: "Failed to create owner")
+                                }
+                        } else {
+                            onResult(false, "Email already exists")
+                        }
+                    }
+                    .addOnFailureListener {
+                        onResult(false, it.message ?: "Failed to check email")
+                    }
             }
-        }
+            .addOnFailureListener {
+                onResult(false, it.message ?: "Failed to create account")
+            }
     }
+
+
 
     override fun createInvite(
         storeId: String,

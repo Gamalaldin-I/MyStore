@@ -1,5 +1,6 @@
 package com.example.htopstore.di.module
 
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.RemoteExpensesRepo
 import com.example.data.remote.RemoteProductRepo
 import com.example.data.remote.RemoteSalesRepo
@@ -23,10 +24,9 @@ object RemoteModule {
     fun provideFireBaseFireStore(): FirebaseFirestore{
         return Firebase.firestore
     }
-
     @Provides
-    fun provideRemoteProductRepo(db: FirebaseFirestore): RemoteProductRepo {
-        return RemoteProductRepoImp(db)
+    fun provideRemoteProductRepo(db: FirebaseFirestore,sharedPref: SharedPref): RemoteProductRepo {
+        return RemoteProductRepoImp(db,sharedPref)
     }
     @Provides
     fun provideRemoteSalesRepo(db: FirebaseFirestore): RemoteSalesRepo{

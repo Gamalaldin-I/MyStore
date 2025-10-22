@@ -1,38 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/neutral_300"
-    android:padding="10dp"
+    android:background="@drawable/bg_day_brief"
+    android:padding="15dp"
     android:layout_margin="5dp"
     android:layout_height="wrap_content">
-
-    <TableRow
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="ID:  " />
-
-        <TextView
-            android:id="@+id/UserIdTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:text="sdls;d;fkef" />
-    </TableRow>
 
     <TableRow>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:  " />
+            android:text="Name  " />
 
         <TextView
-            android:id="@+id/userNameTV"
+            android:id="@+id/employeeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -46,10 +28,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Role:  " />
+            android:text="Role  " />
 
         <TextView
-            android:id="@+id/userRole"
+            android:id="@+id/employeeRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -63,10 +45,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Email:  " />
+            android:text="Email  " />
 
         <TextView
-            android:id="@+id/userEmail"
+            android:id="@+id/employeeEmail"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
