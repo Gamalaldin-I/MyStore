@@ -14,3 +14,7 @@ data class Employee(
     var status:String? = STATUS_PENDING,
     var role:Int?
 )
+{
+    constructor() : this("","","","","","","","","",0)
+}
+

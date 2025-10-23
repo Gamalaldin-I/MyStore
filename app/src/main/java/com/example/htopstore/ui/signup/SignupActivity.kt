@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.databinding.ActivitySignupBinding
+import com.example.htopstore.ui.inbox.InboxActivity
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,6 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var roleSelectionFragment: RoleSelectionFragment
     private lateinit var userFormFragment: UserFormFragment
     private lateinit var storeFormFragment: StoreFormFragment
-    private lateinit var sendRequestFragment: SendRequestFragment
     private val vm: SignupViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,11 @@ class SignupActivity : AppCompatActivity() {
         vm.isLogin.observe(this){
             isLogin->
             if (isLogin){
-                startActivity(Intent(this, MainActivity::class.java))
+                if(vm.getRole()==OWNER_ROLE){
+                startActivity(Intent(this, MainActivity::class.java))}
+                else{
+                    startActivity(Intent(this, InboxActivity::class.java))
+                }
                 finish()
             }
         }
@@ -52,7 +56,6 @@ class SignupActivity : AppCompatActivity() {
         roleSelectionFragment = RoleSelectionFragment.newInstance()
         userFormFragment = UserFormFragment.newInstance()
         storeFormFragment = StoreFormFragment.newInstance()
-        sendRequestFragment = SendRequestFragment.newInstance()
     }
     private fun setSteps(){
 
@@ -69,7 +72,11 @@ class SignupActivity : AppCompatActivity() {
                 addFragment(storeFormFragment)
             }
             else{
-                addFragment(sendRequestFragment)}
+                vm.afterEmployeeFormFill {
+                    startActivity(Intent(this, InboxActivity::class.java))
+                    finish()
+                }
+            }
             }
         }
         storeFormFragment.setOnNext {
@@ -79,10 +86,7 @@ class SignupActivity : AppCompatActivity() {
                 finish()
             }
         }
-        sendRequestFragment.setOnNext {
-            code->
-            vm.afterSendCode(code){}
-        }
+
         binding.backArrow.setOnClickListener {
             backFragment()
         }

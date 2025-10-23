@@ -1,6 +1,8 @@
 package com.example.htopstore.util.firebase
 
+import com.example.domain.model.remoteModels.Employee
 import com.example.domain.model.remoteModels.Invite
+import com.example.domain.model.remoteModels.StoreEmployee
 
 object Mapper {
 
@@ -13,18 +15,29 @@ object Mapper {
             "status" to this.status,
             "ownerId" to this.ownerId,
             "storeId" to this.storeId,
+            "storeName" to this.storeName
         )
     }
-
-    fun HashMap<String,Any?>.toInvite(id:String):Invite{
-        return Invite(
-            acceptedAt = this["acceptedAt"] as String?,
-            createdAt = this["createdAt"] as String?,
-            email = this["email"] as String?,
-            code = this["code"] as String?,
-            status = this["status"] as String?,
-            ownerId = this["ownerId"] as String?,
-            storeId = this["storeId"] as String?,
-        )
+    fun StoreEmployee.hash(): HashMap<String, Any?>{
+        return hashMapOf(
+            "id" to this.id,
+            "email" to this.email,
+            "name" to this.name,
+            "role" to this.role,
+            "status" to this.status,
+            "joinedAt" to this.joinedAt)
     }
+    fun Employee.hash(): HashMap<String, Any?>{
+        return hashMapOf(
+            "id" to this.id,
+            "email" to this.email,
+            "name" to this.name,
+            "password" to this.password,
+            "ownerId" to this.ownerId,
+            "storeId" to this.storeId,
+            "acceptedAt" to this.acceptedAt,
+            "joinedAt" to this.joinedAt,
+            "status" to this.status,
+            "role" to this.role
+        )}
 }

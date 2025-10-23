@@ -2,10 +2,13 @@ package com.example.htopstore.di.module
 
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.staff.AcceptInviteUseCase
 import com.example.domain.useCase.staff.AddStoreInviteUseCase
 import com.example.domain.useCase.staff.DeleteStoreInviteUseCase
+import com.example.domain.useCase.staff.GetAllEmailPendingInvitesUseCase
 import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
+import com.example.domain.useCase.staff.RejectInviteUseCase
 import com.example.htopstore.util.firebase.staff.StaffRepoImp
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -37,4 +40,17 @@ object StaffModule {
     fun provideAddInviteUseCase(staffRepo: StaffRepo): AddStoreInviteUseCase{
         return AddStoreInviteUseCase(staffRepo)
     }
+    @Provides
+    fun provideAllEmailPendingInvitesUseCase(staffRepo: StaffRepo): GetAllEmailPendingInvitesUseCase{
+        return GetAllEmailPendingInvitesUseCase(staffRepo)
+    }
+    @Provides
+    fun provideAcceptInviteUseCase(staffRepo: StaffRepo): AcceptInviteUseCase{
+        return AcceptInviteUseCase(staffRepo)
+    }
+    @Provides
+    fun provideRejectInviteUseCase(staffRepo: StaffRepo): RejectInviteUseCase{
+        return RejectInviteUseCase(staffRepo)
+    }
+
 }

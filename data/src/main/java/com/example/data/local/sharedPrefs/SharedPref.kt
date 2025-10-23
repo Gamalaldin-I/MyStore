@@ -9,10 +9,7 @@ class SharedPref(context: Context){
     private val sharedPref = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
     val editor = sharedPref.edit()!!
 
-    fun setLogin(){
-        editor.putBoolean("isLogin", true)
-        editor.apply()
-    }
+
     fun isLogin():Boolean{
         return sharedPref.getBoolean("isLogin", false)
     }
@@ -34,6 +31,7 @@ class SharedPref(context: Context){
         editor.putInt("userRole", role)
         editor.putString("userEmail", email)
         editor.putString("userPassword",password)
+        editor.putBoolean("isLogin", true)
         editor.apply()
 
     }
@@ -44,14 +42,14 @@ class SharedPref(context: Context){
         val email = sharedPref.getString("userEmail", "")!!
         val password = sharedPref.getString("userPassword", "")!!
         return User(id, name, role, email, password)
-
     }
 
-    fun saveStore(id: String, name: String, phone: String, location:String){
+    fun saveStore(id: String, name: String, phone: String, location:String,ownerId:String){
         editor.putString("storeId",id)
         editor.putString("storeName",name)
         editor.putString("storePhone",phone)
         editor.putString("storeLocation",location)
+        editor.putString("ownerId",ownerId)
         editor.apply()
 
     }
@@ -61,12 +59,12 @@ class SharedPref(context: Context){
         val name = sharedPref.getString("storeName", "")!!
         val phone = sharedPref.getString("storePhone", "")!!
         val location = sharedPref.getString("storeLocation", "")!!
-        return Store(id =id, name = name, location =location, phone = phone)
+        val ownerId = sharedPref.getString("ownerId", "")!!
+        return Store(id =id, name = name, location =location, phone = phone, ownerId =ownerId)
     }
 
     fun clearPrefs(){
-        editor.clear()
-        editor.apply()
+        editor.clear().apply()
     }
 
 

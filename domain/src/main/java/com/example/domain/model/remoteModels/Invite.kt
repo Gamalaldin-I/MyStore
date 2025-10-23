@@ -5,9 +5,10 @@ data class Invite(
     val code: String? = null,
     var createdAt: String? = null,
     val storeId: String? = null,
+    val storeName: String? = null,
     val ownerId: String? = null,
     val email: String? = null,
     var status: String? = null
 ) {
-    constructor() : this(null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null,null, null, null, null)
 }

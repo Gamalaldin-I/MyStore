@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.domain.util.Constants
 import com.example.htopstore.databinding.ActivityLoginBinding
+import com.example.htopstore.ui.inbox.InboxActivity
 import com.example.htopstore.ui.main.MainActivity
 import com.example.htopstore.ui.signup.SignupActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,8 +27,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         setControllers()
         if (sharedPref.isLogin()) {
+            if(sharedPref.getRole()== Constants.OWNER_ROLE){
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(intent)}
+            else{
+                val intent = Intent(this, InboxActivity::class.java)
+                startActivity(intent)
+            }
             finish()
         }
         vm.msg.observe(this){
@@ -36,13 +43,16 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setControllers() {
         binding.loginBtn.setOnClickListener {
-            val email = binding.emailEt.text.toString()
-            val password = binding.passwordEt.text.toString()
+            val email = binding.emailEt.text.toString().trim()
+            val password = binding.passwordEt.text.toString().trim()
             vm.login(email, password) { success, msg ->
                 if (success) {
-            sharedPref.setLogin()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+                    if(sharedPref.getRole()== Constants.OWNER_ROLE){
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }
+                    else{
+                        startActivity(Intent(this, InboxActivity::class.java))
+                    }
             finish()
                 }
                 else {

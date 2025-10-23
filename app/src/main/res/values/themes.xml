@@ -1,152 +1,154 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Base.Theme.HTopStore" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Professional Light Theme Configuration -->         <!-- Primary Colors -->
-            <item name="colorPrimary">@color/primary_accent_blue</item>
-            <item name="colorOnPrimary">@color/text_white</item>
-            <item name="colorPrimaryContainer">@color/neutral_100</item>
-            <item name="colorOnPrimaryContainer">@color/primary_navy_blue</item>
+        <item name="colorPrimary">@color/primary_accent_blue</item>
+        <item name="colorOnPrimary">@color/text_white</item>
+        <item name="colorPrimaryContainer">@color/neutral_100</item>
+        <item name="colorOnPrimaryContainer">@color/primary_navy_blue</item>
 
-            <!-- Secondary Colors -->
-            <item name="colorSecondary">@color/secondary_sage</item>
-            <item name="colorOnSecondary">@color/text_white</item>
-            <item name="colorSecondaryContainer">@color/neutral_100</item>
-            <item name="colorOnSecondaryContainer">@color/secondary_charcoal</item>
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">@color/secondary_sage</item>
+        <item name="colorOnSecondary">@color/text_white</item>
+        <item name="colorSecondaryContainer">@color/neutral_100</item>
+        <item name="colorOnSecondaryContainer">@color/secondary_charcoal</item>
 
-            <!-- Tertiary Colors -->
-            <item name="colorTertiary">@color/dept_sales</item>
-            <item name="colorOnTertiary">@color/text_white</item>
-            <item name="colorTertiaryContainer">@color/neutral_50</item>
-            <item name="colorOnTertiaryContainer">@color/primary_slate_blue</item>
+        <!-- Tertiary Colors -->
+        <item name="colorTertiary">@color/dept_sales</item>
+        <item name="colorOnTertiary">@color/text_white</item>
+        <item name="colorTertiaryContainer">@color/neutral_50</item>
+        <item name="colorOnTertiaryContainer">@color/primary_slate_blue</item>
 
-            <!-- Error Colors -->
-            <item name="colorError">@color/action_danger</item>
-            <item name="colorOnError">@color/text_white</item>
-            <item name="colorErrorContainer">@color/neutral_50</item>
-            <item name="colorOnErrorContainer">@color/alert_critical</item>
+        <!-- Error Colors -->
+        <item name="colorError">@color/action_danger</item>
+        <item name="colorOnError">@color/text_white</item>
+        <item name="colorErrorContainer">@color/neutral_50</item>
+        <item name="colorOnErrorContainer">@color/alert_critical</item>
 
-            <!-- Background Colors -->
-            <item name="android:colorBackground">#F2F1F1</item>
-            <item name="colorOnBackground">@color/text_primary</item>
-            <item name="colorSurface">@color/surface_elevated</item>
-            <item name="colorOnSurface">@color/text_primary</item>
+        <!-- Background Colors -->
+        <item name="android:colorBackground">#F2F1F1</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorSurface">@color/surface_elevated</item>
+        <item name="colorOnSurface">@color/text_primary</item>
 
-            <!-- Surface Variants -->
-            <item name="colorSurfaceVariant">@color/background_light_gray</item>
-            <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <!-- Surface Variants -->
+        <item name="colorSurfaceVariant">@color/background_light_gray</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
 
-            <!-- Outline Colors -->
-            <item name="colorOutline">@color/border_medium</item>
-            <item name="colorOutlineVariant">@color/border_light</item>
+        <!-- Outline Colors -->
+        <item name="colorOutline">@color/border_medium</item>
+        <item name="colorOutlineVariant">@color/border_light</item>
 
-            <!-- Status Bar and Navigation Bar -->
-            <item name="android:statusBarColor">@color/primary_navy_blue</item>
-            <item name="android:navigationBarColor">@color/background_white</item>
-            <item name="android:windowLightStatusBar">false</item>
+        <!-- Status Bar and Navigation Bar -->
+        <item name="android:statusBarColor">@color/primary_navy_blue</item>
+        <item name="android:navigationBarColor">@color/background_white</item>
+        <item name="android:windowLightStatusBar">false</item>
 
-            <!-- Additional Professional Elements -->
-            <item name="colorControlNormal">@color/neutral_400</item>
-            <item name="colorControlActivated">@color/primary_accent_blue</item>
-            <item name="colorControlHighlight">@color/surface_overlay</item>
+        <!-- Additional Professional Elements -->
+        <item name="colorControlNormal">@color/neutral_400</item>
+        <item name="colorControlActivated">@color/primary_accent_blue</item>
+        <item name="colorControlHighlight">@color/surface_overlay</item>
 
-            <!-- Text Colors -->
-            <item name="android:textColorPrimary">@color/text_primary</item>
-            <item name="android:textColorSecondary">@color/text_secondary</item>
-            <item name="android:textColorTertiary">@color/text_tertiary</item>
-            <item name="android:textColorHint">@color/text_disabled</item>
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorTertiary">@color/text_tertiary</item>
+        <item name="android:textColorHint">@color/text_disabled</item>
 
-            <!-- Button Colors -->
-            <item name="materialButtonStyle">@style/Widget.App.Button</item>
-            <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Outlined</item>
+        <!-- Button Colors -->
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Outlined</item>
 
-            <!-- Custom Font Family -->
-            <!--<item name="fontFamily">@font/professional_font</item>-->
-            <!--<item name="android:fontFamily">@font/professional_font</item>-->
-        </style>
+        <!-- Custom Font Family -->
+        <!--<item name="fontFamily">@font/professional_font</item>-->
+        <!--<item name="android:fontFamily">@font/professional_font</item>-->
+    </style>
 
-        <!-- Professional Dark Theme Configuration -->
-        <style name="Theme.HTopStore.Dark" parent="Theme.Material3.DayNight.NoActionBar">
-            <!-- Primary Colors -->
-            <item name="colorPrimary">@color/primary_accent_blue</item>
-            <item name="colorOnPrimary">@color/neutral_900</item>
-            <item name="colorPrimaryContainer">@color/primary_navy_blue</item>
-            <item name="colorOnPrimaryContainer">@color/neutral_100</item>
+    <!-- Professional Dark Theme Configuration -->
+    <style name="Theme.HTopStore.Dark" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/primary_accent_blue</item>
+        <item name="colorOnPrimary">@color/neutral_900</item>
+        <item name="colorPrimaryContainer">@color/primary_navy_blue</item>
+        <item name="colorOnPrimaryContainer">@color/neutral_100</item>
 
-            <!-- Secondary Colors -->
-            <item name="colorSecondary">@color/secondary_sage</item>
-            <item name="colorOnSecondary">@color/neutral_900</item>
-            <item name="colorSecondaryContainer">@color/secondary_charcoal</item>
-            <item name="colorOnSecondaryContainer">@color/neutral_200</item>
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">@color/secondary_sage</item>
+        <item name="colorOnSecondary">@color/neutral_900</item>
+        <item name="colorSecondaryContainer">@color/secondary_charcoal</item>
+        <item name="colorOnSecondaryContainer">@color/neutral_200</item>
 
-            <!-- Tertiary Colors -->
-            <item name="colorTertiary">@color/dept_sales</item>
-            <item name="colorOnTertiary">@color/neutral_900</item>
-            <item name="colorTertiaryContainer">@color/neutral_700</item>
-            <item name="colorOnTertiaryContainer">@color/neutral_200</item>
+        <!-- Tertiary Colors -->
+        <item name="colorTertiary">@color/dept_sales</item>
+        <item name="colorOnTertiary">@color/neutral_900</item>
+        <item name="colorTertiaryContainer">@color/neutral_700</item>
+        <item name="colorOnTertiaryContainer">@color/neutral_200</item>
 
-            <!-- Error Colors -->
-            <item name="colorError">@color/action_danger</item>
-            <item name="colorOnError">@color/text_white</item>
-            <item name="colorErrorContainer">@color/alert_critical</item>
-            <item name="colorOnErrorContainer">@color/neutral_100</item>
+        <!-- Error Colors -->
+        <item name="colorError">@color/action_danger</item>
+        <item name="colorOnError">@color/text_white</item>
+        <item name="colorErrorContainer">@color/alert_critical</item>
+        <item name="colorOnErrorContainer">@color/neutral_100</item>
 
-            <!-- Background Colors -->
-            <item name="android:colorBackground">@color/background_dark</item>
-            <item name="colorOnBackground">@color/neutral_100</item>
-            <item name="colorSurface">@color/background_surface_dark</item>
-            <item name="colorOnSurface">@color/neutral_100</item>
+        <!-- Background Colors -->
+        <item name="android:colorBackground">@color/background_dark</item>
+        <item name="colorOnBackground">@color/neutral_100</item>
+        <item name="colorSurface">@color/background_surface_dark</item>
+        <item name="colorOnSurface">@color/neutral_100</item>
 
-            <!-- Surface Variants -->
-            <item name="colorSurfaceVariant">@color/neutral_700</item>
-            <item name="colorOnSurfaceVariant">@color/neutral_300</item>
+        <!-- Surface Variants -->
+        <item name="colorSurfaceVariant">@color/neutral_700</item>
+        <item name="colorOnSurfaceVariant">@color/neutral_300</item>
 
-            <!-- Surface Containers -->
-            <item name="colorSurfaceContainer">@color/neutral_800</item>
-            <item name="colorSurfaceContainerLow">@color/neutral_900</item>
-            <item name="colorSurfaceContainerHigh">@color/neutral_700</item>
-            <item name="colorSurfaceContainerHighest">@color/neutral_600</item>
+        <!-- Surface Containers -->
+        <item name="colorSurfaceContainer">@color/neutral_800</item>
+        <item name="colorSurfaceContainerLow">@color/neutral_900</item>
+        <item name="colorSurfaceContainerHigh">@color/neutral_700</item>
+        <item name="colorSurfaceContainerHighest">@color/neutral_600</item>
 
-            <!-- Outline Colors -->
-            <item name="colorOutline">@color/neutral_500</item>
-            <item name="colorOutlineVariant">@color/neutral_600</item>
+        <!-- Outline Colors -->
+        <item name="colorOutline">@color/neutral_500</item>
+        <item name="colorOutlineVariant">@color/neutral_600</item>
 
-            <!-- Status Bar and Navigation Bar -->
-            <item name="android:statusBarColor">@color/background_dark</item>
-            <item name="android:navigationBarColor">@color/background_dark</item>
-            <item name="android:windowLightStatusBar">false</item>
+        <!-- Status Bar and Navigation Bar -->
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
 
-            <!-- Text Colors -->
-            <item name="android:textColorPrimary">@color/neutral_100</item>
-            <item name="android:textColorSecondary">@color/neutral_300</item>
-            <item name="android:textColorTertiary">@color/neutral_400</item>
-            <item name="android:textColorHint">@color/neutral_500</item>
-        </style>
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/neutral_100</item>
+        <item name="android:textColorSecondary">@color/neutral_300</item>
+        <item name="android:textColorTertiary">@color/neutral_400</item>
+        <item name="android:textColorHint">@color/neutral_500</item>
+    </style>
 
-        <!-- Custom Button Styles -->
-        <style name="Widget.App.Button" parent="Widget.Material3.Button">
-            <item name="backgroundTint">@color/button_primary</item>
-            <item name="android:textColor">@color/text_white</item>
-            <item name="cornerRadius">8dp</item>
-        </style>
+    <!-- Custom Button Styles -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_primary</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
 
-        <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
-            <item name="strokeColor">@color/button_outline</item>
-            <item name="android:textColor">@color/button_primary</item>
-            <item name="cornerRadius">8dp</item>
-        </style>
+    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/button_outline</item>
+        <item name="android:textColor">@color/button_primary</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
 
-        <!-- Professional Card Style -->
-        <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
-            <item name="cardBackgroundColor">@color/surface_elevated</item>
-            <item name="cardCornerRadius">12dp</item>
-            <item name="cardElevation">4dp</item>
-        </style>
+    <!-- Professional Card Style -->
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/surface_elevated</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
 
     <style name="Theme.HTopStore" parent="Base.Theme.HTopStore" />
 
     <style name="circular_img" parent="">
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="product_img" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">10dp</item>
@@ -154,7 +156,7 @@
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
- <!-- cart item img style-->
+    <!-- cart item img style-->
     <style name="cart_item_img" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">15dp</item>
@@ -162,9 +164,11 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeTopRight">0dp</item>
     </style>
+
     <style name="CustomTextAppearance" parent="">
         <item name="android:textSize">15sp</item>
     </style>
+
     <style name="CustomNumberPickerTheme" parent="ThemeOverlay.MaterialComponents.Light">
         <!-- Change text color -->
         <item name="android:textColorPrimary">@color/background_dark</item>

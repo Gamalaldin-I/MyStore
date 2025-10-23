@@ -1,6 +1,10 @@
 package com.example.domain.repo
 
+import kotlinx.coroutines.flow.StateFlow
+
 interface AuthRepo{
+
+    val employeeStatus: StateFlow<String>
 
     fun login(email:String,
               password:String,
@@ -15,9 +19,14 @@ interface AuthRepo{
         storePhone: String,
         onResult:(success:Boolean,msg:String)->Unit
     )
-    fun createInvite(storeId: String, email:String,onResult:(success:Boolean,msg:String)->Unit)
-    fun registerEmployee(name: String, email:String, password:String, code:String,onResult:(success:Boolean,msg:String)->Unit)
-    fun approveEmployee(uid:String,onResult:(success:Boolean,msg:String)->Unit)
-    fun rejectEmployee(uid:String,onResult:(success:Boolean,msg:String)->Unit)
+    fun listenToEmployee()
+    fun stopListening()
+
+    fun registerEmployee(name: String,
+                         email:String,
+                         password:String,
+                         onResult:(success:Boolean,msg:String)->Unit)
+
+    fun rejectEmployee(employeeId:String,onResult:(success:Boolean,msg:String)->Unit)
     fun logout(onResult: (Boolean, String) -> Unit)
 }

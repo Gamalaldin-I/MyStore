@@ -31,11 +31,14 @@
             android:textColor="@color/text_primary"
             android:textSize="20sp" />
 
-        <Button
+        <ImageView
             android:id="@+id/staff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Staff"
+            android:layout_width="60dp"
+            android:layout_height="60sp"
+            android:background="@drawable/delete_shadow"
+            android:backgroundTint="@color/action_primary"
+            android:padding="10dp"
+            android:src="@drawable/icon_staff"
             android:textStyle="bold"
             />
 

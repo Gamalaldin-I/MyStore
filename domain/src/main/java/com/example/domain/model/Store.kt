@@ -5,5 +5,6 @@ data class Store(
     var name: String,
     var location: String,
     var phone: String,
+    val ownerId:String
 )
 

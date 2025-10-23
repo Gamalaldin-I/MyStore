@@ -10,6 +10,7 @@ import com.example.domain.model.Product
 import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.model.category.UserRoles
+import com.example.domain.repo.AuthRepo
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
@@ -21,6 +22,7 @@ import com.example.domain.useCase.product.GetArchiveProductsUseCase
 import com.example.domain.useCase.product.GetArchiveSizeUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
 import com.example.domain.useCase.sales.SellUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +43,8 @@ class MainViewModel @Inject constructor(
     getArchiveSizeUseCase: GetArchiveSizeUseCase,
     getProfitByDayUseCase: GetProfitByDayUseCase,
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
-    getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase
+    getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
+    private val authRepo: AuthRepo,
 
 ): ViewModel(){
 
@@ -93,5 +96,27 @@ class MainViewModel @Inject constructor(
     fun logout(onResult: (Boolean, String) -> Unit){
         pref.clearPrefs()
         logoutUseCase(onResult)
+    }
+
+
+    val employeeStatus = authRepo.employeeStatus.asLiveData()
+
+    fun startListening(){
+        if(pref.getRole()!= Constants.OWNER_ROLE){
+        authRepo.listenToEmployee()
         }
+    }
+    fun clearStoreData(){
+        pref.saveStore(
+            id = "",
+            name = "",
+            phone = "",
+            location = "",
+            ownerId = "")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        authRepo.stopListening()
+    }
 }

@@ -18,7 +18,6 @@ class SignupViewModel @Inject constructor(
     private var userName = ""
     private var email = ""
     private var password = ""
-    private var code =""
 
     private val _msg = MutableLiveData<String>()
     val msg: LiveData<String> = _msg
@@ -68,12 +67,10 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    override fun afterSendCode(code: String, nextAction: () -> Unit) {
-        this.code = code
+    override fun afterEmployeeFormFill(nextAction: () -> Unit) {
         registerEmployeeUseCase(this.userName,
             this.email,
             this.password,
-            this.code
             ){
             success,msg->
             if (success) {
