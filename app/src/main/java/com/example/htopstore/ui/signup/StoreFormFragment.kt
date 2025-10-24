@@ -39,10 +39,10 @@ class StoreFormFragment private constructor(): Fragment() {
     }
     private fun allFieldsAreValid(){
         val name = binding.nameEt.text.toString()
-        val location = binding.LocationEt.text.toString()
-        val phone = binding.PhoneEt.text.toString()
+        val location = binding.locationEt.text.toString()
+        val phone = binding.phoneEt.text.toString()
         if(vm.validStoreData(name,location,phone)){
-            oNextStep(name,location,phone)
+            oNextStep(name,location,"+20$phone")
         }
     }
 

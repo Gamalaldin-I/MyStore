@@ -2,6 +2,7 @@ package com.example.htopstore.ui.inbox
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,8 @@ class InboxActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInboxBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.emptyState.visibility = View.VISIBLE
+
         //check if the user is logged in
         vm.validToGoHome{
             startActivity(Intent(this, MainActivity::class.java))
@@ -69,7 +72,7 @@ class InboxActivity : AppCompatActivity() {
         }
 
         binding.recycler.adapter = adapter
-        binding.logout.setOnClickListener {
+        binding.logoutBtn.setOnClickListener {
             vm.logout { success , msg ->
                 if(success){
                     startActivity(Intent(this, LoginActivity::class.java))
@@ -89,8 +92,16 @@ class InboxActivity : AppCompatActivity() {
                 list->
                 if(list.isNotEmpty()){
                 adapter.update(list as MutableList<Invite>)
-            }}
+                    binding.inviteCount.text = list.size.toString()
+                    binding.emptyState.visibility = View.GONE
+            }
+                else{
+                    binding.emptyState.visibility = View.VISIBLE
+                }
+
+            }
         }
     }
+
 
 }

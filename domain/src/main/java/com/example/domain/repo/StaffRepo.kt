@@ -18,5 +18,6 @@ interface StaffRepo {
     fun getAllInvitesForEmployee(onResult:(success:Boolean,msg:String)->Unit)
     fun acceptInvite(invite: Invite,code:String,onResult:(success: Boolean,msg:String)->Unit)
     fun rejectInvite(invite: Invite,onResult:(success: Boolean,msg:String)->Unit)
+    fun rejectOrRehireEmployee(employeeId:String,reject:Boolean,onResult:(success:Boolean,msg:String)->Unit)
 
 }

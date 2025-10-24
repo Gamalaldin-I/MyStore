@@ -30,9 +30,9 @@ class InboxAdapter(private val data: MutableList<Invite>,
             createdAt.text = item.createdAt
             acceptBtn.setOnClickListener {
                 if(codeEt.text.toString().isEmpty()){
-                    code.error = "Enter code"
+                    codeInput.error = "Enter code"
                 }else{
-                    code.error = null
+                    codeInput.error = null
                     onAcceptListener(codeEt.text.toString().trim(),item)
                 }
             }

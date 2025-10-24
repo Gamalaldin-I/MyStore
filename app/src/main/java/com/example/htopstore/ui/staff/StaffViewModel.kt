@@ -9,6 +9,7 @@ import com.example.domain.useCase.staff.AddStoreInviteUseCase
 import com.example.domain.useCase.staff.DeleteStoreInviteUseCase
 import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
+import com.example.domain.useCase.staff.RejectOrRehireUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class StaffViewModel @Inject constructor(
     private val getStoreInvitesUseCase: GetStoreInvitesUseCase,
     private val deleteStoreInviteUseCase: DeleteStoreInviteUseCase,
     private val addStoreInviteUseCase: AddStoreInviteUseCase,
+    private val rejectOrRehireUseCase: RejectOrRehireUseCase,
     private val staffRepo: StaffRepo
 ): ViewModel(){
     private val _msg = MutableLiveData<String>()
@@ -29,6 +31,14 @@ class StaffViewModel @Inject constructor(
     fun getInvites(){
         getStoreInvitesUseCase()
     }
+    fun hireOrFire(empId:String,hire:Boolean){
+        rejectOrRehireUseCase(empId,hire){
+            success,msg->
+            _msg.value = msg
+        }
+
+    }
+
     fun addInvite(email: String, code:String,successAction:()->Unit){
         addStoreInviteUseCase(email, code){
             success,msg->

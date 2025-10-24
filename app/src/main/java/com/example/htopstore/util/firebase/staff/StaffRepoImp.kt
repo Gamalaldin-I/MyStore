@@ -8,6 +8,7 @@ import com.example.domain.util.Constants
 import com.example.domain.util.Constants.STATUS_ACCEPTED
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.Constants.STATUS_PENDING
+import com.example.domain.util.Constants.STATUS_REJECTED
 import com.example.domain.util.DateHelper
 import com.example.htopstore.util.firebase.FirebaseUtils
 import com.example.htopstore.util.firebase.Mapper.hash
@@ -99,57 +100,82 @@ class StaffRepoImp(
             }
     }
 
-    override fun acceptInvite(invite: Invite, code: String, onResult: (Boolean, String) -> Unit) {
+    override fun acceptInvite(
+        invite: Invite,
+        code: String,
+        onResult: (Boolean, String) -> Unit
+    ) {
         val user = pref.getUser()
 
-        // Step 1️⃣: Update invite status
+        // ✅ Step 1: Validate the invite code
+        if (invite.code != code) {
+            onResult(false, "Invalid invite code.")
+            return
+        }
+
+        // ✅ Step 2: Prepare updated invite
         val updatedInvite = invite.copy(
             status = STATUS_ACCEPTED,
             acceptedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
         )
 
-        val invitesRef = db.collection(fu.INVITES)
+        val invitesRef = db.collection(fu.INVITES).document(invite.code!!)
+        val employeeRef = db.collection(fu.EMPLOYEES).document(user.id)
+        val storeEmployeesRef = db.collection(fu.OWNERS)
+            .document(invite.ownerId!!)
+            .collection(fu.STORES)
+            .document(invite.storeId!!)
+            .collection(fu.EMPLOYEES)
 
-        invitesRef.document(invite.code!!).set(updatedInvite.hash())
-            .addOnSuccessListener {
-                // Step 2️⃣: Add employee to store
-                val storeEmployee = StoreEmployee(
-                    id = user.id,
-                    email = user.email,
-                    name = user.name,
-                    role = user.role,
-                    status = STATUS_HIRED,
-                    joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
+        // ✅ Step 3: Prepare employee data
+        val newEmployee = StoreEmployee(
+            id = user.id,
+            email = user.email,
+            name = user.name,
+            role = user.role,
+            status = STATUS_HIRED,
+            joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
+        )
+
+        // ✅ Step 4: Update invite → then add employee → then update main employee → then fetch store info
+        invitesRef.set(updatedInvite.hash())
+            .continueWithTask {
+                // Add employee to store
+                storeEmployeesRef.document(user.id).set(newEmployee.hash())
+            }.continueWithTask {
+                // Update employee in main collection
+                employeeRef.update(
+                    mapOf(
+                        "storeId" to invite.storeId,
+                        "ownerId" to invite.ownerId,
+                        "status" to STATUS_HIRED,
+                        "acceptedAt" to updatedInvite.acceptedAt
+                    )
+                )
+            }.continueWithTask {
+                // Fetch store info to save in shared pref
+                db.collection(fu.OWNERS).document(invite.ownerId!!)
+                    .collection(fu.STORES).document(invite.storeId!!)
+                    .get()
+            }.addOnSuccessListener { storeDoc ->
+                val phone = storeDoc.getString("phone").orEmpty()
+                val location = storeDoc.getString("location").orEmpty()
+
+                // ✅ Save store locally
+                pref.saveStore(
+                    id = invite.storeId!!,
+                    name = invite.storeName!!,
+                    phone = phone,
+                    location = location,
+                    ownerId = invite.ownerId!!
                 )
 
-                val storeEmployeesRef = db.collection(fu.OWNERS).document(invite.ownerId!!)
-                    .collection(fu.STORES).document(invite.storeId!!)
-                    .collection(fu.EMPLOYEES)
-
-                val employeeRef = db.collection(fu.EMPLOYEES).document(user.id)
-
-                storeEmployeesRef.document(user.id).set(storeEmployee.hash())
-                    .addOnSuccessListener {
-                        // Step 3️⃣: Update main employee collection
-                        employeeRef.update(
-                            "storeId", invite.storeId,
-                            "ownerId", invite.ownerId,
-                            "status", STATUS_HIRED,
-                            "acceptedAt", updatedInvite.acceptedAt
-                        ).addOnSuccessListener { snapshot ->
-                                onResult(true, "Employee accepted successfully")
-                                    }
-                            .addOnFailureListener { e ->
-                                onResult(false, e.message ?: "Error updating employee data")
-                            }
-                    }.addOnFailureListener { e ->
-                        onResult(false, e.message ?: "Error adding employee to store")
-                    }
-            }
-            .addOnFailureListener { e ->
-                onResult(false, e.message ?: "Error updating invite status")
+                onResult(true, "Invite accepted successfully.")
+            }.addOnFailureListener { e ->
+                onResult(false, e.message ?: "Failed to accept invite.")
             }
     }
+
 
     override fun rejectInvite(invite: Invite, onResult: (Boolean, String) -> Unit) {
         val rejectedInvite = invite.copy(status = Constants.STATUS_REJECTED)
@@ -180,6 +206,50 @@ class StaffRepoImp(
             _employeesFlow.value = list
         }
     }
+
+    override fun rejectOrRehireEmployee(
+        employeeId: String,
+        reject: Boolean,
+        onResult: (Boolean, String) -> Unit,
+    ) {
+        val newStatus = if (reject) STATUS_REJECTED else STATUS_HIRED
+        val msgSuccess = if (reject) "The employee has been rejected." else "The employee has been hired."
+        val msgFailure = if (reject) "Failed to reject the employee." else "Failed to hire the employee."
+
+        val employeeRef = db.collection(fu.EMPLOYEES).document(employeeId)
+        val ownerStoreEmployeeRef = db.collection(fu.OWNERS)
+            .document(pref.getUser().id)
+            .collection(fu.STORES)
+            .document(pref.getStore().id)
+            .collection(fu.EMPLOYEES)
+            .document(employeeId)
+
+        employeeRef.get()
+            .addOnSuccessListener { doc ->
+                val storeId = doc.getString("storeId")
+                val currentStoreId = pref.getStore().id
+
+                if (storeId != currentStoreId) {
+                    onResult(false, "This employee is not part of the current store.")
+                    return@addOnSuccessListener
+                }
+
+                employeeRef.update("status", newStatus)
+                    .continueWithTask {
+                        ownerStoreEmployeeRef.update("status", newStatus)
+                    }
+                    .addOnSuccessListener {
+                        onResult(true, msgSuccess)
+                    }
+                    .addOnFailureListener { e ->
+                        onResult(false, e.message ?: msgFailure)
+                    }
+            }
+            .addOnFailureListener { e ->
+                onResult(false, e.message ?: "Failed to fetch employee data.")
+            }
+    }
+
 
     // ---------------------------------------------------------
     // 🔹 LISTENER CONTROL

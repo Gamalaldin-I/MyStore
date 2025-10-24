@@ -13,7 +13,10 @@ import com.example.htopstore.databinding.InviteCardBinding
 
 class InvitesAdapter(private val data: MutableList<Invite>,
                      private val onDelete:(invite: Invite)->Unit,
-                     private val onShare:(invite: Invite)->Unit) :
+                     private val onShare:(invite: Invite)->Unit,
+                     private val onCopy:(text: String)->Unit
+
+    ) :
     RecyclerView.Adapter<InvitesAdapter.InviteHolder>() {
 
     // Create ViewHolder class
@@ -31,15 +34,15 @@ class InvitesAdapter(private val data: MutableList<Invite>,
         val context = holder.binding.root.context
         holder.binding.apply {
             email.text = item.email
-            status.text = item.status
-            when(status.text){
-                STATUS_PENDING -> status.setTextColor(
+            statusChip.text = item.status
+            when(statusChip.text){
+                STATUS_PENDING -> statusChip.setTextColor(
                     ContextCompat.getColor(context, R.color.size_small)
                 )
-                STATUS_ACCEPTED -> status.setTextColor(
+                STATUS_ACCEPTED -> statusChip.setTextColor(
                     ContextCompat.getColor(context, R.color.action_primary)
                 )
-                else -> status.setTextColor(
+                else -> statusChip.setTextColor(
                     ContextCompat.getColor(context, R.color.alert_critical)
                 )
             }
@@ -51,6 +54,9 @@ class InvitesAdapter(private val data: MutableList<Invite>,
             }
             deleteBtn.setOnClickListener {
                 onDelete(item)
+            }
+            copyBtn.setOnClickListener {
+                onCopy(item.code.toString())
             }
         }
     }

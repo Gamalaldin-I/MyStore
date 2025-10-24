@@ -1,59 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_day_brief"
-    android:padding="15dp"
-    android:layout_margin="5dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp">
 
-    <TableRow>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_white"
+        android:orientation="vertical"
+        android:padding="15dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Header Section with Avatar -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name  " />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
 
-        <TextView
-            android:id="@+id/employeeName"
-            android:layout_width="wrap_content"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/employeeAvatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_profile"
+                app:strokeColor="@color/primary_accent_blue"
+                app:shapeAppearanceOverlay="@style/circular_img"
+                android:padding="5dp"
+                app:strokeWidth="2dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/employeeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Htop"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/employeeRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Manager"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/empStatusChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="false"
+                android:text="Active"
+                android:textColor="#F9FBFA"
+                android:textSize="12sp"
+                app:chipBackgroundColor="@color/primary_accent_blue"
+                app:chipStrokeWidth="0dp" />
+
+
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/neutral_300" />
+
+        <!-- Email Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:text="Htop" />
-    </TableRow>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
 
-    <TableRow>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Email icon"
+                android:src="@drawable/icon_email"
+                 />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Role  " />
+            <TextView
+                android:id="@+id/employeeEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:autoLink="email"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="htbtGmal2013@gmail.com"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/employeeRole"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:text="Manager" />
-    </TableRow>
+        </LinearLayout>
 
-    <TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Email  " />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/employeeEmail"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="htbtGmal2013@gmail.com" />
-    </TableRow>
-
-</TableLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -322,22 +322,6 @@ class AuthRepoImp(
 
 
 
-    override fun rejectEmployee(
-        employeeId: String,
-        onResult: (Boolean, String) -> Unit,
-    ) {
-        db.collection(fu.EMPLOYEES)
-            .document(employeeId)
-            .update("status", Constants.STATUS_REJECTED)
-            .addOnSuccessListener {
-                onResult(true, "The employee has been fired.")
-            }
-            .addOnFailureListener { e ->
-                onResult(false, e.message ?: "Error while firing the employee.")
-            }
-    }
-
-
     override fun logout(onResult: (Boolean, String) -> Unit) {
         auth.signOut()
         db.clearPersistence()

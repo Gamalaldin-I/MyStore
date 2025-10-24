@@ -1,7 +1,9 @@
 package com.example.htopstore.ui.staff
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.htopstore.databinding.ActivityStaffBinding
 import com.example.htopstore.util.adapters.ViewPagerAdapter
@@ -13,12 +15,16 @@ class StaffActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStaffBinding
     private lateinit var employeesFragment: EmployeesFragment
     private lateinit var invitesFragment: InvitesFragment
+    private val vm: StaffViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityStaffBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setFragmentsAdapter()
+        vm.msg.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setFragmentsAdapter(){

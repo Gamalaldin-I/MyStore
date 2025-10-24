@@ -45,4 +45,16 @@
     <string name="store">المخزن</string>
     <string name="l_e">ج.م</string>
     <string name="sell_now">بيع الآن!</string>
+    <string name="role_icon">Role Selection Icon</string>
+    <string name="select_your_role">Select Your Role</string>
+
+    <string name="owner_icon">Business Owner Icon</string>
+    <string name="business_owner">Business Owner</string>
+    <string name="manage_business_team">Manage your business and team</string>
+    <string name="employee_icon">Employee Icon</string>
+    <string name="employee">Employee</string>
+    <string name="join_work_team">Join and work with your team</string>
+    <string name="continue_btn">Continue</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="log_in">Log In</string>
 </resources>

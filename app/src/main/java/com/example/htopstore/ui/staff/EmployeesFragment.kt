@@ -39,14 +39,17 @@ class EmployeesFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             vm.employees.collect { list ->
                 if(list.isNotEmpty()){
-                adapter.updateData(list as MutableList<StoreEmployee>)
+                adapter.submitList(list as MutableList<StoreEmployee>)
                 }
             }
         }
 
     }
     fun setupEmployeesRecyclerView() {
-        adapter = EmployeeAdapter(mutableListOf())
+        adapter = EmployeeAdapter(){
+                employee, fire ->
+            vm.hireOrFire(employee.id!!,fire)
+        }
         binding.recyclerView.adapter = adapter
     }
 

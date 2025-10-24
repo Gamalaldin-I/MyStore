@@ -77,6 +77,7 @@ class InboxViewModel @Inject constructor(
         }
     }
 
+
     override fun onCleared() {
         super.onCleared()
         staffRepo.stopListening()

@@ -10,6 +10,11 @@
     <color name="secondary_charcoal">#FF374151</color>
     <color name="secondary_pewter">#FF6B7280</color>
     <color name="secondary_sage">#FF059669</color>
+    <color name="emp_card_color">#F7FAD7AD</color>
+    <color name="owner_card_color">#AFC8FA</color>
+
+
+
 
     <!-- Background Colors -->
     <color name="background_white">#FFFFFFFF</color>

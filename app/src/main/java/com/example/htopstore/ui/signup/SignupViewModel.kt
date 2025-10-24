@@ -118,11 +118,11 @@ class SignupViewModel @Inject constructor(
             _msg.value = "Please enter a valid name"
             return false
         }
-        if (phone.length != 11) {
+        if (phone.length != 10) {
             _msg.value = "Please enter a valid phone number"
             return false
         }
-        if (!phone.startsWith("01")) {
+        if (!phone.startsWith("1")) {
             _msg.value = "Please enter a valid phone number"
             return false
         }

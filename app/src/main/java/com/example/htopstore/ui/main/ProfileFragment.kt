@@ -38,11 +38,10 @@ class ProfileFragment : Fragment() {
         binding.nameEt.setText(user.name)
         binding.passwordEt.setText(user.password)
         binding.emailEt.setText(user.email)
-        binding.storeIdTV.text =store.id
         binding.storeNameTV.text =store.name
         binding.storeLocationTV.text =store.location
         binding.storePhoneTV.text =store.phone
-        binding.role.text = vm.getRole()
+        binding.roleChip.text = vm.getRole()
         Log.d("TAGProfileFragment", "showData (Location): ${store.location}\n" +
                 "(phone): ${store.phone}")
         binding.logout.setOnClickListener {

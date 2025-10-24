@@ -9,6 +9,7 @@ import com.example.domain.useCase.staff.GetAllEmailPendingInvitesUseCase
 import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
 import com.example.domain.useCase.staff.RejectInviteUseCase
+import com.example.domain.useCase.staff.RejectOrRehireUseCase
 import com.example.htopstore.util.firebase.staff.StaffRepoImp
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -52,5 +53,10 @@ object StaffModule {
     fun provideRejectInviteUseCase(staffRepo: StaffRepo): RejectInviteUseCase{
         return RejectInviteUseCase(staffRepo)
     }
+    @Provides
+    fun provideRejectOrRehireUseCase(staffRepo: StaffRepo): RejectOrRehireUseCase{
+        return RejectOrRehireUseCase(staffRepo)
+    }
+
 
 }

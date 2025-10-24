@@ -27,6 +27,5 @@ interface AuthRepo{
                          password:String,
                          onResult:(success:Boolean,msg:String)->Unit)
 
-    fun rejectEmployee(employeeId:String,onResult:(success:Boolean,msg:String)->Unit)
     fun logout(onResult: (Boolean, String) -> Unit)
 }
