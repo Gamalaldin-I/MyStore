@@ -180,5 +180,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/gradient_blue_end</item>
     </style>
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/white</item>
+    </style>
 
 </resources>

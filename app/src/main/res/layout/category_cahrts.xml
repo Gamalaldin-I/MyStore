@@ -1,58 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <!-- Selling Categories Chart -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/salesChartLo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@android:color/white">
+
         <LinearLayout
-            android:id="@+id/salesChartLo"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="20dp"
-            android:backgroundTint="#D7D7D7"
-            android:background="@drawable/bg_day_brief"
-            android:layout_height="wrap_content">
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="24dp"
+                    android:background="#4F46E5"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:id="@+id/sellingCategories"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Selling Categories"
+                    android:textSize="20sp"
+                    android:textColor="#1A1A1A"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/sellingCategories"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:textSize="18sp"
-                android:textColor="@color/text_secondary"
                 android:layout_height="wrap_content"
-                android:text="Selling Categories"/>
+                android:text="Distribution by category"
+                android:textSize="13sp"
+                android:textColor="#6B7280"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/sellingCategoriesChart"
                 android:layout_width="match_parent"
-                android:background="@drawable/bg_day_brief"
-                android:layout_margin="10dp"
-                android:layout_height="250dp"/>
+                android:layout_height="280dp"
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
-    <LinearLayout
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Returning Categories Chart -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/returningChartLO"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="20dp"
-        android:backgroundTint="#D7D7D7"
-        android:background="@drawable/bg_day_brief"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@android:color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:textSize="18sp"
-            android:textColor="@color/text_secondary"
-            android:layout_height="wrap_content"
-            android:text="Returning Categories"/>
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/returningCategories"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:background="@drawable/bg_day_brief"
-            android:layout_margin="10dp"
-            android:layout_height="250dp"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="24dp"
+                    android:background="#EF4444"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Returning Categories"
+                    android:textSize="20sp"
+                    android:textColor="#1A1A1A"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product returns by category"
+                android:textSize="13sp"
+                android:textColor="#6B7280"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/returningCategories"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

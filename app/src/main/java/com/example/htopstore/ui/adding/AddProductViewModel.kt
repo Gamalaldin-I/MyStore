@@ -22,13 +22,12 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProductViewModel
-    @Inject constructor(
-    private val addNewProductUseCase: AddProductUseCase)
-     : ViewModel() {
+class AddProductViewModel @Inject constructor(
+    private val addNewProductUseCase: AddProductUseCase
+) : ViewModel() {
 
     // LiveData for UI state
-    private val _uiState = MutableLiveData<AddProductUiState>()
+    private val _uiState = MutableLiveData(AddProductUiState())
     val uiState: LiveData<AddProductUiState> = _uiState
 
     // LiveData for validation messages
@@ -40,18 +39,24 @@ class AddProductViewModel
     val navigationEvent: LiveData<NavigationEvent> = _navigationEvent
 
     // Current product data
-    private var tempImageFile: File? = null
-    private var tempImageUri: Uri? = null
+    private var currentImageUri: Uri? = null
+    private var tempCameraFile: File? = null
 
-
-    fun setTempImageData(file: File?, uri: Uri?) {
-        tempImageFile = file
-        tempImageUri = uri
-        _uiState.value = _uiState.value?.copy(hasImage = uri != null) ?:
-                AddProductUiState(hasImage = uri != null)
+    fun setImageUri(uri: Uri?) {
+        currentImageUri = uri
+        _uiState.value = _uiState.value?.copy(hasImage = uri != null)
     }
 
-    fun getTempImageUri(): Uri? = tempImageUri
+    fun getImageUri(): Uri? = currentImageUri
+
+    fun createTempCameraFile(context: Context): File {
+        val file = File(
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "temp_camera_${UUID.randomUUID()}.jpg"
+        )
+        tempCameraFile = file
+        return file
+    }
 
     fun validateAndSaveProduct(
         context: Context,
@@ -66,14 +71,13 @@ class AddProductViewModel
                 return@launch
             }
 
-            _uiState.value = _uiState.value?.copy(isLoading = true) ?:
-                    AddProductUiState(isLoading = true)
+            _uiState.value = _uiState.value?.copy(isLoading = true)
 
             try {
                 val savedFile = saveFinalImage(context)
                 if (savedFile != null) {
                     val product = Product(
-                        id = BarcodeGenerator.scannedCode?:IdGenerator.generateProductId(),
+                        id = BarcodeGenerator.scannedCode ?: IdGenerator.generateProductId(),
                         addingDate = DateHelper.getCurrentDate(),
                         productImage = savedFile.absolutePath,
                         category = category,
@@ -103,16 +107,16 @@ class AddProductViewModel
         sellingPrice: String,
         count: String
     ): Boolean {
-        if (tempImageUri == null) {
-            _validationMessage.value = "Please capture an image"
+        if (currentImageUri == null) {
+            _validationMessage.value = "Please select or capture an image"
             return false
         }
         if (category.isEmpty()) {
-            _validationMessage.value = "Please select a type"
+            _validationMessage.value = "Please select a category"
             return false
         }
         if (brand.isEmpty()) {
-            _validationMessage.value = "Please enter a brand"
+            _validationMessage.value = "Please enter a brand name"
             return false
         }
         if (buyingPrice.isEmpty()) {
@@ -124,28 +128,28 @@ class AddProductViewModel
             return false
         }
         if (count.isEmpty()) {
-            _validationMessage.value = "Please enter a count"
+            _validationMessage.value = "Please enter a quantity"
             return false
         }
 
         try {
             val countInt = count.toInt()
             if (countInt <= 0) {
-                _validationMessage.value = "Invalid count"
+                _validationMessage.value = "Quantity must be greater than 0"
                 return false
             }
         } catch (e: NumberFormatException) {
-            _validationMessage.value = "Invalid count format"
+            _validationMessage.value = "Invalid quantity format"
             return false
         }
 
         try {
             val buyingPriceDouble = buyingPrice.toDouble()
             if (buyingPriceDouble <= 0) {
-                _validationMessage.value = "Invalid buying price"
+                _validationMessage.value = "Buying price must be greater than 0"
                 return false
             }
-        } catch (_: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             _validationMessage.value = "Invalid buying price format"
             return false
         }
@@ -153,13 +157,13 @@ class AddProductViewModel
         try {
             val sellingPriceDouble = sellingPrice.toDouble()
             if (sellingPriceDouble <= 0) {
-                _validationMessage.value = "Invalid selling price"
+                _validationMessage.value = "Selling price must be greater than 0"
                 return false
             }
 
             val buyingPriceDouble = buyingPrice.toDouble()
             if (sellingPriceDouble <= buyingPriceDouble) {
-                _validationMessage.value = "Selling price must be > buying price"
+                _validationMessage.value = "Selling price must be greater than buying price"
                 return false
             }
         } catch (e: NumberFormatException) {
@@ -172,10 +176,10 @@ class AddProductViewModel
 
     private suspend fun saveFinalImage(context: Context): File? {
         return withContext(Dispatchers.IO) {
-            if (tempImageUri == null) return@withContext null
+            if (currentImageUri == null) return@withContext null
 
             try {
-                val inputStream = context.contentResolver.openInputStream(tempImageUri!!)
+                val inputStream = context.contentResolver.openInputStream(currentImageUri!!)
                 val file = File(
                     context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                     "product_${System.currentTimeMillis()}.jpg"
@@ -187,9 +191,9 @@ class AddProductViewModel
                 inputStream?.close()
                 outputStream.close()
 
-                // Clean up temp file
-                tempImageFile?.delete()
-                tempImageFile = null
+                // Clean up temp camera file if it exists
+                tempCameraFile?.delete()
+                tempCameraFile = null
 
                 file
             } catch (e: Exception) {
@@ -204,9 +208,11 @@ class AddProductViewModel
             try {
                 addNewProductUseCase(product)
                 withContext(Dispatchers.Main) {
-                    resetForm()
-                    _uiState.value = _uiState.value?.copy(isLoading = false, productSaved = true) ?:
-                            AddProductUiState(isLoading = false, productSaved = true)
+                    _uiState.value = _uiState.value?.copy(
+                        isLoading = false,
+                        productSaved = true,
+                        shouldClearForm = true
+                    )
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -217,28 +223,21 @@ class AddProductViewModel
         }
     }
 
-    private fun resetForm() {
-        tempImageFile = null
-        tempImageUri = null
+    fun resetFormState() {
+        currentImageUri = null
+        tempCameraFile = null
         BarcodeGenerator.scannedCode = null
-        _uiState.value = AddProductUiState(shouldClearForm = true)
+        _uiState.value = AddProductUiState()
     }
 
     fun onBackPressed() {
         _navigationEvent.value = NavigationEvent.NavigateBack
     }
 
-    fun createTempImageFile(context: Context): File {
-        return File(
-            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            "temp_${UUID.randomUUID()}.jpg"
-        )
-    }
-
     override fun onCleared() {
         super.onCleared()
         // Clean up temp files when ViewModel is destroyed
-        tempImageFile?.let { file ->
+        tempCameraFile?.let { file ->
             try {
                 if (file.exists()) file.delete()
             } catch (e: Exception) {

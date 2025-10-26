@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Permissions -->
+
+    <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Storage permissions for gallery access -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" /> <!-- Camera features -->
+        android:maxSdkVersion="28" />
+
+    <!-- For Android 13+ (API 33+) to access images from gallery -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
     <uses-feature
         android:name="android.hardware.camera.any"
         android:required="false" />
@@ -21,46 +32,62 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HTopStore"
         tools:targetApi="31">
+
+        <!-- Activities -->
         <activity
             android:name=".ui.inbox.InboxActivity"
             android:exported="false"
             android:theme="@style/Theme.HTopStore" />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.staff.StaffActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.analysis.AnalysisActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.dayDetails.DayDetailsActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.days.DaysActivity"
-            android:exported="false" /> <!-- Activities -->
+            android:exported="false" />
+
         <activity
             android:name=".ui.scan.ScanActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.expenses.ExpensesActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.genCode.GenCodeActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.billDetails.BillDetailsActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.product.ProductActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.adding.AddProductActivity"
-            android:exported="false" /> <!-- FileProvider -->
+            android:exported="false" />
+
+        <!-- FileProvider for camera and file access -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -69,16 +96,18 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider> <!-- Launcher Activity -->
+        </provider>
+
+        <!-- Launcher Activity -->
         <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

@@ -38,7 +38,7 @@ class StaffActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Employees"
-                1 -> tab.text = "Invites"
+                1 -> tab.text = "Invitations"
             }
         }.attach()
     }

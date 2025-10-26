@@ -1,74 +1,92 @@
 package com.example.htopstore.util.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.remoteModels.Invite
 import com.example.domain.util.Constants.STATUS_ACCEPTED
 import com.example.domain.util.Constants.STATUS_PENDING
 import com.example.htopstore.R
 import com.example.htopstore.databinding.InviteCardBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class InvitesAdapter(private val data: MutableList<Invite>,
-                     private val onDelete:(invite: Invite)->Unit,
-                     private val onShare:(invite: Invite)->Unit,
-                     private val onCopy:(text: String)->Unit
+class InvitesAdapter(
+    private val onDelete: (invite: Invite) -> Unit,
+    private val onShare: (invite: Invite) -> Unit,
+    private val onCopy: (text: String) -> Unit
+) : ListAdapter<Invite, InvitesAdapter.InviteHolder>(DiffCallback()) {
 
-    ) :
-    RecyclerView.Adapter<InvitesAdapter.InviteHolder>() {
-
-    // Create ViewHolder class
     class InviteHolder(val binding: InviteCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    // Create ViewHolder and inflate the item layout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InviteHolder {
-        val binding = InviteCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = InviteCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return InviteHolder(binding)
     }
 
-    // Bind data to the ViewHolder
     override fun onBindViewHolder(holder: InviteHolder, position: Int) {
-        val item = data[position]
-        val context = holder.binding.root.context
-        holder.binding.apply {
-            email.text = item.email
-            statusChip.text = item.status
-            when(statusChip.text){
-                STATUS_PENDING -> statusChip.setTextColor(
-                    ContextCompat.getColor(context, R.color.size_small)
-                )
-                STATUS_ACCEPTED -> statusChip.setTextColor(
-                    ContextCompat.getColor(context, R.color.action_primary)
-                )
-                else -> statusChip.setTextColor(
-                    ContextCompat.getColor(context, R.color.alert_critical)
-                )
+        val invite = getItem(position)
+
+        with(holder.binding) {
+            // Email
+            email.text = invite.email ?: "No email"
+
+            // Status Chip
+            val status = invite.status ?: "Unknown"
+            statusChip.apply {
+                text = status.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                }
+
+                when (status) {
+                    STATUS_PENDING -> {
+                        setTextColor(context.getColor(R.color.process_pending))
+                    }
+                    STATUS_ACCEPTED -> {
+                        setTextColor(context.getColor(R.color.process_approved))
+                    }
+                    else -> {
+                        setTextColor(context.getColor(R.color.process_rejected))
+                    }
+                }
             }
 
-            code.text = item.code
-            createdAt.text = item.createdAt.toString()
-            shareBtn.setOnClickListener {
-                onShare(item)
-            }
-            deleteBtn.setOnClickListener {
-                onDelete(item)
-            }
+            // Code
+            code.text = invite.code ?: "N/A"
+
+            // Created At - Format timestamp
+            createdAt.text = invite.createdAt
+
+            // Action Buttons
+            shareBtn.setOnClickListener { onShare(invite) }
+            deleteBtn.setOnClickListener { onDelete(invite) }
             copyBtn.setOnClickListener {
-                onCopy(item.code.toString())
+                invite.code?.let { code -> onCopy(code) }
             }
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateList(newList: MutableList<Invite>){
-        this.data.clear()
-        this.data.addAll(newList)
-        notifyDataSetChanged()
+
+    private fun formatDate(timestamp: Long?): String {
+        return if (timestamp != null) {
+            val sdf = SimpleDateFormat("MMM dd, yyyy • hh:mm a", Locale.getDefault())
+            sdf.format(Date(timestamp))
+        } else {
+            "Unknown date"
+        }
     }
 
-    // Return the size of the data list
-    override fun getItemCount(): Int {
-        return data.size
+    class DiffCallback : DiffUtil.ItemCallback<Invite>() {
+        override fun areItemsTheSame(oldItem: Invite, newItem: Invite): Boolean =
+            oldItem.code == newItem.code
+
+        override fun areContentsTheSame(oldItem: Invite, newItem: Invite): Boolean =
+            oldItem == newItem
     }
 }

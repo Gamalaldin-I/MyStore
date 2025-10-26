@@ -18,7 +18,6 @@ class EmployeeAdapter(
     private val onFireOrHire: (employee: StoreEmployee, fire: Boolean) -> Unit
 ) : ListAdapter<StoreEmployee, EmployeeAdapter.EHolder>(DiffCallback()) {
 
-    // ViewHolder
     class EHolder(val binding: StaffMemberCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EHolder {
@@ -34,36 +33,50 @@ class EmployeeAdapter(
     override fun onBindViewHolder(holder: EHolder, position: Int) {
         val employee = getItem(position)
         with(holder.binding) {
-            employeeName.text = employee.name
-            employeeEmail.text = employee.email
-            employeeRole.text =
-                UserRoles.entries.find { it.role == employee.role }?.roleName ?: "Unknown"
+            // Employee basic info
+            employeeName.text = employee.name ?: "Unknown"
+            employeeEmail.text = employee.email ?: "No email"
 
+            // Role
+            val role = UserRoles.entries.find { it.role == employee.role }
+            employeeRole.text = role?.roleName ?: "Unknown Role"
+
+            // Status chip
             val isHired = employee.status == STATUS_HIRED
             empStatusChip.apply {
                 text = if (isHired) "Active" else "Inactive"
                 setChipBackgroundColorResource(
                     if (isHired) R.color.primary_accent_blue else R.color.alert_critical
                 )
+                setTextColor(context.getColor(android.R.color.white))
             }
 
+            // Click listener for status change
             empStatusChip.setOnClickListener {
                 val fire = isHired
                 val actionText = if (fire) "fire" else "hire"
-                val titleText = if (fire) "fire" else "hire"
+                val titleText = actionText.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                }
 
                 DialogBuilder.showAlertDialog(
                     context = holder.itemView.context,
-                    title = titleText.capitalize(Locale.ROOT),
-                    message = "Are you sure you want to $actionText this employee?",
+                    title = titleText,
+                    message = "Are you sure you want to $actionText ${employee.name}?",
                     positiveButton = "Yes",
-                    negativeButton = "No",
+                    negativeButton = "Cancel",
                     onConfirm = { onFireOrHire(employee, fire) },
                     onCancel = {}
                 )
             }
+
+            // Item click listener (optional - for viewing employee details)
+            root.setOnClickListener {
+                // TODO: Navigate to employee detail screen
+            }
         }
     }
+
     class DiffCallback : DiffUtil.ItemCallback<StoreEmployee>() {
         override fun areItemsTheSame(oldItem: StoreEmployee, newItem: StoreEmployee): Boolean =
             oldItem.id == newItem.id
@@ -71,5 +84,4 @@ class EmployeeAdapter(
         override fun areContentsTheSame(oldItem: StoreEmployee, newItem: StoreEmployee): Boolean =
             oldItem == newItem
     }
-
 }

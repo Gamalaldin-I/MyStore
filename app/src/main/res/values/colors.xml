@@ -170,4 +170,49 @@
     <color name="input_border_focus">#FF3B82F6</color>
     <color name="input_error">#FFDC2626</color>
     <color name="input_disabled">#FFF3F4F6</color>
+
+    <!-- Primary Colors -->
+    <color name="primary">#6750A4</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primary_container">#EADDFF</color>
+    <color name="onPrimaryContainer">#21005D</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#625B71</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondary_container">#E8DEF8</color>
+    <color name="onSecondaryContainer">#1D192B</color>
+
+    <!-- Tertiary Colors -->
+    <color name="tertiary">#7D5260</color>
+    <color name="onTertiary">#FFFFFF</color>
+    <color name="tertiary_container">#FFD8E4</color>
+    <color name="onTertiaryContainer">#31111D</color>
+
+    <!-- Error Colors -->
+    <color name="error">#B3261E</color>
+    <color name="onError">#FFFFFF</color>
+    <color name="error_container">#F9DEDC</color>
+    <color name="onErrorContainer">#410E0B</color>
+
+    <!-- Success Colors (Custom) -->
+    <color name="success">#2E7D32</color>
+    <color name="success_container">#C8E6C9</color>
+    <color name="success_text">#1B5E20</color>
+
+    <!-- Surface Colors -->
+    <color name="surface">#FFFBFE</color>
+    <color name="onSurface">#1C1B1F</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="onSurfaceVariant">#49454F</color>
+
+    <!-- Background -->
+    <color name="background">#FFFBFE</color>
+
+    <!-- Outline -->
+    <color name="outline">#79747E</color>
+
+    <!-- Common -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
