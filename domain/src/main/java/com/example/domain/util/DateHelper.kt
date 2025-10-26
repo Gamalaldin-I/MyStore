@@ -44,4 +44,27 @@ object DateHelper {
         val end = endDate.format(formatter)
         return Pair(start, end)
     }
+     fun formatDate(dateString: String): String {
+        return try {
+            // Try to parse and format the date nicely
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateString)
+            date?.let { outputFormat.format(it) } ?: dateString
+        } catch (e: Exception) {
+            dateString // Return original if parsing fails
+        }
+    }
+
+     fun formatTime(timeString: String): String {
+        return try {
+            // Try to format time with AM/PM
+            val inputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val time = inputFormat.parse(timeString)
+            time?.let { outputFormat.format(it) } ?: timeString
+        } catch (e: Exception) {
+            timeString // Return original if parsing fails
+        }
+    }
 }

@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="16dp"
         android:background="@drawable/bg_day_brief"
         android:layout_margin ="20dp"
         android:orientation="horizontal"
@@ -45,6 +46,12 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/grid_sales"
+                    app:tint="#3EB2E0" />
 
                 <TextView
                     android:id="@+id/salesValue"
@@ -74,9 +81,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-
                 android:gravity="center"
                 android:orientation="vertical">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/grid_outcome"
+                    app:tint="#DA6E26" />
 
                 <TextView
                     android:id="@+id/expenses"
@@ -107,8 +119,14 @@
                 android:layout_height="100dp"
                 android:gravity="center"
                 android:layout_weight="1"
-
                 android:orientation="vertical">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/trading"
+                    app:tint="#14BD89" />
+
 
                 <TextView
                     android:id="@+id/profit"

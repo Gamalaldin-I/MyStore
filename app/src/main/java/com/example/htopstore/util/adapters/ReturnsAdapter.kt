@@ -3,10 +3,8 @@ package com.example.htopstore.util.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.SoldProduct
-import com.example.htopstore.R
 import com.example.htopstore.databinding.ReturnItemBinding
 
 class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(item:SoldProduct)->Unit) :
@@ -26,28 +24,13 @@ class ReturnsAdapter(private val data: ArrayList<SoldProduct>,val onItemClick:(i
 
         holder.binding.pos.text = (position + 1).toString()
         holder.binding.brandName.text = "${item.name} (${item.type})"
-        holder.binding.priceUnit.text = "UP: ${item.sellingPrice} $"
+        holder.binding.priceUnit.text = "${item.sellingPrice} $"
         holder.binding.date.text = item.sellDate
         holder.binding.time.text = item.sellTime
-
-        if (item.quantity > 0) {
-            // Sold
-            holder.binding.count.text = "Quantity: ${item.quantity}"
-            holder.binding.total.text = "Total: ${item.sellingPrice * item.quantity} $"
-            holder.binding.container.setBackgroundResource(R.drawable.sold_bg)
-            holder.binding.total.setTextColor(
-                ContextCompat.getColor(context, R.color.revenue_positive)
-            )
-        } else {
             // Return
-            val absQuantity = -item.quantity
-            holder.binding.count.text = "Return: $absQuantity"
-            holder.binding.total.text = "Total: ${item.sellingPrice * absQuantity} $"
-            holder.binding.total.setTextColor(
-                ContextCompat.getColor(context, R.color.revenue_negative)
-            )
-            holder.binding.container.setBackgroundResource(R.drawable.return_bg)
-        }
+        val absQuantity = -item.quantity
+        holder.binding.count.text = "Qty: $absQuantity"
+        holder.binding.total.text = "${item.sellingPrice * absQuantity} $"
         holder.binding.root.setOnClickListener {
             onItemClick(data[position])
         }

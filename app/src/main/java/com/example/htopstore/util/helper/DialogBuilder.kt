@@ -1,16 +1,16 @@
 package com.example.htopstore.util.helper
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.widget.Button
-import android.widget.NumberPicker
 import android.widget.TextView
 import com.example.domain.model.Expense
 import com.example.domain.model.SoldProduct
 import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import com.example.htopstore.R
+import com.google.android.material.button.MaterialButton
 
 object DialogBuilder {
     var expenseDetailsDialog : Dialog? = null
@@ -70,8 +70,9 @@ object DialogBuilder {
     }
 
 
-    fun showReturnDialog(context: Context, soldProduct: SoldProduct, onConfirm: (soldProduct: SoldProduct) -> Unit){
-        //init
+    @SuppressLint("SetTextI18n")
+    fun showReturnDialog(context: Context, soldProduct: SoldProduct, onConfirm: (soldProduct: SoldProduct) -> Unit) {
+        // init
         if (returnDialog != null) {
             returnDialog?.dismiss()
         }
@@ -79,18 +80,58 @@ object DialogBuilder {
         this.returnDialog?.setContentView(R.layout.return_dialog)
         this.returnDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         this.returnDialog?.setCancelable(true)
+
         // inflate the views
-        val confirmBtn = this.returnDialog?.findViewById<Button>(R.id.confirm)
-        val numberPicker = this.returnDialog?.findViewById<NumberPicker>(R.id.numberPicker)
-        numberPicker?.minValue = 1
-        numberPicker?.maxValue = soldProduct.quantity
-        numberPicker?.value = 1
+        val confirmBtn = this.returnDialog?.findViewById<MaterialButton>(R.id.confirm)
+        val cancelBtn = this.returnDialog?.findViewById<MaterialButton>(R.id.cancel)
+        val increaseBtn = this.returnDialog?.findViewById<MaterialButton>(R.id.increaseBtn)
+        val decreaseBtn = this.returnDialog?.findViewById<MaterialButton>(R.id.decreaseBtn)
+        val quantityDisplay = this.returnDialog?.findViewById<TextView>(R.id.quantityDisplay)
+        val productName = this.returnDialog?.findViewById<TextView>(R.id.name)
+        val maxQuantityInfo = this.returnDialog?.findViewById<TextView>(R.id.maxQuantityInfo)
+
+        // set product info
+        productName?.text = soldProduct.name
+        maxQuantityInfo?.text = "Max: ${soldProduct.quantity} items"
+
+        // initialize quantity
+        var currentQuantity = 1
+        quantityDisplay?.text = currentQuantity.toString()
+
+        // update button states
+        fun updateButtonStates() {
+            decreaseBtn?.isEnabled = currentQuantity > 1
+            increaseBtn?.isEnabled = currentQuantity < soldProduct.quantity
+        }
+
+        updateButtonStates()
+
         // set the listeners
+        increaseBtn?.setOnClickListener {
+            if (currentQuantity < soldProduct.quantity) {
+                currentQuantity++
+                quantityDisplay?.text = currentQuantity.toString()
+                updateButtonStates()
+            }
+        }
+
+        decreaseBtn?.setOnClickListener {
+            if (currentQuantity > 1) {
+                currentQuantity--
+                quantityDisplay?.text = currentQuantity.toString()
+                updateButtonStates()
+            }
+        }
+
+        cancelBtn?.setOnClickListener {
+            hideReturnDialog()
+        }
+
         confirmBtn?.setOnClickListener {
             val willBack = SoldProduct(
                 productId = soldProduct.productId,
                 saleId = soldProduct.saleId,
-                quantity = numberPicker!!.value,
+                quantity = currentQuantity,
                 type = soldProduct.type,
                 price = soldProduct.price,
                 sellingPrice = soldProduct.sellingPrice,
@@ -99,11 +140,10 @@ object DialogBuilder {
                 name = soldProduct.name,
                 detailId = IdGenerator.generateTimestampedId()
             )
-            onConfirm(
-                willBack
-            )
+            onConfirm(willBack)
             hideReturnDialog()
         }
+
         returnDialog?.show()
     }
     fun hideReturnDialog(){

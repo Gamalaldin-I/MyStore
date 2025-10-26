@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.DayItemBinding
 
 class DaysAdapter(private val data: ArrayList<String>,private val onClick:(s:String)-> Unit) :
@@ -21,7 +22,7 @@ class DaysAdapter(private val data: ArrayList<String>,private val onClick:(s:Str
     // Bind data to the ViewHolder
     override fun onBindViewHolder(holder: DHolder, position: Int) {
         val item = data[position]
-        holder.binding.date.text = item
+        holder.binding.date.text = DateHelper.formatDate(item)
         holder.binding.root.setOnClickListener {
             // Handle item click here
             onClick(item)

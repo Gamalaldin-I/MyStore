@@ -25,6 +25,7 @@ object BarcodeGenerator {
             Toast.makeText(context, "No products to generate barcodes", Toast.LENGTH_SHORT).show()
             return
         }
+        Toast.makeText(context, "Generating. ..", Toast.LENGTH_SHORT).show()
 
         val pdfDoc = PdfDocument()
         val paint = android.graphics.Paint()

@@ -8,14 +8,14 @@ import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
+import com.example.domain.model.SelectionQrProduct
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 import java.io.File
 import java.io.FileOutputStream
-import androidx.core.graphics.createBitmap
-import androidx.core.graphics.set
-import com.example.domain.model.SelectionQrProduct
 
 object QrCodeGenerator {
 
@@ -24,6 +24,7 @@ object QrCodeGenerator {
             Toast.makeText(context, "No products to generate QR codes", Toast.LENGTH_SHORT).show()
             return
         }
+        Toast.makeText(context, "Generating...", Toast.LENGTH_SHORT).show()
 
         val pdfDoc = PdfDocument()
         val paint = android.graphics.Paint()

@@ -169,12 +169,6 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="CustomNumberPickerTheme" parent="ThemeOverlay.MaterialComponents.Light">
-        <!-- Change text color -->
-        <item name="android:textColorPrimary">@color/background_dark</item>
-        <!-- Change text size -->
-        <item name="android:textAppearance">@style/CustomNumberPickerText</item>
-    </style>
 
     <style name="CustomNumberPickerText" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">20sp</item>
@@ -187,5 +181,12 @@
     <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textColor">@color/white</item>
     </style>
+    <!-- styles.xml - Add NumberPicker theme -->
+    <style name="CustomNumberPickerTheme" parent="Theme.Material3.Light">
+    <item name="colorControlNormal">@color/primary_accent_blue</item>
+    <item name="android:textColorPrimary">@color/text_primary</item>
+    <item name="android:textSize">18sp</item>
+    </style>
+
 
 </resources>

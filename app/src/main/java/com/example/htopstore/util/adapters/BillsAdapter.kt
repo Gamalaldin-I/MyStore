@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Bill
+import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.BillItemBinding
 
 class BillsAdapter(private var data: List<Bill>, val onItemClicked: (sellOpID: String) -> Unit
@@ -24,8 +25,8 @@ class BillsAdapter(private var data: List<Bill>, val onItemClicked: (sellOpID: S
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SHolder, position: Int) {
         val currentItem = data[position]
-        holder.binding.date.text = currentItem.date
-        holder.binding.time.text = currentItem.time
+        holder.binding.date.text = DateHelper.formatDate(currentItem.date)
+        holder.binding.time.text = DateHelper.formatTime(currentItem.time)
         holder.binding.total.text = "${currentItem.totalCash} $"
         holder.binding.root.setOnClickListener {
             onItemClicked(currentItem.saleId)

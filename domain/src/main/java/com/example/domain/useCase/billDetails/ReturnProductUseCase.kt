@@ -58,7 +58,7 @@ class ReturnProductUseCase(
         returnRequest: SoldProduct
     ) {
         val returnValue = returnRequest.sellingPrice * abs(returnRequest.quantity)
-        localRepo.updateSaleCashAfterReturn(soldProduct.saleId!!, -returnValue)
+        localRepo.updateSaleCashAfterReturn(soldProduct.saleId!!, returnValue)
     }
 
     private suspend fun updateBillProduct(

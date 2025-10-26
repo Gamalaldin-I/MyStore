@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.SoldProduct
 import com.example.domain.useCase.localize.GetCategoryLocalName
-import com.example.htopstore.R
 import com.example.htopstore.databinding.SoldItemBinding
 
 class BillDetailsAdapter(
@@ -29,31 +28,16 @@ class BillDetailsAdapter(
 
         holder.binding.pos.text = (position + 1).toString()
         holder.binding.brandName.text = "${item.name} (${catTrans(item.type)})"
-        holder.binding.priceUnit.text = "UP: ${item.sellingPrice} $"
-
-        if (item.quantity > 0) {
-            // Sold
-            holder.binding.count.text = "Quantity: ${item.quantity}"
-            holder.binding.total.text = "Total: ${item.sellingPrice * item.quantity} $"
-
-            holder.binding.container.setBackgroundResource(R.drawable.bg_receipt)
-
-        } else {
-            // Return
-            val absQuantity = -item.quantity
-            holder.binding.count.text = "Return: $absQuantity"
-            holder.binding.total.text = "Total: ${item.sellingPrice * absQuantity} $"
-
-            holder.binding.container.setBackgroundResource(R.drawable.return_bg)
-
-        }
+        holder.binding.priceUnit.text = ": $${item.sellingPrice} for each"
+        holder.binding.count.text = "x${item.quantity}"
+        holder.binding.total.text = "${item.sellingPrice * item.quantity} $"
 
         // Click only if it's a sold item
-        holder.binding.root.setOnClickListener {
-            if (item.quantity > 0) {
-                onItemClicked(item)
-            }
+        holder.binding.root.setOnLongClickListener {
+            onItemClicked(item)
+            true
         }
+
     }
 
     override fun getItemCount(): Int = data.size

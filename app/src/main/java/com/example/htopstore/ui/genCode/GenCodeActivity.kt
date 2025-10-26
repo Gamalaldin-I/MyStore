@@ -43,11 +43,11 @@ class GenCodeActivity : AppCompatActivity() {
     }
 
     private fun getAllProductsByNewest(){
-            vm.products.observe(this){
+        vm.products.observe(this){
             getQrsUseCase = CodePdfGenerator(it,this)
             li = getQrsUseCase.mapToSelectionQrProducts() as MutableList<SelectionQrProduct>
-                adapter.updateData(li)
-    }
+            adapter.updateData(li)
+        }
     }
 
 }

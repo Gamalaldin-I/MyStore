@@ -215,4 +215,7 @@
     <!-- Common -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="warning_light">#FFF3E6</color>
+    <color name="warning_dark">#F57C00</color>
+
 </resources>

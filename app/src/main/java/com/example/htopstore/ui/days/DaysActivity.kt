@@ -3,7 +3,7 @@ package com.example.htopstore.ui.days
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -58,16 +58,33 @@ class DaysActivity : AppCompatActivity() {
     private fun observe(){
         vm.days.observe(this){
             //setupAdapter
+            if(it == null || it.isEmpty()) {
+                onEmptyState(true)
+                return@observe
+            }
+            onEmptyState(false)
             adapter.updateData(it as ArrayList)
-            binding.selectDay.text = "Select Day"
+            binding.selectDay.text = ".."
+            binding.date.text = "All Days"
         }
         vm.specificDay.observe(this){
             if(it == null || it.isEmpty()) {
-                Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show()
+                onEmptyState(true)
                 return@observe
             }
+            onEmptyState(false)
             adapter.updateData(arrayListOf(it))
-            binding.selectDay.text = it
+            binding.date.text = it
+        }
+    }
+    private fun onEmptyState(empty: Boolean){
+        if(empty){
+        binding.emptyState.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        }
+        else{
+            binding.emptyState.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
         }
     }
 

@@ -201,7 +201,7 @@ interface SalesDao {
 
     @Query("""
     SELECT 
-        CASE 
+        CASE
             WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 6 AND 11 THEN 'صباح'
             WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 12 AND 14 THEN 'ظهر'
             WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 15 AND 17 THEN 'عصر'

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Expense
+import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.ExpenseItemBinding
 
 class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: (expense: Expense)-> Unit) :
@@ -23,10 +24,11 @@ class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: EHolder, position: Int) {
         val item = data[position]
-        holder.binding.date.text= item.date
+        holder.binding.date.text= DateHelper.formatDate(item.date)
         holder.binding.method.text = item.paymentMethod
         holder.binding.total.text = "${item.amount}$"
-        holder.binding.time.text = item.time
+        holder.binding.time.text = DateHelper.formatTime(item.time)
+        holder.binding.category.text = item.category
         holder.binding.root.setOnClickListener {
             onClick(item)
         }
