@@ -6,7 +6,6 @@ data class Employee(
     val id: String,
     var name: String,
     var email: String,
-    var password: String,
     var ownerId:String?,
     var storeId:String?,
     var acceptedAt:String?,
@@ -15,6 +14,6 @@ data class Employee(
     var role:Int?
 )
 {
-    constructor() : this("","","","","","","","","",0)
+    constructor() : this("","","","","","","","",0)
 }
 

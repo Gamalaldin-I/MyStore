@@ -11,6 +11,7 @@ import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.DateHelper
 import com.example.htopstore.util.firebase.FirebaseUtils
 import com.example.htopstore.util.firebase.Mapper.hash
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -95,7 +96,7 @@ class AuthRepoImp(
 
                     getStoreData(userId, storeId) { success, msg ->
                         if (success) {
-                            pref.saveUser(userId, name, role, email, password)
+                            pref.saveUser(userId, name, role, email)
                             onResult(true, "Owner logged in successfully")
                         } else {
                             onResult(false, msg)
@@ -115,7 +116,7 @@ class AuthRepoImp(
                     val ownerId = snapshot.getString("ownerId")
                     val status = snapshot.getString("status") ?: Constants.STATUS_PENDING
 
-                    pref.saveUser(userId, name, role, email, password)
+                    pref.saveUser(userId, name, role, email)
 
                     if (status != STATUS_HIRED) {
                         pref.saveStore(
@@ -198,7 +199,6 @@ class AuthRepoImp(
                 val owner = hashMapOf(
                     fu.OWNER_NAME to name,
                     fu.OWNER_EMAIL to email,
-                    fu.OWNER_PASSWORD to password,
                     fu.OWNER_ID to ownerId,
                     fu.OWNER_STORE_ID to storeId,
                     fu.OWNER_ROLE to OWNER_ROLE,
@@ -229,7 +229,7 @@ class AuthRepoImp(
                                     db.collection(fu.OWNERS).document(ownerId)
                                         .collection(fu.STORES).document(storeId).set(store)
                                         .addOnSuccessListener {
-                                            pref.saveUser(ownerId, name, OWNER_ROLE, email, password)
+                                            pref.saveUser(ownerId, name, OWNER_ROLE, email)
                                             pref.saveStore(storeId, storeName, storePhone, storeLocation, ownerId)
                                             onResult(true, "Owner registered successfully")
                                         }
@@ -284,7 +284,6 @@ class AuthRepoImp(
                     id = uid,
                     name = name,
                     email = email,
-                    password = password,
                     ownerId = null,
                     storeId = null,
                     joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}",
@@ -305,7 +304,7 @@ class AuthRepoImp(
                 // Save employee record
                 db.collection(fu.EMPLOYEES).document(uid).set(employee.hash())
                     .addOnSuccessListener {
-                        pref.saveUser(uid, name, EMPLOYEE_ROLE, email, password)
+                        pref.saveUser(uid, name, EMPLOYEE_ROLE, email)
                         pref.saveStore("", "", "", "", "")
                         onResult(true, "Employee account created successfully. Please wait for approval.")
                     }
@@ -318,8 +317,46 @@ class AuthRepoImp(
             }
     }
 
+    override fun resetPassword(email: String, onResult: (Boolean, String) -> Unit) {
+        val auth = FirebaseAuth.getInstance()
 
+        if (email.isEmpty()) {
+            onResult(false, "Please enter your email.")
+            return
+        }
 
+        auth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                onResult(true, "Password reset email sent successfully.")
+            }
+            .addOnFailureListener { e ->
+                onResult(false, e.message ?: "Something went wrong.")
+            }
+    }
+
+    override fun changePassword(
+        oldPassword: String,
+        newPassword: String,
+        onResult: (Boolean, String) -> Unit,
+    ) {
+        val user = auth.currentUser
+        val credential = EmailAuthProvider.getCredential(pref.getUser().email,oldPassword)
+        user?.reauthenticate(credential)?.addOnCompleteListener {
+            if (it.isSuccessful){
+                user.updatePassword(newPassword).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onResult(true, "Password changed successfully")
+                    } else {
+                        onResult(false, task.exception?.message ?: "Failed to change password")
+                    }
+                }
+        }
+            else{
+                onResult(false, it.exception?.message ?: "Invalid old password")
+            }
+        }
+
+    }
 
 
     override fun logout(onResult: (Boolean, String) -> Unit) {

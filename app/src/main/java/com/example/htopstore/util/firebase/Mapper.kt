@@ -32,7 +32,6 @@ object Mapper {
             "id" to this.id,
             "email" to this.email,
             "name" to this.name,
-            "password" to this.password,
             "ownerId" to this.ownerId,
             "storeId" to this.storeId,
             "acceptedAt" to this.acceptedAt,

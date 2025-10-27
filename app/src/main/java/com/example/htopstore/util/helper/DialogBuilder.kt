@@ -11,6 +11,7 @@ import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import com.example.htopstore.R
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object DialogBuilder {
     var expenseDetailsDialog : Dialog? = null
@@ -148,6 +149,35 @@ object DialogBuilder {
     }
     fun hideReturnDialog(){
         this.returnDialog?.dismiss()
+    }
+
+     fun showSuccessDialog(context: Context, message: String, onConfirm: () -> Unit) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Success")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                onConfirm() // Close activity and return to previous screen
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+     fun showForgotPasswordDialog(
+        context: Context,
+        onConfirm: () -> Unit,
+    ) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Forgot Password?")
+            .setMessage("Do you want to reset your password? You will receive a password reset link via email.")
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                onConfirm()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 

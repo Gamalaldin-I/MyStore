@@ -65,6 +65,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        binding.forgotPassword.setOnClickListener {
+            val email = binding.emailEt.text.toString().trim()
+            vm.resetPassword(email){
+            }
+        }
     }
 
 }

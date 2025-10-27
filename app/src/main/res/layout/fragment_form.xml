@@ -25,22 +25,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <View
-                android:layout_width="32dp"
+                android:layout_width="100dp"
                 android:layout_height="4dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/action_primary" />
 
-            <View
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginEnd="8dp"
-                android:background="@color/action_primary" />
-
-            <View
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:background="@color/action_primary"
-                android:alpha="0.3" />
         </LinearLayout>
 
         <!-- Header Icon -->

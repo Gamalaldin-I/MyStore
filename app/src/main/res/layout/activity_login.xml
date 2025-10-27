@@ -15,13 +15,16 @@
         android:padding="24dp">
 
         <!-- Logo or App Icon (optional - add your logo) -->
-        <ImageView
+        <TextView
             android:id="@+id/appLogo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
             android:contentDescription="App Logo"
-            android:src="@drawable/ic_launcher_foreground"
+            android:text="Stora"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:fontFamily="@font/kahroop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

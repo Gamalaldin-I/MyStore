@@ -55,4 +55,15 @@
     <string name="continue_btn">Continue</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="log_in">Log In</string>
+
+    <string name="back">Back</string>
+    <string name="lock_icon">Lock Icon</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_subtitle">Enter your current password and choose a new one</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="password_requirements">At least 8 characters, 1 uppercase, 1 number</string>
+    <string name="password_strength">Password Strength:</string>
+    <string name="forgot_current_password">Forgot your current password?</string>
 </resources>

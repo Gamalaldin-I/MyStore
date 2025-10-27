@@ -25,12 +25,11 @@ class SharedPref(context: Context){
                  name: String,
                  role: Int,
                  email: String,
-                 password: String ){
+                 ){
         editor.putString("userId", id)
         editor.putString("userName", name)
         editor.putInt("userRole", role)
         editor.putString("userEmail", email)
-        editor.putString("userPassword",password)
         editor.putBoolean("isLogin", true)
         editor.apply()
 
@@ -40,8 +39,7 @@ class SharedPref(context: Context){
         val name = sharedPref.getString("userName", "")!!
         val role = sharedPref.getInt("userRole", OWNER_ROLE)
         val email = sharedPref.getString("userEmail", "")!!
-        val password = sharedPref.getString("userPassword", "")!!
-        return User(id, name, role, email, password)
+        return User(id, name, role, email)
     }
 
     fun saveStore(id: String, name: String, phone: String, location:String,ownerId:String){

@@ -29,11 +29,11 @@ class SignupActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        vm.msg.observe(this){
+        vm.message.observe(this){
             msg->
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
-        vm.isLogin.observe(this){
+        vm.isLoggedIn.observe(this){
             isLogin->
             if (isLogin){
                 if(vm.getRole()==OWNER_ROLE){
@@ -61,7 +61,10 @@ class SignupActivity : AppCompatActivity() {
 
         roleSelectionFragment.setOnNext {it->
             vm.afterRoleSelection(it){
-            addFragment(userFormFragment)}
+                if (it == OWNER_ROLE)addFragment(storeFormFragment)
+                    else addFragment(userFormFragment)
+
+            }
         }
 
         userFormFragment.setOnNext {
@@ -69,21 +72,18 @@ class SignupActivity : AppCompatActivity() {
             vm.afterUserFormFill(name,email,password){
             val role = vm.getRole()
             if (role == OWNER_ROLE){
-                addFragment(storeFormFragment)
+                startActivity(Intent(this, MainActivity::class.java))
             }
             else{
-                vm.afterEmployeeFormFill {
-                    startActivity(Intent(this, InboxActivity::class.java))
-                    finish()
-                }
+                startActivity(Intent(this, InboxActivity::class.java))
             }
+                finish()
             }
         }
-        storeFormFragment.setOnNext {
+        storeFormFragment.setOnNextStep {
             name,location,phone->
             vm.afterStoreFormFill(name,location,phone){
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                addFragment(userFormFragment)
             }
         }
 

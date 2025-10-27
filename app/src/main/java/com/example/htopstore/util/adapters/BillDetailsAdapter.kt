@@ -28,7 +28,7 @@ class BillDetailsAdapter(
 
         holder.binding.pos.text = (position + 1).toString()
         holder.binding.brandName.text = "${item.name} (${catTrans(item.type)})"
-        holder.binding.priceUnit.text = ": $${item.sellingPrice} for each"
+        holder.binding.priceUnit.text = "$${item.sellingPrice} for each"
         holder.binding.count.text = "x${item.quantity}"
         holder.binding.total.text = "${item.sellingPrice * item.quantity} $"
 

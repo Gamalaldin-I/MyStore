@@ -39,6 +39,7 @@
             <View
                 android:layout_width="32dp"
                 android:layout_height="4dp"
+                android:alpha="0.3"
                 android:background="@color/action_primary" />
         </LinearLayout>
 
@@ -190,6 +191,8 @@
                     app:placeholderTextColor="@color/text_secondary"
                     app:startIconDrawable="@android:drawable/stat_sys_phone_call"
                     app:startIconTint="@color/action_primary"
+                    app:counterMaxLength="10"
+                    app:counterEnabled="true"
                     app:helperText="Contact number for your store"
                     app:helperTextTextColor="@color/text_secondary"
                     app:prefixText="+20 ">

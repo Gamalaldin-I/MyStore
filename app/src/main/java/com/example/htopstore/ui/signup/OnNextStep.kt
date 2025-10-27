@@ -4,7 +4,6 @@ interface OnNextStep {
     fun afterRoleSelection(role: Int,nextAction:()->Unit)
     fun afterUserFormFill(name: String, email: String, password:String,nextAction:()->Unit)
     fun afterStoreFormFill(name: String, location: String, phone: String,nextAction:()->Unit)
-    fun afterEmployeeFormFill(nextAction:()->Unit)
     ////////////////////////////////
 
 }

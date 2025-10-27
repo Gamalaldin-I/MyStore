@@ -38,7 +38,7 @@ class UserFormFragment private constructor(): Fragment() {
         val email = binding.emailEt.text.toString()
         val pass = binding.passwordEt.text.toString()
         val confirmPass = binding.confirmPasswordEt.text.toString()
-        if(vm.validUserData(name,email,pass,confirmPass)){
+        if(vm.isUserDataValid(name,email,pass,confirmPass)){
             oNextStep(name,email,pass)
         }
         return false

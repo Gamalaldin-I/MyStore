@@ -28,4 +28,7 @@ interface AuthRepo{
                          onResult:(success:Boolean,msg:String)->Unit)
 
     fun logout(onResult: (Boolean, String) -> Unit)
+
+    fun resetPassword(email: String, onResult: (Boolean, String) -> Unit)
+    fun changePassword(oldPassword:String,newPassword:String,onResult: (Boolean, String) -> Unit)
 }

@@ -310,6 +310,6 @@ class RoleSelectionFragment private constructor() : Fragment() {
     }
 
     fun setOnNext(doThis: (role: Int) -> Unit) {
-        oNextStep = doThis
+        this.oNextStep = doThis
     }
 }
