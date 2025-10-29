@@ -17,7 +17,8 @@ import java.util.Locale
 class InvitesAdapter(
     private val onDelete: (invite: Invite) -> Unit,
     private val onShare: (invite: Invite) -> Unit,
-    private val onCopy: (text: String) -> Unit
+    private val onCopy: (text: String) -> Unit,
+    private val onSending:(code:String?,email:String?)->Unit
 ) : ListAdapter<Invite, InvitesAdapter.InviteHolder>(DiffCallback()) {
 
     class InviteHolder(val binding: InviteCardBinding) : RecyclerView.ViewHolder(binding.root)
@@ -70,6 +71,9 @@ class InvitesAdapter(
             copyBtn.setOnClickListener {
                 invite.code?.let { code -> onCopy(code) }
             }
+            email.setOnClickListener{
+                onSending(invite.code,invite.email)
+            }
         }
     }
 
@@ -89,4 +93,6 @@ class InvitesAdapter(
         override fun areContentsTheSame(oldItem: Invite, newItem: Invite): Boolean =
             oldItem == newItem
     }
+    // send the invitation to the employee a cross a mail
+
 }

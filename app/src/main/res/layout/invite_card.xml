@@ -148,9 +148,8 @@
                         android:layout_marginTop="2dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:autoLink="email"
                         android:text="htbtjmal2013@gmail.com"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/action_primary"
                         android:textSize="14sp" />
 
                 </LinearLayout>

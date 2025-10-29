@@ -60,7 +60,15 @@ class InvitesFragment : Fragment() {
         adapter = InvitesAdapter(
             onDelete = { invite -> showDeleteInviteDialog(invite) },
             onShare = { invite -> shareInviteCode(invite.code) },
-            onCopy = { code -> copyToClipboard(code) }
+            onCopy = { code -> copyToClipboard(code) },
+            onSending = { code, email ->
+                if (code != null && email != null) {
+                    vm.sendEmail(requireContext(), email, code)
+                } else{
+                    showSnackbar("Error sending invitation")
+                }
+                showSnackbar("Invitation sent successfully")
+            }
         )
 
         binding.recyclerView.adapter = adapter

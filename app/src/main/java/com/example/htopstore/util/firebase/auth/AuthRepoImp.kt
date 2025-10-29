@@ -472,7 +472,4 @@ import kotlinx.coroutines.flow.StateFlow
         employeeStatusListener = null
     }
 
-    override fun updateStoreData(name: String, phone: String, location: String, onResult: (Boolean, String) -> Unit) {
-        TODO("Not yet implemented")
-    }
 }

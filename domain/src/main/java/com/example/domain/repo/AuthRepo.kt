@@ -22,10 +22,11 @@ interface AuthRepo{
     fun listenToEmployee()
     fun stopListening()
 
-    fun registerEmployee(name: String,
-                         email:String,
-                         password:String,
-                         onResult:(success:Boolean,msg:String)->Unit)
+    fun registerEmployee(
+        name: String,
+        email:String,
+        password:String,
+        onResult:(success:Boolean,msg:String)->Unit)
     fun logout(onResult: (Boolean, String) -> Unit)
 
 
@@ -34,5 +35,4 @@ interface AuthRepo{
     fun changePassword(oldPassword:String,newPassword:String,onResult: (Boolean, String) -> Unit)
     fun updateName(name:String,onResult: (Boolean, String) -> Unit)
     fun updateEmail(newEmail:String,password: String,onResult: (Boolean, String) -> Unit)
-    fun updateStoreData(name: String, phone: String, location: String, onResult: (Boolean, String) -> Unit)
 }
