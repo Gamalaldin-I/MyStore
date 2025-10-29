@@ -152,7 +152,11 @@
                     android:clickable="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/primary_accent_blue"
-                    app:hintTextColor="@color/text_tertiary">
+                    app:hintTextColor="@color/text_tertiary"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/nameEt"
@@ -162,32 +166,13 @@
                         android:textColor="@color/text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email Input -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/emailLo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email Address"
-                    android:clickable="true"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:boxStrokeColor="@color/primary_accent_blue"
-                    app:hintTextColor="@color/text_tertiary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailEt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/text_primary" />
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <!-- Update Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/finishBtn"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:text="Update Profile"
+                    android:text="Update Name"
                     app:icon="@android:drawable/ic_menu_edit"
                     android:textSize="14sp"
                     app:cornerRadius="8dp" />
@@ -397,6 +382,78 @@
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:text="Change Password"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F0F0F0"
+                    android:layout_marginHorizontal="20dp" />
+                <LinearLayout
+                    android:id="@+id/changeEmailAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="16dp"
+                    android:paddingHorizontal="20dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_dialog_email"
+                        app:tint="@color/action_primary"
+                        android:contentDescription="Password icon" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:text="Change Email"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F0F0F0"
+                    android:layout_marginHorizontal="20dp" />
+                <LinearLayout
+                    android:id="@+id/updateStoreAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="16dp"
+                    android:paddingHorizontal="20dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/nav_store"
+                        app:tint="@color/action_primary"
+                        android:contentDescription="Store icon" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:text="Update store data"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />
 

@@ -8,6 +8,9 @@ import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.auth.RegisterEmployeeUseCase
 import com.example.domain.useCase.auth.RegisterOwnerUseCase
 import com.example.domain.useCase.auth.ResetPasswordUseCase
+import com.example.domain.useCase.auth.UpdateEmailUseCase
+import com.example.domain.useCase.auth.UpdateNameUseCase
+import com.example.domain.useCase.auth.UpdateStoreDataUseCase
 import com.example.htopstore.util.firebase.auth.AuthRepoImp
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -49,5 +52,17 @@ object AuthModule {
     @Provides
         fun provideChangePasswordUseCase(authRepo: AuthRepo): ChangePasswordUseCase {
             return ChangePasswordUseCase(authRepo)
+    }
+    @Provides
+    fun provideChangeNameUseCase(repo: AuthRepo): UpdateNameUseCase{
+        return UpdateNameUseCase(repo)
+    }
+    @Provides
+    fun provideUpdateEmailUseCase(repo: AuthRepo): UpdateEmailUseCase {
+        return UpdateEmailUseCase(repo)
+    }
+    @Provides
+    fun provideUpdateStoreUseCase(repo: AuthRepo): UpdateStoreDataUseCase{
+        return UpdateStoreDataUseCase(repo)
     }
 }

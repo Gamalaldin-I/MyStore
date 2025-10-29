@@ -67,4 +67,32 @@
     <string name="password_requirements">At least 8 characters, 1 uppercase, 1 number</string>
     <string name="password_strength">Password Strength:</string>
     <string name="forgot_current_password">Forgot your current password?</string>
+    <!-- Change Email Activity -->
+    <string name="change_email">Change Email</string>
+    <string name="change_email_subtitle">Enter your new email and current password to verify</string>
+    <string name="current_email">Current Email</string>
+    <string name="new_email">New Email Address</string>
+    <string name="change_email_button">Change Email</string>
+    <string name="security_note_change_email">For security, you\'ll need to verify your new email address. A verification link will be sent to your new email.</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="info_icon">Info Icon</string>
+    <string name="no_email_found">No email found</string>
+
+    <!-- Validation Errors -->
+    <string name="error_email_required">Email is required</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_same_email">New email must be different from current email</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_wrong_password">Incorrect password. Please try again.</string>
+    <string name="error_user_not_found">User not found</string>
+    <string name="error_no_email">No email associated with this account</string>
+    <string name="error_email_already_exists">This email is already in use</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_generic">Error: %s</string>
+
+    <!-- Success -->
+    <string name="success">Success!</string>
+    <string name="email_change_success_message">A verification email has been sent to your new email address. Please verify to complete the change.</string>
+    <string name="ok">OK</string>
 </resources>

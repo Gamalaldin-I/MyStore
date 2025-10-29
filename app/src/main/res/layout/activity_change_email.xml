@@ -7,46 +7,50 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:padding="24dp"
-    tools:context=".ui.changePassword.ChangePasswordActivity">
+    tools:context=".ui.changeEmail.ChangeEmailActivity">
 
     <!-- Back Button -->
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
         android:src="@drawable/back_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/primary_accent_blue" />
+        app:tint="@android:color/black" />
 
     <!-- Header Icon -->
     <ImageView
-        android:id="@+id/ivLockIcon"
+        android:id="@+id/ivHeaderIcon"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="@string/lock_icon"
-        android:src="@drawable/ic_lock"
-        android:tint="@color/primary_accent_blue"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/icon_bg"
+        android:backgroundTint="#4F3B81F4"
+        android:padding="10dp"
+        android:contentDescription="email_icon"
+        android:src="@android:drawable/ic_dialog_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:tint="@color/primary_accent_blue" />
 
     <!-- Title -->
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/change_password"
+        android:text="Change email"
+        android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLockIcon" />
+        app:layout_constraintTop_toBottomOf="@id/ivHeaderIcon" />
 
     <!-- Subtitle -->
     <TextView
@@ -54,26 +58,86 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/change_password_subtitle"
+        android:text="Enter your new email address and current password to change your email."
+        android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- Current Password Input -->
+    <!-- Current Email Label -->
+    <TextView
+        android:id="@+id/tvCurrentEmailLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Current email"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
+
+    <!-- Current Email Display -->
+    <TextView
+        android:id="@+id/tvCurrentEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/grid_item_img_bg"
+        android:padding="16dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentEmailLabel"
+        tools:text="user@example.com" />
+
+    <!-- New Email Input -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilCurrentPassword"
+        android:id="@+id/tilNewEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
+        android:hint="New email"
+        app:boxStrokeColor="@color/primary_accent_blue"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentEmail"
+        app:startIconDrawable="@android:drawable/ic_dialog_email"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="@string/current_password"
+        app:boxStrokeColor="@color/primary_accent_blue"
         app:endIconMode="password_toggle"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+        app:layout_constraintTop_toBottomOf="@id/tilNewEmail"
         app:startIconDrawable="@drawable/ic_lock"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
@@ -81,111 +145,58 @@
         app:boxCornerRadiusTopStart="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etCurrentPassword"
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:maxLines="1" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- New Password Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilNewPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="@string/new_password"
-        app:endIconMode="password_toggle"
-        app:helperText="@string/password_requirements"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilCurrentPassword"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Confirm New Password Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilConfirmPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="@string/confirm_new_password"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilNewPassword"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Password Strength Indicator -->
+    <!-- Security Note -->
     <LinearLayout
-        android:id="@+id/llPasswordStrength"
+        android:id="@+id/llSecurityNote"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
-        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/product_info_bg"
+        android:orientation="horizontal"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword"
-        tools:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@id/tilPassword">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="info_icon"
+            android:src="@drawable/icon_email"
+            />
 
         <TextView
-            android:id="@+id/tvPasswordStrength"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/password_strength"
-            android:textColor="@android:color/darker_gray"
+            android:layout_weight="1"
+            android:text="If you updated your email and could'nt login by the new one retry with another email, be careful and don't share it."
+            android:textColor="@color/text_primary"
             android:textSize="12sp" />
 
-        <ProgressBar
-            android:id="@+id/pbPasswordStrength"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_marginTop="4dp"
-            android:max="100"
-            android:progress="0" />
     </LinearLayout>
 
-    <!-- Change Password Button -->
+    <!-- Change Email Button -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnChangePassword"
+        android:id="@+id/btnChangeEmail"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
-        android:text="@string/change_password"
-        android:textAllCaps="false"
+        android:text="Change now"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llPasswordStrength" />
+        app:layout_constraintTop_toBottomOf="@id/llSecurityNote" />
 
     <!-- Progress Bar -->
     <ProgressBar
@@ -193,25 +204,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/btnChangePassword"
-        app:layout_constraintEnd_toEndOf="@id/btnChangePassword"
-        app:layout_constraintStart_toStartOf="@id/btnChangePassword"
-        app:layout_constraintTop_toTopOf="@id/btnChangePassword"
+        app:layout_constraintBottom_toBottomOf="@id/btnChangeEmail"
+        app:layout_constraintEnd_toEndOf="@id/btnChangeEmail"
+        app:layout_constraintStart_toStartOf="@id/btnChangeEmail"
+        app:layout_constraintTop_toTopOf="@id/btnChangeEmail"
         tools:visibility="visible" />
-
-    <!-- Forgot Password Link -->
-    <TextView
-        android:id="@+id/tvForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/forgot_current_password"
-        android:textColor="@color/primary_accent_blue"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnChangePassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.main
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.auth.LogoutUseCase
+import com.example.domain.useCase.auth.UpdateNameUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
 import com.example.domain.useCase.product.GetArchiveSizeUseCase
@@ -34,6 +36,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val pref: SharedPref,
     private val logoutUseCase: LogoutUseCase,
+    private val updateNameUseCase: UpdateNameUseCase,
     getTop5InSalesUseCase: GetTop5UseCase,
     getLowStockUseCase: GetLowStockUseCase,
     getAvailableProductsUseCase: GetAvailableProductsUseCase,
@@ -47,6 +50,9 @@ class MainViewModel @Inject constructor(
     private val authRepo: AuthRepo,
 
 ): ViewModel(){
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message
+
 
     val todayDate = DateHelper.getCurrentDate()
 
@@ -119,4 +125,14 @@ class MainViewModel @Inject constructor(
         super.onCleared()
         authRepo.stopListening()
     }
+    fun updateName(name:String,onView: () -> Unit){
+        updateNameUseCase(name){
+                success, msg ->
+            if(success){onView()}
+            _message.value = msg
+        }
+    }
+
+
+
 }

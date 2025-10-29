@@ -3,6 +3,7 @@ package com.example.htopstore.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         replaceCurrentFragment(stockFragment)
         //to listen if the employee status changed
         onEmployeeStatusChanged()
+        vm.message.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
 
 
         //set the bottom navigation view
@@ -97,5 +101,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }

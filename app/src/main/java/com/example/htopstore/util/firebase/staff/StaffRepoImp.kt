@@ -119,7 +119,9 @@ class StaffRepoImp(
             acceptedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
         )
 
+        // ✅ Step 3: Firestore references
         val invitesRef = db.collection(fu.INVITES).document(invite.code!!)
+        val usersRef = db.collection("users").document(user.id)
         val employeeRef = db.collection(fu.EMPLOYEES).document(user.id)
         val storeEmployeesRef = db.collection(fu.OWNERS)
             .document(invite.ownerId!!)
@@ -127,7 +129,7 @@ class StaffRepoImp(
             .document(invite.storeId!!)
             .collection(fu.EMPLOYEES)
 
-        // ✅ Step 3: Prepare employee data
+        // ✅ Step 4: Prepare new employee data
         val newEmployee = StoreEmployee(
             id = user.id,
             email = user.email,
@@ -137,13 +139,16 @@ class StaffRepoImp(
             joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
         )
 
-        // ✅ Step 4: Update invite → then add employee → then update main employee → then fetch store info
-        invitesRef.set(updatedInvite.hash())
+        // ✅ Step 5: Chain tasks sequentially
+        usersRef.update("status", STATUS_HIRED)
             .continueWithTask {
+                // Update invite status
+                invitesRef.set(updatedInvite.hash())
+            }.continueWithTask {
                 // Add employee to store
                 storeEmployeesRef.document(user.id).set(newEmployee.hash())
             }.continueWithTask {
-                // Update employee in main collection
+                // Update employee main collection
                 employeeRef.update(
                     mapOf(
                         "storeId" to invite.storeId,
@@ -153,9 +158,10 @@ class StaffRepoImp(
                     )
                 )
             }.continueWithTask {
-                // Fetch store info to save in shared pref
+                // Fetch store info to save locally
                 db.collection(fu.OWNERS).document(invite.ownerId!!)
-                    .collection(fu.STORES).document(invite.storeId!!)
+                    .collection(fu.STORES)
+                    .document(invite.storeId!!)
                     .get()
             }.addOnSuccessListener { storeDoc ->
                 val phone = storeDoc.getString("phone").orEmpty()
@@ -223,6 +229,7 @@ class StaffRepoImp(
             .document(pref.getStore().id)
             .collection(fu.EMPLOYEES)
             .document(employeeId)
+        val userRef = db.collection("users").document(employeeId)
 
         employeeRef.get()
             .addOnSuccessListener { doc ->
@@ -233,9 +240,12 @@ class StaffRepoImp(
                     onResult(false, "This employee is not part of the current store.")
                     return@addOnSuccessListener
                 }
+                userRef.update("status",newStatus)
+                    .continueWithTask{
 
                 employeeRef.update("status", newStatus)
-                    .continueWithTask {
+
+                    }.continueWithTask {
                         ownerStoreEmployeeRef.update("status", newStatus)
                     }
                     .addOnSuccessListener {

@@ -15,15 +15,16 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.htopstore.databinding.FragmentProfielBinding
+import com.example.htopstore.ui.changeEmail.ChangeEmailActivity
 import com.example.htopstore.ui.changePassword.ChangePasswordActivity
 import com.example.htopstore.ui.login.LoginActivity
+import com.example.htopstore.util.DataValidator.isValidName
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfielBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentProfielBinding
     private val vm: MainViewModel by activityViewModels()
 
     private var isEditing = false
@@ -45,7 +46,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentProfielBinding.inflate(inflater, container, false)
+        binding = FragmentProfielBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,7 +75,6 @@ class ProfileFragment : Fragment() {
 
             // Personal information
             nameEt.setText(user.name)
-            emailEt.setText(user.email)
 
             // Store information
             storeNameTV.text = store.name
@@ -101,6 +101,10 @@ class ProfileFragment : Fragment() {
             // Change password action
             changePasswordAction.setOnClickListener {
                 startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
+            }
+
+            changeEmailAction.setOnClickListener {
+                startActivity(Intent(requireContext(), ChangeEmailActivity::class.java))
             }
 
             // Logout button
@@ -130,14 +134,6 @@ class ProfileFragment : Fragment() {
                 override fun afterTextChanged(s: Editable?) {}
             })
 
-            emailEt.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    hasChanges = true
-                    emailLo.error = null
-                }
-                override fun afterTextChanged(s: Editable?) {}
-            })
         }
     }
 
@@ -175,7 +171,6 @@ class ProfileFragment : Fragment() {
         isEditing = enabled
         binding.apply {
             nameEt.isEnabled = enabled
-            emailEt.isEnabled = enabled
             finishBtn.text = if (enabled) "Update now" else "Enable Editing"
         }
     }
@@ -186,23 +181,19 @@ class ProfileFragment : Fragment() {
         binding.apply {
             // Validate name
             val name = nameEt.text.toString().trim()
-            if (name.isEmpty()) {
-                nameLo.error = "Name is required"
+            if(!name.isValidName()){
+                nameLo.error = "Invalid name"
                 isValid = false
-            } else if (name.length < 3) {
-                nameLo.error = "Name must be at least 3 characters"
+
+            }
+            else if (name.isEmpty()) {
+                nameLo.error = "Valid name is required"
                 isValid = false
+            }
+            else{
+                nameLo.error = null
             }
 
-            // Validate email
-            val email = emailEt.text.toString().trim()
-            if (email.isEmpty()) {
-                emailLo.error = "Email is required"
-                isValid = false
-            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                emailLo.error = "Invalid email format"
-                isValid = false
-            }
         }
 
         return isValid
@@ -215,50 +206,27 @@ class ProfileFragment : Fragment() {
         }
 
         val name = binding.nameEt.text.toString().trim()
-        val email = binding.emailEt.text.toString().trim()
 
         // Show loading state
         showLoading(true)
-
-        // TODO: Replace with actual API call
-        // vm.updateProfile(name, email) { success, message ->
-        //     showLoading(false)
-        //     if (success) {
-        //         handleUpdateSuccess(name, email)
-        //     } else {
-        //         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        //     }
-        // }
-
-        // Simulate API call
-        binding.root.postDelayed({
+        vm.updateName(name){
             showLoading(false)
-            handleUpdateSuccess(name, email)
-        }, 1500)
+            handleUpdateSuccess(name)
+        }
     }
 
-    private fun handleUpdateSuccess(name: String, email: String) {
+    private fun handleUpdateSuccess(name: String) {
         // Update header with new data
         binding.profileNameTV.text = name
-        binding.profileEmailTV.text = email
-
-        // Reset states
         hasChanges = false
         setEditingEnabled(false)
-
-        Toast.makeText(requireContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show()
-
-        // TODO: Update local user data
-        // vm.updateLocalUserData(name, email)
     }
 
     private fun showLoading(show: Boolean) {
         binding.apply {
             finishBtn.isEnabled = !show
-            finishBtn.text = if (show) "" else "Update Profile"
+            finishBtn.text = if (show) "" else "Update Name"
 
-            // You can add a progress bar if needed
-            // progressBar.visibility = if (show) View.VISIBLE else View.GONE
         }
     }
 
@@ -277,12 +245,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun performLogout() {
-        // Show loading indicator (optional)
         Toast.makeText(requireContext(), "Logging out...", Toast.LENGTH_SHORT).show()
 
         vm.logout { success, msg ->
             if (success) {
-                // Clear back stack and navigate to login
                 val intent = Intent(requireContext(), LoginActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
@@ -294,9 +260,4 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

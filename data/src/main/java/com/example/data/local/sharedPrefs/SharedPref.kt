@@ -21,6 +21,30 @@ class SharedPref(context: Context){
         return sharedPref.getInt("userRole", OWNER_ROLE)
     }
 
+
+    fun setUserName(newName:String){
+        editor.putString("userName",newName)
+        editor.apply()
+
+    }
+    fun setEmail(newEmail:String){
+        editor.putString("userEmail",newEmail)
+        editor.apply()
+    }
+    fun setStoreName(newStoreName:String){
+        editor.putString("storeName",newStoreName)
+        editor.apply()
+    }
+    fun setStorePhone(newPhone:String) {
+        editor.putString("storePhone", newPhone)
+        editor.apply()
+    }
+    fun setStoreLocation(newLocation:String) {
+        editor.putString("storeLocation", newLocation)
+        editor.apply()
+    }
+
+
     fun saveUser(id: String,
                  name: String,
                  role: Int,
