@@ -2,6 +2,7 @@ package com.example.htopstore.di.module
 
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.auth.UpdateStoreDataUseCase
 import com.example.domain.useCase.staff.AcceptInviteUseCase
 import com.example.domain.useCase.staff.AddStoreInviteUseCase
 import com.example.domain.useCase.staff.DeleteStoreInviteUseCase
@@ -56,6 +57,10 @@ object StaffModule {
     @Provides
     fun provideRejectOrRehireUseCase(staffRepo: StaffRepo): RejectOrRehireUseCase{
         return RejectOrRehireUseCase(staffRepo)
+    }
+    @Provides
+    fun provideUpdateStoreUseCase(staffRepo: StaffRepo): UpdateStoreDataUseCase{
+        return UpdateStoreDataUseCase(staffRepo)
     }
 
 

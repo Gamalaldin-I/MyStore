@@ -1,10 +1,13 @@
 package com.example.htopstore.util.firebase.staff
 
+import android.content.Context
+import android.content.Intent
+import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.domain.model.Store
 import com.example.domain.model.remoteModels.Invite
 import com.example.domain.model.remoteModels.StoreEmployee
 import com.example.domain.repo.StaffRepo
-import com.example.domain.util.Constants
 import com.example.domain.util.Constants.STATUS_ACCEPTED
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.Constants.STATUS_PENDING
@@ -67,6 +70,7 @@ class StaffRepoImp(
             storeName = pref.getStore().name
         )
 
+
         val invitesRef = db.collection(fu.INVITES)
 
         invitesRef.document(code).set(invite.hash())
@@ -107,19 +111,19 @@ class StaffRepoImp(
     ) {
         val user = pref.getUser()
 
-        // ✅ Step 1: Validate the invite code
+        // Step 1: Validate the invite code
         if (invite.code != code) {
             onResult(false, "Invalid invite code.")
             return
         }
 
-        // ✅ Step 2: Prepare updated invite
+        //  Step 2: Prepare updated invite
         val updatedInvite = invite.copy(
             status = STATUS_ACCEPTED,
             acceptedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}"
         )
 
-        // ✅ Step 3: Firestore references
+        //  Step 3: FireStore references
         val invitesRef = db.collection(fu.INVITES).document(invite.code!!)
         val usersRef = db.collection("users").document(user.id)
         val employeeRef = db.collection(fu.EMPLOYEES).document(user.id)
@@ -129,7 +133,7 @@ class StaffRepoImp(
             .document(invite.storeId!!)
             .collection(fu.EMPLOYEES)
 
-        // ✅ Step 4: Prepare new employee data
+        //  Step 4: Prepare new employee data
         val newEmployee = StoreEmployee(
             id = user.id,
             email = user.email,
@@ -184,7 +188,7 @@ class StaffRepoImp(
 
 
     override fun rejectInvite(invite: Invite, onResult: (Boolean, String) -> Unit) {
-        val rejectedInvite = invite.copy(status = Constants.STATUS_REJECTED)
+        val rejectedInvite = invite.copy(status =STATUS_REJECTED)
 
         val invitesRef = db.collection(fu.INVITES)
 
@@ -260,7 +264,86 @@ class StaffRepoImp(
             }
     }
 
+    override fun updateStore(
+        name: String,
+        phone: String,
+        location: String,
+        onResult: (success: Boolean, msg: String) -> Unit){
 
+        val storeRef = db.collection(fu.OWNERS).document(pref.getUser().id)
+            .collection(fu.STORES).document(pref.getStore().id)
+
+            storeRef.get().addOnSuccessListener {
+                val newStoreData = Store(
+                    id =pref.getStore().id,
+                    name = name,
+                    phone = phone,
+                    location = location,
+                    ownerId = pref.getUser().id
+                )
+                storeRef.update(newStoreData.hash())
+                    .addOnSuccessListener {
+                        onResult(true, "Store updated successfully")
+                    }.addOnFailureListener{ f->
+                        onResult(false, f.message ?: "Failed to update store")
+                    }
+            }
+    }
+
+
+    /**
+     * Professional email message for employee invitation
+     */
+    private fun createInvitationEmail(storeName: String, code: String,phone:String): String {
+        return """
+Dear Team Member,
+
+Greetings from STORA!
+
+We are delighted to inform you that you have been invited to join $storeName as a valued member of our team.
+
+To get started:
+1. Download the STORA app from the Play Store (if you haven't already)
+2. Sign up as an employee
+3. Use the following invitation code to complete your registration:
+
+Invitation Code: $code
+and this it our phone for details: ${phone}
+
+We look forward to having you on board and working together to achieve great success.
+
+If you have any questions or need assistance, please don't hesitate to reach out.
+
+Best regards,
+The STORA Team
+    """.trimIndent()
+    }
+
+    /**
+     * Send invitation email using device's email client
+     */
+    override fun sendEmail(
+        context: Context,
+        recipientEmail: String,
+        code: String
+    ) {
+        val subject = "Invitation to Join ${pref.getStore().name} - STORA"
+        val message = createInvitationEmail(pref.getStore().name, code,pref.getStore().phone)
+
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = "mailto:".toUri() // Only email apps
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(recipientEmail))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
+
+        try {
+            context.startActivity(Intent.createChooser(intent, "Send invitation via"))
+        } catch (e: Exception) {
+            // Handle case where no email app is installed
+            e.printStackTrace()
+        }
+    }
     // ---------------------------------------------------------
     // 🔹 LISTENER CONTROL
     // ---------------------------------------------------------

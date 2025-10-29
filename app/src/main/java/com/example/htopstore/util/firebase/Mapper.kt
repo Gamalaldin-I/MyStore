@@ -1,5 +1,6 @@
 package com.example.htopstore.util.firebase
 
+import com.example.domain.model.Store
 import com.example.domain.model.remoteModels.Employee
 import com.example.domain.model.remoteModels.Invite
 import com.example.domain.model.remoteModels.StoreEmployee
@@ -39,4 +40,11 @@ object Mapper {
             "status" to this.status,
             "role" to this.role
         )}
+    fun Store.hash():HashMap<String,Any?>{
+        return hashMapOf(
+            "name" to this.name,
+            "phone" to this.phone,
+            "location" to this.location,
+        )
+    }
 }

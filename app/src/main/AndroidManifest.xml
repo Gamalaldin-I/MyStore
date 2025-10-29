@@ -27,6 +27,9 @@
         android:theme="@style/Theme.HTopStore"
         tools:targetApi="31">
         <activity
+            android:name=".ui.updateStore.UpdateStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.changeEmail.ChangeEmailActivity"
             android:exported="false" />
         <activity

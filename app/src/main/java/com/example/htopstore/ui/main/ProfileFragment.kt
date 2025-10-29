@@ -18,6 +18,7 @@ import com.example.htopstore.databinding.FragmentProfielBinding
 import com.example.htopstore.ui.changeEmail.ChangeEmailActivity
 import com.example.htopstore.ui.changePassword.ChangePasswordActivity
 import com.example.htopstore.ui.login.LoginActivity
+import com.example.htopstore.ui.updateStore.UpdateStoreActivity
 import com.example.htopstore.util.DataValidator.isValidName
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -105,6 +106,9 @@ class ProfileFragment : Fragment() {
 
             changeEmailAction.setOnClickListener {
                 startActivity(Intent(requireContext(), ChangeEmailActivity::class.java))
+            }
+            updateStoreAction.setOnClickListener{
+                startActivity(Intent(requireContext(), UpdateStoreActivity::class.java))
             }
 
             // Logout button

@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.staff
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -64,6 +65,13 @@ class StaffViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         staffRepo.stopListening()
+    }
+    fun sendEmail(
+        context: Context,
+        recipientEmail: String,
+        code: String
+    ){
+        staffRepo.sendEmail(context,recipientEmail,code)
     }
 
 }
