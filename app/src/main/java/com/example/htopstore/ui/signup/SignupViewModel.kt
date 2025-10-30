@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.useCase.auth.RegisterEmployeeUseCase
 import com.example.domain.useCase.auth.RegisterOwnerUseCase
+import com.example.domain.useCase.auth.SignWithGoogleUseCase
 import com.example.domain.util.Constants
 import com.example.htopstore.util.DataValidator.validEmail
 import com.example.htopstore.util.DataValidator.validPassword
@@ -14,15 +15,12 @@ import com.example.htopstore.util.DataValidator.validPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * ViewModel for managing the signup flow for both store owners and employees.
- * Handles form validation, role selection, and user registration.
- */
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val sharedPref: SharedPref,
     private val registerOwnerUseCase: RegisterOwnerUseCase,
-    private val registerEmployeeUseCase: RegisterEmployeeUseCase
+    private val registerEmployeeUseCase: RegisterEmployeeUseCase,
+    private val signWithGoogleUseCase: SignWithGoogleUseCase
 ) : ViewModel(), OnNextStep {
 
     // User credentials
@@ -44,26 +42,12 @@ class SignupViewModel @Inject constructor(
 
     val isLoggedIn: LiveData<Boolean> = MutableLiveData(sharedPref.isLogin())
 
-    /**
-     * Handles role selection and proceeds to the appropriate form.
-     * @param role The selected role (OWNER_ROLE or EMPLOYEE_ROLE)
-     * @param nextAction Callback to navigate to the next screen
-     */
+
     override fun afterRoleSelection(role: Int, nextAction: () -> Unit) {
         sharedPref.setRole(role)
         nextAction()
     }
 
-    /**
-     * Handles user form submission and triggers registration based on role.
-     * For owners: Stores data temporarily and proceeds to store form
-     * For employees: Immediately registers the user
-     *
-     * @param name User's full name
-     * @param email User's email address
-     * @param password User's password
-     * @param nextAction Callback to navigate to the next screen on success
-     */
     override fun afterUserFormFill(
         name: String,
         email: String,
@@ -86,13 +70,6 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Handles store form submission and stores the data.
-     * @param name Store name
-     * @param location Store location/address
-     * @param phone Store phone number
-     * @param nextAction Callback to navigate to the next screen
-     */
     override fun afterStoreFormFill(
         name: String,
         location: String,
@@ -105,10 +82,26 @@ class SignupViewModel @Inject constructor(
         nextAction()
     }
 
-    /**
-     * Registers a new store owner with complete store information.
-     * @param nextAction Callback invoked on successful registration
-     */
+    override fun onSignWithGoogle(
+        token: String,
+        nextAction: () -> Unit
+    ) {
+        signWithGoogleUseCase(
+            token = token,
+            storePhone = storePhone,
+            storeName = storeName,
+            storeLocation = storeLocation,
+            role = getRole()
+        ) { success, message ->
+            _isLoading.value = false
+            _message.value = message
+            if (success) {
+                nextAction()
+            }
+    }
+    }
+
+
     private fun registerOwner(nextAction: () -> Unit) {
         _isLoading.value = true
 
@@ -129,10 +122,6 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Registers a new employee.
-     * @param nextAction Callback invoked on successful registration
-     */
     private fun registerEmployee(nextAction: () -> Unit) {
         _isLoading.value = true
 
@@ -150,20 +139,8 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Gets the currently selected user role.
-     * @return Role constant (OWNER_ROLE or EMPLOYEE_ROLE)
-     */
     fun getRole(): Int = sharedPref.getRole()
 
-    /**
-     * Validates user registration form data.
-     * @param name User's full name
-     * @param email User's email address
-     * @param password User's password
-     * @param confirmPassword Password confirmation
-     * @return true if all fields are valid, false otherwise
-     */
     fun isUserDataValid(
         name: String,
         email: String,
@@ -192,13 +169,6 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Validates store registration form data.
-     * @param name Store name
-     * @param location Store location/address
-     * @param phone Store phone number
-     * @return true if all fields are valid, false otherwise
-     */
     fun isStoreDataValid(
         name: String,
         location: String,
@@ -221,43 +191,8 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Validates verification code format.
-     * @param code The verification code to validate
-     * @return true if code is valid, false otherwise
-     */
-    fun isVerificationCodeValid(code: String): Boolean {
-        return when {
-            code.isBlank() -> {
-                _message.value = "Please enter the verification code"
-                false
-            }
-            code.length != VERIFICATION_CODE_LENGTH -> {
-                _message.value = "Verification code must be $VERIFICATION_CODE_LENGTH digits"
-                false
-            }
-            else -> {
-                _message.value = "Sending verification code..."
-                true
-            }
-        }
-    }
-
-    /**
-     * Clears all stored user and store data.
-     * Useful for resetting the signup flow or handling errors.
-     */
-    fun clearFormData() {
-        userName = ""
-        userEmail = ""
-        userPassword = ""
-        storeName = ""
-        storeLocation = ""
-        storePhone = ""
-    }
 
     companion object {
         private const val MIN_STORE_NAME_LENGTH = 3
-        private const val VERIFICATION_CODE_LENGTH = 6
     }
 }

@@ -12,7 +12,20 @@
           "package_name": "com.example.htopstore"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "288889154483-1bf2a0444485vm538bhh6rb7io8g05o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.htopstore",
+            "certificate_hash": "e48c6f993a3e1cd8ebdc918c525f8e1ac5bfd24b"
+          }
+        },
+        {
+          "client_id": "288889154483-shh4d5peure76ga70grerr8mnttshk66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCa_x2fC6Jj9_QJq9YoZrukljvPMtOcjSk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288889154483-shh4d5peure76ga70grerr8mnttshk66.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

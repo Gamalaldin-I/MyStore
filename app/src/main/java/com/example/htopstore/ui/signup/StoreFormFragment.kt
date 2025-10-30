@@ -8,10 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.htopstore.databinding.FragmentStoreFormBinding
 
-/**
- * Fragment for collecting store information during the signup process.
- * This fragment is displayed when a user is registering as a store owner.
- */
 class StoreFormFragment private constructor() : Fragment() {
 
     private lateinit var binding: FragmentStoreFormBinding

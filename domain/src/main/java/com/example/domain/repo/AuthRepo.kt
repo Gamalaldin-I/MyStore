@@ -10,6 +10,14 @@ interface AuthRepo{
               password:String,
               onResult:(success:Boolean,msg:String)->Unit
     )
+    fun signWithGoogle(
+        idToken:String,
+        role:Int,
+        storePhone:String,
+        storeName:String,
+        storeLocation:String,
+        onResult:(success:Boolean,msg:String)->Unit)
+
     fun registerOwner(
         email:String,
         password:String,

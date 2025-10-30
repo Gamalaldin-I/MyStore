@@ -18,4 +18,9 @@ object Constants {
     const val STATUS_HIRED="Hired"
 
 
+    const val SIGNUP_FIRST_ERROR = "sign up first please"
+    const val ACCOUNT_FOUND_ERROR = "There is another account by this email"
+
+
+
 }

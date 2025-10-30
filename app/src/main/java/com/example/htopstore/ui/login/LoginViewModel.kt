@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.useCase.auth.LoginUseCase
 import com.example.domain.useCase.auth.ResetPasswordUseCase
+import com.example.domain.useCase.auth.SignWithGoogleUseCase
+import com.example.domain.util.Constants.SIGNUP_FIRST_ERROR
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
-    private val resetPasswordUseCase: ResetPasswordUseCase
+    private val resetPasswordUseCase: ResetPasswordUseCase,
+    private val loginWithGoogleUseCase: SignWithGoogleUseCase
 ):ViewModel(){
     private val _msg = MutableLiveData<String>()
     val msg : LiveData<String> = _msg
@@ -31,6 +34,17 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
             }
         }
 
+    }
+    fun loginWithGoogle(idToken:String,goToSign:()->Unit,onRes:()->Unit){
+        loginWithGoogleUseCase(token=idToken,role = -1,storePhone = "",storeName = "",storeLocation = ""){ success, msg ->
+            _msg.value = msg
+            if(success){
+                onRes()
+            }
+            if(msg==SIGNUP_FIRST_ERROR){
+                goToSign()
+            }
+        }
     }
 
 

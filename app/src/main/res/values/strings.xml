@@ -94,5 +94,7 @@
     <!-- Success -->
     <string name="success">Success!</string>
     <string name="email_change_success_message">A verification email has been sent to your new email address. Please verify to complete the change.</string>
+    <string name="web_client_id" translatable="false">288889154483-shh4d5peure76ga70grerr8mnttshk66.apps.googleusercontent.com"</string>
+
     <string name="ok">OK</string>
 </resources>

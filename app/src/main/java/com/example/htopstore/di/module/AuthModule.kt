@@ -8,6 +8,7 @@ import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.auth.RegisterEmployeeUseCase
 import com.example.domain.useCase.auth.RegisterOwnerUseCase
 import com.example.domain.useCase.auth.ResetPasswordUseCase
+import com.example.domain.useCase.auth.SignWithGoogleUseCase
 import com.example.domain.useCase.auth.UpdateEmailUseCase
 import com.example.domain.useCase.auth.UpdateNameUseCase
 import com.example.htopstore.util.firebase.auth.AuthRepoImp
@@ -59,6 +60,10 @@ object AuthModule {
     @Provides
     fun provideUpdateEmailUseCase(repo: AuthRepo): UpdateEmailUseCase {
         return UpdateEmailUseCase(repo)
+    }
+    @Provides
+    fun provideSignWithGoogle(repo: AuthRepo): SignWithGoogleUseCase{
+        return SignWithGoogleUseCase(repo)
     }
 
 }

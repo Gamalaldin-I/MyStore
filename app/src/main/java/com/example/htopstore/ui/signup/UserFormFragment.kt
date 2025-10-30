@@ -12,24 +12,24 @@ class UserFormFragment private constructor(): Fragment() {
     private lateinit var binding: FragmentFormBinding
     private val vm: SignupViewModel by activityViewModels()
     private lateinit var oNextStep:(name:String,email:String,password:String)->Unit
+    private lateinit var onSignUpWithGoogle:()->Unit
     companion object{
         fun newInstance(): UserFormFragment {
             return UserFormFragment()
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View{
         // Inflate the layout for this fragment
         binding = FragmentFormBinding.inflate(inflater, container, false)
         binding.finishBtn.setOnClickListener {
             allFieldsAreValid()
+        }
+        binding.googleSignInBtn.setOnClickListener{
+            onSignUpWithGoogle()
         }
         return binding.root
     }
@@ -46,6 +46,11 @@ class UserFormFragment private constructor(): Fragment() {
         }
     fun setOnNext(doThis:(name:String,email:String,password:String)->Unit){
         oNextStep = doThis
+    }
+    fun setONSignWithGoogle(
+        doThis:()->Unit
+    ){
+        onSignUpWithGoogle = doThis
     }
 
 }

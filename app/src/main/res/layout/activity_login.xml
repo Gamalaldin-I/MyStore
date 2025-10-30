@@ -14,17 +14,18 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <!-- Logo or App Icon (optional - add your logo) -->
+        <!-- Logo -->
         <TextView
             android:id="@+id/appLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             android:contentDescription="App Logo"
             android:text="Stora"
             android:textColor="@color/white"
-            android:textSize="40sp"
+            android:textSize="48sp"
             android:fontFamily="@font/kahroop"
+            android:letterSpacing="0.05"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,10 +35,10 @@
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Welcome Back"
             android:textColor="@color/text_white"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:letterSpacing="0.01"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,11 +50,11 @@
             android:id="@+id/subtitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Sign in to continue"
+            android:layout_marginTop="4dp"
+            android:text="Sign in to continue to your account"
             android:textColor="@color/text_white"
-            android:alpha="0.8"
-            android:textSize="16sp"
+            android:alpha="0.9"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/welcomeText" />
@@ -63,8 +64,8 @@
             android:id="@+id/loginCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:cardCornerRadius="20dp"
+            android:layout_marginTop="32dp"
+            app:cardCornerRadius="24dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +78,59 @@
                 android:orientation="vertical"
                 android:padding="28dp"
                 android:background="@drawable/bg_day_brief">
+
+                <!-- Google Sign-In Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/googleSignInBtn"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Continue with Google"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_google"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@null"
+                    app:strokeColor="@color/input_border_focus"
+                    app:strokeWidth="2dp" />
+
+                <!-- Divider with OR -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/text_secondary"
+                        android:alpha="0.3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="OR"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:alpha="0.6" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/text_secondary"
+                        android:alpha="0.3" />
+                </LinearLayout>
 
                 <!-- Email Input -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -139,70 +193,56 @@
                         android:paddingVertical="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Forgot Password -->
-                <TextView
-                    android:id="@+id/forgotPassword"
-                    android:layout_width="wrap_content"
+                <!-- Remember Me & Forgot Password Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="8dp"
-                    android:text="Forgot Password?"
-                    android:textColor="@color/text_link"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/rememberMeCheckbox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remember me"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:buttonTint="@color/action_primary" />
+
+                    <TextView
+                        android:id="@+id/forgotPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:text="Forgot?"
+                        android:textColor="@color/text_link"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <!-- Login Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginBtn"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:text="Login"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp"
-                    app:elevation="4dp" />
-
-                <!-- Divider with OR -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/text_secondary"
-                        android:alpha="0.3" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="OR"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
-                        android:alpha="0.7" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/text_secondary"
-                        android:alpha="0.3" />
-                </LinearLayout>
+                    app:elevation="4dp"
+                    app:icon="@android:drawable/ic_media_play"
+                    app:iconGravity="textEnd" />
 
                 <!-- Sign Up Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -211,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:text="Don't have an account? "
                         android:textColor="@color/text_secondary"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/signupTv"
@@ -222,7 +262,7 @@
                         android:padding="4dp"
                         android:text="Sign Up"
                         android:textColor="@color/text_link"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -230,23 +270,25 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Footer (optional) -->
+        <!-- Footer -->
         <TextView
             android:id="@+id/footerText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:alpha="0.6"
-            android:text="By continuing, you agree to our Terms &amp; Privacy Policy"
+            android:alpha="0.7"
+            android:text="By continuing, you agree to our Terms of Service and Privacy Policy"
             android:textAlignment="center"
             android:textColor="@color/text_white"
             android:textSize="12sp"
+            android:lineSpacingExtra="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loginCard"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintWidth_max="350dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

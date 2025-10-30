@@ -4,8 +4,10 @@ import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.remoteModels.Employee
 import com.example.domain.repo.AuthRepo
+import com.example.domain.util.Constants.ACCOUNT_FOUND_ERROR
 import com.example.domain.util.Constants.EMPLOYEE_ROLE
 import com.example.domain.util.Constants.OWNER_ROLE
+import com.example.domain.util.Constants.SIGNUP_FIRST_ERROR
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.Constants.STATUS_PENDING
 import com.example.domain.util.DateHelper
@@ -14,13 +16,14 @@ import com.example.htopstore.util.firebase.Mapper.hash
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
- class AuthRepoImp(
+class AuthRepoImp(
     private val db: FirebaseFirestore,
     private val pref: SharedPref, ) : AuthRepo {
 
@@ -48,6 +51,76 @@ import kotlinx.coroutines.flow.StateFlow
                 onResult(false, it.message ?: "Invalid email or password")
             }
     }
+
+    override fun signWithGoogle(
+        idToken: String,
+        role: Int,
+        storePhone: String,
+        storeName: String,
+        storeLocation: String,
+        onResult: (success: Boolean, msg: String) -> Unit
+    ) {
+        Log.d("GoogleSignIn", "Received ID token: $idToken")
+
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser ?: return@addOnCompleteListener
+                    val userRef = db.collection("users").document(user.uid)
+                    userRef.get().addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            //case it was from signup screen
+                            if(role!=-1){
+                                onResult(false,ACCOUNT_FOUND_ERROR)
+                                return@addOnSuccessListener
+                            }
+                            //  User already registered login
+                            val loginRole = document.getLong("role")?.toInt() ?: 0
+                            manageUser(
+                                role = loginRole,
+                                userId = user.uid,
+                                email = user.email!!,
+                                onResult = onResult
+                            )
+                        } else {
+                            // case it from login screen
+                            if(role==-1){
+                                onResult(false,SIGNUP_FIRST_ERROR)
+                                return@addOnSuccessListener
+                            }
+                            //New user  signup
+                            if (role == OWNER_ROLE) {
+                                registerOwnerAccount(
+                                    storeName = storeName,
+                                    storeLocation = storeLocation,
+                                    storePhone = storePhone,
+                                    ownerId = user.uid,
+                                    name = user.displayName ?: "Unknown",
+                                    email = user.email ?: "Unknown",
+                                    onResult = onResult
+                                )
+                            } else {
+                                registerEmployeeAccount(
+                                    uid = user.uid,
+                                    name = user.displayName ?: "Unknown",
+                                    email = user.email ?: "Unknown",
+                                    onResult = onResult
+                                )
+                            }
+                        }
+                    }.addOnFailureListener {
+                        onResult(false, it.message ?: "Error checking user")
+                    }
+                } else {
+                    onResult(false, task.exception?.message ?: "Auth failed")
+                }
+            }
+            .addOnFailureListener {
+                onResult(false, it.message ?: "Firebase error")
+            }
+    }
+
 
     private fun fetchUserData(userId: String, email: String, onResult: (Boolean, String) -> Unit) {
         db.collection("users").document(userId).get()
@@ -185,63 +258,75 @@ import kotlinx.coroutines.flow.StateFlow
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { res ->
                 val ownerId = res.user!!.uid
-                val storeId = "${storeName}${ownerId}"
-
-                val owner = hashMapOf(
-                    fu.OWNER_NAME to name,
-                    fu.OWNER_EMAIL to email,
-                    fu.OWNER_ID to ownerId,
-                    fu.OWNER_STORE_ID to storeId,
-                    fu.OWNER_ROLE to OWNER_ROLE,
-                    fu.OWNER_CREATED_AT to FieldValue.serverTimestamp()
-                )
-
-                db.collection("users").document(ownerId).set(
-                    hashMapOf(
-                        "role" to OWNER_ROLE,
-                        "name" to name,
-                        "email" to email,
-                        "status" to STATUS_HIRED
-                    )
-                )
-
-                db.collection(fu.OWNERS).whereEqualTo(fu.OWNER_EMAIL, email).get()
-                    .addOnSuccessListener { query ->
-                        if (query.isEmpty) {
-                            db.collection(fu.OWNERS).document(ownerId).set(owner)
-                                .addOnSuccessListener {
-                                    val store = hashMapOf(
-                                        fu.STORE_NAME to storeName,
-                                        fu.STORE_LOCATION to storeLocation,
-                                        fu.STORE_PHONE to storePhone
-                                    )
-
-                                    db.collection(fu.OWNERS).document(ownerId)
-                                        .collection(fu.STORES).document(storeId)
-                                        .set(store)
-                                        .addOnSuccessListener {
-                                            pref.saveUser(ownerId, name, OWNER_ROLE, email)
-                                            pref.saveStore(storeId, storeName, storePhone, storeLocation, ownerId)
-                                            onResult(true, "Owner registered successfully")
-                                        }
-                                        .addOnFailureListener {
-                                            onResult(false, it.message ?: "Failed to create store")
-                                        }
-                                }
-                                .addOnFailureListener {
-                                    onResult(false, it.message ?: "Failed to create owner")
-                                }
-                        } else {
-                            onResult(false, "Email already exists")
-                        }
-                    }
-                    .addOnFailureListener {
-                        onResult(false, it.message ?: "Failed to check email")
-                    }
+                registerOwnerAccount(storeName, storeLocation, storePhone, ownerId, name, email, onResult)
             }
             .addOnFailureListener {
                 onResult(false, it.message ?: "Failed to create account")
             }
+    }
+    private fun registerOwnerAccount(
+        storeName: String,
+        storeLocation: String,
+        storePhone: String,
+        ownerId: String,
+        name: String,
+        email: String,
+        onResult: (Boolean, String) -> Unit,
+        ){
+        val storeId = "${storeName}${ownerId}"
+
+        val owner = hashMapOf(
+            fu.OWNER_NAME to name,
+            fu.OWNER_EMAIL to email,
+            fu.OWNER_ID to ownerId,
+            fu.OWNER_STORE_ID to storeId,
+            fu.OWNER_ROLE to OWNER_ROLE,
+            fu.OWNER_CREATED_AT to FieldValue.serverTimestamp()
+        )
+
+        db.collection("users").document(ownerId).set(
+            hashMapOf(
+                "role" to OWNER_ROLE,
+                "name" to name,
+                "email" to email,
+                "status" to STATUS_HIRED
+            )
+        )
+
+        db.collection(fu.OWNERS).whereEqualTo(fu.OWNER_EMAIL, email).get()
+            .addOnSuccessListener { query ->
+                if (query.isEmpty) {
+                    db.collection(fu.OWNERS).document(ownerId).set(owner)
+                        .addOnSuccessListener {
+                            val store = hashMapOf(
+                                fu.STORE_NAME to storeName,
+                                fu.STORE_LOCATION to storeLocation,
+                                fu.STORE_PHONE to storePhone
+                            )
+
+                            db.collection(fu.OWNERS).document(ownerId)
+                                .collection(fu.STORES).document(storeId)
+                                .set(store)
+                                .addOnSuccessListener {
+                                    pref.saveUser(ownerId, name, OWNER_ROLE, email)
+                                    pref.saveStore(storeId, storeName, storePhone, storeLocation, ownerId)
+                                    onResult(true, "Owner registered successfully")
+                                }
+                                .addOnFailureListener {
+                                    onResult(false, it.message ?: "Failed to create store")
+                                }
+                        }
+                        .addOnFailureListener {
+                            onResult(false, it.message ?: "Failed to create owner")
+                        }
+                } else {
+                    onResult(false, "Email already exists")
+                }
+            }
+            .addOnFailureListener {
+                onResult(false, it.message ?: "Failed to check email")
+            }
+
     }
 
     // ---------------------------------------------------------
@@ -251,39 +336,46 @@ import kotlinx.coroutines.flow.StateFlow
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { it ->
                 val uid = it.user!!.uid
-                val employee = Employee(
-                    id = uid,
-                    name = name,
-                    email = email,
-                    ownerId = null,
-                    storeId = null,
-                    joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}",
-                    role = EMPLOYEE_ROLE,
-                    acceptedAt = null,
-                    status = STATUS_PENDING
-                )
-
-                db.collection("users").document(uid).set(
-                    hashMapOf(
-                        "role" to EMPLOYEE_ROLE,
-                        "name" to name,
-                        "email" to email,
-                        "status" to STATUS_PENDING
-                    )
-                )
-
-                db.collection(fu.EMPLOYEES).document(uid).set(employee.hash())
-                    .addOnSuccessListener {
-                        pref.saveUser(uid, name, EMPLOYEE_ROLE, email)
-                        pref.saveStore("", "", "", "", "")
-                        onResult(true, "Employee account created. Await approval.")
-                    }
-                    .addOnFailureListener {
-                        onResult(false, it.message ?: "Error creating employee record")
-                    }
             }
             .addOnFailureListener {
                 onResult(false, it.message ?: "Error creating employee account")
+            }
+    }
+    private fun registerEmployeeAccount(
+        uid: String,
+        name: String,
+        email: String,
+        onResult: (Boolean, String) -> Unit
+    ){
+        val employee = Employee(
+            id = uid,
+            name = name,
+            email = email,
+            ownerId = null,
+            storeId = null,
+            joinedAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}",
+            role = EMPLOYEE_ROLE,
+            acceptedAt = null,
+            status = STATUS_PENDING
+        )
+
+        db.collection("users").document(uid).set(
+            hashMapOf(
+                "role" to EMPLOYEE_ROLE,
+                "name" to name,
+                "email" to email,
+                "status" to STATUS_PENDING
+            )
+        )
+
+        db.collection(fu.EMPLOYEES).document(uid).set(employee.hash())
+            .addOnSuccessListener {
+                pref.saveUser(uid, name, EMPLOYEE_ROLE, email)
+                pref.saveStore("", "", "", "", "")
+                onResult(true, "Employee account created. Await approval.")
+            }
+            .addOnFailureListener {
+                onResult(false, it.message ?: "Error creating employee record")
             }
     }
 
