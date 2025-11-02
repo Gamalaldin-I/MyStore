@@ -70,8 +70,8 @@ class StaffViewModel @Inject constructor(
         context: Context,
         recipientEmail: String,
         code: String
-    ){
-        staffRepo.sendEmail(context,recipientEmail,code)
+    ): Pair<String,String>{
+        return staffRepo.sendEmail(context,recipientEmail,code)
     }
 
 }

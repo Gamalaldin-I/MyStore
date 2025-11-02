@@ -33,5 +33,6 @@ data class SoldProductEntity(
     val price: Double,
     val sellingPrice: Double,
     val sellDate: String,
-    val sellTime: String
+    val sellTime: String,
+    var lastUpdate:String
 )

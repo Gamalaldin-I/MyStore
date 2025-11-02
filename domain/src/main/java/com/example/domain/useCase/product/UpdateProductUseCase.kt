@@ -5,6 +5,6 @@ import com.example.domain.repo.ProductRepo
 
 class UpdateProductUseCase(private val productRepo: ProductRepo) {
     suspend operator fun invoke(product: Product) {
-        productRepo.updateProduct(product)
+        productRepo.updateProduct(product )
     }
 }

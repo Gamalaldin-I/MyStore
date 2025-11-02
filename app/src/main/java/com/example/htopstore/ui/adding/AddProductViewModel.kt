@@ -3,6 +3,7 @@ package com.example.htopstore.ui.adding
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -85,7 +86,8 @@ class AddProductViewModel @Inject constructor(
                         buyingPrice = buyingPrice.toDouble(),
                         sellingPrice = sellingPrice.toDouble(),
                         count = count.toInt(),
-                        soldCount = 0
+                        soldCount = 0,
+                        lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}"
                     )
 
                     saveProduct(product)
@@ -95,6 +97,7 @@ class AddProductViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _validationMessage.value = "Error saving product: ${e.message}"
+                Log.e("AddProductViewModel", "Error saving product", e)
                 _uiState.value = _uiState.value?.copy(isLoading = false)
             }
         }
@@ -217,6 +220,7 @@ class AddProductViewModel @Inject constructor(
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _validationMessage.value = "Error saving product: ${e.message}"
+                    Log.e("AddProductViewModel", "Error saving product", e)
                     _uiState.value = _uiState.value?.copy(isLoading = false)
                 }
             }

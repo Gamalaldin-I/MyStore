@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -63,11 +64,22 @@ class InvitesFragment : Fragment() {
             onCopy = { code -> copyToClipboard(code) },
             onSending = { code, email ->
                 if (code != null && email != null) {
-                    vm.sendEmail(requireContext(), email, code)
+                    val (subject, message ) = vm.sendEmail(requireContext(), email, code)
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = "mailto:".toUri()
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                        putExtra(Intent.EXTRA_SUBJECT, subject)
+                        putExtra(Intent.EXTRA_TEXT, message)
+                    }
+                    try { startActivity(Intent.createChooser(intent, "Send invitation via"))
+                    } catch (e: Exception) {
+                        // Handle case where no email app is installed
+                        e.printStackTrace()
+                    }
                 } else{
-                    showSnackbar("Error sending invitation")
+                    showSnackBar("Error sending invitation")
                 }
-                showSnackbar("Invitation sent successfully")
+                showSnackBar("Invitation sent successfully")
             }
         )
 
@@ -168,7 +180,7 @@ class InvitesFragment : Fragment() {
             code = IdGenerator.generateTimestampedId(7)
         ) {
             binding.emailET.text = null
-            showSnackbar("Invite created successfully")
+            showSnackBar("Invite created successfully")
         }
     }
 
@@ -205,7 +217,7 @@ class InvitesFragment : Fragment() {
             negativeButton = "Cancel",
             onConfirm = {
                 vm.deleteInvite(invite) {
-                    showSnackbar("Invite deleted")
+                    showSnackBar("Invite deleted")
                 }
             },
             onCancel = {}
@@ -225,7 +237,7 @@ class InvitesFragment : Fragment() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Invite Code", text)
         clipboard.setPrimaryClip(clip)
-        showSnackbar("Code copied to clipboard")
+        showSnackBar("Code copied to clipboard")
     }
 
     private fun updateInviteCount(count: Int) {
@@ -245,7 +257,7 @@ class InvitesFragment : Fragment() {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 

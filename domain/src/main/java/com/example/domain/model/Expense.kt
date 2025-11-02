@@ -7,5 +7,6 @@ data class Expense(
     val description: String,
     val category: String,
     val amount: Double,
-    val paymentMethod: String // bank or cash
+    val paymentMethod: String,
+    var lastUpdate: String// bank or cash
 )

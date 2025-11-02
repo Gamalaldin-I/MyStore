@@ -21,6 +21,6 @@ interface StaffRepo {
     fun rejectInvite(invite: Invite,onResult:(success: Boolean,msg:String)->Unit)
     fun rejectOrRehireEmployee(employeeId:String,reject:Boolean,onResult:(success:Boolean,msg:String)->Unit)
     fun updateStore(name:String,phone:String,location:String,onResult:(success:Boolean,msg:String)->Unit)
-    fun sendEmail(context: Context, recipientEmail:String, code:String)
+    fun sendEmail(context: Context, recipientEmail:String, code:String): Pair<String,String>
 
 }

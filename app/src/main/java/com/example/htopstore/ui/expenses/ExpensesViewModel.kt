@@ -48,7 +48,8 @@ class ExpensesViewModel @Inject constructor(
             amount = amount.toDouble(),
             category = category,
             paymentMethod = method,
-            description = description)
+            description = description,
+            lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}")
         insertNewExpense(expense, onFinished)
     }
 

@@ -1,9 +1,9 @@
-package com.example.htopstore.util.firebase.staff
+package com.example.data.remote.firebase.staff
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.Mapper.hash
+import com.example.data.remote.firebase.FirebaseUtils
 import com.example.domain.model.Store
 import com.example.domain.model.remoteModels.Invite
 import com.example.domain.model.remoteModels.StoreEmployee
@@ -13,8 +13,6 @@ import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.Constants.STATUS_PENDING
 import com.example.domain.util.Constants.STATUS_REJECTED
 import com.example.domain.util.DateHelper
-import com.example.htopstore.util.firebase.FirebaseUtils
-import com.example.htopstore.util.firebase.Mapper.hash
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -269,7 +267,6 @@ class StaffRepoImp(
         phone: String,
         location: String,
         onResult: (success: Boolean, msg: String) -> Unit){
-
         val storeRef = db.collection(fu.OWNERS).document(pref.getUser().id)
             .collection(fu.STORES).document(pref.getStore().id)
 
@@ -326,23 +323,10 @@ The STORA Team
         context: Context,
         recipientEmail: String,
         code: String
-    ) {
+    ):Pair<String,String>{
         val subject = "Invitation to Join ${pref.getStore().name} - STORA"
         val message = createInvitationEmail(pref.getStore().name, code,pref.getStore().phone)
-
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = "mailto:".toUri() // Only email apps
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(recipientEmail))
-            putExtra(Intent.EXTRA_SUBJECT, subject)
-            putExtra(Intent.EXTRA_TEXT, message)
-        }
-
-        try {
-            context.startActivity(Intent.createChooser(intent, "Send invitation via"))
-        } catch (e: Exception) {
-            // Handle case where no email app is installed
-            e.printStackTrace()
-        }
+        return Pair(subject,message)
     }
     // ---------------------------------------------------------
     // 🔹 LISTENER CONTROL

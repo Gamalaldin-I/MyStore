@@ -11,7 +11,7 @@ import com.example.domain.useCase.auth.ResetPasswordUseCase
 import com.example.domain.useCase.auth.SignWithGoogleUseCase
 import com.example.domain.useCase.auth.UpdateEmailUseCase
 import com.example.domain.useCase.auth.UpdateNameUseCase
-import com.example.htopstore.util.firebase.auth.AuthRepoImp
+import com.example.data.remote.firebase.auth.AuthRepoImp
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides

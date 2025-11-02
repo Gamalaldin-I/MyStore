@@ -12,5 +12,7 @@ data class ExpenseEntity(
     val description: String,
     val category: String,
     val amount: Double,
-    val paymentMethod: String // bank or cash
+    val paymentMethod: String,
+    var lastUpdate:String
+
 )

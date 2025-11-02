@@ -132,6 +132,12 @@ class MainViewModel @Inject constructor(
             _message.value = msg
         }
     }
+    fun isLoginFromGoogle(): Boolean{
+        return pref.isLoginFromGoogle()
+    }
+    fun getProfileImage():String{
+        return pref.getProfileImage().toString()
+    }
 
 
 

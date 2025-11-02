@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.htopstore.databinding.FragmentProfielBinding
 import com.example.htopstore.ui.changeEmail.ChangeEmailActivity
 import com.example.htopstore.ui.changePassword.ChangePasswordActivity
@@ -88,6 +89,17 @@ class ProfileFragment : Fragment() {
 
     private fun setupListeners() {
         binding.apply {
+            if(vm.isLoginFromGoogle()){
+                changeEmailAction.visibility = View.GONE
+                changePasswordAction.visibility = View.GONE
+                editPhotoBtn.visibility = View.GONE
+                Glide.with(profileAvatar.context)
+                    .load(vm.getProfileImage())
+                    .error(com.example.htopstore.R.drawable.icon_profile)
+                    .placeholder(com.example.htopstore.R.drawable.icon_profile)
+                    .into(profileAvatar)
+            }
+
             // Edit photo button
             editPhotoBtn.setOnClickListener {
                 showPhotoOptions()

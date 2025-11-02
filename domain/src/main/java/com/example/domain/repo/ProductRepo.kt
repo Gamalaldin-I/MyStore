@@ -12,4 +12,6 @@ interface ProductRepo {
     suspend fun updateProduct(product: Product)
     suspend fun deleteProductById(id: String, image: String)
     fun getArchiveLength(): Flow<Int>
+    fun fetchProductsFromRemoteIntoLocal(products: List<Product>)
+    fun listenToRemoteChanges()
 }

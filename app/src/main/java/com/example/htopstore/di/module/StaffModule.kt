@@ -11,7 +11,7 @@ import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
 import com.example.domain.useCase.staff.RejectInviteUseCase
 import com.example.domain.useCase.staff.RejectOrRehireUseCase
-import com.example.htopstore.util.firebase.staff.StaffRepoImp
+import com.example.data.remote.firebase.staff.StaffRepoImp
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides

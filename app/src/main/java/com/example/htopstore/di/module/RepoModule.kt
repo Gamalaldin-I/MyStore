@@ -3,7 +3,7 @@ package com.example.htopstore.di.module
 import com.example.data.local.dao.ExpenseDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
-import com.example.data.remote.RemoteProductRepo
+import com.example.data.remote.repo.RemoteProductRepo
 import com.example.data.repo.AnalysisRepoImp
 import com.example.data.repo.BillDetailsRepoImp
 import com.example.data.repo.BillRepoImp
@@ -16,6 +16,7 @@ import com.example.domain.repo.BillRepo
 import com.example.domain.repo.ExpensesRepo
 import com.example.domain.repo.ProductRepo
 import com.example.domain.repo.SalesRepo
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,8 +27,11 @@ import dagger.hilt.components.SingletonComponent
 object RepoModule {
 
     @Provides
-    fun provideProductRepo(productDao: ProductDao, remote: RemoteProductRepo): ProductRepo {
-        return ProductRepoImp(productDao,remote)
+    fun provideProductRepo(productDao: ProductDao,
+                           remote: RemoteProductRepo): ProductRepo {
+        return ProductRepoImp(
+            productDao= productDao,
+            remote= remote)
     }
 
     @Provides

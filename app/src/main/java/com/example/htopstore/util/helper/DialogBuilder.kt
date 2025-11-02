@@ -139,7 +139,8 @@ object DialogBuilder {
                 sellDate = DateHelper.getCurrentDate(),
                 sellTime = DateHelper.getCurrentTime(),
                 name = soldProduct.name,
-                detailId = IdGenerator.generateTimestampedId()
+                detailId = IdGenerator.generateTimestampedId(),
+                lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}"
             )
             onConfirm(willBack)
             hideReturnDialog()

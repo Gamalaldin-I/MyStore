@@ -1,4 +1,4 @@
-package com.example.htopstore.util.firebase
+package com.example.data.remote
 
 import com.example.domain.model.Store
 import com.example.domain.model.remoteModels.Employee

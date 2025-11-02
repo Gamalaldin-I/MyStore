@@ -1,4 +1,4 @@
-package com.example.htopstore.util.firebase
+package com.example.data.remote.firebase
 
 object FirebaseUtils {
     //FOR STORES

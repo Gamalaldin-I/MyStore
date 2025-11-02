@@ -43,7 +43,13 @@ class SharedPref(context: Context){
         editor.putString("storeLocation", newLocation)
         editor.apply()
     }
-
+    fun setProfileImage(profileUrl:String){
+        editor.putString("profileUrl",profileUrl)
+        editor.apply()
+    }
+    fun getProfileImage():String{
+        return sharedPref.getString("profileUrl", "")!!
+    }
 
     fun saveUser(id: String,
                  name: String,
@@ -88,6 +94,13 @@ class SharedPref(context: Context){
     fun clearPrefs(){
         editor.clear().apply()
     }
+    fun setLoginFromGoogle(){
+        editor.putBoolean("isLoginFromGoogle", true)
+        editor.apply()
+    }
+    fun isLoginFromGoogle():Boolean{
+        return sharedPref.getBoolean("isLoginFromGoogle", false)
 
+    }
 
 }

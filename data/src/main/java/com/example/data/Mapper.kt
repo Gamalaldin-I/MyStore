@@ -22,7 +22,8 @@ object Mapper {
             count = count,
             soldCount = soldCount,
             buyingPrice = buyingPrice,
-            sellingPrice = sellingPrice
+            sellingPrice = sellingPrice,
+            lastUpdate = lastUpdate
         )
     }
 
@@ -36,7 +37,8 @@ object Mapper {
             count = count,
             soldCount = soldCount,
             buyingPrice = buyingPrice,
-            sellingPrice = sellingPrice
+            sellingPrice = sellingPrice,
+            lastUpdate = lastUpdate
         )
     }
 
@@ -52,7 +54,8 @@ object Mapper {
             price = this.price,
             sellingPrice = this.sellingPrice,
             sellDate = this.sellDate,
-            sellTime = this.sellTime
+            sellTime = this.sellTime,
+            lastUpdate = this.lastUpdate
         )
     }
 
@@ -67,7 +70,8 @@ object Mapper {
             price = this.price,
             sellingPrice = this.sellingPrice,
             sellDate = this.sellDate,
-            sellTime = this.sellTime
+            sellTime = this.sellTime,
+            lastUpdate = this.lastUpdate
         )
     }
 
@@ -80,7 +84,8 @@ object Mapper {
             description = this.description,
             category = this.category,
             amount = this.amount,
-            paymentMethod = this.paymentMethod
+            paymentMethod = this.paymentMethod,
+            lastUpdate = this.lastUpdate
         )
     }
 
@@ -92,7 +97,8 @@ object Mapper {
             description = this.description,
             category = this.category,
             amount = this.amount,
-            paymentMethod = this.paymentMethod
+            paymentMethod = this.paymentMethod,
+            lastUpdate = this.lastUpdate
         )
     }
 
@@ -103,7 +109,8 @@ object Mapper {
             discount = this.discount,
             date = this.date,
             time = this.time,
-            totalCash = this.totalCash
+            totalCash = this.totalCash,
+            lastUpdate = this.lastUpdate
         )
     }
 
@@ -113,7 +120,9 @@ object Mapper {
             discount = this.discount,
             date = this.date,
             time = this.time,
-            totalCash = this.totalCash
+            totalCash = this.totalCash,
+            lastUpdate = this.lastUpdate
+
         )
     }
 

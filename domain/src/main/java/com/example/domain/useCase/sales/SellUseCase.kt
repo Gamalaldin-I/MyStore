@@ -51,7 +51,8 @@ class SellUseCase(private val salesRepo: SalesRepo) {
                     price = item.buyingPrice,
                     sellingPrice = priceAfterDiscount,
                     sellDate = currentDate,
-                    sellTime = currentTime
+                    sellTime = currentTime,
+                    lastUpdate = "$currentDate/$currentTime"
                 )
 
                 // Update stock quantity BEFORE adding to sold products
@@ -80,7 +81,8 @@ class SellUseCase(private val salesRepo: SalesRepo) {
                 date = currentDate,
                 time = currentTime,
                 totalCash = totalCash,
-                discount = discount
+                discount = discount,
+                lastUpdate = "$currentDate/$currentTime"
             )
 
             Log.d("SELL_ERROR", "Creating bill: Total=$totalCash, Discount=$discount%")

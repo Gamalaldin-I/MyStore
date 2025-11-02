@@ -1,7 +1,9 @@
-package com.example.htopstore.util.firebase.auth
+package com.example.data.remote.firebase.auth
 
 import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.Mapper.hash
+import com.example.data.remote.firebase.FirebaseUtils
 import com.example.domain.model.remoteModels.Employee
 import com.example.domain.repo.AuthRepo
 import com.example.domain.util.Constants.ACCOUNT_FOUND_ERROR
@@ -11,8 +13,6 @@ import com.example.domain.util.Constants.SIGNUP_FIRST_ERROR
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.domain.util.Constants.STATUS_PENDING
 import com.example.domain.util.DateHelper
-import com.example.htopstore.util.firebase.FirebaseUtils
-import com.example.htopstore.util.firebase.Mapper.hash
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -109,6 +109,8 @@ class AuthRepoImp(
                                 )
                             }
                         }
+                        pref.setProfileImage(user.photoUrl.toString())
+                        pref.setLoginFromGoogle()
                     }.addOnFailureListener {
                         onResult(false, it.message ?: "Error checking user")
                     }

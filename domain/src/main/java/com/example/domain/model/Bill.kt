@@ -5,5 +5,6 @@ data class Bill(
     val discount: Int,
     val date: String,
     val time: String,
-    val totalCash: Double
+    val totalCash: Double,
+    var lastUpdate: String
 )
