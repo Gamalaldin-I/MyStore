@@ -1,14 +1,16 @@
 package com.example.htopstore.ui.product
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Product
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetProductByIdUseCase
 import com.example.domain.useCase.product.UpdateProductUseCase
 import com.example.domain.util.CartHelper
+import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +22,8 @@ class ProductViewModel @Inject constructor(
     private val getProductUseCase: GetProductByIdUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
-) : ViewModel() {
-
+    private val app: Application
+) : AndroidViewModel(app) {
 
     private val _product = MutableLiveData<Product?>()
     val product: LiveData<Product?> = _product
@@ -35,13 +37,12 @@ class ProductViewModel @Inject constructor(
                 val result = getProductUseCase(id)
                 _product.postValue(result)
             } catch (e: Exception) {
-                _message.postValue("Error loading product: ${e.message}")
+                _message.postValue(app.getString(R.string.error_loading_product, e.message ?: ""))
             }
         }
     }
 
     fun updateProduct(newProductData: Product, onFinish: () -> Unit) {
-        // Validate the product data
         val validationError = validateProductData(
             type = newProductData.category,
             name = newProductData.name,
@@ -58,12 +59,10 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 updateProductUseCase(newProductData)
-                _message.postValue("Product updated successfully")
-                withContext(Dispatchers.Main) {
-                    onFinish()
-                }
+                _message.postValue(app.getString(R.string.product_updated_successfully))
+                withContext(Dispatchers.Main) { onFinish() }
             } catch (e: Exception) {
-                _message.postValue("Error updating product: ${e.message}")
+                _message.postValue(app.getString(R.string.error_updating_product, e.message ?: ""))
             }
         }
     }
@@ -74,11 +73,11 @@ class ProductViewModel @Inject constructor(
                 deleteProductUseCase(product.id, product.productImage)
                 withContext(Dispatchers.Main) {
                     CartHelper.removeFromTheCartList(product.id)
-                    _message.value = "Product deleted successfully"
+                    _message.value = app.getString(R.string.product_deleted_successfully)
                     onFinish()
                 }
             } catch (e: Exception) {
-                _message.postValue("Error deleting product: ${e.message}")
+                _message.postValue(app.getString(R.string.error_deleting_product, e.message ?: ""))
             }
         }
     }
@@ -91,12 +90,12 @@ class ProductViewModel @Inject constructor(
         count: Int
     ): String? {
         return when {
-            type.isBlank() -> "Please select a type"
-            name.isBlank() -> "Please enter a brand"
-            count <= 0 -> "Invalid count"
-            purchase <= 0 -> "Invalid buying price"
-            sell <= 0 -> "Invalid selling price"
-            sell <= purchase -> "Selling price must be greater than buying price"
+            type.isBlank() -> app.getString(R.string.please_select_type)
+            name.isBlank() -> app.getString(R.string.please_enter_brand)
+            count <= 0 -> app.getString(R.string.invalid_count)
+            purchase <= 0 -> app.getString(R.string.invalid_buying_price)
+            sell <= 0 -> app.getString(R.string.invalid_selling_price)
+            sell <= purchase -> app.getString(R.string.selling_price_must_be_greater)
             else -> null
         }
     }

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.example.domain.model.Product
+import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.useCase.localize.NAE.digit
 import com.example.domain.util.CartHelper
 import com.example.domain.util.DateHelper
@@ -94,7 +95,7 @@ class ProductActivity : AppCompatActivity() {
         val productId = intent.getStringExtra("productId")
 
         if (productId.isNullOrEmpty()) {
-            Toast.makeText(this, "Invalid product ID", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,getString(R.string.invalid_product_id), Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -105,7 +106,7 @@ class ProductActivity : AppCompatActivity() {
                 product = it
                 displayProduct(it)
             } ?: run {
-                Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -130,7 +131,7 @@ class ProductActivity : AppCompatActivity() {
 
             // Format sold count
             val soldCount = product.soldCount.toInt()
-            wereSoldText.text = "${soldCount} sold"
+            wereSoldText.text = "${soldCount.ae()} ${getString(R.string.sold)}"
 
             // Format date nicely
             addingDate.text = formatDate(product.addingDate)
@@ -138,8 +139,8 @@ class ProductActivity : AppCompatActivity() {
             // Initialize form fields
             typeTv.setText(product.category)
             productBrandET.setText(product.name)
-            buyingPriceET.setText(product.buyingPrice.toDouble().digit(1))
-            sellingPriceET.setText(product.sellingPrice.toDouble().digit(1))
+            buyingPriceET.setText(product.buyingPrice.toDouble().toString())
+            sellingPriceET.setText(product.sellingPrice.toDouble().toString())
             countET.setText(product.count.toString())
 
             // Setup category dropdown
@@ -180,7 +181,7 @@ class ProductActivity : AppCompatActivity() {
         val profit = sellingPrice - buyingPrice
 
         // Update profit display
-        binding.profitPerItem.text = "${profit.digit(1)} LE"
+        binding.profitPerItem.text = "${profit.digit(1)} ${getString(R.string.le)}"
 
         // Change color based on profit/loss
         val profitCard = binding.profitCard
@@ -224,12 +225,12 @@ class ProductActivity : AppCompatActivity() {
 
             // Validation
             if (type.isEmpty()) {
-                typeLo.error = "Category is required"
+                typeLo.error = getString(R.string.category_required)
                 return
             }
 
             if (brand.isEmpty()) {
-                productBrandLo.error = "Brand name is required"
+                productBrandLo.error =getString(R.string.brand_required)
                 return
             }
 
@@ -239,17 +240,17 @@ class ProductActivity : AppCompatActivity() {
             val count = countString.toIntOrNull()
 
             if (buyingPrice == null || buyingPrice < 0) {
-                buyingPriceLo.error = "Enter valid buying price"
+                buyingPriceLo.error = getString(R.string.invalid_buying_price)
                 return
             }
 
             if (sellingPrice == null || sellingPrice < 0) {
-                sellingPriceLo.error = "Enter valid selling price"
+                sellingPriceLo.error = getString(R.string.invalid_selling_price)
                 return
             }
 
             if (count == null || count < 0) {
-                countLo.error = "Enter valid quantity"
+                countLo.error = getString(R.string.invalid_count)
                 return
             }
 
@@ -257,10 +258,10 @@ class ProductActivity : AppCompatActivity() {
             if (sellingPrice < buyingPrice) {
                 DialogBuilder.showAlertDialog(
                     context = this@ProductActivity,
-                    message = "Selling price is lower than buying price. You will make a loss. Continue?",
-                    title = "Warning",
-                    positiveButton = "Continue",
-                    negativeButton = "Cancel",
+                    message = getString(R.string.selling_price_must_be_greater),
+                    title = getString(R.string.loss_warning_title),
+                    positiveButton = getString(R.string.continue_button),
+                    negativeButton = getString(R.string.cancel_button),
                     onConfirm = { saveProductChanges(currentProduct, type, brand, buyingPrice, sellingPrice, count) },
                     onCancel = {}
                 )
@@ -296,15 +297,15 @@ class ProductActivity : AppCompatActivity() {
 
     private fun showAlertBeforeDelete() {
         if (product == null) {
-            Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
             return
         }
         DialogBuilder.showAlertDialog(
             context = this,
-            message = "Are you sure you want to delete this product? This action cannot be undone.",
-            title = "Delete Product",
-            positiveButton = "Delete",
-            negativeButton = "Cancel",
+            message = getString(R.string.delete_confirmation_message),
+            title = getString(R.string.delete_confirmation_title),
+            positiveButton = getString(R.string.delete),
+            negativeButton = getString(R.string.cancel_button),
             onConfirm = { deleteProduct() },
             onCancel = {}
         )
@@ -313,7 +314,7 @@ class ProductActivity : AppCompatActivity() {
     private fun deleteProduct() {
         val currentProduct = product
         if (currentProduct == null) {
-            Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -325,16 +326,16 @@ class ProductActivity : AppCompatActivity() {
     private fun onAddToCart() {
         val currentProduct = product
         if (currentProduct == null) {
-            Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (currentProduct.count.toInt() <= 0) {
-            Toast.makeText(this, "Product is out of stock", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.out_of_stock), Toast.LENGTH_SHORT).show()
             return
         }
 
         CartHelper.addToTheCartList(product = currentProduct)
-        Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show()
     }
 }

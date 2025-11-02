@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">HTopStore</string>
+    <string name="app_name">Stora</string>
 
     <!-- General -->
     <string name="save">Save</string>
@@ -12,11 +12,11 @@
     <string name="cart">Cart</string>
 
     <!-- Products -->
-    <string name="add_new_product">Add New Product</string>
-    <string name="add_new_products">Add New Products</string>
+    <string name="add_new_product">Add Product</string>
+    <string name="add_new_products">Add Products</string>
     <string name="type">Category</string>
-    <string name="brand_name">Brand Name</string>
-    <string name="buying_price">Purchase Price</string>
+    <string name="brand_name">Brand</string>
+    <string name="buying_price">Buying Price</string>
     <string name="selling_price">Selling Price</string>
     <string name="count">Quantity</string>
 
@@ -36,22 +36,22 @@
 
     <!-- QR Tools -->
     <string name="qr_generator">QR Generator</string>
-    <string name="generate_qrs_pdf">Get PDF</string>
+    <string name="generate_qrs_pdf">Export PDF</string>
     <string name="generateqrcodes">Generate QR Codes</string>
     <string name="scancode">Scan Code</string>
 
     <!-- Store -->
     <string name="store">Store</string>
-    <string name="l_e">L.E</string>
+    <string name="l_e">LE</string>
     <string name="sell_now">Sell Now!</string>
-    <string name="role_icon">Role Selection Icon</string>
+    <string name="role_icon">Role Icon</string>
     <string name="select_your_role">Select Your Role</string>
-    <string name="owner_icon">Business Owner Icon</string>
+    <string name="owner_icon">Owner Icon</string>
     <string name="business_owner">Business Owner</string>
-    <string name="manage_business_team">Manage your business and team</string>
+    <string name="manage_business_team">Manage your store and team</string>
     <string name="employee_icon">Employee Icon</string>
     <string name="employee">Employee</string>
-    <string name="join_work_team">Join and work with your team</string>
+    <string name="join_work_team">Join the team</string>
     <string name="continue_btn">Continue</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="log_in">Log In</string>
@@ -59,42 +59,203 @@
     <string name="back">Back</string>
     <string name="lock_icon">Lock Icon</string>
     <string name="change_password">Change Password</string>
-    <string name="change_password_subtitle">Enter your current password and choose a new one</string>
+    <string name="change_password_subtitle">Enter your current password and pick a new one</string>
     <string name="current_password">Current Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
-    <string name="password_requirements">At least 8 characters, 1 uppercase, 1 number</string>
+    <string name="password_requirements">At least 8 chars, 1 uppercase, 1 number</string>
     <string name="password_strength">Password Strength:</string>
-    <string name="forgot_current_password">Forgot your current password?</string>
+    <string name="forgot_current_password">Forgot your password?</string>
 
-    <!-- Change Email Activity -->
+    <!-- Change Email -->
     <string name="change_email">Change Email</string>
-    <string name="change_email_subtitle">Enter your new email and current password to verify</string>
+    <string name="change_email_subtitle">Enter your new email and current password</string>
     <string name="current_email">Current Email</string>
-    <string name="new_email">New Email Address</string>
+    <string name="new_email">New Email</string>
     <string name="change_email_button">Change Email</string>
-    <string name="security_note_change_email">For security, you\'ll need to verify your new email address. A verification link will be sent to your new email.</string>
+    <string name="security_note_change_email">A verification link will be sent to your new email for security.</string>
     <string name="email_icon">Email Icon</string>
     <string name="info_icon">Info Icon</string>
     <string name="no_email_found">No email found</string>
 
-    <!-- Validation Errors -->
+    <!-- Errors -->
     <string name="error_email_required">Email is required</string>
-    <string name="error_invalid_email">Please enter a valid email address</string>
-    <string name="error_same_email">New email must be different from current email</string>
+    <string name="error_invalid_email">Invalid email</string>
+    <string name="error_same_email">New email must be different</string>
     <string name="error_password_required">Password is required</string>
     <string name="error_password_too_short">Password must be at least 6 characters</string>
-    <string name="error_wrong_password">Incorrect password. Please try again.</string>
+    <string name="error_wrong_password">Wrong password</string>
     <string name="error_user_not_found">User not found</string>
-    <string name="error_no_email">No email associated with this account</string>
-    <string name="error_email_already_exists">This email is already in use</string>
-    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_no_email">No email associated</string>
+    <string name="error_email_already_exists">Email already in use</string>
+    <string name="error_network">Network error</string>
     <string name="error_generic">Error: %s</string>
 
     <!-- Success -->
     <string name="success">Success!</string>
-    <string name="email_change_success_message">A verification email has been sent to your new email address. Please verify to complete the change.</string>
-    <string name="web_client_id" translatable="false">288889154483-shh4d5peure76ga70grerr8mnttshk66.apps.googleusercontent.com"</string>
-
+    <string name="email_change_success_message">Verification email sent. Check it to complete the change.</string>
     <string name="ok">OK</string>
+
+    <!-- Stock -->
+    <string name="stock">Stock</string>
+    <string name="managing_your_inventory">Managing Inventory</string>
+    <string name="categories">Categories</string>
+    <string name="filter">Filter</string>
+    <string name="empty_stock">Empty stock</string>
+    <string name="no_items_in_stock">No items</string>
+    <string name="add_items_to_get_started">Add items to get started</string>
+
+    <!-- Product -->
+    <string name="product_image">Product Image</string>
+    <string name="gallary">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="not_scanned">Not scanned</string>
+    <string name="scan">Scan</string>
+    <string name="product_id">Product ID</string>
+    <string name="product_details">Product Details</string>
+    <string name="category">Category</string>
+    <string name="pricing">Pricing</string>
+    <string name="barcode">Barcode</string>
+    <string name="clear_id">Clear ID</string>
+    <string name="profit_per_item">Profit per Item</string>
+    <string name="inventory">Inventory</string>
+    <string name="quantity">Quantity</string>
+    <string name="add_product">Add Product</string>
+    <string name="in_stock">In Stock</string>
+    <string name="added_at">Added at:</string>
+    <string name="le">LE</string>
+
+    <!-- User Info -->
+    <string name="profile_picture">Profile Picture</string>
+    <string name="manager">Manager</string>
+    <string name="owner">Owner</string>
+    <string name="personal_information">Personal Info</string>
+    <string name="full_name">Full Name</string>
+    <string name="update_name">Update Name</string>
+    <string name="store_name">Store Name</string>
+    <string name="location">Location</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_icon">Phone Icon</string>
+    <string name="call_store">Call Store</string>
+    <string name="logout">Logout</string>
+    <string name="logout_icon">Logout Icon</string>
+
+    <!-- Store updates -->
+    <string name="update_store_data">Update Store Info</string>
+    <string name="store_icon">Store Icon</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="store_information">Store Info</string>
+    <string name="store_form_hint">Last step! Tell us about your store</string>
+    <string name="store_location">Store Location</string>
+    <string name="tip">💡 Tip</string>
+    <string name="password_details">You can update this info later</string>
+    <string name="complete_setup">Complete Setup</string>
+    <string name="almost_there">Almost there!</string>
+    <string name="your_account_will_be_ready_in_seconds">Your account will be ready in seconds</string>
+
+    <!-- Sign Up / Login -->
+    <string name="user_information">User Info</string>
+    <string name="create_your_account">Create Account</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="or">OR</string>
+    <string name="sign_up_to_get_started_with_stora">Sign up to get started with Stora</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password_must_contain">Password must contain:</string>
+    <string name="at_least_8_characters_n_one_uppercase_letter_n_one_number_or_special_character">
+        • At least 8 characters\n• One uppercase letter\n• One number or special character
+    </string>
+    <string name="create_account">Create Account</string>
+    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">
+        By creating an account, you agree to our Terms and Privacy Policy
+    </string>
+    <string name="role_hint">Choose how you will use the app</string>
+    <string name="manage_your_business_and_team">Manage your store and team</string>
+    <string name="join_and_work_with_your_team">Join and work with your team</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="stora">Stora</string>
+    <string name="app_logo">App Logo</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forgot">Forgot?</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="don_t_have_an_account">Do not have an account?</string>
+    <string name="by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy">
+        By continuing, you agree to our Terms and Privacy Policy
+    </string>
+    <string name="sign_in_to_continue_to_your_account">Sign in to continue</string>
+    <string name="welcome_back">Welcome Back</string>
+
+    <!-- Stock Details -->
+    <string name="stock_title">Stock</string>
+    <string name="all_categories">All</string>
+    <string name="categories_label">Categories</string>
+    <string name="items_label">Items</string>
+    <string name="managing_inventory">Managing Inventory</string>
+    <string name="managing_inventory_count">Managing Inventory • %d items</string>
+    <string name="empty_stock_title">No items</string>
+    <string name="empty_stock_subtitle">Add items to get started</string>
+    <string name="sort">Sort</string>
+
+    <!-- Product Errors -->
+    <string name="invalid_product_id">Invalid Product ID</string>
+    <string name="product_not_found">Product Not Found</string>
+    <string name="product_data_not_available">Product data not available</string>
+    <string name="sold_count">%d sold</string>
+    <string name="added_date">Added: %s</string>
+    <string name="sign_le">%s LE</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="delete_product">Delete</string>
+    <string name="add_to_cart">Add to Cart</string>
+
+    <!-- Form Labels -->
+    <string name="category_label">Category</string>
+    <string name="brand_label">Brand</string>
+    <string name="buying_price_label">Buying Price</string>
+    <string name="selling_price_label">Selling Price</string>
+    <string name="quantity_label">Quantity</string>
+    <string name="profit_label">Profit per Item</string>
+
+    <!-- Validation -->
+    <string name="category_required">Category is required</string>
+    <string name="brand_required">Brand is required</string>
+    <string name="valid_buying_price">Enter valid buying price</string>
+    <string name="valid_selling_price">Enter valid selling price</string>
+    <string name="valid_quantity">Enter valid quantity</string>
+    <string name="please_select_type">Please select a type</string>
+    <string name="please_enter_brand">Please enter brand</string>
+    <string name="invalid_count">Invalid count</string>
+    <string name="invalid_buying_price">Invalid buying price</string>
+    <string name="invalid_selling_price">Invalid selling price</string>
+    <string name="selling_price_must_be_greater">Selling price must be higher than buying price</string>
+
+    <!-- Alerts -->
+    <string name="loss_warning_title">Warning</string>
+    <string name="loss_warning_message">Selling price is lower than buying price. You will incur a loss. Continue?</string>
+    <string name="delete_confirmation_title">Delete Product</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this product? This cannot be undone.</string>
+    <string name="continue_button">Continue</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+
+    <!-- Success -->
+    <string name="product_updated_successfully">Product updated successfully</string>
+    <string name="product_deleted_successfully">Product deleted successfully</string>
+    <string name="added_to_cart">Added to cart</string>
+
+    <!-- Errors -->
+    <string name="error_loading_product">Error loading product: %s</string>
+    <string name="error_updating_product">Error updating product: %s</string>
+    <string name="error_deleting_product">Error deleting product: %s</string>
+    <string name="product_out_of_stock">Product out of stock</string>
+
+    <!-- Stock Status -->
+    <string name="low_stock">Low Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+
+    <!-- Accessibility -->
+    <string name="back_button">Back</string>
+    <string name="empty_state_image">Empty stock illustration</string>
 </resources>

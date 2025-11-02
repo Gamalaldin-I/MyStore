@@ -1,22 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">HTopStore</string>
+    <string name="app_name">ستورا</string>
 
     <!-- عام -->
     <string name="save">حفظ</string>
     <string name="delete">حذف</string>
-    <string name="archive">أرشفة</string>
+    <string name="archive">أرشيف</string>
     <string name="all">الكل</string>
     <string name="add_new">إضافة جديد</string>
     <string name="home">الرئيسية</string>
-    <string name="report">التقارير</string>
-    <string name="cart">عربة المشتريات</string>
+    <string name="report">تقرير</string>
+    <string name="cart">سلة المشتريات</string>
 
     <!-- المنتجات -->
-    <string name="add_new_product">إضافة منتج جديد</string>
-    <string name="add_new_products">إضافة منتجات جديدة</string>
+    <string name="add_new_product">إضافة منتج</string>
+    <string name="add_new_products">إضافة منتجات</string>
     <string name="type">التصنيف</string>
-    <string name="brand_name">اسم الماركة</string>
+    <string name="brand_name">الماركة</string>
     <string name="buying_price">سعر الشراء</string>
     <string name="selling_price">سعر البيع</string>
     <string name="count">الكمية</string>
@@ -26,73 +25,237 @@
     <string name="sold">تم البيع</string>
     <string name="sold_items">المنتجات المباعة</string>
     <string name="bills">الفواتير</string>
-    <string name="returns">المرتجعات</string>
+    <string name="returns">مرتجعات</string>
     <string name="total_is">الإجمالي:</string>
     <string name="before_discount">قبل الخصم:</string>
-    <string name="discount">خصم</string>
+    <string name="discount">الخصم</string>
 
-    <!-- المصروفات -->
-    <string name="expenses">المصروفات</string>
+    <!-- المصاريف -->
+    <string name="expenses">المصاريف</string>
     <string name="new_expense">مصروف جديد</string>
 
     <!-- أدوات QR -->
     <string name="qr_generator">مولد QR</string>
-    <string name="generate_qrs_pdf">إنشاء PDF</string>
-    <string name="generateqrcodes">إنشاء أكواد QR</string>
+    <string name="generate_qrs_pdf">تحويل إلى PDF</string>
+    <string name="generateqrcodes">توليد QR</string>
     <string name="scancode">مسح الكود</string>
 
-    <!-- المخزن -->
-    <string name="store">المخزن</string>
-    <string name="l_e">ج.م</string>
-    <string name="sell_now">بيع الآن!</string>
-    <string name="role_icon">Role Selection Icon</string>
-    <string name="select_your_role">Select Your Role</string>
+    <!-- المتجر -->
+    <string name="store">المتجر</string>
+    <string name="l_e">جنيه</string>
+    <string name="sell_now">ابدأ البيع!</string>
+    <string name="role_icon">رمز الدور</string>
+    <string name="select_your_role">اختر دورك</string>
+    <string name="owner_icon">رمز المالك</string>
+    <string name="business_owner">مالك المتجر</string>
+    <string name="manage_business_team">إدارة فريقك والمتجر</string>
+    <string name="employee_icon">رمز الموظف</string>
+    <string name="employee">موظف</string>
+    <string name="join_work_team">انضم لفريق العمل</string>
+    <string name="continue_btn">متابعة</string>
+    <string name="already_have_account">لديك حساب بالفعل؟</string>
+    <string name="log_in">تسجيل الدخول</string>
 
-    <string name="owner_icon">Business Owner Icon</string>
-    <string name="business_owner">Business Owner</string>
-    <string name="manage_business_team">Manage your business and team</string>
-    <string name="employee_icon">Employee Icon</string>
-    <string name="employee">Employee</string>
-    <string name="join_work_team">Join and work with your team</string>
-    <string name="continue_btn">Continue</string>
-    <string name="already_have_account">Already have an account?</string>
-    <string name="log_in">Log In</string>
-    <string name="back">Back</string>
-    <string name="lock_icon">Lock Icon</string>
-    <string name="change_password">Change Password</string>
-    <string name="change_password_subtitle">Enter your current password and choose a new one</string>
-    <string name="current_password">Current Password</string>
-    <string name="new_password">New Password</string>
-    <string name="confirm_new_password">Confirm New Password</string>
-    <string name="password_requirements">At least 8 characters, 1 uppercase, 1 number</string>
-    <string name="password_strength">Password Strength:</string>
-    <string name="forgot_current_password">Forgot your current password?</string>
-    <!-- Change Email Activity -->
-    <string name="change_email">Change Email</string>
-    <string name="change_email_subtitle">Enter your new email and current password to verify</string>
-    <string name="current_email">Current Email</string>
-    <string name="new_email">New Email Address</string>
-    <string name="change_email_button">Change Email</string>
-    <string name="security_note_change_email">For security, you\'ll need to verify your new email address. A verification link will be sent to your new email.</string>
-    <string name="email_icon">Email Icon</string>
-    <string name="info_icon">Info Icon</string>
-    <string name="no_email_found">No email found</string>
+    <string name="back">رجوع</string>
+    <string name="lock_icon">رمز القفل</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="change_password_subtitle">ادخل كلمة المرور الحالية واختر جديدة</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="confirm_new_password">تأكيد كلمة المرور</string>
+    <string name="password_requirements">8 أحرف على الأقل، حرف كبير، رقم</string>
+    <string name="password_strength">قوة كلمة المرور:</string>
+    <string name="forgot_current_password">نسيت كلمة المرور؟</string>
 
-    <!-- Validation Errors -->
-    <string name="error_email_required">Email is required</string>
-    <string name="error_invalid_email">Please enter a valid email address</string>
-    <string name="error_same_email">New email must be different from current email</string>
-    <string name="error_password_required">Password is required</string>
-    <string name="error_password_too_short">Password must be at least 6 characters</string>
-    <string name="error_wrong_password">Incorrect password. Please try again.</string>
-    <string name="error_user_not_found">User not found</string>
-    <string name="error_no_email">No email associated with this account</string>
-    <string name="error_email_already_exists">This email is already in use</string>
-    <string name="error_network">Network error. Please check your connection.</string>
-    <string name="error_generic">Error: %s</string>
+    <!-- البريد الإلكتروني -->
+    <string name="change_email">تغيير البريد</string>
+    <string name="change_email_subtitle">ادخل بريدك الجديد وكلمة المرور للتحقق</string>
+    <string name="current_email">البريد الحالي</string>
+    <string name="new_email">البريد الجديد</string>
+    <string name="change_email_button">تغيير البريد</string>
+    <string name="security_note_change_email">لأمانك، سيتم إرسال رابط تحقق للبريد الجديد.</string>
+    <string name="email_icon">رمز البريد</string>
+    <string name="info_icon">رمز المعلومات</string>
+    <string name="no_email_found">لا يوجد بريد</string>
 
-    <!-- Success -->
-    <string name="success">Success!</string>
-    <string name="email_change_success_message">A verification email has been sent to your new email address. Please verify to complete the change.</string>
-    <string name="ok">OK</string>
+    <!-- رسائل الخطأ -->
+    <string name="error_email_required">البريد مطلوب</string>
+    <string name="error_invalid_email">البريد غير صالح</string>
+    <string name="error_same_email">يجب أن يكون البريد الجديد مختلف</string>
+    <string name="error_password_required">كلمة المرور مطلوبة</string>
+    <string name="error_password_too_short">يجب أن تكون كلمة المرور 6 أحرف على الأقل</string>
+    <string name="error_wrong_password">كلمة المرور خاطئة</string>
+    <string name="error_user_not_found">المستخدم غير موجود</string>
+    <string name="error_no_email">لا يوجد بريد مرتبط بالحساب</string>
+    <string name="error_email_already_exists">هذا البريد مستخدم بالفعل</string>
+    <string name="error_network">خطأ في الاتصال بالإنترنت</string>
+    <string name="error_generic">حدث خطأ: %s</string>
+
+    <!-- نجاح العمليات -->
+    <string name="success">تم بنجاح!</string>
+    <string name="email_change_success_message">تم إرسال بريد التحقق. تحقق منه لإتمام التغيير.</string>
+    <string name="ok">حسناً</string>
+
+    <!-- المخزون -->
+    <string name="stock">المخزون</string>
+    <string name="managing_your_inventory">إدارة المخزون</string>
+    <string name="categories">التصنيفات</string>
+    <string name="filter">تصفية</string>
+    <string name="empty_stock">المخزون فارغ</string>
+    <string name="no_items_in_stock">لا توجد منتجات</string>
+    <string name="add_items_to_get_started">أضف منتجات للبدء</string>
+
+    <!-- المنتجات -->
+    <string name="product_image">صورة المنتج</string>
+    <string name="gallary">معرض الصور</string>
+    <string name="camera">الكاميرا</string>
+    <string name="not_scanned">لم يُمسح</string>
+    <string name="scan">مسح</string>
+    <string name="product_id">كود المنتج</string>
+    <string name="product_details">تفاصيل المنتج</string>
+    <string name="category">التصنيف</string>
+    <string name="pricing">الأسعار</string>
+    <string name="barcode">الباركود</string>
+    <string name="clear_id">مسح الكود</string>
+    <string name="profit_per_item">الربح لكل منتج</string>
+    <string name="inventory">المخزون</string>
+    <string name="quantity">الكمية</string>
+    <string name="add_product">إضافة منتج</string>
+    <string name="added_at">تمت الإضافة:</string>
+    <string name="le">جنيه</string>
+
+    <!-- معلومات المستخدم -->
+    <string name="profile_picture">صورة الحساب</string>
+    <string name="manager">مدير</string>
+    <string name="owner">مالك</string>
+    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="update_name">تحديث الاسم</string>
+    <string name="store_name">اسم المتجر</string>
+    <string name="location">الموقع</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="phone_icon">رمز الهاتف</string>
+    <string name="call_store">اتصال بالمتجر</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="logout_icon">رمز الخروج</string>
+
+    <!-- تنبيهات -->
+    <string name="update_store_data">تحديث بيانات المتجر</string>
+    <string name="store_icon">رمز المتجر</string>
+    <string name="password_icon">رمز كلمة المرور</string>
+    <string name="change_photo">تغيير الصورة</string>
+    <string name="store_information">معلومات المتجر</string>
+    <string name="store_form_hint">خطوة أخيرة! أخبرنا عن متجرك</string>
+    <string name="store_location">موقع المتجر</string>
+    <string name="tip">💡 نصيحة</string>
+    <string name="password_details">يمكنك تعديل هذه التفاصيل لاحقاً</string>
+    <string name="complete_setup">إتمام الإعداد</string>
+    <string name="almost_there">قاربنا على الانتهاء!</string>
+    <string name="your_account_will_be_ready_in_seconds">سيكون حسابك جاهزاً خلال ثوانٍ</string>
+
+    <!-- تسجيل الدخول -->
+    <string name="user_information">معلومات المستخدم</string>
+    <string name="create_your_account">إنشاء حساب</string>
+    <string name="continue_with_google">المتابعة عبر جوجل</string>
+    <string name="or">أو</string>
+    <string name="sign_up_to_get_started_with_stora">سجل للبدء مع ستورا</string>
+    <string name="email_address">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="password_must_contain">يجب أن تحتوي كلمة المرور على:</string>
+    <string name="at_least_8_characters_n_one_uppercase_letter_n_one_number_or_special_character">
+        • 8 أحرف على الأقل\n• حرف كبير\n• رقم أو رمز خاص
+    </string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">
+        بإنشاء حساب، أنت توافق على الشروط وسياسة الخصوصية
+    </string>
+    <string name="role_hint">اختر طريقة استخدامك للتطبيق</string>
+    <string name="manage_your_business_and_team">إدارة متجرك وفريقك</string>
+    <string name="join_and_work_with_your_team">انضم للعمل مع فريقك</string>
+    <string name="already_have_an_account">لديك حساب؟</string>
+    <string name="stora">ستورا</string>
+    <string name="app_logo">شعار التطبيق</string>
+    <string name="remember_me">تذكرني</string>
+    <string name="forgot">نسيت؟</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="sign_up">تسجيل</string>
+    <string name="don_t_have_an_account">لا تملك حساب؟</string>
+    <string name="by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy">
+        بالمتابعة، أنت توافق على الشروط وسياسة الخصوصية
+    </string>
+    <string name="sign_in_to_continue_to_your_account">سجل للدخول إلى حسابك</string>
+    <string name="welcome_back">مرحباً مجدداً</string>
+
+    <!-- المخزون التفصيلي -->
+    <string name="stock_title">المخزون</string>
+    <string name="all_categories">الكل</string>
+    <string name="categories_label">التصنيفات</string>
+    <string name="items_label">المنتجات</string>
+    <string name="managing_inventory">إدارة المخزون</string>
+    <string name="managing_inventory_count">إدارة المخزون • %d منتج</string>
+    <string name="empty_stock_title">لا توجد منتجات</string>
+    <string name="empty_stock_subtitle">أضف منتجات للبدء</string>
+    <string name="sort">ترتيب</string>
+
+    <!-- أخطاء المنتجات -->
+    <string name="invalid_product_id">كود المنتج غير صالح</string>
+    <string name="product_not_found">المنتج غير موجود</string>
+    <string name="product_data_not_available">بيانات المنتج غير متوفرة</string>
+    <string name="sold_count">%d تم بيعه</string>
+    <string name="added_date">أضيف: %s</string>
+    <string name="sign_le">%s جنيه</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="delete_product">حذف</string>
+    <string name="add_to_cart">أضف للسلة</string>
+
+    <!-- الحقول -->
+    <string name="category_label">التصنيف</string>
+    <string name="brand_label">الماركة</string>
+    <string name="buying_price_label">سعر الشراء</string>
+    <string name="selling_price_label">سعر البيع</string>
+    <string name="quantity_label">الكمية</string>
+    <string name="profit_label">الربح لكل منتج</string>
+
+    <!-- التحقق -->
+    <string name="category_required">التصنيف مطلوب</string>
+    <string name="brand_required">الماركة مطلوبة</string>
+    <string name="valid_buying_price">أدخل سعر شراء صالح</string>
+    <string name="valid_selling_price">أدخل سعر بيع صالح</string>
+    <string name="valid_quantity">أدخل كمية صحيحة</string>
+    <string name="please_select_type">اختر تصنيف</string>
+    <string name="please_enter_brand">أدخل الماركة</string>
+    <string name="invalid_count">كمية غير صحيحة</string>
+    <string name="invalid_buying_price">سعر شراء غير صحيح</string>
+    <string name="invalid_selling_price">سعر بيع غير صحيح</string>
+    <string name="selling_price_must_be_greater">سعر البيع يجب أن يكون أكبر من الشراء</string>
+
+    <!-- التنبيهات -->
+    <string name="loss_warning_title">تنبيه</string>
+    <string name="loss_warning_message">سعر البيع أقل من الشراء، ستتكبد خسارة. متابعة؟</string>
+    <string name="delete_confirmation_title">حذف المنتج</string>
+    <string name="delete_confirmation_message">هل أنت متأكد من حذف المنتج؟ لا يمكن التراجع.</string>
+    <string name="continue_button">متابعة</string>
+    <string name="cancel_button">إلغاء</string>
+    <string name="delete_button">حذف</string>
+
+    <!-- نجاح -->
+    <string name="product_updated_successfully">تم تحديث المنتج</string>
+    <string name="product_deleted_successfully">تم حذف المنتج</string>
+    <string name="added_to_cart">تمت الإضافة للسلة</string>
+
+    <!-- أخطاء -->
+    <string name="error_loading_product">خطأ في تحميل المنتج: %s</string>
+    <string name="error_updating_product">خطأ في تحديث المنتج: %s</string>
+    <string name="error_deleting_product">خطأ في حذف المنتج: %s</string>
+    <string name="product_out_of_stock">المنتج غير متوفر</string>
+
+    <!-- حالة المخزون -->
+    <string name="in_stock">متوفر</string>
+    <string name="low_stock">كمية منخفضة</string>
+    <string name="out_of_stock">غير متوفر</string>
+
+    <!-- وصولية -->
+    <string name="back_button">رجوع</string>
+    <string name="empty_state_image">صورة توضيحية للمخزون الفارغ</string>
 </resources>

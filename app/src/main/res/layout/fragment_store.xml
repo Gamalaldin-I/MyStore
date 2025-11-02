@@ -51,7 +51,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Stock"
+                                android:text="@string/stock"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
                                 android:textSize="28sp"
@@ -64,7 +64,7 @@
                                 android:layout_height="48dp"
                                 app:icon="@drawable/ic_filter"
                                 app:iconTint="@color/text_primary"
-                                android:contentDescription="Filter" />
+                                android:contentDescription="@string/filter" />
 
                         </LinearLayout>
 
@@ -73,7 +73,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Managing your inventory"
+                            android:text="@string/managing_your_inventory"
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:text="Categories"
+                    android:text="@string/categories"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
@@ -151,14 +151,14 @@
             android:layout_height="120dp"
             android:src="@drawable/ic_empty"
             android:alpha="0.5"
-            android:contentDescription="Empty stock" />
+            android:contentDescription="@string/empty_stock" />
 
         <TextView
             android:id="@+id/emptyHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No items in stock"
+            android:text="@string/no_items_in_stock"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/text_primary" />
@@ -168,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Add items to get started"
+            android:text="@string/add_items_to_get_started"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             android:gravity="center" />

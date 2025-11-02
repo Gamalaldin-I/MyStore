@@ -36,7 +36,7 @@
                     android:padding="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:tint="@color/action_primary"
-                    android:contentDescription="Back"
+                    android:contentDescription="@string/back"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add New Product"
+                    android:text="@string/add_new_product"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/onSurface"
@@ -91,7 +91,7 @@
                         android:id="@+id/imageLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Product Image"
+                        android:text="@string/product_image"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/onSurface"
@@ -117,7 +117,7 @@
                             android:id="@+id/product_img"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="Product Image"
+                            android:contentDescription="@string/product_image"
                             android:padding="48dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_camera"
@@ -139,7 +139,7 @@
                             android:id="@+id/selectImage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Gallary"
+                            android:text="@string/gallary"
                             android:textAllCaps="false"
                             app:icon="@drawable/ic_image"
                             app:iconGravity="textStart"
@@ -150,7 +150,7 @@
                             android:id="@+id/takePhoto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Camera"
+                            android:text="@string/camera"
                             android:textAllCaps="false"
                             android:layout_marginStart="8dp"
                             app:icon="@drawable/ic_camera"
@@ -188,7 +188,7 @@
                         android:layout_height="32dp"
                         android:src="@drawable/ic_qr"
                         app:tint="@color/onTertiaryContainer"
-                        android:contentDescription="Barcode" />
+                        android:contentDescription="@string/barcode" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -200,7 +200,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Product ID"
+                            android:text="@string/product_id"
                             android:textSize="12sp"
                             android:textColor="@color/onTertiaryContainer"
                             android:alpha="0.8" />
@@ -209,7 +209,7 @@
                             android:id="@+id/id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Not scanned"
+                            android:text="@string/not_scanned"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="@color/onTertiaryContainer"
@@ -221,7 +221,7 @@
                         android:id="@+id/scanId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Scan"
+                        android:text="@string/scan"
                         android:textAllCaps="false"
                         app:icon="@drawable/grid_scan"
                         app:iconGravity="textStart"
@@ -238,7 +238,7 @@
                         android:visibility="gone"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         app:tint="@color/onTertiaryContainer"
-                        android:contentDescription="Clear ID" />
+                        android:contentDescription="@string/clear_id" />
 
                 </LinearLayout>
 
@@ -268,7 +268,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:text="Product Details"
+                        android:text="@string/product_details"
                         android:textColor="@color/onSurface"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -279,7 +279,7 @@
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Category"
+                        android:hint="@string/category"
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
@@ -291,7 +291,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="none"
                             android:textColor="@color/onSurface"
-                            tools:ignore="SpeakableTextPresentCheck" />
+                            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Brand Name -->
@@ -301,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="Brand Name"
+                        android:hint="@string/brand_name"
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
@@ -321,7 +321,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:layout_marginBottom="12dp"
-                        android:text="Pricing"
+                        android:text="@string/pricing"
                         android:textColor="@color/onSurface"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -331,7 +331,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        tools:ignore="DisableBaselineAlignment">
 
                         <!-- Buying Price -->
                         <com.google.android.material.textfield.TextInputLayout
@@ -341,7 +342,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:hint="Buying Price"
+                            android:hint="@string/buying_price"
                             app:boxCornerRadiusBottomEnd="12dp"
                             app:boxCornerRadiusBottomStart="12dp"
                             app:boxCornerRadiusTopEnd="12dp"
@@ -364,7 +365,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:hint="Selling Price"
+                            android:hint="@string/selling_price"
                             app:boxCornerRadiusBottomEnd="12dp"
                             app:boxCornerRadiusBottomStart="12dp"
                             app:boxCornerRadiusTopEnd="12dp"
@@ -403,6 +404,7 @@
                                 android:id="@+id/profitIcon"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="TODO"
                                 android:src="@drawable/trading"
                                 app:tint="@color/success" />
 
@@ -417,7 +419,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha="0.8"
-                                    android:text="Profit per item"
+                                    android:text="@string/profit_per_item"
                                     android:textColor="@color/onSurfaceVariant"
                                     android:textSize="11sp" />
 
@@ -443,7 +445,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:layout_marginBottom="12dp"
-                        android:text="Inventory"
+                        android:text="@string/inventory"
                         android:textColor="@color/onSurface"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -453,7 +455,7 @@
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Quantity"
+                        android:hint="@string/quantity"
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
@@ -483,7 +485,7 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        android:text="Add Product"
+        android:text="@string/add_product"
         android:textAllCaps="false"
         app:icon="@drawable/ic_add"
         app:iconGravity="textStart"

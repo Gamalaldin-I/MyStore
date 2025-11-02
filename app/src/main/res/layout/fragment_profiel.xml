@@ -65,7 +65,7 @@
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_profile"
                             android:scaleType="centerCrop"
-                            android:contentDescription="Profile picture" />
+                            android:contentDescription="@string/profile_picture" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -82,7 +82,7 @@
                         app:tint="@android:color/white"
                         android:clickable="true"
                         android:focusable="true"
-                        android:contentDescription="Change photo" />
+                        android:contentDescription="@string/change_photo" />
 
                 </FrameLayout>
 
@@ -95,7 +95,8 @@
                     android:text="Hataba"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_primary"
+                    tools:ignore="HardcodedText" />
 
                 <!-- Email -->
                 <TextView
@@ -113,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Manager"
+                    android:text="@string/employee"
                     android:textSize="12sp"
                     android:textColor="@color/primary_accent_blue"
                     android:textStyle="bold"
@@ -136,7 +137,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Personal Information"
+                    android:text="@string/personal_information"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -148,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:hint="Full Name"
+                    android:hint="@string/full_name"
                     android:clickable="true"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:boxStrokeColor="@color/primary_accent_blue"
@@ -172,7 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:text="Update Name"
+                    android:text="@string/update_name"
                     app:icon="@android:drawable/ic_menu_edit"
                     android:textSize="14sp"
                     app:cornerRadius="8dp" />
@@ -222,7 +223,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Store Name"
+                            android:text="@string/store_name"
                             android:textSize="12sp"
                             android:textColor="@color/text_tertiary" />
 
@@ -269,7 +270,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Location"
+                            android:text="@string/location"
                             android:textSize="12sp"
                             android:textColor="@color/text_tertiary" />
 
@@ -304,7 +305,7 @@
                         android:layout_height="20dp"
                         android:src="@drawable/ic_phone"
                         app:tint="@color/text_tertiary"
-                        android:contentDescription="Phone icon" />
+                        android:contentDescription="@string/phone_icon" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -316,7 +317,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Phone Number"
+                            android:text="@string/phone_number"
                             android:textSize="12sp"
                             android:textColor="@color/text_tertiary" />
 
@@ -336,13 +337,14 @@
                         android:id="@+id/callBtn"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/ic_call"
-                        android:padding="8dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        app:tint="@color/primary_accent_blue"
                         android:clickable="true"
+                        android:contentDescription="@string/call_store"
                         android:focusable="true"
-                        android:contentDescription="Call store" />
+                        android:padding="8dp"
+                        android:src="@drawable/ic_call"
+                        app:tint="@color/primary_accent_blue"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
 
@@ -381,7 +383,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Change Password"
+                        android:text="@string/change_password"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />
 
@@ -410,14 +412,14 @@
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_dialog_email"
                         app:tint="@color/action_primary"
-                        android:contentDescription="Password icon" />
+                        android:contentDescription="@string/password_icon" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Change Email"
+                        android:text="@string/change_email"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />
 
@@ -446,14 +448,14 @@
                         android:layout_height="24dp"
                         android:src="@drawable/nav_store"
                         app:tint="@color/action_primary"
-                        android:contentDescription="Store icon" />
+                        android:contentDescription="@string/store_icon" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Update store data"
+                        android:text="@string/update_store_data"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary" />
 
@@ -484,14 +486,14 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_logout"
                         app:tint="@color/action_danger"
-                        android:contentDescription="Logout icon" />
+                        android:contentDescription="@string/logout_icon" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Logout"
+                        android:text="@string/logout"
                         android:textSize="15sp"
                         android:textColor="@color/action_danger" />
 
