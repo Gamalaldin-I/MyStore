@@ -26,6 +26,7 @@ object DataModule {
             AppDataBase.Companion.DATABASE_NAME
         ).build()
     }
+
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPref {

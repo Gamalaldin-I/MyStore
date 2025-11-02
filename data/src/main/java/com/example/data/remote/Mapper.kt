@@ -47,4 +47,5 @@ object Mapper {
             "location" to this.location,
         )
     }
+
 }

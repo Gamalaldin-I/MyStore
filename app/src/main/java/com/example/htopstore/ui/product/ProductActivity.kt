@@ -10,16 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.example.domain.model.Product
-import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.useCase.localize.NAE.digit
 import com.example.domain.util.CartHelper
+import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityProductBinding
 import com.example.htopstore.util.helper.AutoCompleteHelper
 import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
@@ -117,9 +116,9 @@ class ProductActivity : AppCompatActivity() {
         with(binding) {
             // Load image with error handling
             Glide.with(this@ProductActivity)
-                .load(File(product.productImage))
-                .placeholder(R.drawable.fighter)
-                .error(R.drawable.fighter)
+                .load(product.productImage)
+                .placeholder(R.drawable.ic_camera)
+                .error(R.drawable.ic_camera)
                 .centerCrop()
                 .into(productImage)
 
@@ -127,11 +126,11 @@ class ProductActivity : AppCompatActivity() {
             // Display product info in header
             type.text = product.category
             name.text = product.name
-            quantityExist.text = product.count.toInt().ae()
+            quantityExist.text = product.count.toInt().toString()
 
             // Format sold count
             val soldCount = product.soldCount.toInt()
-            wereSoldText.text = "${soldCount.ae()} sold"
+            wereSoldText.text = "${soldCount} sold"
 
             // Format date nicely
             addingDate.text = formatDate(product.addingDate)
@@ -287,10 +286,10 @@ class ProductActivity : AppCompatActivity() {
             this.buyingPrice = buyingPrice
             this.sellingPrice = sellingPrice
             this.count = count
+            lastUpdate = DateHelper.getTimeStampMilliSecond()
         }
 
         vm.updateProduct(currentProduct) {
-            Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -300,7 +299,6 @@ class ProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show()
             return
         }
-
         DialogBuilder.showAlertDialog(
             context = this,
             message = "Are you sure you want to delete this product? This action cannot be undone.",
@@ -320,7 +318,6 @@ class ProductActivity : AppCompatActivity() {
         }
 
         vm.deleteProduct(currentProduct) {
-            Toast.makeText(this, "Product deleted successfully", Toast.LENGTH_SHORT).show()
             finish()
         }
     }

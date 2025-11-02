@@ -9,11 +9,10 @@ import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.io.File
 
 class ProductRepoImp (
     private val productDao: ProductDao,
-    private val remote: RemoteProductRepo
+    private val remote: RemoteProductRepo,
 ): ProductRepo {
 
     override  fun getProducts():Flow<List<Product>> {
@@ -22,30 +21,28 @@ class ProductRepoImp (
     override suspend fun getProductById(id: String): Product? =
         productDao.getProductById(id)?.toDomain()
 
-
     override  fun getAvailableProducts(): Flow<List<Product>> =
          productDao.getAvailableProducts().mapData()
-
 
     override  fun getArchiveProducts(): Flow<List<Product>> =
         productDao.getArchiveProducts().mapData()
 
-    override suspend fun addProduct(product: Product) {
-        productDao.addProduct(product.toData())
-        remote.addProduct(product)
+    override suspend fun addProduct(product: Product){
+        remote.addProduct(product){
+            productDao.addProduct(it.toData())
+        }
     }
 
     override suspend fun updateProduct(product: Product) {
-        productDao.updateProduct(product.toData())
-       // remote.updateProduct(product,context)
+        remote.updateProduct(product){
+            productDao.updateProduct(it.toData())
+        }
     }
 
     override suspend fun deleteProductById(id: String, image: String) {
-        productDao.deleteProductById(id)
-        if(File(image).exists()){
-            File(image).delete()
-        }
-      //  remote.deleteProductById(id)
+       remote.deleteProduct(id){
+           productDao.deleteProductById(it)
+       }
     }
 
 
@@ -53,12 +50,28 @@ class ProductRepoImp (
         return productDao.getArchiveLength()
     }
 
-    override fun fetchProductsFromRemoteIntoLocal(products: List<Product>) {
-        TODO("Not yet implemented")
+    override fun fetchProductsFromRemoteIntoLocal() {
+        remote.getAllProducts {
+            productDao.addProducts(it.map { it.toData() })
+        }
     }
 
     override fun listenToRemoteChanges() {
-        TODO("Not yet implemented")
+        remote.listenToRemoteChanges(
+            onAdd = {
+                productDao.addProduct(it.toData())
+            },
+            onUpdate = {
+                productDao.updateProduct(it.toData())
+            },
+            onDelete = {
+                productDao.deleteProductById(it)
+            }
+        )
+    }
+
+    override fun stopListening() {
+        remote.stopListening()
     }
 
     fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {

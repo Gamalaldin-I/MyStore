@@ -26,8 +26,8 @@ class MostProfitableAdapter(private val data: MutableList<Product>,private val o
         val product = data[position]
         Glide.with(holder.binding.productImg)
             .load(product.productImage)
-            .error(R.drawable.fighter)
-            .placeholder(R.drawable.fighter)
+            .error(R.drawable.ic_camera)
+            .placeholder(R.drawable.ic_camera)
             .into(holder.binding.productImg)
         holder.binding.Name.text = product.name
         holder.binding.category.text = product.category

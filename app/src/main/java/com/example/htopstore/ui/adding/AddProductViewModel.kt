@@ -75,19 +75,19 @@ class AddProductViewModel @Inject constructor(
             _uiState.value = _uiState.value?.copy(isLoading = true)
 
             try {
-                val savedFile = saveFinalImage(context)
-                if (savedFile != null) {
+                //val savedFile = saveFinalImage(context)
+                if (currentImageUri != null) {
                     val product = Product(
                         id = BarcodeGenerator.scannedCode ?: IdGenerator.generateProductId(),
                         addingDate = DateHelper.getCurrentDate(),
-                        productImage = savedFile.absolutePath,
+                        productImage = currentImageUri.toString(),
                         category = category,
                         name = brand,
                         buyingPrice = buyingPrice.toDouble(),
                         sellingPrice = sellingPrice.toDouble(),
                         count = count.toInt(),
                         soldCount = 0,
-                        lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}"
+                        lastUpdate = DateHelper.getTimeStampMilliSecond()
                     )
 
                     saveProduct(product)

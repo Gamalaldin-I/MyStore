@@ -19,8 +19,9 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(
     private val getProductUseCase: GetProductByIdUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
-    private val deleteProductUseCase: DeleteProductUseCase
+    private val deleteProductUseCase: DeleteProductUseCase,
 ) : ViewModel() {
+
 
     private val _product = MutableLiveData<Product?>()
     val product: LiveData<Product?> = _product

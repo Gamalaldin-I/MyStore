@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.htopstore.databinding.FragmentStoreFormBinding
 
-class StoreFormFragment private constructor() : Fragment() {
+class StoreFormFragment() : Fragment() {
 
     private lateinit var binding: FragmentStoreFormBinding
     private val viewModel: SignupViewModel by activityViewModels()

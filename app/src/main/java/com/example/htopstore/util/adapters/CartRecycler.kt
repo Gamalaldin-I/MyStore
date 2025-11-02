@@ -10,7 +10,6 @@ import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.domain.useCase.localize.NAE.ae
 import com.example.htopstore.R
 import com.example.htopstore.databinding.CartItemBinding
-import java.io.File
 
 class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item: CartProduct)-> Unit, val onIncOrDec :() ->Unit) :
     RecyclerView.Adapter<CartRecycler.pHolder>() {
@@ -33,8 +32,8 @@ class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item:
         val imagePath = currentItem.image
         val context = holder.binding.productImg.context
         Glide.with(context)
-            .load(File(imagePath))
-            .placeholder(R.drawable.fighter)
+            .load(imagePath)
+            .placeholder(R.drawable.ic_camera)
             .error(R.drawable.ic_camera)
             .into(holder.binding.productImg)
         holder.binding.price.text = currentItem.pricePerOne.toInt().ae()

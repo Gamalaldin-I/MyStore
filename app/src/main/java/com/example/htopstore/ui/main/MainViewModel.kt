@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.roomDb.AppDataBase
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
@@ -12,6 +13,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.model.category.UserRoles
 import com.example.domain.repo.AuthRepo
+import com.example.domain.repo.ProductRepo
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
@@ -34,6 +36,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    private val db: AppDataBase,
     private val pref: SharedPref,
     private val logoutUseCase: LogoutUseCase,
     private val updateNameUseCase: UpdateNameUseCase,
@@ -48,6 +51,7 @@ class MainViewModel @Inject constructor(
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val authRepo: AuthRepo,
+    private val productRepo:ProductRepo
 
 ): ViewModel(){
     private val _message = MutableLiveData<String>()
@@ -100,8 +104,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout(onResult: (Boolean, String) -> Unit){
-        pref.clearPrefs()
-        logoutUseCase(onResult)
+        viewModelScope.launch(Dispatchers.IO) {
+                db.clearAllTables()
+            withContext(Dispatchers.Main){
+                pref.clearPrefs()
+                logoutUseCase(onResult)
+            }
+        }
     }
 
 
@@ -111,6 +120,9 @@ class MainViewModel @Inject constructor(
         if(pref.getRole()!= Constants.OWNER_ROLE){
         authRepo.listenToEmployee()
         }
+    }
+    fun startListenForProducts(){
+        productRepo.listenToRemoteChanges()
     }
     fun clearStoreData(){
         pref.saveStore(
@@ -124,6 +136,7 @@ class MainViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         authRepo.stopListening()
+        productRepo.stopListening()
     }
     fun updateName(name:String,onView: () -> Unit){
         updateNameUseCase(name){
@@ -138,7 +151,5 @@ class MainViewModel @Inject constructor(
     fun getProfileImage():String{
         return pref.getProfileImage().toString()
     }
-
-
 
 }

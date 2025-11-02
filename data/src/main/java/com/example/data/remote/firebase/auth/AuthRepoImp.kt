@@ -338,6 +338,7 @@ class AuthRepoImp(
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { it ->
                 val uid = it.user!!.uid
+                registerEmployeeAccount(uid, name, email, onResult)
             }
             .addOnFailureListener {
                 onResult(false, it.message ?: "Error creating employee account")

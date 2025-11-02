@@ -9,7 +9,6 @@ import com.example.domain.model.Product
 import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ArchiveItemBinding
-import java.io.File
 
 class ArchiveRecycler(private val data: ArrayList<Product>,
                       val onDelete:(p: Product, position:Int)->Unit,
@@ -31,9 +30,9 @@ class ArchiveRecycler(private val data: ArrayList<Product>,
        val d = data[position] ; val b = holder.binding
         b.price.text = d.sellingPrice.toString()
         Glide.with(b.productImg.context)
-            .load(File(d.productImage))
-            .placeholder(R.drawable.fighter)
-            .error(R.drawable.fighter)
+            .load(d.productImage)
+            .placeholder(R.drawable.ic_camera)
+            .error(R.drawable.circle_background)
             .into(b.productImg)
         b.productBrand.text = d.name
         b.productType.text = categoryTrans(d.category)

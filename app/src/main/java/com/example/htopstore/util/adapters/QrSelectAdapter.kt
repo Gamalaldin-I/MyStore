@@ -10,7 +10,6 @@ import com.example.domain.model.SelectionQrProduct
 import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ProductSelectionItemBinding
-import java.io.File
 
 class QrSelectAdapter(private var data: MutableList<SelectionQrProduct>,val context: Context) :
     RecyclerView.Adapter<QrSelectAdapter.SHolder>() {
@@ -35,9 +34,9 @@ class QrSelectAdapter(private var data: MutableList<SelectionQrProduct>,val cont
             checked.isChecked = item.selected
         }
         Glide.with(holder.binding.productImg.context)
-            .load(File(item.image))
-            .error(R.drawable.fighter)
-            .placeholder(R.drawable.fighter)
+            .load(item.image)
+            .error(R.drawable.ic_camera)
+            .placeholder(R.drawable.ic_camera)
             .into(holder.binding.productImg)
         holder.binding.checked.setOnClickListener {
             item.selected = !item.selected

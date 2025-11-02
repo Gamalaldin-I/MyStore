@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.htopstore.databinding.FragmentFormBinding
 
-class UserFormFragment private constructor(): Fragment() {
+class UserFormFragment (): Fragment() {
     private lateinit var binding: FragmentFormBinding
     private val vm: SignupViewModel by activityViewModels()
     private lateinit var oNextStep:(name:String,email:String,password:String)->Unit

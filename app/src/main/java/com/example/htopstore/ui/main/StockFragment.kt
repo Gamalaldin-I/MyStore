@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Product
 import com.example.domain.useCase.localize.GetCategoryLocalName
+import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.StockRecycler
@@ -37,6 +38,11 @@ class StockFragment : Fragment() {
 
     private lateinit var localLanguage: String
     private lateinit var allText: String
+    private lateinit var stockText: String
+    private lateinit var categoriesText: String
+    private lateinit var managingInventoryText: String
+    private lateinit var noItemsText: String
+    private lateinit var addItemsText: String
 
     private var allProducts = emptyList<Product>()
     private var categories = emptyList<String>()
@@ -47,7 +53,9 @@ class StockFragment : Fragment() {
     ): View {
         binding = FragmentStoreBinding.inflate(inflater, container, false)
         initLocalText()
+        setupUI()
         setupRecycler()
+        setupSwipeRefresh()
         observeProducts()
         return binding.root
     }
@@ -55,7 +63,35 @@ class StockFragment : Fragment() {
     // --------------------- Initialization ---------------------
     private fun initLocalText() {
         localLanguage = Locale.getDefault().language
-        allText = if (localLanguage == "ar") "الكل" else "All"
+
+        if (localLanguage == "ar") {
+            allText = "الكل"
+            stockText = "المخزون"
+            categoriesText = "الفئات"
+            managingInventoryText = "إدارة مخزونك"
+            noItemsText = "لا توجد عناصر في المخزون"
+            addItemsText = "أضف عناصر للبدء"
+        } else {
+            allText = "All"
+            stockText = "Stock"
+            categoriesText = "Categories"
+            managingInventoryText = "Managing your inventory"
+            noItemsText = "No items in stock"
+            addItemsText = "Add items to get started"
+        }
+    }
+
+    private fun setupUI() {
+        // Set header text
+        binding.headerCard.findViewById<android.widget.TextView>(R.id.tvStockCount)?.text = managingInventoryText
+
+        // Set categories label
+        binding.tvCategoriesLabel.text = categoriesText
+
+        // Set empty state text if exists
+        binding.emptyHint.text = noItemsText
+        binding.tvEmptySubtitle.text = addItemsText
+
     }
 
     private fun setupRecycler() {
@@ -77,14 +113,64 @@ class StockFragment : Fragment() {
         }
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.apply {
+            setColorSchemeResources(
+                R.color.primary_navy_blue,
+                R.color.primary_accent_blue
+            )
+
+            setOnRefreshListener {
+                refreshData()
+            }
+        }
+    }
+
     // --------------------- Observers ---------------------
     private fun observeProducts() {
         vm.products.observe(viewLifecycleOwner) { products ->
             allProducts = products
             categories = products.map { getCatLocalName(it.category) }.distinct()
-            adapter.submitList(allProducts)
+
+            updateUI()
             setupChips()
+
+            // Stop refresh animation if running
+            binding.swipeRefresh.isRefreshing = false
         }
+    }
+
+    // --------------------- UI Updates ---------------------
+    private fun updateUI() {
+        if (allProducts.isEmpty()) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        } else {
+            binding.emptyStateLayout.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+            adapter.submitList(allProducts)
+        }
+
+        // Update stock count in header
+        val countText = if (localLanguage == "ar") {
+            "$managingInventoryText • ${allProducts.size} منتج"
+        } else {
+            "$managingInventoryText • ${allProducts.size} items"
+        }
+        binding.headerCard.findViewById<android.widget.TextView>(R.id.tvStockCount)?.text = countText
+    }
+
+    private fun refreshData() {
+        // Trigger data refresh from ViewModel
+        vm.startListenForProducts()
+
+        // If your ViewModel doesn't have a refresh method, you can manually stop the animation
+        // after a delay or when the observer updates
+        binding.root.postDelayed({
+            if (binding.swipeRefresh.isRefreshing) {
+                binding.swipeRefresh.isRefreshing = false
+            }
+        }, 2000)
     }
 
     // --------------------- Chip Logic ---------------------
@@ -111,6 +197,12 @@ class StockFragment : Fragment() {
             this.isCheckable = true
             this.isChecked = isChecked
             this.id = View.generateViewId()
+
+            chipBackgroundColor = if (isChecked) {
+                requireContext().getColorStateList(R.color.neutral_200)
+            } else {
+                requireContext().getColorStateList(R.color.white)
+            }
         }
         binding.chipGroup.addView(chip)
     }
@@ -118,6 +210,7 @@ class StockFragment : Fragment() {
     private fun handleChipSelection(group: ViewGroup, checkedIds: List<Int>) {
         if (checkedIds.isEmpty()) {
             adapter.submitList(allProducts)
+            updateEmptyState(allProducts)
             checkedId = -1
             return
         }
@@ -142,7 +235,25 @@ class StockFragment : Fragment() {
             } else {
                 allProducts.filter { getCatLocalName(it.category) == selectedCategory }
             }
+
             adapter.submitList(filtered)
+            updateEmptyState(filtered)
         }
+    }
+
+    private fun updateEmptyState(products: List<Product>) {
+        if (products.isEmpty()) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        } else {
+            binding.emptyStateLayout.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding.swipeRefresh.setOnRefreshListener(null)
     }
 }

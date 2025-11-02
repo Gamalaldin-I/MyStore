@@ -4,6 +4,7 @@ import com.example.domain.model.Product
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepo {
+
      fun getProducts(): Flow<List<Product>>
     suspend fun getProductById(id: String): Product?
      fun getAvailableProducts(): Flow<List<Product>>
@@ -12,6 +13,7 @@ interface ProductRepo {
     suspend fun updateProduct(product: Product)
     suspend fun deleteProductById(id: String, image: String)
     fun getArchiveLength(): Flow<Int>
-    fun fetchProductsFromRemoteIntoLocal(products: List<Product>)
+    fun fetchProductsFromRemoteIntoLocal()
     fun listenToRemoteChanges()
+    fun stopListening()
 }

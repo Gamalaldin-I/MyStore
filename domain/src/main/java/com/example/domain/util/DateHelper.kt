@@ -67,4 +67,9 @@ object DateHelper {
             timeString // Return original if parsing fails
         }
     }
+    fun getTimeStampMilliSecond():String{
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = Date()
+        return formatter.format(date)
+    }
 }

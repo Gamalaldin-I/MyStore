@@ -15,7 +15,6 @@ import com.example.htopstore.R
 import com.example.htopstore.databinding.ItemCardBinding
 import com.example.htopstore.util.helper.Animator.animateAddToCart
 import com.example.htopstore.util.helper.Animator.animateStockItem
-import java.io.File
 
 class StockRecycler(private val onProductClick: (Product) -> Unit):
     ListAdapter<Product, StockRecycler.PHolder>(DiffCallback()) {
@@ -37,13 +36,13 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
 
         holder.binding.apply {
             val context = holder.binding.productImg.context
-            val imagePath = item.productImage
+            val url = item.productImage
 
             // Glide auto-detect (URL, File path, or Uri string)
             Glide.with(context)
-                .load(File(imagePath))
-                .placeholder(R.drawable.fighter)
-                .error(R.drawable.fighter)
+                .load(url)
+                .placeholder(R.drawable.ic_camera)
+                .error(R.drawable.ic_camera)
                 .into(productImg)
 
             productBrand.text = item.name

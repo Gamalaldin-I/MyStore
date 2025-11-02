@@ -17,7 +17,7 @@ import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentRoleSelectionBinding
 
-class RoleSelectionFragment private constructor() : Fragment() {
+class RoleSelectionFragment() : Fragment() {
     private lateinit var binding: FragmentRoleSelectionBinding
     private lateinit var oNextStep: (role: Int) -> Unit
     private lateinit var onLoginChoice: () -> Unit
