@@ -106,7 +106,7 @@ class BillDetailsActivity : AppCompatActivity() {
     private fun displayBillDetails() {
         try {
             // Bill ID
-            binding.billId.text = "#${sellOp.bill.saleId}"
+            binding.billId.text = "#${sellOp.bill.id}"
 
             // Date formatting
             binding.date.text = DateHelper.formatDate(sellOp.bill.date)
@@ -177,7 +177,7 @@ class BillDetailsActivity : AppCompatActivity() {
             val billText = generateBillText()
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_SUBJECT, "Bill #${sellOp.bill.saleId}")
+                putExtra(Intent.EXTRA_SUBJECT, "Bill #${sellOp.bill.id}")
                 putExtra(Intent.EXTRA_TEXT, billText)
             }
             startActivity(Intent.createChooser(shareIntent, "Share Bill Via"))
@@ -201,7 +201,7 @@ class BillDetailsActivity : AppCompatActivity() {
             appendLine("        BILL RECEIPT")
             appendLine("━━━━━━━━━━━━━━━━━━━━")
             appendLine()
-            appendLine("Bill ID: #${sellOp.bill.saleId}")
+            appendLine("Bill ID: #${sellOp.bill.id}")
             appendLine("Date: ${binding.date.text}")
             appendLine("Time: ${binding.time.text}")
             appendLine()

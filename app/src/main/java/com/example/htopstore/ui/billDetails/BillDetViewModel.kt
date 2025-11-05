@@ -50,7 +50,7 @@ class BillDetViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _message.postValue(insertReturnProduct(soldProduct, returnRequest))
-            getBill(soldProduct.saleId!!) { onEmptyProducts() }
+            getBill(soldProduct.billId!!) { onEmptyProducts() }
         }
     }
 

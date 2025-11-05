@@ -29,7 +29,7 @@ class BillsAdapter(private var data: List<Bill>, val onItemClicked: (sellOpID: S
         holder.binding.time.text = DateHelper.formatTime(currentItem.time)
         holder.binding.total.text = "${currentItem.totalCash} $"
         holder.binding.root.setOnClickListener {
-            onItemClicked(currentItem.saleId)
+            onItemClicked(currentItem.id)
         }
     }
 
