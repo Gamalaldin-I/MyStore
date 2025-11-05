@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.main
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,11 +21,13 @@ import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.auth.LogoutUseCase
-import com.example.domain.useCase.auth.UpdateNameUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
 import com.example.domain.useCase.product.GetArchiveSizeUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
+import com.example.domain.useCase.profile.ChangeProfileImageUseCase
+import com.example.domain.useCase.profile.RemoveProfileImageUseCase
+import com.example.domain.useCase.profile.UpdateNameUseCase
 import com.example.domain.useCase.sales.SellUseCase
 import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
@@ -51,7 +54,9 @@ class MainViewModel @Inject constructor(
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val authRepo: AuthRepo,
-    private val productRepo:ProductRepo
+    private val productRepo:ProductRepo,
+    private val changeProfileImageUseCase:ChangeProfileImageUseCase,
+    private val removeProfileImageUseCase: RemoveProfileImageUseCase
 
 ): ViewModel(){
     private val _message = MutableLiveData<String>()
@@ -114,42 +119,50 @@ class MainViewModel @Inject constructor(
     }
 
 
-    val employeeStatus = authRepo.employeeStatus.asLiveData()
+    //val employeeStatus = authRepo.employeeStatus.asLiveData()
 
     fun startListening(){
         if(pref.getRole()!= Constants.OWNER_ROLE){
-        authRepo.listenToEmployee()
+        //authRepo.listenToEmployee()
         }
     }
     fun startListenForProducts(){
-        productRepo.listenToRemoteChanges()
-    }
-    fun clearStoreData(){
-        pref.saveStore(
-            id = "",
-            name = "",
-            phone = "",
-            location = "",
-            ownerId = "")
+      //  productRepo.listenToRemoteChanges(viewModelScope)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        authRepo.stopListening()
-        productRepo.stopListening()
+
+
+    fun updateName(name: String, onView: () -> Unit) {
+        viewModelScope.launch{
+           val  (success, msg) = withContext(Dispatchers.IO){updateNameUseCase(name)}
+                if(success) onView()
+                _message.postValue(msg)
+            }
     }
-    fun updateName(name:String,onView: () -> Unit){
-        updateNameUseCase(name){
-                success, msg ->
-            if(success){onView()}
-            _message.value = msg
-        }
-    }
+
+
     fun isLoginFromGoogle(): Boolean{
         return pref.isLoginFromGoogle()
     }
     fun getProfileImage():String{
         return pref.getProfileImage().toString()
     }
+    fun changePhoto(uri:Uri,onResult: () -> Unit){
+        viewModelScope.launch(Dispatchers.IO){
+            changeProfileImageUseCase(uri){
+                success, msg ->
+                _message.postValue(msg)
+            }
+        }
+    }
+    fun removeProfilePhoto(){
+        viewModelScope.launch(Dispatchers.IO){
+            removeProfileImageUseCase{
+                success, msg ->
+                _message.postValue(msg)
+            }
+        }
+    }
 
-}
+
+    }

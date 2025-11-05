@@ -26,7 +26,6 @@
         android:id="@+id/ivHeaderIcon"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/icon_bg"
         android:backgroundTint="#4F3B81F4"
         android:padding="10dp"
@@ -71,7 +70,7 @@
         android:id="@+id/tvCurrentEmailLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="22dp"
         android:text="Current email"
         android:textColor="@android:color/black"
         android:textSize="14sp"
@@ -101,7 +100,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="22dp"
         android:hint="New email"
         app:boxStrokeColor="@color/primary_accent_blue"
         app:endIconMode="clear_text"
@@ -153,26 +152,37 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_current_password"
+        android:textColor="@color/primary_accent_blue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tilPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
     <!-- Security Note -->
     <LinearLayout
         android:id="@+id/llSecurityNote"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/product_info_bg"
         android:orientation="horizontal"
         android:padding="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnChangeEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword">
+        app:layout_constraintTop_toBottomOf="@+id/forgotPassword">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="info_icon"
-            android:src="@drawable/icon_email"
-            />
+            android:src="@drawable/icon_email" />
 
         <TextView
             android:layout_width="0dp"
@@ -189,14 +199,13 @@
         android:id="@+id/btnChangeEmail"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="32dp"
         android:text="Change now"
         android:textSize="16sp"
         android:textStyle="bold"
         app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llSecurityNote" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Progress Bar -->
     <ProgressBar

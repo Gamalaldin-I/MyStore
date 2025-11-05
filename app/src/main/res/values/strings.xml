@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stora</string>
+    <string name="app_name" translatable="false">Stora</string>
 
     <!-- General -->
     <string name="save">Save</string>
@@ -258,4 +258,6 @@
     <!-- Accessibility -->
     <string name="back_button">Back</string>
     <string name="empty_state_image">Empty stock illustration</string>
+    <string name="reset_password_description">Enter your new password below</string>
+    <string name="reset_password_button">Reset Password</string>
 </resources>

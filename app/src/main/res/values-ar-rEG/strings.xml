@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">ستورا</string>
-
     <!-- عام -->
     <string name="save">حفظ</string>
     <string name="delete">حذف</string>
@@ -83,7 +81,7 @@
     <string name="error_invalid_email">البريد غير صالح</string>
     <string name="error_same_email">يجب أن يكون البريد الجديد مختلف</string>
     <string name="error_password_required">كلمة المرور مطلوبة</string>
-    <string name="error_password_too_short">يجب أن تكون كلمة المرور 6 أحرف على الأقل</string>
+    <string name="error_password_too_short">يجب أن تكون كلمة المرور 8 أحرف على الأقل</string>
     <string name="error_wrong_password">كلمة المرور خاطئة</string>
     <string name="error_user_not_found">المستخدم غير موجود</string>
     <string name="error_no_email">لا يوجد بريد مرتبط بالحساب</string>
@@ -258,4 +256,7 @@
     <!-- وصولية -->
     <string name="back_button">رجوع</string>
     <string name="empty_state_image">صورة توضيحية للمخزون الفارغ</string>
+
+    <string name="reset_password_description">Enter your new password below</string>
+    <string name="reset_password_button">Reset Password</string>
 </resources>

@@ -1,5 +1,4 @@
 package com.example.htopstore.di.module
-
 import com.example.data.local.dao.ExpenseDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
@@ -16,7 +15,6 @@ import com.example.domain.repo.BillRepo
 import com.example.domain.repo.ExpensesRepo
 import com.example.domain.repo.ProductRepo
 import com.example.domain.repo.SalesRepo
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

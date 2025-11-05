@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.util.Constants.OWNER_ROLE
+import com.example.domain.util.Constants.STATUS_PENDING
 
 class SharedPref(context: Context){
     private val sharedPref = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
@@ -31,18 +32,7 @@ class SharedPref(context: Context){
         editor.putString("userEmail",newEmail)
         editor.apply()
     }
-    fun setStoreName(newStoreName:String){
-        editor.putString("storeName",newStoreName)
-        editor.apply()
-    }
-    fun setStorePhone(newPhone:String) {
-        editor.putString("storePhone", newPhone)
-        editor.apply()
-    }
-    fun setStoreLocation(newLocation:String) {
-        editor.putString("storeLocation", newLocation)
-        editor.apply()
-    }
+
     fun setProfileImage(profileUrl:String){
         editor.putString("profileUrl",profileUrl)
         editor.apply()
@@ -51,16 +41,15 @@ class SharedPref(context: Context){
         return sharedPref.getString("profileUrl", "")!!
     }
 
-    fun saveUser(id: String,
-                 name: String,
-                 role: Int,
-                 email: String,
-                 ){
-        editor.putString("userId", id)
-        editor.putString("userName", name)
-        editor.putInt("userRole", role)
-        editor.putString("userEmail", email)
+    fun saveUser(user:User){
+        editor.putString("profileUrl",user.photoUrl)
+        editor.putString("userId", user.id)
+        editor.putString("userName", user.name)
+        editor.putInt("userRole", user.role)
+        editor.putString("userEmail", user.email)
         editor.putBoolean("isLogin", true)
+        editor.putString("userStatus", user.status)
+        editor.putString("storeId",user.storeId)
         editor.apply()
 
     }
@@ -69,15 +58,25 @@ class SharedPref(context: Context){
         val name = sharedPref.getString("userName", "")!!
         val role = sharedPref.getInt("userRole", OWNER_ROLE)
         val email = sharedPref.getString("userEmail", "")!!
-        return User(id, name, role, email)
+        val profileUrl = sharedPref.getString("profileUrl", "")!!
+        val status = sharedPref.getString("userStatus",STATUS_PENDING)!!
+        val storeId = sharedPref.getString("storeId", "")!!
+        return User(
+            id =id,
+            name =name,
+            role= role,
+            email=email,
+            photoUrl = profileUrl,
+            status = status,
+            storeId = storeId)
     }
 
-    fun saveStore(id: String, name: String, phone: String, location:String,ownerId:String){
-        editor.putString("storeId",id)
-        editor.putString("storeName",name)
-        editor.putString("storePhone",phone)
-        editor.putString("storeLocation",location)
-        editor.putString("ownerId",ownerId)
+    fun saveStore(store: Store){
+        editor.putString("storeId",store.id)
+        editor.putString("storeName",store.name)
+        editor.putString("storePhone",store.phone)
+        editor.putString("storeLocation",store.location)
+        editor.putString("ownerId",store.ownerId)
         editor.apply()
 
     }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.Store
-import com.example.domain.useCase.auth.UpdateStoreDataUseCase
+import com.example.domain.useCase.staff.UpdateStoreDataUseCase
 import com.example.htopstore.util.AuthChecker.isValidPhoneNumber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,11 +54,13 @@ class UpdateStoreViewModel @Inject constructor(
                     if (success) {
                         val currentStore = pref.getStore()
                         pref.saveStore(
+                            store = Store(
                             id = currentStore.id,
                             name = name.trim(),
                             phone = phone.trim(),
                             location = location.trim(),
                             ownerId = currentStore.ownerId
+                        )
                         )
                         actionOnSuccess()
                     }

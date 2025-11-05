@@ -51,16 +51,12 @@ dependencies {
     implementation (libs.androidx.room.paging)
 
 
-    //firebase
-    implementation ("com.google.firebase:firebase-firestore:25.0.0")
-    implementation ("com.google.firebase:firebase-auth:23.1.0")
-    implementation ("com.google.firebase:firebase-storage:21.0.0")
-    implementation ("com.google.android.gms:play-services-auth:21.2.0")
-
-    //supabase
+    // ==========================
+    // Supabase
+    // ==========================
     implementation("io.github.jan-tennert.supabase:storage-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:gotrue-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.1")
-
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1") // Realtime listener
     implementation("io.ktor:ktor-client-android:2.3.5")
 }

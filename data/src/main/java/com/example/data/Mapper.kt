@@ -23,7 +23,8 @@ object Mapper {
             soldCount = soldCount,
             buyingPrice = buyingPrice,
             sellingPrice = sellingPrice,
-            lastUpdate = lastUpdate
+            lastUpdate = lastUpdate,
+            storeId = ""
         )
     }
 
@@ -45,8 +46,8 @@ object Mapper {
     //soldProduct
     fun SoldProduct.toSoldProductEntity(): SoldProductEntity {
         return SoldProductEntity(
-            detailId = this.detailId,
-            saleId = this.saleId,
+            detailId = this.id,
+            saleId = this.billId,
             productId = this.productId,
             name = this.name,
             type = this.type,
@@ -61,8 +62,8 @@ object Mapper {
 
     fun SoldProductEntity.toSoldProduct(): SoldProduct {
         return SoldProduct(
-            detailId = this.detailId,
-            saleId = this.saleId,
+            id = this.detailId,
+            billId = this.saleId,
             productId = this.productId,
             name = this.name,
             type = this.type,
@@ -78,7 +79,7 @@ object Mapper {
     //expense
     fun Expense.toExpenseEntity(): ExpenseEntity {
         return ExpenseEntity(
-            expenseId = this.expenseId,
+            expenseId = this.id,
             date = this.date,
             time = this.time,
             description = this.description,
@@ -91,21 +92,22 @@ object Mapper {
 
     fun ExpenseEntity.toExpense(): Expense {
         return Expense(
-            expenseId = this.expenseId,
+            id = this.expenseId,
             date = this.date,
             time = this.time,
             description = this.description,
             category = this.category,
             amount = this.amount,
             paymentMethod = this.paymentMethod,
-            lastUpdate = this.lastUpdate
+            lastUpdate = this.lastUpdate,
+            storeId = ""
         )
     }
 
     //bill
     fun Bill.toBillEntity(): BillEntity {
         return BillEntity(
-            saleId = this.saleId,
+            saleId = this.id,
             discount = this.discount,
             date = this.date,
             time = this.time,
@@ -116,13 +118,13 @@ object Mapper {
 
     fun BillEntity.toBill(): Bill {
         return Bill(
-            saleId = this.saleId,
+            id = this.saleId,
             discount = this.discount,
             date = this.date,
             time = this.time,
             totalCash = this.totalCash,
-            lastUpdate = this.lastUpdate
-
+            lastUpdate = this.lastUpdate,
+            storeId = ""
         )
     }
 

@@ -1,30 +1,29 @@
 package com.example.htopstore.di.module
 
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.repo.AuthRepoImp
 import com.example.domain.repo.AuthRepo
-import com.example.domain.useCase.auth.ChangePasswordUseCase
 import com.example.domain.useCase.auth.LoginUseCase
 import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.auth.RegisterEmployeeUseCase
 import com.example.domain.useCase.auth.RegisterOwnerUseCase
-import com.example.domain.useCase.auth.ResetPasswordUseCase
 import com.example.domain.useCase.auth.SignWithGoogleUseCase
-import com.example.domain.useCase.auth.UpdateEmailUseCase
-import com.example.domain.useCase.auth.UpdateNameUseCase
-import com.example.data.remote.firebase.auth.AuthRepoImp
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthModule {
 
     @Provides
-    fun provideAuthRepo(db: FirebaseFirestore,pref: SharedPref): AuthRepo {
-        return AuthRepoImp(db,pref)
+    fun provideAuthRepo(db: SupabaseClient, pref: SharedPref): AuthRepo {
+        return AuthRepoImp(
+            supabase = db,
+            sharedPref = pref
+        )
     }
 
     @Provides
@@ -44,23 +43,6 @@ object AuthModule {
         return LogoutUseCase(authRepo)
     }
 
-    @Provides
-    fun provideResetPasswordUseCase(authRepo: AuthRepo): ResetPasswordUseCase {
-        return ResetPasswordUseCase(authRepo)
-    }
-
-    @Provides
-        fun provideChangePasswordUseCase(authRepo: AuthRepo): ChangePasswordUseCase {
-            return ChangePasswordUseCase(authRepo)
-    }
-    @Provides
-    fun provideChangeNameUseCase(repo: AuthRepo): UpdateNameUseCase{
-        return UpdateNameUseCase(repo)
-    }
-    @Provides
-    fun provideUpdateEmailUseCase(repo: AuthRepo): UpdateEmailUseCase {
-        return UpdateEmailUseCase(repo)
-    }
     @Provides
     fun provideSignWithGoogle(repo: AuthRepo): SignWithGoogleUseCase{
         return SignWithGoogleUseCase(repo)

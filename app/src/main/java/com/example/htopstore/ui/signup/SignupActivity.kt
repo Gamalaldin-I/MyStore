@@ -15,16 +15,13 @@ import com.example.htopstore.databinding.ActivitySignupBinding
 import com.example.htopstore.ui.inbox.InboxActivity
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
-    private lateinit var googleSignInClient: GoogleSignInClient
+   // private lateinit var googleSignInClient: GoogleSignInClient
 
 
     companion object{
@@ -44,7 +41,7 @@ class SignupActivity : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+       // googleSignInClient = GoogleSignIn.getClient(this, gso)
         enableEdgeToEdge()
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -100,8 +97,8 @@ class SignupActivity : AppCompatActivity() {
             }
         }
         userFormFragment.setONSignWithGoogle {
-            val googleIntent = googleSignInClient.signInIntent
-                startActivityForResult(googleIntent, GOOGLE_CODE)
+           // val googleIntent = googleSignInClient.signInIntent
+              //  startActivityForResult(googleIntent, GOOGLE_CODE)
         }
         storeFormFragment.setOnNextStep {
             name,location,phone->
@@ -145,7 +142,7 @@ class SignupActivity : AppCompatActivity() {
             backFragment()
         }
     }
-    @Deprecated("Deprecated in Java")
+    /*@Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -167,6 +164,6 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this, "Google sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
 }

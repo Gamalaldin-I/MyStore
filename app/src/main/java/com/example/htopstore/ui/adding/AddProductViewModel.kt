@@ -87,7 +87,8 @@ class AddProductViewModel @Inject constructor(
                         sellingPrice = sellingPrice.toDouble(),
                         count = count.toInt(),
                         soldCount = 0,
-                        lastUpdate = DateHelper.getTimeStampMilliSecond()
+                        lastUpdate = DateHelper.getTimeStampMilliSecond(),
+                        storeId =""
                     )
 
                     saveProduct(product)

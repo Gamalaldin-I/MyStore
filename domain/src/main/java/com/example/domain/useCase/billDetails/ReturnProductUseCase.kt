@@ -28,8 +28,8 @@ class ReturnProductUseCase(
 
         // 3. prepare return item
         val returnedItem = returnRequest.copy(
-            detailId = IdGenerator.generateTimestampedId(),
-            saleId = null,
+            id = IdGenerator.generateTimestampedId(),
+            billId = null,
             quantity = -abs(returnRequest.quantity)
         )
 
@@ -58,7 +58,7 @@ class ReturnProductUseCase(
         returnRequest: SoldProduct
     ) {
         val returnValue = returnRequest.sellingPrice * abs(returnRequest.quantity)
-        localRepo.updateSaleCashAfterReturn(soldProduct.saleId!!, returnValue)
+        localRepo.updateSaleCashAfterReturn(soldProduct.billId!!, returnValue)
     }
 
     private suspend fun updateBillProduct(
@@ -72,7 +72,7 @@ class ReturnProductUseCase(
             "Item removed from bill"
         } else {
             localRepo.updateBillProductQuantityAfterReturn(
-                soldProduct.detailId,
+                soldProduct.id,
                 abs(returnRequest.quantity)
             )
             "Item updated in bill"

@@ -1,4 +1,4 @@
-package com.example.domain.useCase.auth
+package com.example.domain.useCase.staff
 
 import com.example.domain.repo.StaffRepo
 

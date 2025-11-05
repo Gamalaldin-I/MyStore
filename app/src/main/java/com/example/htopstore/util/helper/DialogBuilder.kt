@@ -131,7 +131,7 @@ object DialogBuilder {
         confirmBtn?.setOnClickListener {
             val willBack = SoldProduct(
                 productId = soldProduct.productId,
-                saleId = soldProduct.saleId,
+                billId = soldProduct.billId,
                 quantity = currentQuantity,
                 type = soldProduct.type,
                 price = soldProduct.price,
@@ -139,7 +139,7 @@ object DialogBuilder {
                 sellDate = DateHelper.getCurrentDate(),
                 sellTime = DateHelper.getCurrentTime(),
                 name = soldProduct.name,
-                detailId = IdGenerator.generateTimestampedId(),
+                id = IdGenerator.generateTimestampedId(),
                 lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}"
             )
             onConfirm(willBack)

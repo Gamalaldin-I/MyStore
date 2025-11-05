@@ -1,6 +1,7 @@
 package com.example.domain.repo
 
 import com.example.domain.model.Product
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepo {
@@ -12,8 +13,8 @@ interface ProductRepo {
     suspend fun addProduct(product: Product)
     suspend fun updateProduct(product: Product)
     suspend fun deleteProductById(id: String, image: String)
+    suspend fun isTheProductInTheStock(id:String): Boolean
     fun getArchiveLength(): Flow<Int>
-    fun fetchProductsFromRemoteIntoLocal()
-    fun listenToRemoteChanges()
-    fun stopListening()
+    suspend fun fetchProductsFromRemoteIntoLocal()
+    fun listenToRemoteChanges(coroutineScope: CoroutineScope)
 }

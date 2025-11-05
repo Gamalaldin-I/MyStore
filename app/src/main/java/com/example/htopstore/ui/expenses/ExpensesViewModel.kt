@@ -42,13 +42,14 @@ class ExpensesViewModel @Inject constructor(
             return
         }
         val expense = Expense(
-            expenseId = IdGenerator.generateTimestampedId(),
+            id = IdGenerator.generateTimestampedId(),
             time = DateHelper.getCurrentTime(),
             date = DateHelper.getCurrentDate(),
             amount = amount.toDouble(),
             category = category,
             paymentMethod = method,
             description = description,
+            storeId = "",
             lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}")
         insertNewExpense(expense, onFinished)
     }

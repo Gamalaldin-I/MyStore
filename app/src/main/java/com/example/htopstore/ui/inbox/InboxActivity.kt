@@ -6,8 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.domain.model.remoteModels.Invite
 import com.example.htopstore.databinding.ActivityInboxBinding
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
@@ -42,7 +40,7 @@ class InboxActivity : AppCompatActivity() {
 
         //get all invites
         vm.getAllInvites()
-        getAllTheInvitesThatPending()
+        //getAllTheInvitesThatPending()
         //setupAdapter
         adapter = InboxAdapter(mutableListOf(),{code,invite->
             vm.accept(
@@ -86,7 +84,7 @@ class InboxActivity : AppCompatActivity() {
         binding.myEmail.text = vm.getEmail()
 
     }
-    fun getAllTheInvitesThatPending(){
+    /*fun getAllTheInvitesThatPending(){
         lifecycleScope.launchWhenStarted {
             vm.invites.collect{
                 list->
@@ -101,7 +99,7 @@ class InboxActivity : AppCompatActivity() {
 
             }
         }
-    }
+    }*/
 
 
 }

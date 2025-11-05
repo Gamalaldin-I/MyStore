@@ -42,8 +42,8 @@ class SellUseCase(private val salesRepo: SalesRepo) {
                 val itemTotal = priceAfterDiscount * item.sellingCount
 
                 val soldProduct = SoldProduct(
-                    saleId = currentOperationId,
-                    detailId = IdGenerator.generateTimestampedId(),
+                    billId = currentOperationId,
+                    id = IdGenerator.generateTimestampedId(),
                     productId = item.id,
                     name = item.name,
                     type = item.type,
@@ -77,12 +77,13 @@ class SellUseCase(private val salesRepo: SalesRepo) {
 
             // Create and insert bill
             val bill = Bill(
-                saleId = currentOperationId,
+                id = currentOperationId,
                 date = currentDate,
                 time = currentTime,
                 totalCash = totalCash,
                 discount = discount,
-                lastUpdate = "$currentDate/$currentTime"
+                lastUpdate = "$currentDate/$currentTime",
+                storeId = ""
             )
 
             Log.d("SELL_ERROR", "Creating bill: Total=$totalCash, Discount=$discount%")

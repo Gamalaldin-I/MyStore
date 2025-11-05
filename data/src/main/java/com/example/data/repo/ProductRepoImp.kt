@@ -7,6 +7,7 @@ import com.example.data.local.model.entities.ProductEntity
 import com.example.data.remote.repo.RemoteProductRepo
 import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -45,33 +46,40 @@ class ProductRepoImp (
        }
     }
 
+    override suspend fun isTheProductInTheStock(id: String): Boolean {
+        val res = productDao.isProductInStock(id)?:0
+        return res > 0
+    }
+
 
     override  fun getArchiveLength(): Flow<Int> {
         return productDao.getArchiveLength()
     }
 
-    override fun fetchProductsFromRemoteIntoLocal() {
-        remote.getAllProducts {
+    override suspend fun fetchProductsFromRemoteIntoLocal() {
+        remote.getAllProducts() {
             productDao.addProducts(it.map { it.toData() })
         }
     }
 
-    override fun listenToRemoteChanges() {
-        remote.listenToRemoteChanges(
-            onAdd = {
+    override fun listenToRemoteChanges(
+        coroutineScope: CoroutineScope
+    ) {
+        remote.listenToProductChanges (
+            scope = coroutineScope,
+            onInsert = {
                 productDao.addProduct(it.toData())
             },
             onUpdate = {
                 productDao.updateProduct(it.toData())
             },
             onDelete = {
-                productDao.deleteProductById(it)
+                productDao.deleteProductById(it.id)
+            },
+            onProductFoundInCache = {
+                isTheProductInTheStock(it)
             }
         )
-    }
-
-    override fun stopListening() {
-        remote.stopListening()
     }
 
     fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {

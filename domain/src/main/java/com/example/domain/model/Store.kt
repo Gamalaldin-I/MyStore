@@ -1,5 +1,8 @@
 package com.example.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Store(
     var id: String,
     var name: String,

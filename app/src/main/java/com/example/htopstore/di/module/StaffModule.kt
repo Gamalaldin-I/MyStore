@@ -1,8 +1,7 @@
 package com.example.htopstore.di.module
 
-import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.repo.StaffRepoImp
 import com.example.domain.repo.StaffRepo
-import com.example.domain.useCase.auth.UpdateStoreDataUseCase
 import com.example.domain.useCase.staff.AcceptInviteUseCase
 import com.example.domain.useCase.staff.AddStoreInviteUseCase
 import com.example.domain.useCase.staff.DeleteStoreInviteUseCase
@@ -11,8 +10,7 @@ import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
 import com.example.domain.useCase.staff.RejectInviteUseCase
 import com.example.domain.useCase.staff.RejectOrRehireUseCase
-import com.example.data.remote.firebase.staff.StaffRepoImp
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.domain.useCase.staff.UpdateStoreDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,8 +22,8 @@ import javax.inject.Singleton
 object StaffModule {
     @Singleton
     @Provides
-    fun provideStaffRepo(db: FirebaseFirestore,pref: SharedPref): StaffRepo {
-        return StaffRepoImp(db,pref)
+    fun provideStaffRepo(): StaffRepo {
+        return StaffRepoImp()
     }
     @Provides
     fun provideInvitesUseCase(staffRepo: StaffRepo): GetStoreInvitesUseCase {

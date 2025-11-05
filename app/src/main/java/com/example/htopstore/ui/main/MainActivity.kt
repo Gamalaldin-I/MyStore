@@ -1,17 +1,13 @@
 package com.example.htopstore.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.domain.util.Constants
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityMainBinding
-import com.example.htopstore.ui.inbox.InboxActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val profile = ProfileFragment()
         replaceCurrentFragment(stockFragment)
         //to listen if the employee status changed
-        onEmployeeStatusChanged()
+        //onEmployeeStatusChanged()
         vm.message.observe(this){
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
@@ -89,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onEmployeeStatusChanged() {
+    /*fun onEmployeeStatusChanged() {
         vm.startListening()
         vm.employeeStatus.observe(this) {
             Log.d("MainActivity1", "onEmployeeStatusChanged: $it")
@@ -100,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
+    }*/
 
 
 }

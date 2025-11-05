@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface StaffRepo {
     val invitesFlow:StateFlow<List<Invite>>
     val employeesFlow:StateFlow<List<StoreEmployee>>
-// for owner
+    val employeeStatus: StateFlow<String>
+    // for owner
     fun listenToInvites()
     fun addInvite( email:String, code: String, onResult:(success: Boolean, msg:String)->Unit)
     fun deleteInvite(invite: Invite,onResult:(success: Boolean,msg:String)->Unit)
@@ -22,5 +23,8 @@ interface StaffRepo {
     fun rejectOrRehireEmployee(employeeId:String,reject:Boolean,onResult:(success:Boolean,msg:String)->Unit)
     fun updateStore(name:String,phone:String,location:String,onResult:(success:Boolean,msg:String)->Unit)
     fun sendEmail(context: Context, recipientEmail:String, code:String): Pair<String,String>
+    fun listenToEmployee()
+
+
 
 }

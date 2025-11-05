@@ -17,7 +17,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // مهم علشان Hilt يشتغل مع الـ Instrumented tests
         testInstrumentationRunner = "com.example.htopstore.HiltTestRunner"
     }
 
@@ -34,16 +33,22 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
+
+    // ==========================
+    // AndroidX Core & UI
+    // ==========================
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -51,76 +56,86 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    testImplementation(libs.junit)
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // ==========================
+    // Lifecycle
+    // ==========================
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+
+    // ==========================
+    // Testing
+    // ==========================
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Glide
+    // ==========================
+    // Hilt DI
+    // ==========================
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+    // ==========================
+    // Room
+    // ==========================
+    val roomVersion = "2.6.1"
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt("androidx.room:room-compiler:$roomVersion")
+    testImplementation(libs.androidx.room.testing)
+    implementation(libs.androidx.room.paging)
+
+    // ==========================
+    // Glide (Image loading)
+    // ==========================
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
 
-    // QR Code
+    // ==========================
+    // QR Code & ML Kit
+    // ==========================
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-
-    // CameraX
     val camerax_version = "1.3.4"
     implementation("androidx.camera:camera-core:$camerax_version")
     implementation("androidx.camera:camera-camera2:$camerax_version")
     implementation("androidx.camera:camera-lifecycle:$camerax_version")
     implementation("androidx.camera:camera-view:$camerax_version")
     implementation("androidx.camera:camera-extensions:$camerax_version")
-
-    // ML Kit Barcode
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
     implementation("com.google.android.gms:play-services-vision:20.1.3")
 
-    // RoundedImageView
-    implementation("com.makeramen:roundedimageview:2.3.0")
+    // ==========================
+    // Charts & Utilities
+    // ==========================
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.guava:guava:31.1-android")
 
-    // Lifecycle components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    // ==========================
+    // Kotlin Coroutines
+    // ==========================
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-compiler:2.51.1")
-
-    //  Hilt with view model
-    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
-    kapt("androidx.hilt:hilt-compiler:1.2.0")
-    //room
-    val roomVersion = "2.6.1"
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt("androidx.room:room-compiler:$roomVersion")
-    testImplementation(libs.androidx.room.testing)
-    implementation (libs.androidx.room.paging)
-    //for charts visualisation
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    implementation ("com.google.guava:guava:31.1-android")
-    //firebase
-    implementation ("com.google.firebase:firebase-firestore:25.0.0")
-    implementation ("com.google.firebase:firebase-auth:23.1.0")
-    implementation ("com.google.firebase:firebase-storage:21.0.0")
-    implementation ("com.google.android.gms:play-services-auth:21.2.0")
-
-    //supabase
+    // ==========================
+    // Supabase
+    // ==========================
     implementation("io.github.jan-tennert.supabase:storage-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:gotrue-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.1")
-     // ktor for supabase
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1") // Realtime listener
+
+    // ==========================
+    // Ktor Client (for Supabase SDK)
+    // ==========================
     implementation("io.ktor:ktor-client-android:2.3.5")
-
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-
-
-
-
-
-
 }

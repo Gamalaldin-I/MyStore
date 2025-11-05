@@ -16,10 +16,7 @@ import com.example.htopstore.databinding.ActivityLoginBinding
 import com.example.htopstore.ui.inbox.InboxActivity
 import com.example.htopstore.ui.main.MainActivity
 import com.example.htopstore.ui.signup.SignupActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("DEPRECATION")
@@ -30,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var sharedPref: SharedPref
-    private lateinit var googleSignInClient: GoogleSignInClient
+    //private lateinit var googleSignInClient: GoogleSignInClient
     private val vm: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        //googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         sharedPref = SharedPref(this)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -78,12 +75,12 @@ class LoginActivity : AppCompatActivity() {
                 else {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 }
-            }
-        }
-        binding.googleSignInBtn.setOnClickListener {
+            }}
+        //}
+        /*binding.googleSignInBtn.setOnClickListener {
             val googleIntent = googleSignInClient.signInIntent
             startActivityForResult(googleIntent, GOOGLE_SIGN_IN)
-        }
+        }*/
         binding.signupTv.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
@@ -96,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
+    /*@Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGN_IN) {
@@ -120,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Google sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
     @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
     @SuppressLint("MissingSuperCall")

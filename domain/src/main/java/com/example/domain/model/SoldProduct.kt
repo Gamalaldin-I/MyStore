@@ -1,15 +1,18 @@
 package com.example.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SoldProduct(
-    val detailId: String,
-    val saleId: String?,
+    val id: String,
+    val sellDate: String,
+    val sellTime: String,
+    val billId: String?,
     val productId: String?,
     val name: String,
     val type: String,
     var quantity: Int,
     val price: Double,
     val sellingPrice: Double,
-    val sellDate: String,
-    val sellTime: String,
-    var lastUpdate: String
-)
+    var lastUpdate: String,
+    )

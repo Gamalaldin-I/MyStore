@@ -13,4 +13,6 @@ data class Product(
     var soldCount:Int,
     var buyingPrice:Double,
     var sellingPrice:Double,
-    var lastUpdate: String)
+    var lastUpdate: String,
+    var storeId: String?
+)

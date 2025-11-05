@@ -27,7 +27,7 @@ class InboxViewModel @Inject constructor(
     private val _msg = MutableLiveData<String>()
     val msg: LiveData<String> = _msg
 
-    val invites = staffRepo.invitesFlow
+    //val invites = staffRepo.invitesFlow
 
     fun getAllInvites(){
         getAllEmailPendingInvitesUseCase{

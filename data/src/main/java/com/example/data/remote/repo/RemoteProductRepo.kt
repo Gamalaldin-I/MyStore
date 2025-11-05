@@ -1,176 +1,180 @@
 package com.example.data.remote.repo
 
+import android.content.Context
 import android.util.Log
+import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
-import com.example.data.remote.firebase.FirebaseUtils
-import com.example.data.remote.supabase.SupabaseHelper
 import com.example.domain.model.Product
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.realtime.PostgresAction
+import io.github.jan.supabase.realtime.channel
+import io.github.jan.supabase.realtime.decodeOldRecord
+import io.github.jan.supabase.realtime.decodeRecord
+import io.github.jan.supabase.realtime.postgresChangeFlow
+import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RemoteProductRepo(
-    fdb: FirebaseFirestore,
-    private val supa: SupabaseHelper,
-    pref: SharedPref
+    private val supabase: SupabaseClient,
+    private val pref: SharedPref,
+    private val context: Context
 ) {
-    private var listener: ListenerRegistration? = null
-    private val fu = FirebaseUtils
-    private val ownerId = pref.getStore().ownerId
-    private val storeId = pref.getStore().id
-
-    private val productsRef = fdb.collection(fu.OWNERS).document(ownerId)
-        .collection(fu.STORES).document(storeId)
-        .collection(fu.PRODUCTS)
-
     companion object {
+        private const val PRODUCT_BUCKET = "Products"
+        private const val PRODUCTS = "products"
         private const val ID = "id"
-        private const val LAST_UPDATE = "lastUpdate"
+        private const val TAG = "SupabaseHelper"
     }
 
-    private enum class Operation { ADD, UPDATE, DELETE }
+    // ==============================
+    // IMAGE UPLOAD/REMOVE FUNCTIONS
+    // ==============================
 
-    private val localOps = mutableMapOf<String, Operation>()
-
-    fun addProduct(product: Product, insertToRoom: suspend (Product) -> Unit) {
-        localOps[product.id] = Operation.ADD
-
-        val productData = hashMapOf(
-            ID to product.id,
-            LAST_UPDATE to product.lastUpdate
-        )
-
-        productsRef.document(product.id)
-            .set(productData)
-            .addOnSuccessListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        supa.addProduct(product) { insertedProduct ->
-                            insertToRoom(insertedProduct)
-                        }
-                    } catch (e: Exception) {
-                        Log.e("RemoteProductRepo", "Supabase add failed: ${e.message}")
-                    } finally {
-                        localOps.remove(product.id)
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("RemoteProductRepo", "Firebase add failed: ${e.message}")
-                localOps.remove(product.id)
-            }
-    }
-
-    fun deleteProduct(id: String, deleteFromRoom: suspend (String) -> Unit) {
-        localOps[id] = Operation.DELETE
-
-        productsRef.document(id)
-            .delete()
-            .addOnSuccessListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        supa.deleteProduct(id) {
-                            deleteFromRoom(id)
-                        }
-                    } catch (e: Exception) {
-                        Log.e("RemoteProductRepo", "Supabase delete failed: ${e.message}")
-                    } finally {
-                        localOps.remove(id)
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("RemoteProductRepo", "Firebase delete failed: ${e.message}")
-                localOps.remove(id)
-            }
-    }
-
-
-    fun updateProduct(product: Product, updateToRoom: suspend (Product) -> Unit) {
-        localOps[product.id] = Operation.UPDATE
-
-        productsRef.document(product.id)
-            .update(LAST_UPDATE, product.lastUpdate)
-            .addOnSuccessListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        supa.updateProduct(product) {
-                            updateToRoom(product)
-                        }
-                    } catch (e: Exception) {
-                        Log.e("RemoteProductRepo", "Supabase update failed: ${e.message}")
-                    } finally {
-                        localOps.remove(product.id)
-                    }
-                }
-            }
-            .addOnFailureListener {
-                Log.e("RemoteProductRepo", "Firebase update failed: ${it.message}")
-                localOps.remove(product.id)
-            }
-    }
-
-    fun getAllProducts(onRoomStore: suspend (products: List<Product>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val products = supa.getAllProducts()
-                onRoomStore(products)
-            } catch (e: Exception) {
-                Log.e("RemoteProductRepo", "Supabase get failed: ${e.message}")
-            }
+    private suspend fun uploadImage(uri: android.net.Uri, path: String, fileName: String): String? {
+        return try {
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes() ?: return null
+            val bucket = supabase.storage.from(path)
+            bucket.upload(fileName, bytes, upsert = true)
+            "https://ayoanqjzciolnahljauc.supabase.co/storage/v1/object/public/$path/$fileName"
+        } catch (e: Exception) {
+            Log.e(TAG, "Error uploading image: ${e.message}", e)
+            null
         }
     }
 
-    fun listenToRemoteChanges(
-        onAdd: suspend (product: Product) -> Unit,
-        onUpdate: suspend (product: Product) -> Unit,
-        onDelete: suspend (id: String) -> Unit
+
+    private suspend fun removePhoto(fileName: String, path: String): Boolean {
+        return try {
+            val bucket = supabase.storage.from(path)
+            bucket.delete(fileName)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Error removing photo: ${e.message}", e)
+            false
+        }
+    }
+
+
+    // ==============================
+    // PRODUCT FUNCTIONS
+    // ==============================
+
+    suspend fun addProduct(product: Product, onResult: suspend (Product) -> Unit) {
+        try {
+            val inserted = product
+            inserted.storeId = pref.getStore().id
+            val fileName = "${product.id}.jpg"
+            val uri = product.productImage.toUri()
+            val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
+            product.productImage = url.orEmpty()
+            supabase.from(PRODUCTS).insert(inserted)
+            onResult(product)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error adding product: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteProduct(id: String, onResult: suspend (String) -> Unit) {
+        try {
+            val result = removePhoto("$id.jpg", PRODUCT_BUCKET)
+            if (!result) throw Exception("Failed to delete image")
+            supabase.from(PRODUCTS).delete {
+                filter { eq(ID, id) }
+            }
+            onResult(id)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error deleting product: ${e.message}", e)
+        }
+    }
+
+    suspend fun updateProduct(product: Product, onResult: suspend (Product) -> Unit) {
+        try {
+            supabase.from(PRODUCTS).update(product) {
+                filter { eq(ID, product.id) }
+            }
+            onResult(product)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating product: ${e.message}", e)
+        }
+    }
+
+    suspend fun getAllProducts(onResult: suspend (List<Product>) -> Unit){
+        try {
+            val products = supabase.from(PRODUCTS).select().decodeList<Product>()
+            onResult(products)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting all products: ${e.message}", e)
+            onResult(emptyList())
+        }
+    }
+
+    suspend fun getProductById(id: String): Product? {
+        return try {
+            supabase.from(PRODUCTS).select {
+                filter { eq(ID, id) }
+            }.decodeSingle<Product>()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting product by id: ${e.message}", e)
+            null
+        }
+    }
+    // ==============================
+    // REALTIME LISTENER FUNCTION
+    // ==============================
+
+    fun listenToProductChanges(
+        scope: CoroutineScope,
+        onInsert: suspend (Product) -> Unit,
+        onUpdate: suspend (Product) -> Unit,
+        onDelete: suspend (Product) -> Unit,
+        onProductFoundInCache: suspend (id:String)->Boolean
     ) {
-        listener?.remove()
+        scope.launch(Dispatchers.IO) {
+            try {
+                val channel = supabase.channel("products-changes")
 
-        listener = productsRef.addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.e("RemoteProductRepo", "Firebase listen failed: ${error.message}")
-                return@addSnapshotListener
-            }
+                val changeFlow = channel.postgresChangeFlow<PostgresAction>(schema = "public") {
+                    table = PRODUCTS
+                }
 
-            snapshot?.documentChanges?.forEach { doc ->
-                val p = doc.document.toObject(FireProduct::class.java)
-                val op = localOps[p.id]
+                channel.subscribe()
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    when (doc.type) {
-                        DocumentChange.Type.ADDED -> {
-                            if (op != Operation.ADD) {
-                                supa.getProductById(p.id)?.let { onAdd(it) }
+                changeFlow.collect { action ->
+                    when (action) {
+                        is PostgresAction.Insert -> {
+                            action.decodeRecord<Product>().let { newProduct ->
+                                if(onProductFoundInCache(newProduct.id))
+                                    return@collect
+                                onInsert(newProduct)
+                                Log.d(TAG, "Product inserted: ${newProduct.id}")
                             }
                         }
-
-                        DocumentChange.Type.MODIFIED -> {
-                            if (op != Operation.UPDATE) {
-                                supa.getProductById(p.id)?.let { onUpdate(it) }
+                        is PostgresAction.Update -> {
+                            action.decodeRecord<Product>().let { updatedProduct ->
+                                onUpdate(updatedProduct)
+                                Log.d(TAG, "Product updated: ${updatedProduct.id}")
                             }
                         }
-
-                        DocumentChange.Type.REMOVED -> {
-                            onDelete(p.id)
+                        is PostgresAction.Delete -> {
+                            action.decodeOldRecord<Product>().let { deletedProduct ->
+                                onDelete(deletedProduct)
+                                Log.d(TAG, "Product deleted: ${deletedProduct.id}")
+                            }
+                        }
+                        else -> {
+                            Log.d(TAG, "Unknown action type")
                         }
                     }
                 }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in realtime listener: ${e.message}", e)
             }
         }
     }
 
-    fun stopListening() {
-        listener?.remove()
-        listener = null
-    }
 
-    data class FireProduct(
-        val id: String = "",
-        val lastUpdate: String = ""
-    )
 }
