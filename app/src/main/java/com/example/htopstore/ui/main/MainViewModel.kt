@@ -31,6 +31,7 @@ import com.example.domain.useCase.profile.UpdateNameUseCase
 import com.example.domain.useCase.sales.SellUseCase
 import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
+import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -109,13 +110,15 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout(onResult: (Boolean, String) -> Unit){
-        viewModelScope.launch(Dispatchers.IO) {
-                db.clearAllTables()
-            withContext(Dispatchers.Main){
+        viewModelScope.launch{
+            val (success, msg) = logoutUseCase()
+            if(success){
                 pref.clearPrefs()
-                logoutUseCase(onResult)
+                withContext(Dispatchers.IO){db.clearAllTables()}
             }
-        }
+            onResult(success, msg)
+            _message.postValue(msg)
+    }
     }
 
 
@@ -155,14 +158,34 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-    fun removeProfilePhoto(){
-        viewModelScope.launch(Dispatchers.IO){
-            removeProfileImageUseCase{
-                success, msg ->
+    fun removeProfilePhoto() {
+        viewModelScope.launch(Dispatchers.IO) {
+            removeProfileImageUseCase { success, msg ->
                 _message.postValue(msg)
             }
         }
     }
+    private val messageToStringRes = mapOf(
+            "Error reading image" to R.string.error_reading_image,
+            "Image uploaded successfully" to R.string.image_uploaded_successfully,
+            "Error uploading image: %1\$s" to R.string.error_uploading_image,
+            "Image removed successfully" to R.string.image_removed_successfully,
+            "Error removing photo: %1\$s" to R.string.error_removing_photo,
+            "Password reset email sent successfully" to R.string.password_reset_email_sent,
+            "Error resetting password: %1\$s" to R.string.error_resetting_password,
+            "Name updated successfully" to R.string.name_updated_successfully,
+            "Error updating name: %1\$s" to R.string.error_updating_name,
+            "The session of the user is not valid" to R.string.session_not_valid,
+            "The current password is incorrect" to R.string.current_password_incorrect,
+            "Email confirmation sent successfully. Please check your new email address." to R.string.email_confirmation_sent,
+            "Error updating email: %1\$s" to R.string.error_updating_email
+        )
+
+        fun getStringResFromMessage(message: String): Int {
+            return messageToStringRes[message]?: R.string.unknown_error
+        }
 
 
-    }
+
+
+}

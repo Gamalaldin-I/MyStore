@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -64,22 +63,8 @@ class InvitesFragment : Fragment() {
             onCopy = { code -> copyToClipboard(code) },
             onSending = { code, email ->
                 if (code != null && email != null) {
-                    val (subject, message ) = vm.sendEmail(requireContext(), email, code)
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = "mailto:".toUri()
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-                        putExtra(Intent.EXTRA_SUBJECT, subject)
-                        putExtra(Intent.EXTRA_TEXT, message)
-                    }
-                    try { startActivity(Intent.createChooser(intent, "Send invitation via"))
-                    } catch (e: Exception) {
-                        // Handle case where no email app is installed
-                        e.printStackTrace()
-                    }
-                } else{
-                    showSnackBar("Error sending invitation")
+                    vm.sendEmail(email, code)
                 }
-                showSnackBar("Invitation sent successfully")
             }
         )
 
@@ -152,7 +137,7 @@ class InvitesFragment : Fragment() {
     // Observers
     // ------------------------------------------------------------------------
     private fun observeInvites() {
-        showLoading(true)
+      /*  showLoading(true)
         vm.getInvites()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -168,7 +153,7 @@ class InvitesFragment : Fragment() {
                     filterInvites(selectedFilter.value)
                 }
             }
-        }
+        }*/
     }
 
     // ------------------------------------------------------------------------

@@ -11,4 +11,5 @@ import kotlinx.serialization.Serializable
    val status: String,
    val storeId:String,
    var email:String,
+   var provider:Int = 0
 )

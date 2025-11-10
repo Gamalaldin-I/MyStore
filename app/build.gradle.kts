@@ -132,10 +132,16 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:storage-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:gotrue-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.1")
-    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1") // Realtime listener
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1")
 
     // ==========================
     // Ktor Client (for Supabase SDK)
     // ==========================
     implementation("io.ktor:ktor-client-android:2.3.5")
+
+    //=============================
+    //Google services (sign)
+    //=============================
+    implementation ("com.google.android.gms:play-services-auth:21.1.0")
+
 }

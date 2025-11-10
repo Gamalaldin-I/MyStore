@@ -21,6 +21,10 @@ object Constants {
     const val SIGNUP_FIRST_ERROR = "sign up first please"
     const val ACCOUNT_FOUND_ERROR = "There is another account by this email"
 
+    const val GOOGLE_PROVIDER = 1
+    const val EMAIL_PROVIDER = 0
+
+
 
 
 }

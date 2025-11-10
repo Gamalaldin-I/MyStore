@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/formCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/background_dark"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="2dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="500dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="28dp">
+
+            <!-- Section Title -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/store_details"
+                    android:textColor="@color/action_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏪"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <!-- Store Name Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storeNameLo"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/store_name"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="@color/input_border_focus"
+                app:boxStrokeWidth="2dp"
+                app:cursorColor="@color/action_primary"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/action_primary"
+                app:errorEnabled="true"
+                app:helperText="The name of your business"
+                app:helperTextTextColor="@color/action_primary"
+                app:hintTextColor="@color/action_primary"
+                app:placeholderTextColor="@color/action_primary"
+                app:startIconDrawable="@drawable/nav_store"
+                app:startIconTint="@color/action_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStoreName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:inputType="textCapWords"
+                    android:paddingVertical="18dp"
+                    android:textColor="@color/action_primary"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Phone Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storePhoneLo"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="@string/phone_number"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="@color/input_border_focus"
+                app:boxStrokeWidth="2dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="10"
+                app:cursorColor="@color/action_primary"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/action_primary"
+                app:errorEnabled="true"
+                app:helperText="Contact number for your store"
+                app:helperTextTextColor="@color/action_primary"
+                app:hintTextColor="@color/action_primary"
+                app:placeholderTextColor="@color/action_primary"
+                app:prefixText="+20 "
+                app:startIconDrawable="@android:drawable/stat_sys_phone_call"
+                app:startIconTint="@color/action_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStorePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:paddingVertical="18dp"
+                    android:textColorHint="@color/primary_accent_blue"
+                    android:textColor="@color/action_primary"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Address Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/storeLocationLo"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="@string/store_location"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="@color/input_border_focus"
+                app:boxStrokeWidth="2dp"
+                app:cursorColor="@color/action_primary"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/action_primary"
+                app:errorEnabled="true"
+                app:helperText="City, street address, or area"
+                app:helperTextTextColor="@color/action_primary"
+                app:hintTextColor="@color/action_primary"
+                app:placeholderTextColor="@color/action_primary"
+                app:startIconDrawable="@android:drawable/ic_dialog_map"
+                app:startIconTint="@color/action_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStoreAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:minLines="2"
+                    android:paddingVertical="18dp"
+                    android:textColor="@color/action_primary"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

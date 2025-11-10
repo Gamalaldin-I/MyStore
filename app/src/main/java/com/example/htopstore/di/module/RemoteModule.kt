@@ -3,6 +3,8 @@ package com.example.htopstore.di.module
 import android.content.Context
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.RemoteProductRepo
+import com.example.data.remote.repo.StoreRepoImp
+import com.example.domain.repo.StoreRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,6 +53,18 @@ object RemoteModule {
             supabase = supabase,
             pref = pref,
             context = context
+        )
+    }
+    @Provides
+    fun provideStoreRepo(
+        @ApplicationContext context: Context,
+        supabase: SupabaseClient,
+        pref: SharedPref
+    ): StoreRepo{
+        return StoreRepoImp(
+            supabase = supabase,
+            pref = pref,
+            context =context
         )
     }
 

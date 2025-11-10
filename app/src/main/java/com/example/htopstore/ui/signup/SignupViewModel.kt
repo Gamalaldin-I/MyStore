@@ -1,37 +1,36 @@
 package com.example.htopstore.ui.signup
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.data.local.sharedPrefs.SharedPref
-import com.example.domain.useCase.auth.RegisterEmployeeUseCase
-import com.example.domain.useCase.auth.RegisterOwnerUseCase
+import com.example.domain.useCase.auth.RegisterUseCase
 import com.example.domain.useCase.auth.SignWithGoogleUseCase
-import com.example.domain.util.Constants
+import com.example.htopstore.R
 import com.example.htopstore.util.DataValidator.validEmail
 import com.example.htopstore.util.DataValidator.validPassword
 import com.example.htopstore.util.DataValidator.validPasswordMatch
-import com.example.htopstore.util.DataValidator.validPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val sharedPref: SharedPref,
-    private val registerOwnerUseCase: RegisterOwnerUseCase,
-    private val registerEmployeeUseCase: RegisterEmployeeUseCase,
-    private val signWithGoogleUseCase: SignWithGoogleUseCase
-) : ViewModel(), OnNextStep {
+    private val registerUseCase: RegisterUseCase,
+    private val signWithGoogleUseCase: SignWithGoogleUseCase,
+    private val app: Application
+) : AndroidViewModel(app), OnNextStep {
 
     // User credentials
     private var userName: String = ""
     private var userEmail: String = ""
     private var userPassword: String = ""
 
-    // Store information
-    private var storeName: String = ""
-    private var storeLocation: String = ""
-    private var storePhone: String = ""
 
     // LiveData for UI feedback
     private val _message = MutableLiveData<String>()
@@ -57,64 +56,44 @@ class SignupViewModel @Inject constructor(
         userName = name
         userEmail = email
         userPassword = password
-
-        when (getRole()) {
-            Constants.OWNER_ROLE -> {
-                // Owner needs to fill store info first before registration
-                registerOwner(nextAction)
-            }
-            else -> {
-                // Employee can register immediately
-                registerEmployee(nextAction)
-            }
+        if (isUserDataValid(name, email, password, password)) {
+            register(nextAction)
         }
     }
 
-    override fun afterStoreFormFill(
-        name: String,
-        location: String,
-        phone: String,
-        nextAction: () -> Unit
-    ) {
-        storeName = name
-        storeLocation = location
-        storePhone = phone
-        nextAction()
-    }
 
     override fun onSignWithGoogle(
         token: String,
+        profileUrl:String,
+        name: String,
         nextAction: () -> Unit
     ) {
-        signWithGoogleUseCase(
+        viewModelScope.launch {
+        sharedPref.setProfileImage(profileUrl)
+        sharedPref.setUserName(name)
+        val(success,message) = signWithGoogleUseCase(
             token = token,
-            storePhone = storePhone,
-            storeName = storeName,
-            storeLocation = storeLocation,
+            role = getRole(),
+            fromLoginScreen = false
+        )
+            _isLoading.value = false
+            _message.postValue(message)
+            if (success) withContext(Dispatchers.Main){ nextAction()}
+        }
+    }
+
+
+    private fun register(nextAction: () -> Unit) {
+        _isLoading.value = true
+
+        registerUseCase(
+            email = userEmail,
+            password = userPassword,
+            name = userName,
             role = getRole()
         ) { success, message ->
             _isLoading.value = false
             _message.value = message
-            if (success) {
-                nextAction()
-            }
-    }
-    }
-
-
-    private fun registerOwner(nextAction: () -> Unit) {
-        _isLoading.value = true
-
-        registerOwnerUseCase(
-            email = userEmail,
-            password = userPassword,
-            name = userName,
-            storeName = storeName,
-            storeLocation = storeLocation,
-            storePhone = storePhone
-        ) { success, message ->
-            _isLoading.value = false
-            _message.value = message
 
             if (success) {
                 nextAction()
@@ -122,22 +101,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun registerEmployee(nextAction: () -> Unit) {
-        _isLoading.value = true
 
-        registerEmployeeUseCase(
-            name = userName,
-            email = userEmail,
-            password = userPassword
-        ) { success, message ->
-            _isLoading.value = false
-            _message.value = message
-
-            if (success) {
-                nextAction()
-            }
-        }
-    }
 
     fun getRole(): Int = sharedPref.getRole()
 
@@ -150,41 +114,19 @@ class SignupViewModel @Inject constructor(
         return when {
             name.isBlank() || email.isBlank() ||
                     password.isBlank() || confirmPassword.isBlank() -> {
-                _message.value = "Please fill all fields"
+                _message.value = app.getString(R.string.please_fill_all_fields)
                 false
             }
             !email.validEmail() -> {
-                _message.value = "Please enter a valid email"
+                _message.value = app.getString(R.string.error_invalid_email)
                 false
             }
             !password.validPassword() -> {
-                _message.value = "Password doesn't meet the requirements"
+                _message.value = app.getString(R.string.password_requirements_not_met)
                 false
             }
             !password.validPasswordMatch(confirmPassword) -> {
-                _message.value = "Passwords do not match"
-                false
-            }
-            else -> true
-        }
-    }
-
-    fun isStoreDataValid(
-        name: String,
-        location: String,
-        phone: String
-    ): Boolean {
-        return when {
-            name.isBlank() || location.isBlank() || phone.isBlank() -> {
-                _message.value = "Please fill all fields"
-                false
-            }
-            name.length < MIN_STORE_NAME_LENGTH -> {
-                _message.value = "Store name must be at least $MIN_STORE_NAME_LENGTH characters"
-                false
-            }
-            !phone.validPhone() -> {
-                _message.value = "Please enter a valid phone number"
+                _message.value = app.getString(R.string.passwords_do_not_match)
                 false
             }
             else -> true
@@ -192,7 +134,4 @@ class SignupViewModel @Inject constructor(
     }
 
 
-    companion object {
-        private const val MIN_STORE_NAME_LENGTH = 3
-    }
 }

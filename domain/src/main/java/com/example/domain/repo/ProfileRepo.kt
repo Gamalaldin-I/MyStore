@@ -11,5 +11,5 @@ interface ProfileRepo {
 
     suspend fun resetPassword(email: String, onResult: (Boolean, String) -> Unit)
     suspend fun updateName(name:String): Pair<Boolean,String>
-    suspend fun updateEmail(newEmail:String,password: String,onResult: (Boolean, String) -> Unit)
+    suspend fun updateEmail(newEmail:String,password: String):Pair<Boolean,String>
 }

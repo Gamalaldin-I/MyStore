@@ -19,8 +19,8 @@ import com.bumptech.glide.signature.ObjectKey
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentProfielBinding
 import com.example.htopstore.ui.changeEmail.ChangeEmailActivity
+import com.example.htopstore.ui.createStore.CreateStoreActivity
 import com.example.htopstore.ui.login.LoginActivity
-import com.example.htopstore.ui.updateStore.UpdateStoreActivity
 import com.example.htopstore.util.DataValidator.isValidName
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,12 +35,10 @@ class ProfileFragment : Fragment() {
     private var isEditing = false
     private var hasChanges = false
 
-    // 🔹 Image picker
-    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            handleSelectedImage(it)
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { handleSelectedImage(it) }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,7 +50,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        showData()
         setupListeners()
     }
 
@@ -93,8 +90,17 @@ class ProfileFragment : Fragment() {
 
             editPhotoBtn.setOnClickListener { showPhotoOptions() }
             callBtn.setOnClickListener { makePhoneCall(storePhoneTV.text.toString()) }
-            changeEmailAction.setOnClickListener { startActivity(Intent(requireContext(), ChangeEmailActivity::class.java)) }
-            updateStoreAction.setOnClickListener { startActivity(Intent(requireContext(), UpdateStoreActivity::class.java)) }
+            changeEmailAction.setOnClickListener {
+                startActivity(Intent(requireContext(), ChangeEmailActivity::class.java))
+            }
+            updateStoreAction.setOnClickListener {
+                val intent = Intent(requireContext(), CreateStoreActivity::class.java)
+                intent.putExtra(
+                    "fromUpdate",
+                    true
+                )
+                startActivity(intent)
+            }
             logout.setOnClickListener { showLogoutConfirmation() }
 
             finishBtn.setOnClickListener {
@@ -114,9 +120,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showPhotoOptions() {
-        val options = arrayOf("Choose from Gallery", "Remove Photo", "Cancel")
+        val options = arrayOf(
+            getString(R.string.choose_from_gallery),
+            getString(R.string.remove_photo),
+            getString(R.string.cancel)
+        )
+
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Change Profile Photo")
+            .setTitle(getString(R.string.change_profile_photo))
             .setItems(options) { dialog, which ->
                 when (which) {
                     0 -> imagePickerLauncher.launch("image/*")
@@ -137,17 +148,16 @@ class ProfileFragment : Fragment() {
                 .signature(ObjectKey(System.currentTimeMillis()))
                 .into(binding.profileAvatar)
 
-            vm.changePhoto(uri){}
-
+            vm.changePhoto(uri) {}
         } catch (e: Exception) {
             Log.e("ProfileFragment", "Error handling selected image: ${e.message}", e)
-            Toast.makeText(requireContext(), "Failed to update photo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.failed_to_update_photo), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun makePhoneCall(phoneNumber: String) {
         if (phoneNumber.isEmpty()) {
-            Toast.makeText(requireContext(), "Phone number not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.phone_not_available), Toast.LENGTH_SHORT).show()
             return
         }
         val intent = Intent(Intent.ACTION_DIAL).apply { data = "tel:$phoneNumber".toUri() }
@@ -158,20 +168,23 @@ class ProfileFragment : Fragment() {
         val name = binding.nameEt.text.toString().trim()
         return when {
             name.isEmpty() -> {
-                binding.nameLo.error = "Name is required"; false
+                binding.nameLo.error = getString(R.string.name_required)
+                false
             }
             !name.isValidName() -> {
-                binding.nameLo.error = "Invalid name"; false
+                binding.nameLo.error = getString(R.string.invalid_name)
+                false
             }
             else -> {
-                binding.nameLo.error = null; true
+                binding.nameLo.error = null
+                true
             }
         }
     }
 
     private fun updateProfile() {
         if (!hasChanges) {
-            Toast.makeText(requireContext(), "No changes to save", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_changes), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -189,27 +202,30 @@ class ProfileFragment : Fragment() {
     private fun setEditingEnabled(enabled: Boolean) {
         isEditing = enabled
         binding.nameEt.isEnabled = enabled
-        binding.finishBtn.text = if (enabled) "Save" else "Edit"
+        binding.finishBtn.text =
+            if (enabled) getString(R.string.save) else getString(R.string.edit)
     }
 
     private fun showLoading(show: Boolean) {
         binding.finishBtn.isEnabled = !show
-        binding.finishBtn.text = if (show) "Saving..." else "Save"
+        binding.finishBtn.text =
+            if (show) getString(R.string.saving) else getString(R.string.save)
     }
 
     private fun showLogoutConfirmation() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { dialog, _ ->
-                dialog.dismiss(); performLogout()
+            .setTitle(getString(R.string.logout_title))
+            .setMessage(getString(R.string.logout_message))
+            .setPositiveButton(getString(R.string.logout)) { dialog, _ ->
+                dialog.dismiss()
+                performLogout()
             }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
     private fun performLogout() {
-        Toast.makeText(requireContext(), "Logging out...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.logging_out), Toast.LENGTH_SHORT).show()
         vm.logout { success, msg ->
             if (success) {
                 val intent = Intent(requireContext(), LoginActivity::class.java).apply {
@@ -218,9 +234,15 @@ class ProfileFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             } else {
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                val id = vm.getStringResFromMessage(msg)
+                Toast.makeText(requireContext(), getString(id), Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showData()
     }
 
     override fun onDestroyView() {

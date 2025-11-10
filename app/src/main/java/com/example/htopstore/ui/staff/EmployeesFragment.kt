@@ -93,7 +93,7 @@ class EmployeesFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        showLoading(true)
+        /*showLoading(true)
         vm.getEmployees()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -109,7 +109,7 @@ class EmployeesFragment : Fragment() {
                     filterEmployees(searchQuery.value, selectedFilter.value)
                 }
             }
-        }
+        }*/
     }
 
     private fun filterEmployees(query: String, filter: FilterType) {

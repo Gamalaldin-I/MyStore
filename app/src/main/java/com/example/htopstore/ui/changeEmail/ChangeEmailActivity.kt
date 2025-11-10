@@ -132,7 +132,6 @@ class ChangeEmailActivity : AppCompatActivity() {
         etNewEmail.isEnabled = !isLoading
         etPassword.isEnabled = !isLoading
         btnBack.isEnabled = !isLoading
-
         btnChangeEmail.text = if (isLoading) "" else getString(R.string.change_email_button)
     }
 

@@ -22,8 +22,7 @@ class RoleSelectionFragment() : Fragment() {
     private lateinit var oNextStep: (role: Int) -> Unit
     private lateinit var onLoginChoice: () -> Unit
 
-    // متغير لحفظ الاختيار الحالي
-    private var selectedRole = OWNER_ROLE  // افتراضي Owner
+    private var selectedRole = OWNER_ROLE
 
     companion object {
         fun newInstance(): RoleSelectionFragment {
@@ -95,7 +94,7 @@ class RoleSelectionFragment() : Fragment() {
                 unselectedCard = binding.employeeCard,
                 selectedCheck = binding.ownerCheck,
                 unselectedCheck = binding.employeeCheck,
-                selectedColor = ContextCompat.getColor(requireContext(), R.color.owner_card_color),
+                selectedColor = ContextCompat.getColor(requireContext(), R.color.background_dark),
                 primaryColor = primaryColor,
                 secondaryColor = secondaryColor,
                 whiteColor = whiteColor,
@@ -108,7 +107,7 @@ class RoleSelectionFragment() : Fragment() {
                 unselectedCard = binding.ownerCard,
                 selectedCheck = binding.employeeCheck,
                 unselectedCheck = binding.ownerCheck,
-                selectedColor = ContextCompat.getColor(requireContext(), R.color.emp_card_color),
+                selectedColor = ContextCompat.getColor(requireContext(), R.color.background_dark),
                 primaryColor = primaryColor,
                 secondaryColor = secondaryColor,
                 whiteColor = whiteColor,
@@ -133,11 +132,11 @@ class RoleSelectionFragment() : Fragment() {
             animateSelectedCard(selectedCard, selectedCheck, selectedColor, primaryColor)
 
             // أنيميشن للـ Card الغير محدد
-            animateUnselectedCard(unselectedCard, unselectedCheck, whiteColor, secondaryColor)
+            animateUnselectedCard(unselectedCard, unselectedCheck, secondaryColor, secondaryColor)
         } else {
             // بدون أنيميشن (للتحميل الأولي)
             setCardSelected(selectedCard, selectedCheck, selectedColor, primaryColor)
-            setCardUnselected(unselectedCard, unselectedCheck, whiteColor, secondaryColor)
+            setCardUnselected(unselectedCard, unselectedCheck, secondaryColor, secondaryColor)
         }
     }
 

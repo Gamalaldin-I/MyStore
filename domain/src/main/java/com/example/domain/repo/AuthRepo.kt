@@ -7,32 +7,22 @@ interface AuthRepo{
               password:String,
               onResult:(success:Boolean,msg:String)->Unit
     )
-    fun signWithGoogle(
+    suspend fun signWithGoogle(
         idToken:String,
         role:Int,
-        storePhone:String,
-        storeName:String,
-        storeLocation:String,
-        onResult:(success:Boolean,msg:String)->Unit)
+        fromLoginScreen:Boolean
+    ):Pair<Boolean,String>
 
     fun registerOwner(
         email:String,
         password:String,
         name:String,
-        storeName: String,
-        storeLocation: String,
-        storePhone: String,
+        role:Int,
         onResult:(success:Boolean,msg:String)->Unit
     )
 
-    fun registerEmployee(
-        name: String,
-        email:String,
-        password:String,
-        onResult:(success:Boolean,msg:String)->Unit)
 
-
-    fun logout(onResult: (Boolean, String) -> Unit)
+    suspend fun logout(): Pair<Boolean,String>
 
 
 }

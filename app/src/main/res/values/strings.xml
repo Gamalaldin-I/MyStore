@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Stora</string>
 
     <!-- General -->
@@ -146,13 +146,13 @@
     <string name="password_icon">Password Icon</string>
     <string name="change_photo">Change Photo</string>
     <string name="store_information">Store Info</string>
-    <string name="store_form_hint">Last step! Tell us about your store</string>
+    <string name="store_form_hint">Second step! Tell us about your store</string>
     <string name="store_location">Store Location</string>
     <string name="tip">💡 Tip</string>
     <string name="password_details">You can update this info later</string>
     <string name="complete_setup">Complete Setup</string>
     <string name="almost_there">Almost there!</string>
-    <string name="your_account_will_be_ready_in_seconds">Your account will be ready in seconds</string>
+    <string name="your_account_will_be_ready_in_seconds">Your account will be ready after the next</string>
 
     <!-- Sign Up / Login -->
     <string name="user_information">User Info</string>
@@ -260,4 +260,128 @@
     <string name="empty_state_image">Empty stock illustration</string>
     <string name="reset_password_description">Enter your new password below</string>
     <string name="reset_password_button">Reset Password</string>
+    <string name="google_auth" tools:ignore="TypographyDashes">288889154483-20c80tgrv71541migl3vrt7rq8edb824.apps.googleusercontent.com</string>
+
+
+    <!-- Auth Messages -->
+    <string name="login_successful">Login successful</string>
+    <string name="login_failed">Login failed</string>
+    <string name="login_error">Login error</string>
+    <string name="user_not_found">User not found</string>
+    <string name="google_signin_successful">Google Sign-in successful</string>
+    <string name="google_signin_failed">Google sign-in failed: No user returned</string>
+    <string name="google_signin_error">Google sign-in error</string>
+    <string name="account_created_successfully">Account created successfully</string>
+    <string name="account_found_error">Account already exists. Please log in instead.</string>
+    <string name="signup_first_error">Please sign up first before logging in.</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="registration_error">Registration error</string>
+    <string name="owner_registered_successfully">Owner registered successfully</string>
+    <string name="employee_registered_successfully">Employee registered successfully</string>
+    <string name="employee_registration_failed">Employee registration failed</string>
+    <string name="employee_registration_error">Employee registration error</string>
+    <string name="logout_successful">Logout successful</string>
+    <string name="logout_error">Logout error</string>
+    <string name="please_wait_before_signup">Please wait few seconds before trying again.</string>
+
+    <!-- General -->
+    <string name="unknown_error">An unknown error occurred</string>
+
+    <string name="please_fill_all_fields">Please fill all fields</string>
+    <string name="enter_valid_email">Please enter a valid email</string>
+    <string name="password_requirements_not_met">Password doesn\'t meet the requirements</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="store_name_too_short">Store name must be at least %1$d characters</string>
+    <string name="enter_valid_phone_number">Please enter a valid phone number</string>
+
+    <!-- Feedback messages -->
+    <string name="login_success">Login successful</string>
+    <string name="wait_before_signup">Please wait %1$d seconds before trying again.</string>
+    <string name="register_owner_success">Owner registered successfully</string>
+    <string name="register_failed">Registration failed</string>
+    <string name="register_error">Registration error</string>
+    <string name="employee_register_success">Employee registered successfully</string>
+    <string name="employee_register_failed">Employee registration failed</string>
+    <string name="employee_register_error">Employee registration error</string>
+    <string name="logout_success">Logout successful</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="remove_photo">Remove Photo</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_profile_photo">Change Profile Photo</string>
+    <string name="failed_to_update_photo">Failed to update photo</string>
+    <string name="phone_not_available">Phone number not available</string>
+    <string name="name_required">Name is required</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="no_changes">No changes to save</string>
+    <string name="edit">Edit</string>
+    <string name="saving">Saving...</string>
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="logging_out">Logging out...</string>
+    <string name="error_reading_image">Error reading image</string>
+    <string name="image_uploaded_successfully">Image uploaded successfully</string>
+    <string name="error_uploading_image">Error uploading image: %1$s</string>
+    <string name="image_removed_successfully">Image removed successfully</string>
+    <string name="error_removing_photo">Error removing photo: %1$s</string>
+    <string name="password_reset_email_sent">Password reset email sent successfully</string>
+    <string name="error_resetting_password">Error resetting password: %1$s</string>
+    <string name="name_updated_successfully">Name updated successfully</string>
+    <string name="error_updating_name">Error updating name: %1$s</string>
+    <string name="session_not_valid">The session of the user is not valid</string>
+    <string name="current_password_incorrect">The current password is incorrect</string>
+    <string name="email_confirmation_sent">Email confirmation sent successfully. Please check your new email address.</string>
+    <string name="error_updating_email">Error updating email: %1$s</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
+    <string name="signing_you_in">Signing you in...</string>
+    <!-- Add these strings to your strings.xml file -->
+
+    <!-- Loading Messages -->
+    <string name="signing_in_progress">Signing you in…</string>
+    <string name="connecting_to_google">Connecting to Google…</string>
+    <string name="sending_reset_link">Sending reset link…</string>
+
+    <!-- Validation Messages -->
+    <string name="email_required">Email is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="invalid_email">Please enter a valid email address</string>
+    <string name="password_too_short">Password must be at least 6 characters</string>
+    <string name="enter_email_first">Please enter your email address first</string>
+    <string name="creating_account">Creating your account...</string>
+    <string name="signing_in_with_google">Signing in with Google...</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="free_plan">Free Plan</string>
+    <string name="free_plan_offer">50 products • 100 sales/month</string>
+    <string name="choose_your_plan">Choose Your Plan</string>
+    <string name="select_the_perfect_plan_for_your_business">Select the perfect plan for your business</string>
+    <string name="silver_plan">Silver Plan</string>
+    <string name="silver_plan_offer">200 products • 500 sales/month</string>
+    <string name="gold_plan">Gold Plan</string>
+    <string name="popular">POPULAR</string>
+    <string name="golden_plan_offer">1000 products • Unlimited sales</string>
+    <string name="platinum">Platinum</string>
+    <string name="platinum_plan_offer">Unlimited • Priority support</string>
+    <string name="you_can_upgrade_or_downgrade_your_plan_anytime_from_settings">You can upgrade or downgrade your plan anytime from settings</string>
+    <string name="creating_your_store">Creating your store...</string>
+    <string name="store_details">Store Details</string>
+    <string name="upload_store_logo">Upload Store Logo</string>
+    <string name="upload">Upload</string>
+    <string name="store_logo">Store Logo</string>
+    <string name="store_created_successfully">Your store created successfully</string>
+        <!-- Existing strings that were already in your code -->
+
+    <!-- New strings I added -->
+    <string name="update_store">Update Store</string>
+    <string name="updating_store">Updating your store...</string>
+
+    <!-- Validation error messages -->
+    <string name="store_name_required">Store name is required</string>
+    <string name="store_name_min_length">Store name must be at least %d characters</string>
+    <string name="phone_required">Phone number is required</string>
+    <string name="phone_length">Phone number must be %d digits</string>
+    <string name="phone_digits_only">Phone number must contain only digits</string>
+    <string name="address_required">Address is required</string>
+    <string name="address_min_length">Address must be at least %d characters</string>
+
+
+
 </resources>

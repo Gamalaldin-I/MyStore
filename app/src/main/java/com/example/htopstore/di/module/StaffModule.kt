@@ -1,5 +1,7 @@
 package com.example.htopstore.di.module
 
+import android.content.Context
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.StaffRepoImp
 import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.staff.AcceptInviteUseCase
@@ -10,11 +12,14 @@ import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.GetStoreInvitesUseCase
 import com.example.domain.useCase.staff.RejectInviteUseCase
 import com.example.domain.useCase.staff.RejectOrRehireUseCase
-import com.example.domain.useCase.staff.UpdateStoreDataUseCase
+import com.example.domain.useCase.staff.SendInvitationMailUseCase
+import com.example.domain.useCase.store.UpdateStoreDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
 
 @Module
@@ -22,8 +27,11 @@ import javax.inject.Singleton
 object StaffModule {
     @Singleton
     @Provides
-    fun provideStaffRepo(): StaffRepo {
-        return StaffRepoImp()
+    fun provideStaffRepo(
+        supabaseClient: SupabaseClient,
+        pref: SharedPref
+    ): StaffRepo {
+        return StaffRepoImp(supabase = supabaseClient, pref = pref)
     }
     @Provides
     fun provideInvitesUseCase(staffRepo: StaffRepo): GetStoreInvitesUseCase {
@@ -56,9 +64,13 @@ object StaffModule {
     fun provideRejectOrRehireUseCase(staffRepo: StaffRepo): RejectOrRehireUseCase{
         return RejectOrRehireUseCase(staffRepo)
     }
+
     @Provides
-    fun provideUpdateStoreUseCase(staffRepo: StaffRepo): UpdateStoreDataUseCase{
-        return UpdateStoreDataUseCase(staffRepo)
+    fun provideSendEmailUseCase(
+        staffRepo: StaffRepo,
+        @ApplicationContext context: Context): SendInvitationMailUseCase{
+
+        return SendInvitationMailUseCase(staffRepo,context)
     }
 
 

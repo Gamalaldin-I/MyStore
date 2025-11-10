@@ -8,7 +8,9 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.useCase.profile.ResetPasswordUseCase
 import com.example.domain.useCase.profile.UpdateEmailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,13 +23,12 @@ class ChangeEmailViewModel @Inject constructor(
     val msg: LiveData<String> = _msg
     fun changeEmail(newEmail: String, password: String,onFail:()->Unit,onSuccess:()->Unit){
         viewModelScope.launch {
-        changeEmailUseCase(newEmail, password){
-            success, msg ->
-            if (success){ onSuccess() }
-            else{ onFail()
-                _msg.value = msg
-            }
-        }}
+        val (success,msg) = changeEmailUseCase(newEmail, password)
+            if(success) withContext(Dispatchers.Main) {onSuccess()}
+            else withContext(Dispatchers.Main) {onFail()}
+            _msg.postValue(msg)
+
+        }
     }
 
     fun resetPassword(){

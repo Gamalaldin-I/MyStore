@@ -5,125 +5,157 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:scrollbarSize="0dp"
+    android:background="@drawable/bg_auth"
     tools:context=".ui.signup.RoleSelectionFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:paddingVertical="24dp"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        >
 
-        <!-- Progress Indicator -->
+        <!-- Enhanced Progress Indicator -->
         <LinearLayout
             android:id="@+id/progressIndicator"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
+            android:layoutDirection="ltr"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <View
-                android:layout_width="40dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="4dp"
                 android:layout_marginEnd="8dp"
-                android:background="@color/action_primary"
-                android:backgroundTint="@color/action_primary" />
+                android:background="@drawable/progress_active"
+                android:elevation="2dp" />
 
             <View
-                android:layout_width="40dp"
+                android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:layout_marginEnd="8dp"
-                android:alpha="0.3"
-                android:background="@color/action_primary" />
+                android:layout_weight="1"
+                android:alpha="0.35"
+                android:background="@drawable/progress_inactive"
+                android:elevation="1dp" />
 
-            <View
-                android:layout_width="40dp"
-                android:layout_height="4dp"
-                android:alpha="0.3"
-                android:background="@color/action_primary" />
         </LinearLayout>
 
-        <!-- Icon -->
-        <ImageView
-            android:id="@+id/headerIcon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="40dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_profile"
+        <!-- Enhanced Icon Container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/iconContainer"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="48dp"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/action_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progressIndicator"
-            app:tint="@color/action_primary" />
+            app:layout_constraintTop_toBottomOf="@id/progressIndicator">
 
-        <!-- Title -->
+            <ImageView
+                android:id="@+id/headerIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/icon_profile"
+                app:tint="#122C52" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Enhanced Title -->
         <TextView
             android:id="@+id/titleText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="15dp"
             android:text="@string/select_your_role"
             android:textAlignment="center"
-            android:textColor="@color/text_primary"
-            android:textSize="28sp"
+            android:textColor="@color/white"
+            android:textSize="25sp"
             android:textStyle="bold"
+            android:letterSpacing="0.02"
+            android:shadowColor="#40000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerIcon" />
+            app:layout_constraintTop_toBottomOf="@id/iconContainer"
+            app:layout_constraintWidth_max="350dp" />
 
-        <!-- Subtitle -->
+        <!-- Enhanced Subtitle -->
         <TextView
             android:id="@+id/subtitleText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="0.7"
+            android:layout_marginTop="5dp"
+            android:alpha="0.95"
             android:text="@string/role_hint"
             android:textAlignment="center"
-            android:textColor="@color/text_secondary"
-            android:textSize="15sp"
+            android:textColor="@color/action_primary"
+            android:textSize="16sp"
+            android:lineSpacingExtra="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleText" />
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintWidth_max="320dp" />
 
-        <!-- Owner Card -->
+        <!-- Enhanced Owner Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/ownerCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:clickable="true"
+            android:layout_marginHorizontal="24dp"
             android:focusable="true"
-            android:layout_marginHorizontal="5dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="5dp"
+            android:foreground="@drawable/login_bg"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/background_dark"
+            app:cardElevation="8dp"
             app:strokeColor="@color/action_primary"
             app:strokeWidth="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitleText">
+            app:layout_constraintTop_toBottomOf="@id/subtitleText"
+            app:layout_constraintWidth_max="500dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="24dp">
 
-                <!-- Icon -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="👔"
-                    android:textSize="32sp" />
+                <!-- Enhanced Icon Background -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:cardCornerRadius="16dp"
+                    android:layout_margin="3dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#F1A947">
 
-                <!-- Text -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="👔"
+                        android:textSize="36sp" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Text Content -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="20dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -131,33 +163,45 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/business_owner"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.01" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:alpha="0.7"
+                        android:layout_marginTop="6dp"
+                        android:alpha="0.75"
                         android:text="@string/manage_your_business_and_team"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textColor="@color/action_primary"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="2dp" />
                 </LinearLayout>
 
-                <!-- Checkmark -->
-                <ImageView
-                    android:id="@+id/ownerCheck"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:contentDescription="Selected"
-                    android:src="@drawable/ic_check"
-                    android:visibility="visible"
-                    app:tint="@color/action_primary" />
+                <!-- Enhanced Checkmark -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/action_primary">
+
+                    <ImageView
+                        android:id="@+id/ownerCheck"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Selected"
+                        android:src="@drawable/ic_check"
+                        android:visibility="visible"
+                        app:tint="@color/white" />
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Employee Card -->
+        <!-- Enhanced Employee Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/employeeCard"
             android:layout_width="0dp"
@@ -165,33 +209,47 @@
             android:layout_marginTop="20dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginHorizontal="5dp"
-            app:strokeColor="@color/text_secondary"
-            app:strokeWidth="1dp"
+            android:foreground="@drawable/login_bg"
+            app:cardCornerRadius="20dp"
+            android:layout_marginHorizontal="24dp"
+            app:cardBackgroundColor="@color/background_dark"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/input_border_focus"
+            app:strokeWidth="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ownerCard">
+            app:layout_constraintTop_toBottomOf="@id/ownerCard"
+            app:layout_constraintWidth_max="500dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="24dp">
 
-                <!-- Icon -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="💼"
-                    android:textSize="32sp" />
-                <!-- Text -->
+                <!-- Enhanced Icon Background -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="#A55E3E">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="💼"
+                        android:textSize="36sp" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Text Content -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="20dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -199,68 +257,84 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/employee"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.01" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:alpha="0.7"
+                        android:layout_marginTop="6dp"
+                        android:alpha="0.75"
                         android:text="@string/join_and_work_with_your_team"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textColor="@color/action_primary"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="2dp" />
                 </LinearLayout>
 
-                <!-- Checkmark -->
-                <ImageView
-                    android:id="@+id/employeeCheck"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:contentDescription="Selected"
-                    android:src="@drawable/ic_check"
-                    android:visibility="gone"
-                    app:tint="@color/action_primary" />
+                <!-- Enhanced Checkmark (Hidden by default) -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/action_primary">
+
+                    <ImageView
+                        android:id="@+id/employeeCheck"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Selected"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="@color/white" />
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Next Button -->
+        <!-- Enhanced Next Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="40dp"
+            android:layout_height="58dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="20dp"
             android:text="@string/continue_btn"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            android:letterSpacing="0.05"
+            app:cornerRadius="16dp"
+            app:elevation="6dp"
             app:icon="@android:drawable/ic_media_play"
             app:iconGravity="end"
+            app:iconSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/employeeCard" />
+            app:layout_constraintTop_toBottomOf="@id/employeeCard"
+            app:layout_constraintWidth_max="500dp" />
 
-        <!-- Divider -->
+        <!-- Enhanced Divider -->
         <View
             android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="32dp"
-            android:alpha="0.2"
-            android:background="@color/text_secondary"
+            android:layout_width="100dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:alpha="0.3"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/next" />
 
-        <!-- Login Section -->
+        <!-- Enhanced Login Section -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="32dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -272,20 +346,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/already_have_an_account"
-                android:textColor="@color/text_secondary"
-                android:textSize="15sp" />
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:alpha="0.9" />
 
             <TextView
                 android:id="@+id/loginBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp"
+                android:padding="8dp"
                 android:text="@string/log_in"
                 android:textColor="@color/text_link"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

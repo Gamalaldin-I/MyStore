@@ -28,6 +28,9 @@ class SharedPref(context: Context){
         editor.apply()
 
     }
+    fun getUserName():String{
+        return sharedPref.getString("userName", "")!!
+    }
     fun setEmail(newEmail:String){
         editor.putString("userEmail",newEmail)
         editor.apply()
@@ -40,6 +43,14 @@ class SharedPref(context: Context){
     fun getProfileImage():String{
         return sharedPref.getString("profileUrl", "")!!
     }
+    fun setStoreLogoUrl(url:String){
+        editor.putString("storeLogoUrl",url)
+        editor.apply()
+    }
+    fun getStoreLogoUrl():String{
+        return sharedPref.getString("storeLogoUrl", "")!!
+    }
+
 
     fun saveUser(user:User){
         editor.putString("profileUrl",user.photoUrl)
@@ -77,6 +88,11 @@ class SharedPref(context: Context){
         editor.putString("storePhone",store.phone)
         editor.putString("storeLocation",store.location)
         editor.putString("ownerId",store.ownerId)
+        editor.putString("plan",store.plan)
+        editor.putInt("planProductLimit",store.planProductLimit)
+        editor.putInt("planOperationLimit",store.planOperationLimit)
+        editor.putString("storeLogoUrl",store.logoUrl)
+        editor.putString("resetDate",store.resetDate)
         editor.apply()
 
     }
@@ -87,7 +103,19 @@ class SharedPref(context: Context){
         val phone = sharedPref.getString("storePhone", "")!!
         val location = sharedPref.getString("storeLocation", "")!!
         val ownerId = sharedPref.getString("ownerId", "")!!
-        return Store(id =id, name = name, location =location, phone = phone, ownerId =ownerId)
+        val plan = sharedPref.getString("plan", "")!!
+        val planProductLimit = sharedPref.getInt("planProductLimit",0)
+        val planOperationLimit = sharedPref.getInt("planOperationLimit",0)
+        val logoUrl = sharedPref.getString("storeLogoUrl", "")!!
+        val resetDate = sharedPref.getString("resetDate", "")!!
+        return Store(id =id, name = name, location =location,
+            phone = phone, ownerId =ownerId,
+            plan = plan, planProductLimit = planProductLimit,
+            planOperationLimit = planOperationLimit,
+            logoUrl = logoUrl, resetDate = resetDate,
+            productsCount = 0,
+            operationsCount = 0
+        )
     }
 
     fun clearPrefs(){

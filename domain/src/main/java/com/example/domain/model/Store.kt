@@ -8,6 +8,13 @@ data class Store(
     var name: String,
     var location: String,
     var phone: String,
-    val ownerId:String
+    val ownerId:String,
+    var plan: String,
+    var planProductLimit: Int,
+    var planOperationLimit: Int,
+    var productsCount:Int,
+    var operationsCount: Int,
+    var resetDate: String,
+    var logoUrl: String
 )
 

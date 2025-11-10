@@ -3,17 +3,11 @@ package com.example.domain.useCase.auth
 import com.example.domain.repo.AuthRepo
 
 class SignWithGoogleUseCase(private val authRepo: AuthRepo){
-    operator fun invoke(token:String,
-                        storePhone:String,
-                        storeName:String,
-                        storeLocation:String,
-                        role:Int,
-                        onResult:(success:Boolean,msg:String)->Unit){
-        authRepo.signWithGoogle(token,
+    suspend operator fun invoke(token:String,
+                                role:Int,
+                                fromLoginScreen: Boolean):Pair<Boolean,String> =
+        authRepo.signWithGoogle(
+            token,
             role,
-            storePhone,
-            storeName,
-            storeLocation,
-            onResult)
+            fromLoginScreen)
     }
-}
