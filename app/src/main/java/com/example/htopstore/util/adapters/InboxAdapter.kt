@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.remoteModels.Invite
+import com.bumptech.glide.Glide
+import com.example.domain.model.remoteModels.Invitation
+import com.example.htopstore.R
 import com.example.htopstore.databinding.InboxInviteCardBinding
 
-class InboxAdapter(private val data: MutableList<Invite>,
-    private val onAcceptListener:(code:String,invite:Invite)->Unit,
-    private val onRejectListener:(invite:Invite,position:Int)->Unit) :
+class InboxAdapter(private val data: MutableList<Invitation>,
+                   private val onAcceptListener:(code:String,invite:Invitation)->Unit,
+                   private val onRejectListener:(invite:Invitation, position:Int)->Unit) :
     RecyclerView.Adapter<InboxAdapter.InHolder>() {
 
     // Create ViewHolder class
@@ -28,6 +30,11 @@ class InboxAdapter(private val data: MutableList<Invite>,
         holder.binding.apply {
             storeName.text = item.storeName
             createdAt.text = item.createdAt
+            Glide.with(inviteIcon.context)
+                .load(item.storeIcon)
+                .error(R.drawable.oc_invite)
+                .placeholder(R.drawable.oc_invite)
+                .into(inviteIcon)
             acceptBtn.setOnClickListener {
                 if(codeEt.text.toString().isEmpty()){
                     codeInput.error = "Enter code"
@@ -43,7 +50,7 @@ class InboxAdapter(private val data: MutableList<Invite>,
 
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun update(newList: List<Invite>){
+    fun update(newList: List<Invitation>){
         this.data.clear()
         this.data.addAll(newList)
         notifyDataSetChanged()

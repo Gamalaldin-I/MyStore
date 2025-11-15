@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
         // Setup UI listeners
         setupClickListeners()
 
-        // Observe ViewModel messages
+        // Observe ViewModel
         observeViewModel()
     }
 
@@ -87,8 +87,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
+        // Observe messages
         vm.msg.observe(this) { message ->
             showToast(getLocalizedMessage(message))
+        }
+
+        // Observe loading state
+        vm.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                showLoading(getString(R.string.signing_in_progress))
+            } else {
+                hideLoading()
+            }
         }
     }
 
@@ -101,11 +111,7 @@ class LoginActivity : AppCompatActivity() {
         // Validate inputs
         if (!validateInputs(email, password)) return
 
-        // Show loading
-        showLoading(getString(R.string.signing_in_progress))
-
         vm.login(email, password) { success, message ->
-            hideLoading()
             if (success) {
                 navigateToHomeScreen()
             } else {
@@ -115,7 +121,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleGoogleSignIn() {
-        showLoading(getString(R.string.connecting_to_google))
         val signInIntent = googleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
     }
@@ -130,22 +135,17 @@ class LoginActivity : AppCompatActivity() {
                 sharedPref.setUserName(it.displayName ?: "")
                 sharedPref.setProfileImage(it.photoUrl?.toString() ?: "")
 
-                showLoading(getString(R.string.signing_in_progress))
-
                 vm.loginWithGoogle(
                     idToken = it.idToken!!,
                     goToSign = {
-                        hideLoading()
                         navigateToSignup()
                     },
                     onRes = {
-                        hideLoading()
                         navigateToHomeScreen()
                     }
                 )
             }
-        } catch (_: ApiException) {
-            hideLoading()
+        } catch (e: ApiException) {
             showToast(getString(R.string.google_signin_failed))
         }
     }
@@ -163,11 +163,8 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        showLoading(getString(R.string.sending_reset_link))
-
         vm.resetPassword(email) {
-            hideLoading()
-            // ViewModel will handle the message via LiveData
+            // Success callback - ViewModel handles the message
         }
     }
 
@@ -254,6 +251,7 @@ class LoginActivity : AppCompatActivity() {
             "Login failed" -> getString(R.string.login_failed)
             "User not found" -> getString(R.string.user_not_found)
             "login error" -> getString(R.string.login_error)
+            "No internet connection" -> "no Internet"
             "Google sign-in failed: No user returned" -> getString(R.string.google_signin_failed)
             "Google Sign-in successful" -> getString(R.string.google_signin_successful)
             "Account created successfully" -> getString(R.string.account_created_successfully)

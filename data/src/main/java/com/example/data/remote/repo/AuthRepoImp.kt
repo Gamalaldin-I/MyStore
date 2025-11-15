@@ -9,7 +9,6 @@ import com.example.domain.repo.AuthRepo
 import com.example.domain.util.Constants
 import com.example.domain.util.Constants.GOOGLE_PROVIDER
 import com.example.domain.util.Constants.STATUS_PENDING
-import com.example.domain.util.IdGenerator
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.Google
@@ -41,6 +40,10 @@ class AuthRepoImp
     // LOGIN WITH EMAIL & PASSWORD
     // =====================================================
     override fun login(email: String, password: String, onResult: (Boolean, String) -> Unit) {
+        if(!networkHelper.isConnected()) {
+            onResult(false, "No internet connection")
+            return
+        }
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 supabase.auth.signInWith(Email) {
@@ -106,6 +109,9 @@ class AuthRepoImp
         fromLoginScreen: Boolean
     ): Pair<Boolean, String> {
         return try {
+            if(!networkHelper.isConnected()) {
+                return  Pair(false, "No internet connection")}
+
             //sign with google
             supabase.auth.signInWith(IDToken) {
                 this.idToken = idToken
@@ -190,6 +196,10 @@ class AuthRepoImp
         role:Int,
         onResult: (Boolean, String) -> Unit
     ) {
+        if(!networkHelper.isConnected()) {
+            onResult(false, "No internet connection")
+            return
+        }
         CoroutineScope(Dispatchers.IO).launch {
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastSignupTime < SIGNUP_COOLDOWN) {
@@ -209,16 +219,16 @@ class AuthRepoImp
 
                 val user = supabase.auth.currentUserOrNull()
                 if (user != null) {
-                    val storeId = IdGenerator.generateTimestampedId()
                     val newUser = User(
                         id = user.id,
                         name = name,
                         role = role,
                         photoUrl = "",
                         status = STATUS_PENDING,
-                        storeId = storeId,
+                        storeId ="",
                         email = email
                     )
+                    newUser.provider = Constants.EMAIL_PROVIDER
 
                     supabase.from(USERS).insert(newUser)
                     sharedPref.saveUser(newUser)
@@ -244,6 +254,9 @@ class AuthRepoImp
     // =====================================================
     override suspend fun logout(): Pair<Boolean,String> {
             return try {
+                if(!networkHelper.isConnected()){
+                    return Pair(false, "No internet connection")
+                }
                 supabase.auth.signOut()
                  Pair(true,"Logout successful")
             } catch (e: Exception) {

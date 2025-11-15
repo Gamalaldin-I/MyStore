@@ -1,18 +1,19 @@
 package com.example.htopstore.ui.inbox
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.local.sharedPrefs.SharedPref
-import com.example.domain.model.remoteModels.Invite
+import com.example.domain.model.remoteModels.Invitation
 import com.example.domain.useCase.auth.LogoutUseCase
-import com.example.domain.useCase.staff.AcceptInviteUseCase
-import com.example.domain.useCase.staff.GetAllEmailPendingInvitesUseCase
-import com.example.domain.useCase.staff.RejectInviteUseCase
+import com.example.domain.useCase.invitations.AcceptInviteUseCase
+import com.example.domain.useCase.invitations.GetAllEmailPendingInvitesUseCase
+import com.example.domain.useCase.invitations.RejectInviteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,24 +25,35 @@ class InboxViewModel @Inject constructor(
     private val pref: SharedPref
 ): ViewModel() {
 
+    private val _invites = MutableLiveData<List<Invitation>>()
+    val invites: LiveData<List<Invitation>> = _invites
+
+
     private val _msg = MutableLiveData<String>()
     val msg: LiveData<String> = _msg
 
 
-    fun getAllInvites(){
-        getAllEmailPendingInvitesUseCase{
-            success,msg->
-            _msg.value = msg
+    ////////////////////////////////////////////////////
+    /////////////Get ALL PENDING INVITATIONS///////////
+    //////////////////////////////////////////////////
+    fun getAllPendingInvitations(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val (invites, msg) = getAllEmailPendingInvitesUseCase()
+            _invites.postValue(invites)
+            _msg.postValue("$msg  size ${invites.size}")
+        }
     }
-    }
+
+
     fun getEmail(): String{
-        Log.d("InboxViewModel", "login: ${pref.isLogin()}  store id ${pref.getStore().id}" +
-                "  store name ${pref.getStore().name}" +
-                " store phone ${pref.getStore().phone}" +
-                "user id ${pref.getUser().id}" +
-                "user name ${pref.getUser().name}")
         return pref.getUser().email
     }
+
+
+
+    ////////////////////////////////////////////////////
+    /////////////////////////////LOGOUT////////////////
+    //////////////////////////////////////////////////
 
     fun logout(onResult: (Boolean, String) -> Unit){
         viewModelScope.launch{
@@ -53,27 +65,35 @@ class InboxViewModel @Inject constructor(
         }
     }
 
-    fun reject(invite: Invite,onAction:()->Unit) {
-        rejectInviteUseCase(invite){
-            success,msg->
+    ////////////////////////////////////////////////////
+    /////////////REJECT INVITATION///////////
+    //////////////////////////////////////////////////
+
+    fun reject(invite: Invitation, onAction:()->Unit) {
+        viewModelScope.launch(Dispatchers.IO){
+            val (success, msg) = rejectInviteUseCase(invite)
             if(success){
-                onAction()
+                withContext(Dispatchers.Main){ onAction()
             }
-            _msg.value = msg
+            }
+            _msg.postValue(msg)
         }
+
     }
 
+    ////////////////////////////////////////////////////
+    /////////////ACCEPT  INVITATION////////////////////
+    //////////////////////////////////////////////////
 
-    fun accept(invite: Invite,code:String,onAction:()->Unit)
-    {
-        acceptInviteUseCase(invite,code){
-            success,msg->
+    fun accept(invite: Invitation, code:String, onAction:()->Unit) {
+        viewModelScope.launch(Dispatchers.IO){
+            val (success, msg) = acceptInviteUseCase(invite, code)
             if(success){
-                onAction()
+                withContext(Dispatchers.Main){ onAction()
+                }
             }
-            _msg.value = msg
+            _msg.postValue(msg)
         }
-
     }
     fun validToGoHome(goToMain:()->Unit){
         if(pref.isLogin()&& pref.getStore().id.isNotEmpty()){

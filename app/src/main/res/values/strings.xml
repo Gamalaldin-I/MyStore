@@ -381,6 +381,28 @@
     <string name="phone_digits_only">Phone number must contain only digits</string>
     <string name="address_required">Address is required</string>
     <string name="address_min_length">Address must be at least %d characters</string>
+    <string name="inbox">Inbox</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="invitations">Invitations</string>
+    <string name="user_profile">User Profile</string>
+    <string name="you_ll_see_team_invitations_here">You\'ll see team invitations here</string>
+    <string name="no_invitations_yet">No Invitations Yet</string>
+    <string name="no_invitations">No invitations</string>
+    <string name="invite_accepted">Invitation accepted successfully</string>
+    <string name="invite_rejected">Invitation rejected</string>
+    <string name="reject_invite_title">Reject Invite</string>
+    <string name="reject_invite_message">Are you sure you want to reject this invite?</string>
+    <string name="reject">Reject</string>
+        <!-- Offline State Strings -->
+        <string name="offline_title">No Internet Connection</string>
+        <string name="offline_description">Oops! It seems you\'re offline. Please check your internet connection and try again.</string>
+        <string name="no_connection">No Connection</string>
+        <string name="retry">Retry Connection</string>
+        <string name="open_settings">Open Settings</string>
+        <string name="offline_help_text">Make sure Wi-Fi or mobile data is turned on</string>
+        <string name="offline_icon">Offline cloud icon</string>
+
+
 
 
 

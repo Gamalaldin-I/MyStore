@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.domain.model.remoteModels.Invitation
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityInboxBinding
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
@@ -13,93 +15,175 @@ import com.example.htopstore.util.adapters.InboxAdapter
 import com.example.htopstore.util.helper.DialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class InboxActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityInboxBinding
     private lateinit var adapter: InboxAdapter
-    private val vm: InboxViewModel by viewModels()
+    private val viewModel: InboxViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInboxBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.emptyState.visibility = View.VISIBLE
 
-        //check if the user is logged in
-        vm.validToGoHome{
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+        setupUI()
+        setupAdapter()
+        setupClickListeners()
+        observeViewModel()
+        checkUserAuthentication()
+        loadInvitations()
+    }
+
+    private fun setupUI() {
+        binding.apply {
+            myEmail.text = viewModel.getEmail()
+            emptyState.visibility = View.VISIBLE
+            setupSwipeRefresh()
         }
+    }
 
-
-        vm.msg.observe(this){
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
-
-
-        //get all invites
-        vm.getAllInvites()
-        //getAllTheInvitesThatPending()
-        //setupAdapter
-        adapter = InboxAdapter(mutableListOf(),{code,invite->
-            vm.accept(
-                invite = invite,
-                code = code
-            ){
-                //handle go to the main
-                startActivity(Intent(this,MainActivity::class.java))
-            }
-        }){ invite,position->
-            //on reject show alert
-            DialogBuilder.showAlertDialog(
-                context = this,
-                title = "Reject Invite",
-                message = "Are you sure you want to reject this invite?",
-                positiveButton = "Reject",
-                negativeButton = "Cancel",
-                onConfirm = {
-                    vm.reject(invite){
-                        //update the adapter
-                        //adapter.deleteItem(position)
-                    }
-                },
-                onCancel = {}
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.apply {
+            setColorSchemeResources(
+                R.color.action_primary,
+                R.color.background_dark,
+                R.color.action_primary
             )
 
-        }
-
-        binding.recycler.adapter = adapter
-        binding.logoutBtn.setOnClickListener {
-            vm.logout { success , msg ->
-                if(success){
-                    startActivity(Intent(this, LoginActivity::class.java))
-                    finish()
-                }
-                else{
-                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                }
+            setOnRefreshListener {
+                refreshInvitations()
             }
         }
-        binding.myEmail.text = vm.getEmail()
-
     }
-    /*fun getAllTheInvitesThatPending(){
-        lifecycleScope.launchWhenStarted {
-            vm.invites.collect{
-                list->
-                if(list.isNotEmpty()){
-                adapter.update(list as MutableList<Invite>)
-                    binding.inviteCount.text = list.size.toString()
-                    binding.emptyState.visibility = View.GONE
-            }
-                else{
-                    binding.emptyState.visibility = View.VISIBLE
-                }
 
+    private fun setupAdapter() {
+        adapter = InboxAdapter(
+            data = mutableListOf(),
+            onAcceptListener = { code, invite ->
+                handleAcceptInvite(code, invite)
+            },
+            onRejectListener = { invite, position ->
+                handleRejectInvite(invite, position)
+            }
+        )
+        binding.recycler.adapter = adapter
+    }
+
+    private fun setupClickListeners() {
+        binding.logoutBtn.setOnClickListener {
+            handleLogout()
+        }
+    }
+
+    private fun observeViewModel() {
+        // Observe messages
+        viewModel.msg.observe(this) { message ->
+            showToast(message)
+        }
+
+        // Observe invitations list
+            viewModel.invites.observe(this) { invites ->
+                updateInvitesList(invites)
+            }
+    }
+
+    private fun checkUserAuthentication() {
+        viewModel.validToGoHome {
+            navigateToMain()
+        }
+    }
+
+    private fun loadInvitations() {
+        viewModel.getAllPendingInvitations()
+    }
+
+    private fun refreshInvitations() {
+        viewModel.getAllPendingInvitations()
+
+        // Stop refreshing after a short delay if no callback is available
+        binding.swipeRefresh.postDelayed({
+            binding.swipeRefresh.isRefreshing = false
+        }, 1500)
+    }
+
+    private fun updateInvitesList(invites: List<Invitation>) {
+        binding.swipeRefresh.isRefreshing = false
+
+        if (invites.isNotEmpty()) {
+            adapter.update(invites)
+            binding.inviteCount.text = invites.size.toString()
+            binding.emptyState.visibility = View.GONE
+        } else {
+            binding.emptyState.visibility = View.VISIBLE
+            binding.inviteCount.text = "0"
+        }
+    }
+
+    private fun handleAcceptInvite(code: String, invite: Invitation) {
+        viewModel.accept(
+            invite = invite,
+            code = code
+        ) {
+            showToast(getString(R.string.invite_accepted))
+            navigateToMain()
+        }
+    }
+
+    private fun handleRejectInvite(invite: Invitation, position: Int) {
+        DialogBuilder.showAlertDialog(
+            context = this,
+            title = getString(R.string.reject_invite_title),
+            message = getString(R.string.reject_invite_message),
+            positiveButton = getString(R.string.reject),
+            negativeButton = getString(R.string.cancel),
+            onConfirm = {
+                rejectInvite(invite, position)
+            },
+            onCancel = {
+                // Do nothing
+            }
+        )
+    }
+
+    private fun rejectInvite(invite: Invitation, position: Int) {
+        viewModel.reject(invite) {
+            showToast(getString(R.string.invite_rejected))
+            // Optionally remove the item from adapter
+             adapter.deleteItem(position)
+            if (adapter.itemCount == 0) {
+                binding.emptyState.visibility = View.VISIBLE
             }
         }
-    }*/
+    }
 
+    private fun handleLogout() {
+        viewModel.logout { success, message ->
+            if (success) {
+                navigateToLogin()
+            } else {
+                showToast(message)
+            }
+        }
+    }
 
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(this)
+        }
+        finish()
+    }
+
+    private fun navigateToLogin() {
+        Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(this)
+        }
+        finish()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 }

@@ -1,4 +1,3 @@
-
 package com.example.htopstore.ui.staff
 
 import android.os.Bundle
@@ -9,8 +8,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.domain.model.User
 import com.example.domain.model.category.UserRoles
-import com.example.domain.model.remoteModels.StoreEmployee
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.databinding.FragmentEmployeesBinding
 import com.example.htopstore.util.adapters.EmployeeAdapter
@@ -18,17 +17,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment for displaying and managing store employees.
+ * Features: Search, filter by role/status, hire/fire actions
+ */
 class EmployeesFragment : Fragment() {
 
     private var _binding: FragmentEmployeesBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: StaffViewModel by activityViewModels()
     private lateinit var adapter: EmployeeAdapter
-    private val vm: StaffViewModel by activityViewModels()
 
+    // State management
     private val searchQuery = MutableStateFlow("")
     private val selectedFilter = MutableStateFlow(FilterType.ALL)
-    private var allEmployees = listOf<StoreEmployee>()
+    private var allEmployees = emptyList<User>()
+    private var isFilterVisible = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,36 +41,55 @@ class EmployeesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEmployeesBinding.inflate(inflater, container, false)
-
-        setupEmployeesRecyclerView()
-        setupSearchAndFilter()
-        observeChanges()
-
         return binding.root
     }
 
-    private fun setupEmployeesRecyclerView() {
-        adapter = EmployeeAdapter { employee, fire ->
-            vm.hireOrFire(employee.id!!, fire)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupSearchBar()
+        setupFilterChips()
+        observeEmployees()
+        observeLoadingState()
+        observeSearchAndFilter()
+
+        // Initial data load
+        viewModel.getEmployees()
+    }
+
+    /**
+     * Setup RecyclerView with adapter
+     */
+    private fun setupRecyclerView() {
+        adapter = EmployeeAdapter { employee, shouldFire ->
+            employee.id?.let { employeeId ->
+                viewModel.hireOrFire(employeeId, shouldFire)
+            }
         }
         binding.recyclerView.adapter = adapter
     }
 
-    private fun setupSearchAndFilter() {
-
-        // Search functionality
+    /**
+     * Setup search functionality
+     */
+    private fun setupSearchBar() {
         binding.searchEditText.addTextChangedListener { text ->
-            searchQuery.value = text?.toString()?.trim() ?: ""
+            searchQuery.value = text?.toString()?.trim().orEmpty()
         }
+    }
 
-        // Filter button - toggle chips visibility
-        var filterVisible = false
+    /**
+     * Setup filter chips and toggle button
+     */
+    private fun setupFilterChips() {
+        // Toggle filter visibility
         binding.filterBtn.setOnClickListener {
-            filterVisible = !filterVisible
-            binding.filterChipsScroll.visibility = if (filterVisible) View.VISIBLE else View.GONE
+            isFilterVisible = !isFilterVisible
+            binding.filterChipsScroll.visibility =
+                if (isFilterVisible) View.VISIBLE else View.GONE
         }
 
-        // Filter chips
+        // Filter chip listeners
         binding.chipAll.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) selectedFilter.value = FilterType.ALL
         }
@@ -81,49 +105,65 @@ class EmployeesFragment : Fragment() {
         binding.chipStaff.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) selectedFilter.value = FilterType.STAFF
         }
+    }
 
-        // Combine search and filter
-        viewLifecycleOwner.lifecycleScope.launch {
-            combine(searchQuery, selectedFilter) { query, filter ->
-                Pair(query, filter)
-            }.collect { (query, filter) ->
-                filterEmployees(query, filter)
+    /**
+     * Observe employees list changes
+     */
+    private fun observeEmployees() {
+        viewModel.employees.observe(viewLifecycleOwner) { employeeList ->
+            allEmployees = employeeList
+
+            if (employeeList.isEmpty()) {
+                showEmptyState(true)
+                updateEmployeeCount(0)
+            } else {
+                showEmptyState(false)
+                applyFilters(searchQuery.value, selectedFilter.value)
             }
         }
     }
 
-    private fun observeChanges() {
-        /*showLoading(true)
-        vm.getEmployees()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            vm.employees.collect { list ->
-                showLoading(false)
-                allEmployees = list
-
-                if (list.isEmpty()) {
-                    showEmptyState(true)
-                    updateEmployeeCount(0)
-                } else {
-                    showEmptyState(false)
-                    filterEmployees(searchQuery.value, selectedFilter.value)
-                }
-            }
-        }*/
+    /**
+     * Observe loading state
+     */
+    private fun observeLoadingState() {
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            toggleLoadingState(isLoading)
+        }
     }
 
-    private fun filterEmployees(query: String, filter: FilterType) {
-        var filteredList = allEmployees
+    /**
+     * Observe search query and filter changes
+     */
+    private fun observeSearchAndFilter() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            combine(searchQuery, selectedFilter) { query, filter ->
+                Pair(query, filter)
+            }.collect { (query, filter) ->
+                applyFilters(query, filter)
+            }
+        }
+    }
+
+    /**
+     * Apply search and filter logic to employee list
+     */
+    private fun applyFilters(query: String, filter: FilterType) {
+        var filteredEmployees = allEmployees
 
         // Apply role/status filter
-        filteredList = when (filter) {
-            FilterType.ALL -> filteredList
-            FilterType.ACTIVE -> filteredList.filter { it.status == STATUS_HIRED }
-            FilterType.MANAGERS -> filteredList.filter {
-                UserRoles.entries.find { role -> role.role == it.role }?.roleName?.contains("Manager", ignoreCase = true) == true
+        filteredEmployees = when (filter) {
+            FilterType.ALL -> filteredEmployees
+            FilterType.ACTIVE -> filteredEmployees.filter {
+                it.status == STATUS_HIRED
             }
-            FilterType.STAFF -> filteredList.filter {
-                val roleName = UserRoles.entries.find { role -> role.role == it.role }?.roleName
+            FilterType.MANAGERS -> filteredEmployees.filter { employee ->
+                getUserRoleName(employee.role)
+                    ?.contains("Manager", ignoreCase = true) == true
+            }
+            FilterType.STAFF -> filteredEmployees.filter { employee ->
+                val roleName = getUserRoleName(employee.role)
                 roleName?.contains("Staff", ignoreCase = true) == true ||
                         roleName?.contains("Employee", ignoreCase = true) == true
             }
@@ -131,24 +171,34 @@ class EmployeesFragment : Fragment() {
 
         // Apply search query
         if (query.isNotEmpty()) {
-            filteredList = filteredList.filter { employee ->
+            filteredEmployees = filteredEmployees.filter { employee ->
                 employee.name?.contains(query, ignoreCase = true) == true ||
                         employee.email?.contains(query, ignoreCase = true) == true ||
-                        UserRoles.entries.find { it.role == employee.role }?.roleName?.contains(query, ignoreCase = true) == true
+                        getUserRoleName(employee.role)?.contains(query, ignoreCase = true) == true
             }
         }
 
-        adapter.submitList(filteredList)
-        updateEmployeeCount(filteredList.size)
+        // Update UI
+        adapter.submitList(filteredEmployees)
+        updateEmployeeCount(filteredEmployees.size)
 
-        // Show empty state if filtered list is empty but we have employees
-        if (filteredList.isEmpty() && allEmployees.isNotEmpty()) {
-            showEmptyState(true, isSearchResult = true)
-        } else if (filteredList.isNotEmpty()) {
-            showEmptyState(false)
-        }
+        // Handle empty filtered results
+        val shouldShowEmptyState = filteredEmployees.isEmpty() && allEmployees.isNotEmpty()
+        showEmptyState(shouldShowEmptyState, isSearchOrFilterResult = true)
     }
 
+    /**
+     * Get role name from role ID
+     */
+    private fun getUserRoleName(roleId:Int): String? {
+        return UserRoles.entries
+            .find { it.role == roleId }
+            ?.roleName
+    }
+
+    /**
+     * Update employee count text
+     */
     private fun updateEmployeeCount(count: Int) {
         binding.employeeCount.text = when (count) {
             0 -> "No members"
@@ -157,17 +207,23 @@ class EmployeesFragment : Fragment() {
         }
     }
 
-    private fun showEmptyState(show: Boolean, isSearchResult: Boolean = false) {
+    /**
+     * Toggle empty state visibility
+     */
+    private fun showEmptyState(show: Boolean, isSearchOrFilterResult: Boolean = false) {
         binding.emptyStateLayout.visibility = if (show) View.VISIBLE else View.GONE
         binding.recyclerView.visibility = if (show) View.GONE else View.VISIBLE
 
-        // You can customize empty state message based on whether it's a search result
-        // by accessing the TextViews in emptyStateLayout
+        // Optionally customize empty state message based on context
+        // Access TextViews in emptyStateLayout to update message
     }
 
-    private fun showLoading(show: Boolean) {
-        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
-        binding.recyclerView.visibility = if (show) View.GONE else View.VISIBLE
+    /**
+     * Toggle loading state
+     */
+    private fun toggleLoadingState(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.recyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
     override fun onDestroyView() {
@@ -175,7 +231,13 @@ class EmployeesFragment : Fragment() {
         _binding = null
     }
 
+    /**
+     * Filter types for employee list
+     */
     enum class FilterType {
-        ALL, ACTIVE, MANAGERS, STAFF
+        ALL,
+        ACTIVE,
+        MANAGERS,
+        STAFF
     }
 }

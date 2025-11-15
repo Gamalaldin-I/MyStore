@@ -15,14 +15,15 @@
         android:padding="20dp">
 
         <!-- Header Icon -->
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/inviteIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="60dp"
+            app:riv_corner_radius="50dp"
+            android:layout_height="60dp"
             android:src="@drawable/oc_invite"
+            android:scaleType="centerCrop"
             android:background="@drawable/delete_shadow"
             android:backgroundTint="@color/primary_accent_blue"
-            app:tint="@color/primary_accent_blue"
             android:contentDescription="Invitation icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

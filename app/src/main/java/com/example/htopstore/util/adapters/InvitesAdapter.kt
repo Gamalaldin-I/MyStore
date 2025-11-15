@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.remoteModels.Invite
+import com.example.domain.model.remoteModels.Invitation
 import com.example.domain.util.Constants.STATUS_ACCEPTED
 import com.example.domain.util.Constants.STATUS_PENDING
 import com.example.htopstore.R
@@ -15,11 +15,11 @@ import java.util.Date
 import java.util.Locale
 
 class InvitesAdapter(
-    private val onDelete: (invite: Invite) -> Unit,
-    private val onShare: (invite: Invite) -> Unit,
+    private val onDelete: (invite: Invitation) -> Unit,
+    private val onShare: (invite: Invitation) -> Unit,
     private val onCopy: (text: String) -> Unit,
     private val onSending:(code:String?,email:String?)->Unit
-) : ListAdapter<Invite, InvitesAdapter.InviteHolder>(DiffCallback()) {
+) : ListAdapter<Invitation, InvitesAdapter.InviteHolder>(DiffCallback()) {
 
     class InviteHolder(val binding: InviteCardBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -86,11 +86,11 @@ class InvitesAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Invite>() {
-        override fun areItemsTheSame(oldItem: Invite, newItem: Invite): Boolean =
+    class DiffCallback : DiffUtil.ItemCallback<Invitation>() {
+        override fun areItemsTheSame(oldItem: Invitation, newItem: Invitation): Boolean =
             oldItem.code == newItem.code
 
-        override fun areContentsTheSame(oldItem: Invite, newItem: Invite): Boolean =
+        override fun areContentsTheSame(oldItem: Invitation, newItem: Invitation): Boolean =
             oldItem == newItem
     }
     // send the invitation to the employee a cross a mail

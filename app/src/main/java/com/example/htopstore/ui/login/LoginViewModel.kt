@@ -17,47 +17,77 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
     private val resetPasswordUseCase: ResetPasswordUseCase,
     private val loginWithGoogleUseCase: SignWithGoogleUseCase,
-    private val app:Application
-): AndroidViewModel(app){
+    private val app: Application
+) : AndroidViewModel(app) {
+
     private val _msg = MutableLiveData<String>()
-    val msg : LiveData<String> = _msg
-    fun login(email:String,password:String,onResult:(Boolean,String)->Unit){
-        if(email.isEmpty()||password.isEmpty()){
+    val msg: LiveData<String> = _msg
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun login(email: String, password: String, onResult: (Boolean, String) -> Unit) {
+        if (email.isEmpty() || password.isEmpty()) {
             _msg.value = app.getString(R.string.please_fill_all_fields)
             return
         }
-        loginUseCase(email,password){ success, msg ->
-            onResult(success,msg)
+
+        _isLoading.value = true
+        loginUseCase(email, password) { success, msg ->
+            _isLoading.postValue(false)
+            onResult(success, msg)
         }
     }
-    fun resetPassword(email: String,onRes:()->Unit){
-        if(email.isEmpty()){
+
+    fun resetPassword(email: String, onRes: () -> Unit) {
+        if (email.isEmpty()) {
             _msg.value = app.getString(R.string.enter_valid_email)
             return
         }
+
+        _isLoading.value = true
         viewModelScope.launch {
-        resetPasswordUseCase(email) { success, msg ->
-            _msg.postValue(msg)
-            if(success){
-                onRes()
-            }
-        }}
-    }
-    fun loginWithGoogle(idToken:String,goToSign:()->Unit,onRes:()->Unit){
-        viewModelScope.launch {
-            val (success,msg) = loginWithGoogleUseCase(token=idToken,role = -1,fromLoginScreen = true)
-            _msg.postValue(msg)
-            if(success) withContext(Dispatchers.Main){
-                onRes()
-            }
-            if(msg==SIGNUP_FIRST_ERROR){
-                withContext(Dispatchers.Main){goToSign()}
+            resetPasswordUseCase(email) { success, msg ->
+                _isLoading.postValue(false)
+                _msg.postValue(msg)
+                if (success) {
+                    onRes()
+                }
             }
         }
     }
 
+    fun loginWithGoogle(idToken: String, goToSign: () -> Unit, onRes: () -> Unit) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val (success, msg) = loginWithGoogleUseCase(
+                    token = idToken,
+                    role = -1,
+                    fromLoginScreen = true
+                )
 
+                _isLoading.postValue(false)
+                _msg.postValue(msg)
+
+                if (success) {
+                    withContext(Dispatchers.Main) {
+                        onRes()
+                    }
+                }
+                if (msg == SIGNUP_FIRST_ERROR) {
+                    withContext(Dispatchers.Main) {
+                        goToSign()
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.postValue(false)
+                _msg.postValue(e.message ?: "An error occurred")
+            }
+        }
+    }
 }

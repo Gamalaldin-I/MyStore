@@ -32,14 +32,6 @@
         <activity
             android:name=".ui.createStore.CreateStoreActivity"
             android:exported="false" />
-        <!-- 📡 Wi-Fi Receiver -->
-        <receiver
-            android:name=".util.WifiReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver> <!-- 🔧 Google Play Services -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" /> <!-- 🧩 File Provider -->
@@ -114,10 +106,7 @@
             android:name=".ui.inbox.InboxActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.updateStore.UpdateStoreActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.changeEmail.ChangeEmailActivity"
             android:exported="false"

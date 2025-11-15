@@ -234,8 +234,8 @@ class ProfileFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             } else {
-                val id = vm.getStringResFromMessage(msg)
-                Toast.makeText(requireContext(), getString(id), Toast.LENGTH_SHORT).show()
+                //val id = vm.getStringResFromMessage(msg)
+                //Toast.makeText(requireContext(), getString(id), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.domain.model.User
 import com.example.domain.model.category.UserRoles
-import com.example.domain.model.remoteModels.StoreEmployee
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.R
 import com.example.htopstore.databinding.StaffMemberCardBinding
@@ -15,8 +16,8 @@ import com.example.htopstore.util.helper.DialogBuilder
 import java.util.Locale
 
 class EmployeeAdapter(
-    private val onFireOrHire: (employee: StoreEmployee, fire: Boolean) -> Unit
-) : ListAdapter<StoreEmployee, EmployeeAdapter.EHolder>(DiffCallback()) {
+    private val onFireOrHire: (employee: User, fire: Boolean) -> Unit
+) : ListAdapter<User, EmployeeAdapter.EHolder>(DiffCallback()) {
 
     class EHolder(val binding: StaffMemberCardBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -50,6 +51,11 @@ class EmployeeAdapter(
                 )
                 setTextColor(context.getColor(android.R.color.white))
             }
+            Glide.with(employeeAvatar.context)
+                .load(employee.photoUrl)
+                .placeholder(R.drawable.icon_profile)
+                .error(R.drawable.icon_profile)
+                .into(employeeAvatar)
 
             // Click listener for status change
             empStatusChip.setOnClickListener {
@@ -77,11 +83,11 @@ class EmployeeAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<StoreEmployee>() {
-        override fun areItemsTheSame(oldItem: StoreEmployee, newItem: StoreEmployee): Boolean =
+    class DiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: StoreEmployee, newItem: StoreEmployee): Boolean =
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
             oldItem == newItem
     }
 }

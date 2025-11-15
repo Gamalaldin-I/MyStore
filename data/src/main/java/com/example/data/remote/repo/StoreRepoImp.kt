@@ -9,6 +9,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.UpdateStoreRequest
 import com.example.domain.repo.StoreRepo
 import com.example.domain.util.Constants
+import com.example.domain.util.Constants.STATUS_HIRED
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
@@ -42,9 +43,11 @@ class StoreRepoImp(
                 // Execute database operations in parallel
                 val updateUserTask = async {
                     supabase.from(USERS_TABLE).update(
-                        mapOf("storeId" to store.id)
-                    ) {
-                        filter { eq("id", pref.getUser().id) }
+                        mapOf("storeId" to store.id,
+                        "status" to STATUS_HIRED)){
+                            filter {
+                                eq("id", pref.getUser().id)
+                            }
                     }
                 }
 

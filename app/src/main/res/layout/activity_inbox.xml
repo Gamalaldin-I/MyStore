@@ -42,7 +42,7 @@
                     android:id="@+id/titleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Inbox"
+                    android:text="@string/inbox"
                     android:textColor="@color/text_primary"
                     android:textSize="28sp"
                     android:textStyle="bold"
@@ -53,7 +53,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="8dp"
-                    android:contentDescription="Inbox"
+                    android:contentDescription="@string/inbox"
                     android:src="@drawable/icon_email" />
 
             </LinearLayout>
@@ -66,7 +66,7 @@
                 android:layout_height="40dp"
                 android:minHeight="40dp"
                 android:paddingHorizontal="16dp"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:layout_marginEnd="20dp"
                 android:textSize="14sp"
                 app:cornerRadius="20dp"
@@ -114,7 +114,7 @@
                 android:backgroundTint="@color/action_primary"
                 android:padding="8dp"
                 android:src="@android:drawable/ic_menu_myplaces"
-                android:contentDescription="User Profile"
+                android:contentDescription="@string/user_profile"
                 app:tint="@android:color/white" />
 
             <!-- Email Info -->
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Logged in as"
+                    android:text="@string/logged_in_as"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
 
@@ -145,12 +145,11 @@
             </LinearLayout>
 
             <!-- Status Badge -->
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:backgroundTint="@android:color/holo_green_light" />
-
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/action_success"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -172,7 +171,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Invitations"
+            android:text="@string/invitations"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -206,21 +205,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sectionHeader" />
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <!-- SwipeRefreshLayout with RecyclerView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:clipToPadding="false"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        tools:listitem="@layout/inbox_invite_card" />
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/inbox_invite_card" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Empty State (shown when no items) -->
     <LinearLayout
@@ -230,16 +236,16 @@
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/recycler"
+        app:layout_constraintBottom_toBottomOf="@id/swipeRefresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recycler">
+        app:layout_constraintTop_toTopOf="@id/swipeRefresh">
 
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:alpha="0.3"
-            android:contentDescription="No invitations"
+            android:contentDescription="@string/no_invitations"
             android:src="@drawable/icon_email"
             app:tint="@color/text_secondary" />
 
@@ -247,7 +253,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No Invitations Yet"
+            android:text="@string/no_invitations_yet"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -256,7 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="You'll see team invitations here"
+            android:text="@string/you_ll_see_team_invitations_here"
             android:textAlignment="center"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />

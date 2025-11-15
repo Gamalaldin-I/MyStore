@@ -15,6 +15,7 @@ import com.example.htopstore.databinding.ActivitySignupBinding
 import com.example.htopstore.ui.createStore.CreateStoreActivity
 import com.example.htopstore.ui.inbox.InboxActivity
 import com.example.htopstore.ui.login.LoginActivity
+import com.example.htopstore.ui.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -61,14 +62,23 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
+        vm.goto()
         vm.message.observe(this) { msg ->
             val localizedMessage = getLocalizedMessage(msg)
             Toast.makeText(this, localizedMessage, Toast.LENGTH_SHORT).show()
         }
 
-        vm.isLoggedIn.observe(this) { isLogin ->
-            if (isLogin) {
-                navigateToMainScreen()
+        vm.goTo.observe(this) { act ->
+            when(act){
+                SignupViewModel.CREATE_STORE_ACTIVITY -> {
+                    startActivity(Intent(this, CreateStoreActivity::class.java))
+                }
+                SignupViewModel.INBOX_ACTIVITY -> {
+                    startActivity(Intent(this, InboxActivity::class.java))
+                }
+                else -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             }
         }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.useCase.auth.RegisterUseCase
 import com.example.domain.useCase.auth.SignWithGoogleUseCase
+import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.R
 import com.example.htopstore.util.DataValidator.validEmail
 import com.example.htopstore.util.DataValidator.validPassword
@@ -25,6 +26,11 @@ class SignupViewModel @Inject constructor(
     private val signWithGoogleUseCase: SignWithGoogleUseCase,
     private val app: Application
 ) : AndroidViewModel(app), OnNextStep {
+    companion object{
+        const val MAIN_ACTIVITY = "main_activity"
+        const val CREATE_STORE_ACTIVITY = "create_store_activity"
+        const val INBOX_ACTIVITY = "inbox_activity"
+    }
 
     // User credentials
     private var userName: String = ""
@@ -39,7 +45,26 @@ class SignupViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    val isLoggedIn: LiveData<Boolean> = MutableLiveData(sharedPref.isLogin())
+
+    private val _goTo = MutableLiveData<String>()
+    val goTo: LiveData<String> = _goTo
+
+    fun goto(){
+        val storeId = sharedPref.getStore().id
+        val role = sharedPref.getUser().role
+        if (storeId.isNotEmpty()){
+            _goTo.value = MAIN_ACTIVITY
+        }
+        else {
+            if (role == OWNER_ROLE) {
+                _goTo.value = CREATE_STORE_ACTIVITY
+            } else {
+                _goTo.value = INBOX_ACTIVITY
+            }
+        }
+    }
+
+
 
 
     override fun afterRoleSelection(role: Int, nextAction: () -> Unit) {

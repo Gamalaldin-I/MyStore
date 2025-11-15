@@ -218,4 +218,24 @@
     <color name="warning_light">#FFF3E6</color>
     <color name="warning_dark">#F57C00</color>
 
+        <!-- Primary Colors -->
+        <color name="primary_dark">#764ba2</color>
+        <color name="primary_light">#8B9EFF</color>
+
+        <!-- Text Colors -->
+
+        <!-- Status Colors -->
+        <color name="error_light">#FFEBEE</color>
+        <color name="warning">#FF9800</color>
+
+        <!-- Background Colors -->
+        <color name="background_light">#F5F5F5</color>
+        <color name="card_background">#FFFFFF</color>
+
+        <!-- Transparent Colors -->
+        <color name="white_70">#B3FFFFFF</color>
+        <color name="black_50">#80000000</color>
+
+
+
 </resources>
