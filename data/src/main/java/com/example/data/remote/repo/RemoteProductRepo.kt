@@ -4,23 +4,19 @@ import android.content.Context
 import android.util.Log
 import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
+import com.example.domain.model.DeleteBody
 import com.example.domain.model.Product
+import com.example.domain.util.DateHelper
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.realtime.PostgresAction
-import io.github.jan.supabase.realtime.channel
-import io.github.jan.supabase.realtime.decodeOldRecord
-import io.github.jan.supabase.realtime.decodeRecord
-import io.github.jan.supabase.realtime.postgresChangeFlow
 import io.github.jan.supabase.storage.storage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class RemoteProductRepo(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
-    private val context: Context
+    private val context: Context,
+    private val networkHelper: NetworkHelperInterface
 ) {
     companion object {
         private const val PRODUCT_BUCKET = "Products"
@@ -63,53 +59,97 @@ class RemoteProductRepo(
     // PRODUCT FUNCTIONS
     // ==============================
 
-    suspend fun addProduct(product: Product, onResult: suspend (Product) -> Unit) {
+    suspend fun addProduct(product: Product, onResult: suspend (Product?) -> Unit) {
+        if (!networkHelper.isConnected()) {
+            onResult(null)
+            return
+        }
         try {
-            val inserted = product
-            inserted.storeId = pref.getStore().id
-            val fileName = "${product.id}.jpg"
-            val uri = product.productImage.toUri()
+            val inserted = product.copy(storeId = pref.getStore().id)
+            val fileName = "${inserted.id}.jpg"
+            val uri = inserted.productImage.toUri()
             val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
-            product.productImage = url.orEmpty()
+            inserted.productImage = url.orEmpty()
             supabase.from(PRODUCTS).insert(inserted)
-            onResult(product)
+            onResult(inserted)
         } catch (e: Exception) {
-            Log.e(TAG, "Error adding product: ${e.message}", e)
+            Log.e(TAG, "Error adding product: ${e.message}")
+            onResult(null)
         }
     }
 
-    suspend fun deleteProduct(id: String, onResult: suspend (String) -> Unit) {
+    suspend fun deleteProduct(id: String, onResult: suspend () -> Unit):Pair<Boolean,String>{
+        val success = Pair(true,"Product deleted successfully")
+        val fail = Pair(false,"check your internet connection")
         try {
             val result = removePhoto("$id.jpg", PRODUCT_BUCKET)
-            if (!result) throw Exception("Failed to delete image")
-            supabase.from(PRODUCTS).delete {
+            if (!result) return fail
+            supabase.from(PRODUCTS).update(
+                DeleteBody(
+                    lastUpdate = DateHelper.getCurrentTimestampTz(),
+                    deleted = true
+                )
+            ) {
                 filter { eq(ID, id) }
             }
-            onResult(id)
+            onResult()
+            return success
         } catch (e: Exception) {
             Log.e(TAG, "Error deleting product: ${e.message}", e)
+            return fail
         }
     }
 
-    suspend fun updateProduct(product: Product, onResult: suspend (Product) -> Unit) {
+    suspend fun updateProduct(product: Product, onResult: suspend (Product?) -> Unit) {
+        //should assign the  key to the product
+        val updatedProduct = product.copy(storeId = pref.getStore().id)
+        if (!networkHelper.isConnected()) {
+            onResult(null)
+            return
+        }
         try {
-            supabase.from(PRODUCTS).update(product) {
-                filter { eq(ID, product.id) }
+            supabase.from(PRODUCTS).update(updatedProduct) {
+                filter { eq(ID, updatedProduct.id)}
             }
-            onResult(product)
+            onResult(updatedProduct)
         } catch (e: Exception) {
             Log.e(TAG, "Error updating product: ${e.message}", e)
+            onResult(null)
         }
     }
 
-    suspend fun getAllProducts(onResult: suspend (List<Product>) -> Unit){
+    suspend fun observeAllProductsWithLastUpdateAndDeleted(): Pair<List<Product>, String> {
+        if (!networkHelper.isConnected()) {
+            return Pair(emptyList(), "No internet connection")
+        }
         try {
-            val products = supabase.from(PRODUCTS).select().decodeList<Product>()
-            onResult(products)
+            if(pref.getLastProductsUpdate().isEmpty()){
+                //get all products for first time after login
+                val products = supabase.from(PRODUCTS).select().decodeList<Product>()
+                Log.d(TAG, "products: all products ${products.size}")
+                return submitList(products)
+            }else{
+                //get all products that updated since last update
+                val updatedProducts = supabase.from(PRODUCTS).select{
+                    filter {
+                        gte("lastUpdate", pref.getLastProductsUpdate())
+                    }
+                }.decodeList<Product>()
+                Log.d(TAG, "products: updated products ${updatedProducts.size}")
+                return submitList(updatedProducts)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting all products: ${e.message}", e)
-            onResult(emptyList())
+            return Pair(emptyList(), "Error getting all products")
         }
+    }
+    private fun submitList(products: List<Product>): Pair<List<Product>, String> {
+        if (products.isEmpty()) {
+            return Pair(emptyList(), "No products or updates found")
+        }
+        //very important to update the last update time
+        pref.setLastProductsUpdate()
+        return Pair(products, "New products and updates found")
     }
 
     suspend fun getProductById(id: String): Product? {
@@ -122,59 +162,7 @@ class RemoteProductRepo(
             null
         }
     }
-    // ==============================
-    // REALTIME LISTENER FUNCTION
-    // ==============================
 
-    fun listenToProductChanges(
-        scope: CoroutineScope,
-        onInsert: suspend (Product) -> Unit,
-        onUpdate: suspend (Product) -> Unit,
-        onDelete: suspend (Product) -> Unit,
-        onProductFoundInCache: suspend (id:String)->Boolean
-    ) {
-        scope.launch(Dispatchers.IO) {
-            try {
-                val channel = supabase.channel("products-changes")
-
-                val changeFlow = channel.postgresChangeFlow<PostgresAction>(schema = "public") {
-                    table = PRODUCTS
-                }
-
-                channel.subscribe()
-
-                changeFlow.collect { action ->
-                    when (action) {
-                        is PostgresAction.Insert -> {
-                            action.decodeRecord<Product>().let { newProduct ->
-                                if(onProductFoundInCache(newProduct.id))
-                                    return@collect
-                                onInsert(newProduct)
-                                Log.d(TAG, "Product inserted: ${newProduct.id}")
-                            }
-                        }
-                        is PostgresAction.Update -> {
-                            action.decodeRecord<Product>().let { updatedProduct ->
-                                onUpdate(updatedProduct)
-                                Log.d(TAG, "Product updated: ${updatedProduct.id}")
-                            }
-                        }
-                        is PostgresAction.Delete -> {
-                            action.decodeOldRecord<Product>().let { deletedProduct ->
-                                onDelete(deletedProduct)
-                                Log.d(TAG, "Product deleted: ${deletedProduct.id}")
-                            }
-                        }
-                        else -> {
-                            Log.d(TAG, "Unknown action type")
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error in realtime listener: ${e.message}", e)
-            }
-        }
-    }
 
 
 }

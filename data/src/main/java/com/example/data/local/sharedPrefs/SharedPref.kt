@@ -5,6 +5,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.domain.util.Constants.STATUS_PENDING
+import com.example.domain.util.DateHelper
 
 class SharedPref(context: Context){
     private val sharedPref = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
@@ -61,6 +62,7 @@ class SharedPref(context: Context){
         editor.putBoolean("isLogin", true)
         editor.putString("userStatus", user.status)
         editor.putString("storeId",user.storeId)
+        editor.putString("provider",user.provider)
         editor.apply()
 
     }
@@ -72,6 +74,8 @@ class SharedPref(context: Context){
         val profileUrl = sharedPref.getString("profileUrl", "")!!
         val status = sharedPref.getString("userStatus",STATUS_PENDING)!!
         val storeId = sharedPref.getString("storeId", "")!!
+        val provider = sharedPref.getString("provider", "")!!
+
         return User(
             id =id,
             name =name,
@@ -79,7 +83,9 @@ class SharedPref(context: Context){
             email=email,
             photoUrl = profileUrl,
             status = status,
-            storeId = storeId)
+            storeId = storeId,
+            provider = provider
+        )
     }
 
     fun saveStore(store: Store){
@@ -127,7 +133,16 @@ class SharedPref(context: Context){
     }
     fun isLoginFromGoogle():Boolean{
         return sharedPref.getBoolean("isLoginFromGoogle", false)
-
     }
+    internal fun setLastProductsUpdate(){
+        editor.putString("lastProductsUpdate", DateHelper.getCurrentTimestampTz())
+        editor.apply()
+    }
+    fun getLastProductsUpdate():String{
+        return sharedPref.getString("lastProductsUpdate", "")!!
+    }
+
+
+
 
 }

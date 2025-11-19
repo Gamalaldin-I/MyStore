@@ -10,6 +10,7 @@ import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetProductByIdUseCase
 import com.example.domain.useCase.product.UpdateProductUseCase
 import com.example.domain.util.CartHelper
+import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +44,7 @@ class ProductViewModel @Inject constructor(
     }
 
     fun updateProduct(newProductData: Product, onFinish: () -> Unit) {
+
         val validationError = validateProductData(
             type = newProductData.category,
             name = newProductData.name,
@@ -50,17 +52,23 @@ class ProductViewModel @Inject constructor(
             sell = newProductData.sellingPrice,
             count = newProductData.count
         )
-
         if (validationError != null) {
             _message.value = validationError
             return
         }
-
+        val updatedProduct = newProductData.copy(
+            lastUpdate = DateHelper.getCurrentTimestampTz()
+        )
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                updateProductUseCase(newProductData)
+                val(bool)=updateProductUseCase(updatedProduct)
+                if(bool){
                 _message.postValue(app.getString(R.string.product_updated_successfully))
                 withContext(Dispatchers.Main) { onFinish() }
+                }
+                else{
+                    _message.postValue(app.getString(R.string.error_updating_product))
+                }
             } catch (e: Exception) {
                 _message.postValue(app.getString(R.string.error_updating_product, e.message ?: ""))
             }
@@ -70,12 +78,14 @@ class ProductViewModel @Inject constructor(
     fun deleteProduct(product: Product, onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                deleteProductUseCase(product.id, product.productImage)
+               val (success,msg) = deleteProductUseCase(product.id, product.productImage)
+                if(success){
                 withContext(Dispatchers.Main) {
                     CartHelper.removeFromTheCartList(product.id)
-                    _message.value = app.getString(R.string.product_deleted_successfully)
                     onFinish()
                 }
+                }
+                _message.postValue(msg)
             } catch (e: Exception) {
                 _message.postValue(app.getString(R.string.error_deleting_product, e.message ?: ""))
             }

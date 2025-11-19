@@ -212,7 +212,7 @@ class ProductActivity : AppCompatActivity() {
     private fun updateProduct() {
         val currentProduct = product
         if (currentProduct == null) {
-            Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -261,7 +261,7 @@ class ProductActivity : AppCompatActivity() {
                     message = getString(R.string.selling_price_must_be_greater),
                     title = getString(R.string.loss_warning_title),
                     positiveButton = getString(R.string.continue_button),
-                    negativeButton = getString(R.string.cancel_button),
+                    negativeButton = getString(R.string.cancel),
                     onConfirm = { saveProductChanges(currentProduct, type, brand, buyingPrice, sellingPrice, count) },
                     onCancel = {}
                 )
@@ -305,7 +305,7 @@ class ProductActivity : AppCompatActivity() {
             message = getString(R.string.delete_confirmation_message),
             title = getString(R.string.delete_confirmation_title),
             positiveButton = getString(R.string.delete),
-            negativeButton = getString(R.string.cancel_button),
+            negativeButton = getString(R.string.cancel),
             onConfirm = { deleteProduct() },
             onCancel = {}
         )

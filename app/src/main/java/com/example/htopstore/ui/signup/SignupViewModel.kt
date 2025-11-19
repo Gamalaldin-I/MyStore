@@ -52,16 +52,15 @@ class SignupViewModel @Inject constructor(
     fun goto(){
         val storeId = sharedPref.getStore().id
         val role = sharedPref.getUser().role
-        if (storeId.isNotEmpty()){
+        val isLogin = sharedPref.isLogin()
+        if (storeId.isNotEmpty()&&isLogin){
             _goTo.value = MAIN_ACTIVITY
         }
-        else {
-            if (role == OWNER_ROLE) {
-                _goTo.value = CREATE_STORE_ACTIVITY
-            } else {
-                _goTo.value = INBOX_ACTIVITY
-            }
+        else if(role == OWNER_ROLE&& isLogin) {
+            _goTo.value = CREATE_STORE_ACTIVITY
         }
+        else if(role != OWNER_ROLE && isLogin){
+            _goTo.value = INBOX_ACTIVITY }
     }
 
 

@@ -2,6 +2,7 @@ package com.example.data.remote.repo
 
 import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.domain.model.Store
 import com.example.domain.model.remoteModels.EmployeeInvitationAcceptanceResponse
 import com.example.domain.model.remoteModels.Invitation
 import com.example.domain.repo.InvitationsRepo
@@ -19,6 +20,7 @@ class InvitationsRepoImp(
         private const val INVITES = "invitations"
         private const val USERS = "users"
         private const val TAG = "INVITATIONS_REPO"
+        private const val STORES = "stores"
     }
 
 
@@ -31,7 +33,7 @@ class InvitationsRepoImp(
                 storeId=pref.getStore().id,
                 storeIcon = pref.getStore().logoUrl,
                 storeName = pref.getStore().name,
-                createdAt = "${DateHelper.getCurrentDate()} ${DateHelper.getCurrentTime()}",
+                createdAt = DateHelper.getCurrentTimestampTz(),
                 status = Constants.STATUS_PENDING,
                 acceptedAt = ""
             )
@@ -88,6 +90,11 @@ class InvitationsRepoImp(
         invite: Invitation,
         code: String
     ): Pair<Boolean, String> {
+        // Check if the provided code matches the invitation code
+        if (code != invite.code) {
+            return Pair(false, "Invalid invitation code")
+        }
+
         return try {
             supabase.from(INVITES).update(
                 mapOf<String,String>(
@@ -120,13 +127,18 @@ class InvitationsRepoImp(
                 eq("id", pref.getUser().id)
             }
         }
+        val store = supabase.from(STORES).select{
+            filter {
+                eq("id", storeId)
+            }
+        }.decodeSingle<Store>()
         //saveTheUser
         pref.saveUser(pref.getUser().copy(
             storeId = storeId,
             role = Constants.EMPLOYEE_ROLE,
             status = Constants.STATUS_HIRED)
         )
-
+        pref.saveStore(store)
     }
 
     override suspend fun rejectInvite(invite: Invitation): Pair<Boolean, String>{

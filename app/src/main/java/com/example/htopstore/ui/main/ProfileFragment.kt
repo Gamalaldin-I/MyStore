@@ -148,7 +148,7 @@ class ProfileFragment : Fragment() {
                 .signature(ObjectKey(System.currentTimeMillis()))
                 .into(binding.profileAvatar)
 
-            vm.changePhoto(uri) {}
+            vm.changePhoto(uri)
         } catch (e: Exception) {
             Log.e("ProfileFragment", "Error handling selected image: ${e.message}", e)
             Toast.makeText(requireContext(), getString(R.string.failed_to_update_photo), Toast.LENGTH_SHORT).show()

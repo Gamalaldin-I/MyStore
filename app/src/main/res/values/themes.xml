@@ -197,5 +197,11 @@
             <item name="cornerRadius">16dp</item>
             <item name="android:minHeight">56dp</item>
         </style>
+    <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/nav_store</item>
+        <item name="postSplashScreenTheme">@style/Theme.HTopStore</item>
+    </style>
+
 
 </resources>

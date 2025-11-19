@@ -38,7 +38,6 @@ class AddProductActivity : AppCompatActivity() {
                     binding.productImg.setImageURI(imageUri)
                     binding.productImg.setPadding(0, 0, 0, 0)
                     binding.productImg.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
-                    Toast.makeText(this, "Photo captured!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -53,7 +52,6 @@ class AddProductActivity : AppCompatActivity() {
                     binding.productImg.setImageURI(selectedImageUri)
                     binding.productImg.setPadding(0, 0, 0, 0)
                     binding.productImg.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
-                    Toast.makeText(this, "Image selected!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -130,7 +128,6 @@ class AddProductActivity : AppCompatActivity() {
 
         // Show success message
         if (state.productSaved) {
-            Toast.makeText(this, "Product added successfully!", Toast.LENGTH_LONG).show()
             // Reset the saved state to allow adding more products
             viewModel.resetFormState()
         }
@@ -171,7 +168,6 @@ class AddProductActivity : AppCompatActivity() {
         // Add product button
         binding.add.setOnClickListener {
             viewModel.validateAndSaveProduct(
-                context = this,
                 category = binding.autoTypeCompleteQ1.text.toString(),
                 brand = binding.productBrandET.text.toString(),
                 buyingPrice = binding.buyingPriceET.text.toString(),

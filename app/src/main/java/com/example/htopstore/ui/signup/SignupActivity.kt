@@ -1,13 +1,21 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.htopstore.ui.signup
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.R
@@ -27,68 +35,358 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
 
     companion object {
-        const val GOOGLE_CODE = 1000
+        private const val GOOGLE_SIGN_IN_CODE = 1000
+        private const val SPLASH_DURATION = 3000L
+
+        // Animation durations
+        private const val LOGO_ANIMATION_DURATION = 800L
+        private const val TEXT_ANIMATION_DURATION = 1000L
+        private const val SPLASH_FADE_OUT_DURATION = 600L
     }
 
     private lateinit var binding: ActivitySignupBinding
     private lateinit var googleSignInClient: GoogleSignInClient
-    private val vm: SignupViewModel by viewModels()
+    private val viewModel: SignupViewModel by viewModels()
 
-    private var step = -1
+    private var currentFragmentStep = -1
+    private var navigationAction = ""
+
     private lateinit var roleSelectionFragment: RoleSelectionFragment
     private lateinit var userFormFragment: UserFormFragment
 
+    // ==================== Lifecycle Methods ====================
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupGoogleSignIn()
+        initializeUI()
         observeViewModel()
-        initializeFragments()
-        setupNavigation()
+        showSplashScreen()
+    }
 
+    @SuppressLint("MissingSuperCall")
+    @Deprecated("Use OnBackPressedDispatcher")
+    override fun onBackPressed() {
+        if (currentFragmentStep > 0) {
+            handleBackNavigation()
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GOOGLE_SIGN_IN_CODE) {
+            handleGoogleSignInResult(data)
+        }
+    }
+
+    // ==================== Initialization ====================
+
+    private fun initializeUI() {
         binding.backArrow.visibility = View.GONE
-        addFragment(roleSelectionFragment)
+        viewModel.goto()
+    }
+
+    private fun initializeFragments() {
+        roleSelectionFragment = RoleSelectionFragment.newInstance()
+        userFormFragment = UserFormFragment.newInstance()
     }
 
     private fun setupGoogleSignIn() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.google_auth))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
     }
 
+    // ==================== Splash Screen ====================
+
+    private fun showSplashScreen() {
+        with(binding) {
+            splashOverlay.visibility = View.VISIBLE
+            splashOverlay.alpha = 1f
+        }
+
+        animateSplashElements()
+        scheduleSplashDismissal()
+    }
+
+    private fun animateSplashElements() {
+        animateLogo()
+        animateAppName()
+        animateTagline()
+    }
+
+    private fun animateLogo() {
+        binding.appLogo.apply {
+            scaleX = 0.5f
+            scaleY = 0.5f
+            alpha = 0f
+
+            animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .setDuration(LOGO_ANIMATION_DURATION)
+                .setInterpolator(OvershootInterpolator(1.2f))
+                .start()
+        }
+    }
+
+    private fun animateAppName() {
+        binding.appName.apply {
+            alpha = 0f
+            translationY = 30f
+
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(TEXT_ANIMATION_DURATION)
+                .setStartDelay(200)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+    }
+
+    private fun animateTagline() {
+        binding.tagline.apply {
+            alpha = 0f
+            translationY = 30f
+
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(TEXT_ANIMATION_DURATION)
+                .setStartDelay(400)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+    }
+
+    private fun scheduleSplashDismissal() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            hideSplash()
+        }, SPLASH_DURATION)
+    }
+
+    private fun hideSplash() {
+        binding.splashOverlay.animate()
+            .alpha(0f)
+            .setDuration(SPLASH_FADE_OUT_DURATION)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                binding.splashOverlay.visibility = View.GONE
+                onSplashComplete()
+            }
+            .start()
+    }
+
+    private fun onSplashComplete() {
+        if (navigationAction.isNotEmpty()) {
+            navigateToDestination(navigationAction)
+        } else {
+            initializeApp()
+        }
+    }
+
+    private fun initializeApp() {
+        setupGoogleSignIn()
+        initializeFragments()
+        setupNavigation()
+        addFragment(roleSelectionFragment)
+    }
+
+    // ==================== ViewModel Observation ====================
+
     private fun observeViewModel() {
-        vm.goto()
-        vm.message.observe(this) { msg ->
-            val localizedMessage = getLocalizedMessage(msg)
+        observeMessages()
+        observeNavigation()
+        observeLoadingState()
+    }
+
+    private fun observeMessages() {
+        viewModel.message.observe(this) { message ->
+            val localizedMessage = getLocalizedMessage(message)
             Toast.makeText(this, localizedMessage, Toast.LENGTH_SHORT).show()
         }
+    }
 
-        vm.goTo.observe(this) { act ->
-            when(act){
-                SignupViewModel.CREATE_STORE_ACTIVITY -> {
-                    startActivity(Intent(this, CreateStoreActivity::class.java))
-                }
-                SignupViewModel.INBOX_ACTIVITY -> {
-                    startActivity(Intent(this, InboxActivity::class.java))
-                }
-                else -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
-            }
+    private fun observeNavigation() {
+        viewModel.goTo.observe(this) { destination ->
+            navigationAction = destination
         }
+    }
 
-        vm.isLoading.observe(this) { isLoading ->
+    private fun observeLoadingState() {
+        viewModel.isLoading.observe(this) { isLoading ->
             showLoading(isLoading)
         }
     }
 
-    private fun getLocalizedMessage(msg: String): String {
-        return when (msg) {
+    // ==================== Navigation ====================
+
+    private fun setupNavigation() {
+        setupRoleSelectionNavigation()
+        setupUserFormNavigation()
+        setupBackNavigation()
+    }
+
+    private fun setupRoleSelectionNavigation() {
+        roleSelectionFragment.setOnNext { selectedRole ->
+            viewModel.afterRoleSelection(selectedRole) {
+                addFragment(userFormFragment)
+            }
+        }
+
+        roleSelectionFragment.setOnLogin {
+            navigateToLogin()
+        }
+    }
+
+    private fun setupUserFormNavigation() {
+        userFormFragment.setOnNext { name, email, password ->
+            handleUserFormSubmission(name, email, password)
+        }
+
+        userFormFragment.setONSignWithGoogle {
+            initiateGoogleSignIn()
+        }
+    }
+
+    private fun setupBackNavigation() {
+        binding.backArrow.setOnClickListener {
+            handleBackNavigation()
+        }
+    }
+
+    private fun handleUserFormSubmission(name: String, email: String, password: String) {
+        showLoading(true, getString(R.string.creating_account))
+
+        viewModel.afterUserFormFill(name, email, password) {
+            showLoading(false)
+            navigateToMainScreen()
+        }
+    }
+
+    private fun navigateToDestination(destination: String) {
+        val intent = when (destination) {
+            SignupViewModel.CREATE_STORE_ACTIVITY -> Intent(this, CreateStoreActivity::class.java)
+            SignupViewModel.INBOX_ACTIVITY -> Intent(this, InboxActivity::class.java)
+            SignupViewModel.MAIN_ACTIVITY -> Intent(this, MainActivity::class.java)
+            else -> return
+        }
+
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToMainScreen() {
+        val destinationClass = if (viewModel.getRole() == OWNER_ROLE) {
+            CreateStoreActivity::class.java
+        } else {
+            InboxActivity::class.java
+        }
+
+        startActivity(Intent(this, destinationClass))
+        finish()
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    private fun handleBackNavigation() {
+        currentFragmentStep--
+
+        binding.backArrow.visibility = if (currentFragmentStep == 0) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        supportFragmentManager.popBackStack()
+    }
+
+    // ==================== Fragment Management ====================
+
+    @SuppressLint("CommitTransaction")
+    private fun addFragment(fragment: Fragment) {
+        currentFragmentStep++
+
+        binding.backArrow.visibility = if (currentFragmentStep >= 1) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out,
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            )
+            .replace(binding.frameLayout11.id, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    // ==================== Google Sign-In ====================
+
+    private fun initiateGoogleSignIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_CODE)
+    }
+
+    private fun handleGoogleSignInResult(data: Intent?) {
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val idToken = account.idToken?:""
+            val photoUrl = account.photoUrl?.toString() ?: ""
+            val displayName = account.displayName ?: ""
+
+            showLoading(true, getString(R.string.signing_in_with_google))
+
+            viewModel.onSignWithGoogle(idToken, photoUrl, displayName) {
+                showLoading(false)
+                navigateToMainScreen()
+            }
+
+        } catch (exception: ApiException) {
+            showLoading(false)
+            handleGoogleSignInError(exception)
+        }
+    }
+
+    private fun handleGoogleSignInError(exception: ApiException) {
+        val errorMessage = "${getString(R.string.google_signin_failed)}: ${exception.message}"
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    // ==================== UI State ====================
+
+    private fun showLoading(show: Boolean, message: String = getString(R.string.please_wait)) {
+        binding.loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
+
+        if (show) {
+            binding.loadingText.text = message
+        }
+    }
+
+    // ==================== Localization ====================
+
+    private fun getLocalizedMessage(message: String): String {
+        return when (message) {
             "Login successful" -> getString(R.string.login_successful)
             "Login failed" -> getString(R.string.login_failed)
             "User not found" -> getString(R.string.user_not_found)
@@ -106,112 +404,7 @@ class SignupActivity : AppCompatActivity() {
             "Logout successful" -> getString(R.string.logout_successful)
             "Logout error" -> getString(R.string.logout_error)
             "Please wait seconds before trying again." -> getString(R.string.please_wait_before_signup)
-            else -> msg
-        }
-    }
-
-    private fun initializeFragments() {
-        roleSelectionFragment = RoleSelectionFragment.newInstance()
-        userFormFragment = UserFormFragment.newInstance()
-    }
-
-    private fun setupNavigation() {
-        roleSelectionFragment.setOnNext { role ->
-            vm.afterRoleSelection(role) {
-                addFragment(userFormFragment)
-            }
-        }
-
-        userFormFragment.setOnNext { name, email, password ->
-            showLoading(true, getString(R.string.creating_account))
-            vm.afterUserFormFill(name, email, password) {
-                showLoading(false)
-                navigateToMainScreen()
-            }
-        }
-
-        userFormFragment.setONSignWithGoogle {
-            val googleIntent = googleSignInClient.signInIntent
-            startActivityForResult(googleIntent, GOOGLE_CODE)
-        }
-
-
-        roleSelectionFragment.setOnLogin {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
-        binding.backArrow.setOnClickListener {
-            handleBackNavigation()
-        }
-    }
-
-    private fun showLoading(show: Boolean, message: String = getString(R.string.please_wait)) {
-        binding.loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
-        if (show) {
-            binding.loadingText.text = message
-        }
-    }
-
-    private fun navigateToMainScreen() {
-        val intent = if (vm.getRole() == OWNER_ROLE) {
-            Intent(this, CreateStoreActivity::class.java)
-        } else {
-            Intent(this, InboxActivity::class.java)
-        }
-        startActivity(intent)
-        finish()
-    }
-
-    private fun handleBackNavigation() {
-        step--
-        if (step == 0) {
-            binding.backArrow.visibility = View.GONE
-        }
-        supportFragmentManager.popBackStack()
-    }
-
-    @SuppressLint("CommitTransaction")
-    private fun addFragment(fragment: Fragment) {
-        step++
-        if (step == 1) {
-            binding.backArrow.visibility = View.VISIBLE
-        }
-        supportFragmentManager.beginTransaction()
-            .replace(binding.frameLayout11.id, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    @SuppressLint("MissingSuperCall")
-    @Deprecated("Use OnBackPressedDispatcher")
-    override fun onBackPressed() {
-        if (step != 0) {
-            handleBackNavigation()
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == GOOGLE_CODE) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                val photoUrl = account.photoUrl.toString()
-                val name = account.displayName.toString()
-
-                showLoading(true, getString(R.string.signing_in_with_google))
-                vm.onSignWithGoogle(account.idToken!!, photoUrl, name) {
-                    showLoading(false)
-                    navigateToMainScreen()
-                }
-            } catch (e: ApiException) {
-                showLoading(false)
-                val errorMsg = "${getString(R.string.google_signin_failed)}: ${e.message}"
-                Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
-            }
+            else -> message
         }
     }
 }

@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Manager"
+                    android:text="@string/manager"
                     android:textColor="@color/text_primary"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="false"
-                android:text="Active"
+                android:text="@string/active"
                 android:textColor="#F9FBFA"
                 android:textSize="12sp"
                 app:chipBackgroundColor="@color/primary_accent_blue"
@@ -93,7 +93,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:contentDescription="Email icon"
+                android:contentDescription="@string/email_icon"
                 android:src="@drawable/icon_email"
                  />
 

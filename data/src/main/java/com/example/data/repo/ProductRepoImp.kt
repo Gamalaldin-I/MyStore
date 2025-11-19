@@ -28,21 +28,38 @@ class ProductRepoImp (
     override  fun getArchiveProducts(): Flow<List<Product>> =
         productDao.getArchiveProducts().mapData()
 
-    override suspend fun addProduct(product: Product){
+    override suspend fun addProduct(product: Product): Pair<Boolean, String> {
+        var res = ""
         remote.addProduct(product){
-            productDao.addProduct(it.toData())
+                if(it != null) {
+                    res = it.id
+                    productDao.addProduct(it.toData())
+                }
+            }
+        if(res.isEmpty()){
+            return Pair(false,"check your internet connection")
+        }else{
+            return Pair(true,"Product added successfully")
         }
     }
 
-    override suspend fun updateProduct(product: Product) {
+    override suspend fun updateProduct(product: Product):Pair<Boolean,String>{
+        var res =""
         remote.updateProduct(product){
-            productDao.updateProduct(it.toData())
+            if(it != null){
+                res = it.id
+                productDao.updateProduct(it.toData())
+            }
         }
+        if(res.isEmpty()){
+            return Pair(false,"check your internet connection")
+        }
+        return Pair(true,"Product updated successfully")
     }
 
-    override suspend fun deleteProductById(id: String, image: String) {
-       remote.deleteProduct(id){
-           productDao.deleteProductById(it)
+    override suspend fun deleteProductById(id: String, image: String):Pair<Boolean,String> {
+        return remote.deleteProduct(id){
+           productDao.deleteProductById(id)
        }
     }
 
@@ -56,30 +73,22 @@ class ProductRepoImp (
         return productDao.getArchiveLength()
     }
 
-    override suspend fun fetchProductsFromRemoteIntoLocal() {
-        remote.getAllProducts() {
-            productDao.addProducts(it.map { it.toData() })
+    override suspend fun fetchProductsFromRemoteIntoLocal():String {
+        val (products,msg) =remote.observeAllProductsWithLastUpdateAndDeleted()
+        products.forEach {
+            if(it.deleted){
+                productDao.deleteProductById(it.id)
+            }else{
+                productDao.addProduct(it.toData())
+            }
         }
+        return msg
     }
 
     override fun listenToRemoteChanges(
         coroutineScope: CoroutineScope
     ) {
-        remote.listenToProductChanges (
-            scope = coroutineScope,
-            onInsert = {
-                productDao.addProduct(it.toData())
-            },
-            onUpdate = {
-                productDao.updateProduct(it.toData())
-            },
-            onDelete = {
-                productDao.deleteProductById(it.id)
-            },
-            onProductFoundInCache = {
-                isTheProductInTheStock(it)
-            }
-        )
+
     }
 
     fun Flow<List<ProductEntity>>.mapData():Flow<List<Product>> {

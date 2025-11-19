@@ -2,6 +2,7 @@ package com.example.htopstore.util.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getString
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -42,19 +43,19 @@ class InvitesAdapter(
             // Status Chip
             val status = invite.status ?: "Unknown"
             statusChip.apply {
-                text = status.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-                }
-
+                val context = this.context
                 when (status) {
                     STATUS_PENDING -> {
                         setTextColor(context.getColor(R.color.process_pending))
+                        text = getString(context,R.string.pending)
                     }
                     STATUS_ACCEPTED -> {
                         setTextColor(context.getColor(R.color.process_approved))
+                        text = getString(context,R.string.accepted)
                     }
                     else -> {
                         setTextColor(context.getColor(R.color.process_rejected))
+                        text = getString(context,R.string.rejected)
                     }
                 }
             }

@@ -128,6 +128,7 @@ class StockFragment : Fragment() {
 
     // --------------------- Observers ---------------------
     private fun observeProducts() {
+        vm.fetchProductsFromRemote()
         vm.products.observe(viewLifecycleOwner) { products ->
             allProducts = products
             categories = products.map { getCatLocalName(it.category) }.distinct()
@@ -162,7 +163,7 @@ class StockFragment : Fragment() {
 
     private fun refreshData() {
         // Trigger data refresh from ViewModel
-        vm.startListenForProducts()
+        vm.fetchProductsFromRemote()
 
         // If your ViewModel doesn't have a refresh method, you can manually stop the animation
         // after a delay or when the observer updates

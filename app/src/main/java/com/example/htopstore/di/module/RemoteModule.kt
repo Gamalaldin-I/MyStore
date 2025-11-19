@@ -2,6 +2,7 @@ package com.example.htopstore.di.module
 
 import android.content.Context
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.RemoteProductRepo
 import com.example.data.remote.repo.StoreRepoImp
 import com.example.domain.repo.StoreRepo
@@ -47,12 +48,14 @@ object RemoteModule {
     fun provideRemoteProductRepo(
         @ApplicationContext context: Context,
         supabase: SupabaseClient,
-        pref: SharedPref
+        pref: SharedPref,
+        networkHelper: NetworkHelperInterface
     ):RemoteProductRepo{
         return RemoteProductRepo(
             supabase = supabase,
             pref = pref,
-            context = context
+            context = context,
+            networkHelper = networkHelper
         )
     }
     @Provides

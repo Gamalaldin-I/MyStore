@@ -236,6 +236,12 @@
         <color name="white_70">#B3FFFFFF</color>
         <color name="black_50">#80000000</color>
 
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="splash_start">#667eea</color>
+    <color name="splash_center">#764ba2</color>
+    <color name="splash_end">#f093fb</color>
+
 
 
 </resources>

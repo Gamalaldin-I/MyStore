@@ -1,409 +1,495 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Stora</string>
 
-    <!-- General -->
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="archive">Archive</string>
-    <string name="all">All</string>
-    <string name="add_new">Add New</string>
+    <!-- ==================== App Identity ==================== -->
+    <string name="app_name" translatable="false">Stora</string>
+    <string name="app_logo">App Logo</string>
+    <string name="stora">Stora</string>
+    <string name="store_everything_access_anywhere">Store everything. Access anywhere.</string>
+
+
+    <!-- ==================== Navigation & General Actions ==================== -->
     <string name="home">Home</string>
+    <string name="inbox">Inbox</string>
+    <string name="store">Store</string>
+    <string name="stock">Stock</string>
+    <string name="sales">Sales</string>
+    <string name="expenses">Expenses</string>
     <string name="report">Report</string>
     <string name="cart">Cart</string>
 
-    <!-- Products -->
-    <string name="add_new_product">Add Product</string>
-    <string name="add_new_products">Add Products</string>
-    <string name="type">Category</string>
-    <string name="brand_name">Brand</string>
-    <string name="buying_price">Buying Price</string>
-    <string name="selling_price">Selling Price</string>
-    <string name="count">Quantity</string>
-
-    <!-- Sales & Bills -->
-    <string name="sales">Sales</string>
-    <string name="sold">Sold</string>
-    <string name="sold_items">Sold Items</string>
-    <string name="bills">Bills</string>
-    <string name="returns">Returns</string>
-    <string name="total_is">Total:</string>
-    <string name="before_discount">Before Discount:</string>
-    <string name="discount">Discount</string>
-
-    <!-- Expenses -->
-    <string name="expenses">Expenses</string>
-    <string name="new_expense">New Expense</string>
-
-    <!-- QR Tools -->
-    <string name="qr_generator">QR Generator</string>
-    <string name="generate_qrs_pdf">Export PDF</string>
-    <string name="generateqrcodes">Generate QR Codes</string>
-    <string name="scancode">Scan Code</string>
-
-    <!-- Store -->
-    <string name="store">Store</string>
-    <string name="l_e">LE</string>
-    <string name="sell_now">Sell Now!</string>
-    <string name="role_icon">Role Icon</string>
-    <string name="select_your_role">Select Your Role</string>
-    <string name="owner_icon">Owner Icon</string>
-    <string name="business_owner">Business Owner</string>
-    <string name="manage_business_team">Manage your store and team</string>
-    <string name="employee_icon">Employee Icon</string>
-    <string name="employee">Employee</string>
-    <string name="join_work_team">Join the team</string>
-    <string name="continue_btn">Continue</string>
-    <string name="already_have_account">Already have an account?</string>
-    <string name="log_in">Log In</string>
-
-    <string name="back">Back</string>
-    <string name="lock_icon">Lock Icon</string>
-    <string name="change_password">Change Password</string>
-    <string name="change_password_subtitle">Enter your current password and pick a new one</string>
-    <string name="current_password">Current Password</string>
-    <string name="new_password">New Password</string>
-    <string name="confirm_new_password">Confirm New Password</string>
-    <string name="password_requirements">At least 8 chars, 1 uppercase, 1 number</string>
-    <string name="password_strength">Password Strength:</string>
-    <string name="forgot_current_password">Forgot your password?</string>
-
-    <!-- Change Email -->
-    <string name="change_email">Change Email</string>
-    <string name="change_email_subtitle">Enter your new email and current password</string>
-    <string name="current_email">Current Email</string>
-    <string name="new_email">New Email</string>
-    <string name="change_email_button">Change Email</string>
-    <string name="security_note_change_email">A verification link will be sent to your new email for security.</string>
-    <string name="email_icon">Email Icon</string>
-    <string name="info_icon">Info Icon</string>
-    <string name="no_email_found">No email found</string>
-
-    <!-- Errors -->
-    <string name="error_email_required">Email is required</string>
-    <string name="error_invalid_email">Invalid email</string>
-    <string name="error_same_email">New email must be different</string>
-    <string name="error_password_required">Password is required</string>
-    <string name="error_password_too_short">Password must be at least 6 characters</string>
-    <string name="error_wrong_password">Wrong password</string>
-    <string name="error_user_not_found">User not found</string>
-    <string name="error_no_email">No email associated</string>
-    <string name="error_email_already_exists">Email already in use</string>
-    <string name="error_network">Network error</string>
-    <string name="error_generic">Error: %s</string>
-
-    <!-- Success -->
-    <string name="success">Success!</string>
-    <string name="email_change_success_message">Verification email sent. Check it to complete the change.</string>
+    <string name="save">Save</string>
+    <string name="save_changes">Save changes</string>
+    <string name="delete">Delete</string>
+    <string name="archive">Archive</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="continue_button">Continue</string>
     <string name="ok">OK</string>
+    <string name="back">Back</string>
+    <string name="back_button">Back</string>
 
-    <!-- Stock -->
-    <string name="stock">Stock</string>
-    <string name="managing_your_inventory">Managing Inventory</string>
-    <string name="categories">Categories</string>
+    <string name="add_new">Add new</string>
+    <string name="all">All</string>
     <string name="filter">Filter</string>
-    <string name="empty_stock">Empty stock</string>
-    <string name="no_items_in_stock">No items</string>
-    <string name="add_items_to_get_started">Add items to get started</string>
+    <string name="sort">Sort</string>
+    <string name="search">Search</string>
 
-    <!-- Product -->
-    <string name="product_image">Product Image</string>
-    <string name="gallary">Gallery</string>
-    <string name="camera">Camera</string>
-    <string name="not_scanned">Not scanned</string>
-    <string name="scan">Scan</string>
-    <string name="product_id">Product ID</string>
-    <string name="product_details">Product Details</string>
-    <string name="category">Category</string>
-    <string name="pricing">Pricing</string>
-    <string name="barcode">Barcode</string>
-    <string name="clear_id">Clear ID</string>
-    <string name="profit_per_item">Profit per Item</string>
-    <string name="inventory">Inventory</string>
-    <string name="quantity">Quantity</string>
-    <string name="add_product">Add Product</string>
-    <string name="in_stock">In Stock</string>
-    <string name="added_at">Added at:</string>
-    <string name="le">LE</string>
 
-    <!-- User Info -->
-    <string name="profile_picture">Profile Picture</string>
-    <string name="manager">Manager</string>
-    <string name="owner">Owner</string>
-    <string name="personal_information">Personal Info</string>
-    <string name="full_name">Full Name</string>
-    <string name="update_name">Update Name</string>
-    <string name="store_name">Store Name</string>
-    <string name="location">Location</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="phone_icon">Phone Icon</string>
-    <string name="call_store">Call Store</string>
-    <string name="logout">Logout</string>
-    <string name="logout_icon">Logout Icon</string>
+    <!-- ==================== Authentication ==================== -->
 
-    <!-- Store updates -->
-    <string name="update_store_data">Update Store Info</string>
-    <string name="store_icon">Store Icon</string>
-    <string name="password_icon">Password Icon</string>
-    <string name="change_photo">Change Photo</string>
-    <string name="store_information">Store Info</string>
-    <string name="store_form_hint">Second step! Tell us about your store</string>
-    <string name="store_location">Store Location</string>
-    <string name="tip">💡 Tip</string>
-    <string name="password_details">You can update this info later</string>
-    <string name="complete_setup">Complete Setup</string>
-    <string name="almost_there">Almost there!</string>
-    <string name="your_account_will_be_ready_in_seconds">Your account will be ready after the next</string>
+    <!-- Sign Up -->
+    <string name="sign_up">Sign up</string>
+    <string name="create_account">Create account</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="sign_up_to_get_started_with_stora">Sign up to start managing your business</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">By signing up, you agree to our Terms of Service and Privacy Policy</string>
 
-    <!-- Sign Up / Login -->
-    <string name="user_information">User Info</string>
-    <string name="create_your_account">Create Account</string>
+    <!-- Login -->
+    <string name="log_in">Log in</string>
+    <string name="login">Login</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="sign_in_to_continue_to_your_account">Sign in to continue</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot">Forgot password?</string>
+    <string name="by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy">By continuing, you agree to our Terms of Service and Privacy Policy</string>
+
+    <!-- Google Sign In -->
     <string name="continue_with_google">Continue with Google</string>
     <string name="or">OR</string>
-    <string name="sign_up_to_get_started_with_stora">Sign up to get started with Stora</string>
-    <string name="email_address">Email Address</string>
+    <string name="google_auth" tools:ignore="TypographyDashes">288889154483-20c80tgrv71541migl3vrt7rq8edb824.apps.googleusercontent.com</string>
+
+    <!-- Form Fields -->
+    <string name="full_name">Full name</string>
+    <string name="email_address">Email address</string>
     <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+
+    <!-- Password Requirements -->
     <string name="password_must_contain">Password must contain:</string>
-    <string name="at_least_8_characters_n_one_uppercase_letter_n_one_number_or_special_character">
-        • At least 8 characters\n• One uppercase letter\n• One number or special character
-    </string>
-    <string name="create_account">Create Account</string>
-    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">
-        By creating an account, you agree to our Terms and Privacy Policy
-    </string>
-    <string name="role_hint">Choose how you will use the app</string>
-    <string name="manage_your_business_and_team">Manage your store and team</string>
-    <string name="join_and_work_with_your_team">Join and work with your team</string>
-    <string name="already_have_an_account">Already have an account?</string>
-    <string name="stora">Stora</string>
-    <string name="app_logo">App Logo</string>
-    <string name="remember_me">Remember Me</string>
-    <string name="forgot">Forgot?</string>
-    <string name="login">Login</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="don_t_have_an_account">Do not have an account?</string>
-    <string name="by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy">
-        By continuing, you agree to our Terms and Privacy Policy
-    </string>
-    <string name="sign_in_to_continue_to_your_account">Sign in to continue</string>
-    <string name="welcome_back">Welcome Back</string>
+    <string name="password_requirements">At least 8 characters, 1 uppercase, 1 number</string>
+    <string name="at_least_8_characters_n_one_uppercase_letter_n_one_number_or_special_character">• At least 8 characters\n• One uppercase letter\n• One number or special character</string>
+    <string name="password_strength">Password strength:</string>
 
-    <!-- Stock Details -->
-    <string name="stock_title">Stock</string>
-    <string name="all_categories">All</string>
-    <string name="categories_label">Categories</string>
-    <string name="items_label">Items</string>
-    <string name="managing_inventory">Managing Inventory</string>
-    <string name="managing_inventory_count">Managing Inventory • %d items</string>
-    <string name="empty_stock_title">No items</string>
-    <string name="empty_stock_subtitle">Add items to get started</string>
-    <string name="sort">Sort</string>
+    <!-- Password Reset -->
+    <string name="change_password">Change password</string>
+    <string name="change_password_subtitle">Enter your current password and choose a new one</string>
+    <string name="forgot_current_password">Forgot your password?</string>
+    <string name="reset_password_description">Enter your new password</string>
+    <string name="reset_password_button">Reset password</string>
 
-    <!-- Product Errors -->
-    <string name="invalid_product_id">Invalid Product ID</string>
-    <string name="product_not_found">Product Not Found</string>
-    <string name="product_data_not_available">Product data not available</string>
-    <string name="sold_count">%d sold</string>
-    <string name="added_date">Added: %s</string>
-    <string name="sign_le">%s LE</string>
-    <string name="save_changes">Save Changes</string>
-    <string name="delete_product">Delete</string>
-    <string name="add_to_cart">Add to Cart</string>
+    <!-- Email Management -->
+    <string name="change_email">Change email</string>
+    <string name="change_email_subtitle">Enter your new email and current password</string>
+    <string name="current_email">Current email</string>
+    <string name="new_email">New email</string>
+    <string name="change_email_button">Change email</string>
+    <string name="security_note_change_email">We\'ll send a verification link to your new email for security</string>
+    <string name="no_email_found">No email found</string>
 
-    <!-- Form Labels -->
+    <!-- Logout -->
+    <string name="logout">Log out</string>
+    <string name="logout_title">Log out</string>
+    <string name="logout_message">Are you sure you want to log out?</string>
+
+
+    <!-- ==================== Role Selection ==================== -->
+    <string name="select_your_role">Select your role</string>
+    <string name="role_hint">Choose how you\'ll use Stora</string>
+
+    <string name="business_owner">Business owner</string>
+    <string name="owner">Owner</string>
+    <string name="manage_business_team">Manage your store and team</string>
+    <string name="manage_your_business_and_team">Manage your business and team</string>
+
+    <string name="employee">Employee</string>
+    <string name="join_work_team">Join your team</string>
+    <string name="join_and_work_with_your_team">Join and collaborate with your team</string>
+
+    <string name="manager">Manager</string>
+    <string name="managers">Managers</string>
+    <string name="staff">Staff</string>
+
+
+    <!-- ==================== Store Setup & Management ==================== -->
+
+    <!-- Store Creation -->
+    <string name="create_store">Create store</string>
+    <string name="store_details">Store details</string>
+    <string name="store_information">Store information</string>
+    <string name="store_form_hint">Tell us about your store</string>
+    <string name="almost_there">Almost there!</string>
+    <string name="your_account_will_be_ready_in_seconds">Your account will be ready in just a moment</string>
+    <string name="complete_setup">Complete setup</string>
+
+    <!-- Store Info -->
+    <string name="store_name">Store name</string>
+    <string name="store_location">Store location</string>
+    <string name="location">Location</string>
+    <string name="phone_number">Phone number</string>
+    <string name="upload_store_logo">Upload store logo</string>
+    <string name="store_logo">Store logo</string>
+    <string name="change_photo">Change photo</string>
+    <string name="upload">Upload</string>
+
+    <!-- Store Updates -->
+    <string name="update_store">Update store</string>
+    <string name="update_store_data">Update store info</string>
+    <string name="tip">💡 Tip</string>
+    <string name="password_details">You can update this anytime</string>
+
+
+    <!-- ==================== User Profile ==================== -->
+    <string name="user_profile">Profile</string>
+    <string name="personal_information">Personal info</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="update_name">Update name</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="call_store">Call store</string>
+
+
+    <!-- ==================== Team & Invitations ==================== -->
+
+    <!-- Invitations Overview -->
+    <string name="invitations">Invitations</string>
+    <string name="store_invitation">Store invitation</string>
+    <string name="you_ve_been_invited_to_join">You\'ve been invited to join</string>
+    <string name="invitation_code">Invitation code</string>
+    <string name="create_new_invite">Create invite</string>
+    <string name="employee_email">Employee email</string>
+    <string name="generate_invite">Generate invite</string>
+
+    <!-- Invitation Status -->
+    <string name="pending">Pending</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="active">Active</string>
+
+    <!-- Invitation Actions -->
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="share">Share</string>
+    <string name="invite_to">Invite to</string>
+    <string name="sent">Sent</string>
+    <string name="created">Created</string>
+
+    <!-- Invitation Details -->
+    <string name="reject_invite_title">Reject invitation</string>
+    <string name="reject_invite_message">Are you sure you want to reject this invitation?</string>
+    <string name="invites_sent">invites sent</string>
+
+    <!-- Team Members -->
+    <string name="members">members</string>
+    <string name="member">member</string>
+    <string name="search_employees">Search team members…</string>
+    <string name="filter_employees">Filter team</string>
+    <string name="no_employees">No team members</string>
+    <string name="no_employees_yet">No team members yet</string>
+    <string name="add_your_first_employee_to_get_started">Invite your first team member to get started</string>
+
+    <!-- Empty States -->
+    <string name="no_invitations_yet">No invitations yet</string>
+    <string name="no_invitations">No invitations</string>
+    <string name="you_ll_see_team_invitations_here">Team invitations will appear here</string>
+    <string name="no_invites">No invites</string>
+    <string name="create_your_first_invite_to_get_started">Create your first invite to get started</string>
+
+
+    <!-- ==================== Products & Inventory ==================== -->
+
+    <!-- Product Management -->
+    <string name="add_new_product">Add product</string>
+    <string name="add_new_products">Add products</string>
+    <string name="add_product">Add product</string>
+    <string name="product_details">Product details</string>
+    <string name="product_id">Product ID</string>
+    <string name="product_image">Product image</string>
+
+    <!-- Product Attributes -->
+    <string name="category">Category</string>
     <string name="category_label">Category</string>
+    <string name="categories">Categories</string>
+    <string name="categories_label">Categories</string>
+    <string name="all_categories">All categories</string>
+    <string name="type">Category</string>
+
+    <string name="brand_name">Brand</string>
     <string name="brand_label">Brand</string>
-    <string name="buying_price_label">Buying Price</string>
-    <string name="selling_price_label">Selling Price</string>
+    <string name="barcode">Barcode</string>
+
+    <!-- Pricing -->
+    <string name="pricing">Pricing</string>
+    <string name="buying_price">Cost price</string>
+    <string name="buying_price_label">Cost price</string>
+    <string name="selling_price">Selling price</string>
+    <string name="selling_price_label">Selling price</string>
+    <string name="profit_per_item">Profit per item</string>
+    <string name="profit_label">Profit per item</string>
+    <string name="l_e">LE</string>
+    <string name="le">LE</string>
+    <string name="sign_le">%s LE</string>
+
+    <!-- Inventory -->
+    <string name="inventory">Inventory</string>
+    <string name="quantity">Quantity</string>
     <string name="quantity_label">Quantity</string>
-    <string name="profit_label">Profit per Item</string>
+    <string name="count">Quantity</string>
+    <string name="in_stock">In stock</string>
+    <string name="added_at">Added:</string>
+    <string name="added_date">Added: %s</string>
 
-    <!-- Validation -->
-    <string name="category_required">Category is required</string>
-    <string name="brand_required">Brand is required</string>
-    <string name="valid_buying_price">Enter valid buying price</string>
-    <string name="valid_selling_price">Enter valid selling price</string>
-    <string name="valid_quantity">Enter valid quantity</string>
-    <string name="please_select_type">Please select a type</string>
-    <string name="please_enter_brand">Please enter brand</string>
-    <string name="invalid_count">Invalid count</string>
-    <string name="invalid_buying_price">Invalid buying price</string>
-    <string name="invalid_selling_price">Invalid selling price</string>
-    <string name="selling_price_must_be_greater">Selling price must be higher than buying price</string>
+    <!-- Stock Status -->
+    <string name="stock_title">Stock</string>
+    <string name="managing_your_inventory">Managing inventory</string>
+    <string name="managing_inventory">Managing inventory</string>
+    <string name="managing_inventory_count">Managing inventory • %d items</string>
+    <string name="items_label">Items</string>
+    <string name="low_stock">Low stock</string>
+    <string name="out_of_stock">Out of stock</string>
+    <string name="product_out_of_stock">Product out of stock</string>
 
-    <!-- Alerts -->
-    <string name="loss_warning_title">Warning</string>
-    <string name="loss_warning_message">Selling price is lower than buying price. You will incur a loss. Continue?</string>
-    <string name="delete_confirmation_title">Delete Product</string>
-    <string name="delete_confirmation_message">Are you sure you want to delete this product? This cannot be undone.</string>
-    <string name="continue_button">Continue</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="delete_button">Delete</string>
+    <!-- Empty States -->
+    <string name="empty_stock">Empty stock</string>
+    <string name="empty_stock_title">No items</string>
+    <string name="no_items_in_stock">No items</string>
+    <string name="empty_stock_subtitle">Add items to get started</string>
+    <string name="add_items_to_get_started">Add items to get started</string>
 
-    <!-- Success -->
+    <!-- Product Actions -->
+    <string name="delete_product">Delete product</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="clear_id">Clear ID</string>
+    <string name="scan">Scan</string>
+    <string name="not_scanned">Not scanned</string>
+    <string name="sold_count">%d sold</string>
+
+
+    <!-- ==================== Sales & Transactions ==================== -->
+    <string name="sell_now">Sell now</string>
+    <string name="sold">Sold</string>
+    <string name="sold_items">Sold items</string>
+    <string name="bills">Bills</string>
+    <string name="returns">Returns</string>
+
+    <!-- Pricing Summary -->
+    <string name="total_is">Total:</string>
+    <string name="before_discount">Before discount:</string>
+    <string name="discount">Discount</string>
+
+
+    <!-- ==================== Expenses ==================== -->
+    <string name="new_expense">New expense</string>
+
+
+    <!-- ==================== QR Tools ==================== -->
+    <string name="qr_generator">QR generator</string>
+    <string name="generate_qrs_pdf">Export PDF</string>
+    <string name="generateqrcodes">Generate QR codes</string>
+    <string name="scancode">Scan code</string>
+
+
+    <!-- ==================== Subscription Plans ==================== -->
+    <string name="choose_your_plan">Choose your plan</string>
+    <string name="select_the_perfect_plan_for_your_business">Select the perfect plan for your business</string>
+    <string name="you_can_upgrade_or_downgrade_your_plan_anytime_from_settings">Upgrade or downgrade anytime in settings</string>
+
+    <string name="free_plan">Free</string>
+    <string name="free_plan_offer">50 products • 100 sales/month</string>
+
+    <string name="silver_plan">Silver</string>
+    <string name="silver_plan_offer">200 products • 500 sales/month</string>
+
+    <string name="gold_plan">Gold</string>
+    <string name="golden_plan_offer">1,000 products • Unlimited sales</string>
+    <string name="popular">POPULAR</string>
+
+    <string name="platinum">Platinum</string>
+    <string name="platinum_plan_offer">Unlimited • Priority support</string>
+
+
+    <!-- ==================== Media & Images ==================== -->
+    <string name="gallary">Gallery</string>
+    <string name="camera">Camera</string>
+
+
+    <!-- ==================== Accessibility & Icons ==================== -->
+    <string name="role_icon">Role icon</string>
+    <string name="owner_icon">Owner icon</string>
+    <string name="employee_icon">Employee icon</string>
+    <string name="lock_icon">Lock icon</string>
+    <string name="email_icon">Email icon</string>
+    <string name="info_icon">Info icon</string>
+    <string name="store_icon">Store icon</string>
+    <string name="password_icon">Password icon</string>
+    <string name="phone_icon">Phone icon</string>
+    <string name="logout_icon">Logout icon</string>
+    <string name="empty_state_image">Empty state illustration</string>
+    <string name="offline_icon">Offline icon</string>
+
+
+    <!-- ==================== Loading States ==================== -->
+    <string name="please_wait">Please wait…</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
+    <string name="saving">Saving…</string>
+    <string name="logging_out">Logging out…</string>
+    <string name="creating_account">Creating your account…</string>
+    <string name="signing_you_in">Signing you in…</string>
+    <string name="signing_in_progress">Signing you in…</string>
+    <string name="signing_in_with_google">Signing in with Google…</string>
+    <string name="connecting_to_google">Connecting to Google…</string>
+    <string name="sending_reset_link">Sending reset link…</string>
+    <string name="creating_your_store">Creating your store…</string>
+    <string name="updating_store">Updating your store…</string>
+
+
+    <!-- ==================== Success Messages ==================== -->
+    <string name="success">Success</string>
+    <string name="login_successful">Login successful</string>
+    <string name="login_success">Signed in successfully</string>
+    <string name="google_signin_successful">Signed in with Google</string>
+    <string name="account_created_successfully">Account created successfully</string>
+    <string name="owner_registered_successfully">Owner registered successfully</string>
+    <string name="register_owner_success">Owner registered successfully</string>
+    <string name="employee_registered_successfully">Employee registered successfully</string>
+    <string name="employee_register_success">Employee registered successfully</string>
+    <string name="logout_successful">Logged out successfully</string>
+    <string name="logout_success">Logged out successfully</string>
+    <string name="store_created_successfully">Store created successfully</string>
+    <string name="invite_accepted">Invitation accepted successfully</string>
+    <string name="invite_rejected">Invitation rejected</string>
     <string name="product_updated_successfully">Product updated successfully</string>
     <string name="product_deleted_successfully">Product deleted successfully</string>
     <string name="added_to_cart">Added to cart</string>
-
-    <!-- Errors -->
-    <string name="error_loading_product">Error loading product: %s</string>
-    <string name="error_updating_product">Error updating product: %s</string>
-    <string name="error_deleting_product">Error deleting product: %s</string>
-    <string name="product_out_of_stock">Product out of stock</string>
-
-    <!-- Stock Status -->
-    <string name="low_stock">Low Stock</string>
-    <string name="out_of_stock">Out of Stock</string>
-
-    <!-- Accessibility -->
-    <string name="back_button">Back</string>
-    <string name="empty_state_image">Empty stock illustration</string>
-    <string name="reset_password_description">Enter your new password below</string>
-    <string name="reset_password_button">Reset Password</string>
-    <string name="google_auth" tools:ignore="TypographyDashes">288889154483-20c80tgrv71541migl3vrt7rq8edb824.apps.googleusercontent.com</string>
+    <string name="password_reset_email_sent">Password reset email sent</string>
+    <string name="email_confirmation_sent">Confirmation email sent. Please check your inbox.</string>
+    <string name="email_change_success_message">Verification email sent. Check your inbox to complete the change.</string>
+    <string name="name_updated_successfully">Name updated successfully</string>
+    <string name="image_uploaded_successfully">Image uploaded successfully</string>
+    <string name="image_removed_successfully">Image removed successfully</string>
 
 
-    <!-- Auth Messages -->
-    <string name="login_successful">Login successful</string>
+    <!-- ==================== Error Messages ==================== -->
+
+    <!-- General Errors -->
+    <string name="unknown_error">Something went wrong</string>
+    <string name="error_generic">Error: %s</string>
+    <string name="error_network">Network error. Please try again.</string>
+
+    <!-- Authentication Errors -->
     <string name="login_failed">Login failed</string>
     <string name="login_error">Login error</string>
     <string name="user_not_found">User not found</string>
-    <string name="google_signin_successful">Google Sign-in successful</string>
-    <string name="google_signin_failed">Google sign-in failed: No user returned</string>
+    <string name="google_signin_failed">Google sign-in failed</string>
     <string name="google_signin_error">Google sign-in error</string>
-    <string name="account_created_successfully">Account created successfully</string>
-    <string name="account_found_error">Account already exists. Please log in instead.</string>
-    <string name="signup_first_error">Please sign up first before logging in.</string>
     <string name="registration_failed">Registration failed</string>
     <string name="registration_error">Registration error</string>
-    <string name="owner_registered_successfully">Owner registered successfully</string>
-    <string name="employee_registered_successfully">Employee registered successfully</string>
-    <string name="employee_registration_failed">Employee registration failed</string>
-    <string name="employee_registration_error">Employee registration error</string>
-    <string name="logout_successful">Logout successful</string>
-    <string name="logout_error">Logout error</string>
-    <string name="please_wait_before_signup">Please wait few seconds before trying again.</string>
-
-    <!-- General -->
-    <string name="unknown_error">An unknown error occurred</string>
-
-    <string name="please_fill_all_fields">Please fill all fields</string>
-    <string name="enter_valid_email">Please enter a valid email</string>
-    <string name="password_requirements_not_met">Password doesn\'t meet the requirements</string>
-    <string name="passwords_do_not_match">Passwords do not match</string>
-    <string name="store_name_too_short">Store name must be at least %1$d characters</string>
-    <string name="enter_valid_phone_number">Please enter a valid phone number</string>
-
-    <!-- Feedback messages -->
-    <string name="login_success">Login successful</string>
-    <string name="wait_before_signup">Please wait %1$d seconds before trying again.</string>
-    <string name="register_owner_success">Owner registered successfully</string>
     <string name="register_failed">Registration failed</string>
     <string name="register_error">Registration error</string>
-    <string name="employee_register_success">Employee registered successfully</string>
+    <string name="employee_registration_failed">Employee registration failed</string>
+    <string name="employee_registration_error">Employee registration error</string>
     <string name="employee_register_failed">Employee registration failed</string>
     <string name="employee_register_error">Employee registration error</string>
-    <string name="logout_success">Logout successful</string>
-    <string name="choose_from_gallery">Choose from Gallery</string>
-    <string name="remove_photo">Remove Photo</string>
-    <string name="cancel">Cancel</string>
-    <string name="change_profile_photo">Change Profile Photo</string>
-    <string name="failed_to_update_photo">Failed to update photo</string>
-    <string name="phone_not_available">Phone number not available</string>
+    <string name="logout_error">Logout error</string>
+    <string name="account_found_error">Account already exists. Please log in.</string>
+    <string name="signup_first_error">Please sign up first</string>
+    <string name="session_not_valid">Your session has expired</string>
+    <string name="please_wait_before_signup">Please wait a few seconds before trying again</string>
+    <string name="wait_before_signup">Please wait %1$d seconds before trying again</string>
+
+    <!-- Form Validation Errors -->
+    <string name="please_fill_all_fields">Please fill all fields</string>
+    <string name="no_changes">No changes to save</string>
+
+    <!-- Email Errors -->
+    <string name="error_email_required">Email is required</string>
+    <string name="email_required">Email is required</string>
+    <string name="error_invalid_email">Invalid email address</string>
+    <string name="invalid_email">Please enter a valid email</string>
+    <string name="enter_valid_email">Please enter a valid email</string>
+    <string name="error_same_email">New email must be different</string>
+    <string name="error_no_email">No email associated with this account</string>
+    <string name="error_email_already_exists">Email already in use</string>
+    <string name="enter_email_first">Please enter your email first</string>
+
+    <!-- Password Errors -->
+    <string name="error_password_required">Password is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="password_too_short">Password must be at least 6 characters</string>
+    <string name="error_wrong_password">Incorrect password</string>
+    <string name="current_password_incorrect">Current password is incorrect</string>
+    <string name="password_requirements_not_met">Password doesn\'t meet requirements</string>
+    <string name="passwords_do_not_match">Passwords don\'t match</string>
+    <string name="error_resetting_password">Error resetting password: %1$s</string>
+
+    <!-- Name Errors -->
     <string name="name_required">Name is required</string>
     <string name="invalid_name">Invalid name</string>
-    <string name="no_changes">No changes to save</string>
-    <string name="edit">Edit</string>
-    <string name="saving">Saving...</string>
-    <string name="logout_title">Logout</string>
-    <string name="logout_message">Are you sure you want to logout?</string>
-    <string name="logging_out">Logging out...</string>
-    <string name="error_reading_image">Error reading image</string>
-    <string name="image_uploaded_successfully">Image uploaded successfully</string>
-    <string name="error_uploading_image">Error uploading image: %1$s</string>
-    <string name="image_removed_successfully">Image removed successfully</string>
-    <string name="error_removing_photo">Error removing photo: %1$s</string>
-    <string name="password_reset_email_sent">Password reset email sent successfully</string>
-    <string name="error_resetting_password">Error resetting password: %1$s</string>
-    <string name="name_updated_successfully">Name updated successfully</string>
     <string name="error_updating_name">Error updating name: %1$s</string>
-    <string name="session_not_valid">The session of the user is not valid</string>
-    <string name="current_password_incorrect">The current password is incorrect</string>
-    <string name="email_confirmation_sent">Email confirmation sent successfully. Please check your new email address.</string>
-    <string name="error_updating_email">Error updating email: %1$s</string>
-    <string name="please_wait_a_moment">Please wait a moment</string>
-    <string name="signing_you_in">Signing you in...</string>
-    <!-- Add these strings to your strings.xml file -->
 
-    <!-- Loading Messages -->
-    <string name="signing_in_progress">Signing you in…</string>
-    <string name="connecting_to_google">Connecting to Google…</string>
-    <string name="sending_reset_link">Sending reset link…</string>
-
-    <!-- Validation Messages -->
-    <string name="email_required">Email is required</string>
-    <string name="password_required">Password is required</string>
-    <string name="invalid_email">Please enter a valid email address</string>
-    <string name="password_too_short">Password must be at least 6 characters</string>
-    <string name="enter_email_first">Please enter your email address first</string>
-    <string name="creating_account">Creating your account...</string>
-    <string name="signing_in_with_google">Signing in with Google...</string>
-    <string name="please_wait">Please wait...</string>
-    <string name="free_plan">Free Plan</string>
-    <string name="free_plan_offer">50 products • 100 sales/month</string>
-    <string name="choose_your_plan">Choose Your Plan</string>
-    <string name="select_the_perfect_plan_for_your_business">Select the perfect plan for your business</string>
-    <string name="silver_plan">Silver Plan</string>
-    <string name="silver_plan_offer">200 products • 500 sales/month</string>
-    <string name="gold_plan">Gold Plan</string>
-    <string name="popular">POPULAR</string>
-    <string name="golden_plan_offer">1000 products • Unlimited sales</string>
-    <string name="platinum">Platinum</string>
-    <string name="platinum_plan_offer">Unlimited • Priority support</string>
-    <string name="you_can_upgrade_or_downgrade_your_plan_anytime_from_settings">You can upgrade or downgrade your plan anytime from settings</string>
-    <string name="creating_your_store">Creating your store...</string>
-    <string name="store_details">Store Details</string>
-    <string name="upload_store_logo">Upload Store Logo</string>
-    <string name="upload">Upload</string>
-    <string name="store_logo">Store Logo</string>
-    <string name="store_created_successfully">Your store created successfully</string>
-        <!-- Existing strings that were already in your code -->
-
-    <!-- New strings I added -->
-    <string name="update_store">Update Store</string>
-    <string name="updating_store">Updating your store...</string>
-
-    <!-- Validation error messages -->
+    <!-- Store Errors -->
     <string name="store_name_required">Store name is required</string>
+    <string name="store_name_too_short">Store name must be at least %1$d characters</string>
     <string name="store_name_min_length">Store name must be at least %d characters</string>
-    <string name="phone_required">Phone number is required</string>
-    <string name="phone_length">Phone number must be %d digits</string>
-    <string name="phone_digits_only">Phone number must contain only digits</string>
     <string name="address_required">Address is required</string>
     <string name="address_min_length">Address must be at least %d characters</string>
-    <string name="inbox">Inbox</string>
-    <string name="logged_in_as">Logged in as</string>
-    <string name="invitations">Invitations</string>
-    <string name="user_profile">User Profile</string>
-    <string name="you_ll_see_team_invitations_here">You\'ll see team invitations here</string>
-    <string name="no_invitations_yet">No Invitations Yet</string>
-    <string name="no_invitations">No invitations</string>
-    <string name="invite_accepted">Invitation accepted successfully</string>
-    <string name="invite_rejected">Invitation rejected</string>
-    <string name="reject_invite_title">Reject Invite</string>
-    <string name="reject_invite_message">Are you sure you want to reject this invite?</string>
-    <string name="reject">Reject</string>
-        <!-- Offline State Strings -->
-        <string name="offline_title">No Internet Connection</string>
-        <string name="offline_description">Oops! It seems you\'re offline. Please check your internet connection and try again.</string>
-        <string name="no_connection">No Connection</string>
-        <string name="retry">Retry Connection</string>
-        <string name="open_settings">Open Settings</string>
-        <string name="offline_help_text">Make sure Wi-Fi or mobile data is turned on</string>
-        <string name="offline_icon">Offline cloud icon</string>
+
+    <!-- Phone Errors -->
+    <string name="phone_required">Phone number is required</string>
+    <string name="phone_length">Phone number must be %d digits</string>
+    <string name="phone_digits_only">Phone must contain only digits</string>
+    <string name="enter_valid_phone_number">Please enter a valid phone number</string>
+    <string name="phone_not_available">Phone number not available</string>
+
+    <!-- Product Errors -->
+    <string name="invalid_product_id">Invalid product ID</string>
+    <string name="product_not_found">Product not found</string>
+    <string name="product_data_not_available">Product data not available</string>
+    <string name="category_required">Category is required</string>
+    <string name="please_select_type">Please select a category</string>
+    <string name="brand_required">Brand is required</string>
+    <string name="please_enter_brand">Please enter brand</string>
+    <string name="valid_buying_price">Enter valid cost price</string>
+    <string name="invalid_buying_price">Invalid cost price</string>
+    <string name="valid_selling_price">Enter valid selling price</string>
+    <string name="invalid_selling_price">Invalid selling price</string>
+    <string name="selling_price_must_be_greater">Selling price must be higher than cost price</string>
+    <string name="valid_quantity">Enter valid quantity</string>
+    <string name="invalid_count">Invalid quantity</string>
+    <string name="error_loading_product">Error loading product: %s</string>
+    <string name="error_updating_product">Error updating product: %s</string>
+    <string name="error_deleting_product">Error deleting product: %s</string>
+
+    <!-- Image Errors -->
+    <string name="failed_to_update_photo">Failed to update photo</string>
+    <string name="error_reading_image">Error reading image</string>
+    <string name="error_uploading_image">Error uploading image: %1$s</string>
+    <string name="error_removing_photo">Error removing photo: %1$s</string>
+    <string name="error_updating_email">Error updating email: %1$s</string>
 
 
+    <!-- ==================== Alerts & Confirmations ==================== -->
 
+    <!-- Product Alerts -->
+    <string name="loss_warning_title">Warning</string>
+    <string name="loss_warning_message">Selling price is lower than cost price. You\'ll incur a loss. Continue anyway?</string>
+    <string name="delete_confirmation_title">Delete product</string>
+    <string name="delete_confirmation_message">Are you sure? This action cannot be undone.</string>
+    <string name="delete_button">Delete</string>
 
-
+    <!-- ==================== Offline State ==================== -->
+    <string name="offline_title">No internet connection</string>
+    <string name="offline_description">Check your connection and try again</string>
+    <string name="no_connection">No connection</string>
+    <string name="retry">Retry</string>
+    <string name="open_settings">Open settings</string>
+    <string name="offline_help_text">Make sure Wi-Fi or mobile data is turned on</string>
+    <string name="inactive">Inactive</string>
 </resources>

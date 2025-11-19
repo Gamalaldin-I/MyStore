@@ -4,196 +4,186 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/nav_border">
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:background="@color/background_dark"
+        android:padding="16dp">
 
-        <!-- Header Icon -->
+        <!-- Header Section -->
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/inviteIcon"
-            android:layout_width="60dp"
-            app:riv_corner_radius="50dp"
-            android:layout_height="60dp"
-            android:src="@drawable/oc_invite"
-            android:scaleType="centerCrop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/delete_shadow"
             android:backgroundTint="@color/primary_accent_blue"
-            android:contentDescription="Invitation icon"
+            android:contentDescription="Invitation"
+            android:scaleType="centerCrop"
+            android:src="@drawable/oc_invite"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="50dp" />
 
-        <!-- Title -->
         <TextView
             android:id="@+id/titleText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Store Invitation"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
+            android:layout_marginStart="12dp"
             android:fontFamily="sans-serif-medium"
-            android:layout_marginStart="16dp"
+            android:text="@string/store_invitation"
+            android:textColor="#3B81F4"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/inviteIcon"
             app:layout_constraintTop_toTopOf="@id/inviteIcon" />
 
-        <!-- Subtitle -->
         <TextView
             android:id="@+id/subtitleText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="You've been invited to join"
-            android:textSize="13sp"
-            android:textColor="@color/text_tertiary"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="2dp"
+            android:text="@string/you_ve_been_invited_to_join"
+            android:textColor="@color/border_dark"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/inviteIcon"
             app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-        <!-- Store Info Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/storeInfoCard"
+        <!-- Store Info Section -->
+        <LinearLayout
+            android:id="@+id/storeInfoSection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/inviteIcon">
 
+            <!-- Store Name -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <!-- Store Name Row -->
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="Store"
+                    android:src="@drawable/nav_store"
+                    app:tint="@color/text_tertiary" />
+
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/nav_store"
-                        android:contentDescription="Store icon"
-                        app:tint="@color/text_tertiary" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
+                        android:text="@string/store"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="10sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Store Name"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_tertiary" />
-
-                        <TextView
-                            android:id="@+id/storeName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Htop Store"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- Date Row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="16dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_calender"
-                        android:contentDescription="Calendar icon"
-                        app:tint="@color/text_tertiary" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/storeName"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sent at"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_tertiary" />
-
-                        <TextView
-                            android:id="@+id/createdAt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="20-7-2025"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_primary"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Htop Store"
+                        android:textColor="@color/action_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+            <!-- Date -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="Date"
+                    android:src="@drawable/ic_calender"
+                    app:tint="@color/text_tertiary" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sent"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/createdAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20-7-2025"
+                        android:textColor="@color/action_primary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <!-- Code Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/codeInput"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Confirmation Code"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="16dp"
+            android:hint="@string/invitation_code"
             app:boxStrokeColor="@color/input_border_focus"
-            app:hintTextColor="@color/text_tertiary"
-            app:placeholderTextColor="@color/text_secondary"
-            app:startIconDrawable="@drawable/ic_key"
-            app:startIconTint="@color/text_tertiary"
-            app:helperText="Enter the invitation code you received"
+            app:endIconDrawable="@drawable/icon_copy"
+            app:endIconMode="custom"
+            app:endIconTint="@color/text_tertiary"
+            app:helperText="Enter the code you received"
             app:helperTextTextColor="@color/text_tertiary"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
+            app:hintTextColor="@color/text_tertiary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/storeInfoCard">
+            app:layout_constraintTop_toBottomOf="@id/storeInfoSection"
+            app:startIconDrawable="@drawable/ic_key"
+            app:startIconTint="@color/text_tertiary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/codeEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/text_primary"
                 android:fontFamily="monospace"
+                android:inputType="textNoSuggestions"
                 android:maxLength="20"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@color/action_primary"
+                android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,51 +192,49 @@
             android:id="@+id/actionButtons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:gravity="end"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/codeInput">
 
-            <!-- Reject Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/rejectBtn"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                android:text="Reject"
+                android:text="@string/reject"
                 android:textColor="@color/action_danger"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:strokeColor="@color/action_danger"
-                app:strokeWidth="1dp"
-                app:cornerRadius="12dp"
+                android:textSize="14sp"
+                app:cornerRadius="10dp"
                 app:icon="@drawable/ic_close"
-                app:iconTint="@color/action_danger"
                 app:iconGravity="textStart"
-                app:iconSize="20dp" />
+                app:iconSize="18dp"
+                app:iconTint="@color/action_danger"
+                app:strokeColor="@color/action_danger"
+                app:strokeWidth="1dp" />
 
-            <!-- Accept Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acceptBtn"
-                style="@style/Widget.Material3.Button"
+                style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Accept"
-                android:textSize="15sp"
-                android:textStyle="bold"
                 android:backgroundTint="@color/primary_accent_blue"
-                app:cornerRadius="12dp"
+                android:text="@string/accept"
+                android:textSize="14sp"
+                app:cornerRadius="10dp"
                 app:icon="@drawable/ic_check"
                 app:iconGravity="textStart"
-                app:iconSize="20dp" />
+                app:iconSize="18dp" />
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
+
+

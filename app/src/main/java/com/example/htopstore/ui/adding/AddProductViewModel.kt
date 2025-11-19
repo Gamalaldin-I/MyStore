@@ -60,7 +60,6 @@ class AddProductViewModel @Inject constructor(
     }
 
     fun validateAndSaveProduct(
-        context: Context,
         category: String,
         brand: String,
         buyingPrice: String,
@@ -87,8 +86,9 @@ class AddProductViewModel @Inject constructor(
                         sellingPrice = sellingPrice.toDouble(),
                         count = count.toInt(),
                         soldCount = 0,
-                        lastUpdate = DateHelper.getTimeStampMilliSecond(),
-                        storeId =""
+                        lastUpdate = DateHelper.getCurrentTimestampTz(),
+                        storeId ="",
+                        deleted = false
                     )
 
                     saveProduct(product)
@@ -142,7 +142,7 @@ class AddProductViewModel @Inject constructor(
                 _validationMessage.value = "Quantity must be greater than 0"
                 return false
             }
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             _validationMessage.value = "Invalid quantity format"
             return false
         }
@@ -153,7 +153,7 @@ class AddProductViewModel @Inject constructor(
                 _validationMessage.value = "Buying price must be greater than 0"
                 return false
             }
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             _validationMessage.value = "Invalid buying price format"
             return false
         }
@@ -170,7 +170,7 @@ class AddProductViewModel @Inject constructor(
                 _validationMessage.value = "Selling price must be greater than buying price"
                 return false
             }
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             _validationMessage.value = "Invalid selling price format"
             return false
         }
@@ -210,14 +210,15 @@ class AddProductViewModel @Inject constructor(
     private suspend fun saveProduct(product: Product) {
         withContext(Dispatchers.IO) {
             try {
-                addNewProductUseCase(product)
+                val (bool,msg) = addNewProductUseCase(product)
                 withContext(Dispatchers.Main) {
                     _uiState.value = _uiState.value?.copy(
                         isLoading = false,
-                        productSaved = true,
-                        shouldClearForm = true
+                        productSaved = bool,
+                        shouldClearForm = bool
                     )
                 }
+                _validationMessage.postValue(msg)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _validationMessage.value = "Error saving product: ${e.message}"

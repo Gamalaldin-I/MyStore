@@ -13,7 +13,6 @@ import com.example.domain.model.Product
 import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.model.category.UserRoles
-import com.example.domain.repo.AuthRepo
 import com.example.domain.repo.ProductRepo
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
@@ -29,7 +28,6 @@ import com.example.domain.useCase.profile.ChangeProfileImageUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.UpdateNameUseCase
 import com.example.domain.useCase.sales.SellUseCase
-import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,7 +52,6 @@ class MainViewModel @Inject constructor(
     getProfitByDayUseCase: GetProfitByDayUseCase,
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
-    private val authRepo: AuthRepo,
     private val productRepo:ProductRepo,
     private val changeProfileImageUseCase:ChangeProfileImageUseCase,
     private val removeProfileImageUseCase: RemoveProfileImageUseCase
@@ -120,17 +117,11 @@ class MainViewModel @Inject constructor(
             _message.postValue(msg)
     }
     }
-
-
-    //val employeeStatus = authRepo.employeeStatus.asLiveData()
-
-    fun startListening(){
-        if(pref.getRole()!= Constants.OWNER_ROLE){
-        //authRepo.listenToEmployee()
+    fun fetchProductsFromRemote(){
+        viewModelScope.launch{
+        val msg = productRepo.fetchProductsFromRemoteIntoLocal()
+            _message.postValue(msg)
         }
-    }
-    fun startListenForProducts(){
-      //  productRepo.listenToRemoteChanges(viewModelScope)
     }
 
 
@@ -150,7 +141,7 @@ class MainViewModel @Inject constructor(
     fun getProfileImage():String{
         return pref.getProfileImage().toString()
     }
-    fun changePhoto(uri:Uri,onResult: () -> Unit){
+    fun changePhoto(uri:Uri){
         viewModelScope.launch(Dispatchers.IO){
             changeProfileImageUseCase(uri){
                 success, msg ->

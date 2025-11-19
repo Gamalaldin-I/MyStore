@@ -3,12 +3,14 @@ package com.example.htopstore.util.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getString
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.User
-import com.example.domain.model.category.UserRoles
+import com.example.domain.util.Constants
+import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.R
 import com.example.htopstore.databinding.StaffMemberCardBinding
@@ -39,13 +41,20 @@ class EmployeeAdapter(
             employeeEmail.text = employee.email ?: "No email"
 
             // Role
-            val role = UserRoles.entries.find { it.role == employee.role }
-            employeeRole.text = role?.roleName ?: "Unknown Role"
+            employeeRole.apply {
+                text = when(employee.role){
+                    OWNER_ROLE -> getString(context,R.string.owner)
+                    Constants.ADMIN_ROLE -> getString(context,R.string.manager)
+                    Constants.CASHIER_ROLE -> "Cashier"
+                    else -> getString(context,R.string.employee)
+                }
+            }
 
             // Status chip
             val isHired = employee.status == STATUS_HIRED
             empStatusChip.apply {
-                text = if (isHired) "Active" else "Inactive"
+                val context = this.context
+                text = if (isHired) getString(context,R.string.active) else getString(context,R.string.inactive)
                 setChipBackgroundColorResource(
                     if (isHired) R.color.primary_accent_blue else R.color.alert_critical
                 )

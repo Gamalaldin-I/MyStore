@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityStaffBinding
 import com.example.htopstore.util.BaseActivity
 import com.example.htopstore.util.adapters.ViewPagerAdapter
@@ -25,9 +26,8 @@ class StaffActivity : BaseActivity(){
     private companion object {
         const val EMPLOYEES_TAB_INDEX = 0
         const val INVITATIONS_TAB_INDEX = 1
-        const val TAB_EMPLOYEES = "Employees"
-        const val TAB_INVITATIONS = "Invitations"
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +69,8 @@ class StaffActivity : BaseActivity(){
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
-                EMPLOYEES_TAB_INDEX -> TAB_EMPLOYEES
-                INVITATIONS_TAB_INDEX -> TAB_INVITATIONS
+                EMPLOYEES_TAB_INDEX -> getString(R.string.members)
+                INVITATIONS_TAB_INDEX -> getString(R.string.invitations)
                 else -> ""
             }
         }.attach()

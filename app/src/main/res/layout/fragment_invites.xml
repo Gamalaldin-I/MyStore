@@ -30,7 +30,7 @@
                     android:id="@+id/inviteCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 invites sent"
+                    android:text="@string/invites_sent"
                     android:textSize="14sp"
                     android:textColor="@color/text_tertiary"
                     android:layout_marginTop="4dp" />
@@ -59,7 +59,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Create New Invite"
+                    android:text="@string/create_new_invite"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary_accent_blue"
@@ -69,7 +69,7 @@
                     android:id="@+id/emailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Employee Email"
+                    android:hint="@string/employee_email"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:startIconDrawable="@android:drawable/ic_dialog_email"
                     app:endIconMode="clear_text"
@@ -92,7 +92,7 @@
                     android:id="@+id/createInvite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Generate Invite"
+                    android:text="@string/generate_invite"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_add"
                     app:iconGravity="textStart"
@@ -124,7 +124,7 @@
                     android:id="@+id/chipAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="All"
+                    android:text="@string/all"
                     android:checked="true"
                     style="@style/Widget.Material3.Chip.Filter" />
 
@@ -132,21 +132,21 @@
                     android:id="@+id/chipPending"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pending"
+                    android:text="@string/pending"
                     style="@style/Widget.Material3.Chip.Filter" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipAccepted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Accepted"
+                    android:text="@string/accepted"
                     style="@style/Widget.Material3.Chip.Filter" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRejected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rejected"
+                    android:text="@string/rejected"
                     style="@style/Widget.Material3.Chip.Filter" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -185,12 +185,12 @@
                 android:layout_height="120dp"
                 android:src="@drawable/ic_empty"
                 android:alpha="0.5"
-                android:contentDescription="No invites" />
+                android:contentDescription="@string/no_invites" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No invitations yet"
+                android:text="@string/no_invitations_yet"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
@@ -199,7 +199,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create your first invite to get started"
+                android:text="@string/create_your_first_invite_to_get_started"
                 android:textSize="14sp"
                 android:textColor="@color/primary_accent_blue"
                 android:layout_marginTop="4dp" />

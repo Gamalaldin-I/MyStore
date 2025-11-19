@@ -24,7 +24,8 @@ object Mapper {
             buyingPrice = buyingPrice,
             sellingPrice = sellingPrice,
             lastUpdate = lastUpdate,
-            storeId = ""
+            storeId = "",
+            deleted = false
         )
     }
 

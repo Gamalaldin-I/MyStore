@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 object DateHelper {
      const val DAY ="Day"
@@ -72,4 +73,12 @@ object DateHelper {
         val date = Date()
         return formatter.format(date)
     }
+
+    fun getCurrentTimestampTz(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH)
+        formatter.timeZone = TimeZone.getTimeZone("UTC")
+        val date = Date()
+        return formatter.format(date)
+    }
+
 }

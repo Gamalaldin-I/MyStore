@@ -4,7 +4,7 @@ import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
 
 class AddProductUseCase(private val productRepo: ProductRepo){
-    suspend operator fun invoke(product: Product){
-        productRepo.addProduct(product )
+    suspend operator fun invoke(product: Product):Pair<Boolean,String>{
+        return productRepo.addProduct(product )
     }
 }

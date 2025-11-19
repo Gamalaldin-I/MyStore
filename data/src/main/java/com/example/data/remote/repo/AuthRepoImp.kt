@@ -7,6 +7,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.repo.AuthRepo
 import com.example.domain.util.Constants
+import com.example.domain.util.Constants.EMAIL_PROVIDER
 import com.example.domain.util.Constants.GOOGLE_PROVIDER
 import com.example.domain.util.Constants.STATUS_PENDING
 import io.github.jan.supabase.SupabaseClient
@@ -165,11 +166,11 @@ class AuthRepoImp
                 photoUrl = sharedPref.getProfileImage(),
                 status = STATUS_PENDING,
                 storeId = "",
-                name = sharedPref.getUserName()
+                name = sharedPref.getUserName(),
+                provider = GOOGLE_PROVIDER
             )
 
         //save the user
-        newUser.provider = GOOGLE_PROVIDER
         supabase.from(USERS).insert(newUser)
         sharedPref.saveUser(newUser)
         sharedPref.setLoginFromGoogle()
@@ -226,9 +227,9 @@ class AuthRepoImp
                         photoUrl = "",
                         status = STATUS_PENDING,
                         storeId ="",
-                        email = email
+                        email = email,
+                        provider = EMAIL_PROVIDER
                     )
-                    newUser.provider = Constants.EMAIL_PROVIDER
 
                     supabase.from(USERS).insert(newUser)
                     sharedPref.saveUser(newUser)
