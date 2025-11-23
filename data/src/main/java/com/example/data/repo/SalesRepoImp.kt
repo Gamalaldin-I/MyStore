@@ -1,11 +1,11 @@
 package com.example.data.repo
 
-import com.example.data.Mapper.toBillEntity
+import android.util.Log
 import com.example.data.Mapper.toSoldProduct
 import com.example.data.Mapper.toSoldProductEntity
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
-import com.example.domain.model.Bill
+import com.example.data.remote.repo.RemoteSalesRepo
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.SalesRepo
 import kotlinx.coroutines.Dispatchers
@@ -13,26 +13,49 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class SalesRepoImp(private val salesDao: SalesDao,private val productDao: ProductDao): SalesRepo {
+class SalesRepoImp(private val salesDao: SalesDao,
+                   private val productDao: ProductDao,
+                   private val remote: RemoteSalesRepo
+): SalesRepo {
+
     override suspend fun getReturns(): List<SoldProduct> =
         withContext(Dispatchers.IO) {
             salesDao.getReturns().map { it.toSoldProduct() }
         }
 
 
-    override suspend fun insertBill(bill: Bill) {
-        salesDao.insertBill(bill.toBillEntity())
 
-    }
 
-    override suspend fun insertBillDetails(soldProducts: List<SoldProduct>){
-        val sold = soldProducts.map { it.toSoldProductEntity() }
-        salesDao.insertBillDetails(sold)
-    }
+    override suspend fun insertBillDetails(soldProducts: List<SoldProduct>)=
+        remote.addSales(soldProducts){
+        val sales = soldProducts.map { it.toSoldProductEntity() }
+            Log.d("DEBUGRESR","${sales[0]}")
+        salesDao.insertBillDetails(sales)
+        }
+
 
     override suspend fun updateQuantityAvailableAfterSell(
         productId: String, count: Int ) =
-        productDao.updateProductQuantityAfterSale(productId, count)
+        remote.updateQuantityAvailable(productId,count,true){
+            productDao.updateProductQuantityAfterSale(productId, count)
+        }
+
+    override suspend fun fetchSalesFromRemote(): Pair<Boolean, String> {
+        return remote.fetchSales { sales->
+            sales.forEach { soldProduct ->
+                Log.d("FETCH_PROCESS","soldProduct  $soldProduct")
+                if(soldProduct.deleted){
+                    salesDao.deleteSaleById(soldProduct.id)
+                }else{
+                    salesDao.insertSoldProduct(soldProduct.toSoldProductEntity())
+                    Log.d("FETCH_PROCESS","inserted  $soldProduct")
+
+                }
+
+            }
+        }
+
+    }
 
     override suspend fun getAllSalesAndReturns(): List<SoldProduct> =
         withContext(Dispatchers.IO) {

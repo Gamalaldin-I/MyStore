@@ -12,5 +12,7 @@ data class Expense(
     val amount: Double,
     val paymentMethod: String,
     var lastUpdate: String,
-    val storeId:String
+    val storeId:String,
+    val userId:String,
+    var deleted:Boolean,
 )

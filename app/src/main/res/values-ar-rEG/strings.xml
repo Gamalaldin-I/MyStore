@@ -490,5 +490,6 @@
     <string name="please_fill_all_fields">يُرجى ملء جميع الحقول</string>
     <string name="no_changes">لا توجد تغييرات للحفظ</string>
     <string name="inactive">Inactive</string>
+    <string name="business_day">Business Day</string>
 </resources>
 

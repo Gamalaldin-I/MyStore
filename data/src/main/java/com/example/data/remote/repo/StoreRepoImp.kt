@@ -70,7 +70,7 @@ class StoreRepoImp(
             }
         } catch (e: Exception) {
             Log.e(TAG, "createStore error: ${e.message}", e)
-            Pair(false, e.message ?: "Failed to create store")
+            Pair(false, "Failed to create store")
         }
     }
 
@@ -104,7 +104,7 @@ class StoreRepoImp(
             }
         } catch (e: Exception) {
             Log.e(TAG, "updateStore error: ${e.message}", e)
-            Pair(false, e.message ?: "Failed to update store")
+            Pair(false,"Failed to update store")
         }
     }
 

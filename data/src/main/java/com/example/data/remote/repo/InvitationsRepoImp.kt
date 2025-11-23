@@ -215,7 +215,7 @@ class InvitationsRepoImp(
         📞 Phone: $storePhone
         📧 Reply to this email for any questions
         
-        We recommend completing your registration within the next 48 hours to ensure uninterrupted access to all features.
+        We recommend completing your registration within the next 24 hours to ensure uninterrupted access to all features.
         
         We look forward to welcoming you aboard and building success together!
         

@@ -1,6 +1,7 @@
 package com.example.htopstore.util.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -57,7 +58,8 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
             }
             root.setOnClickListener {
                 root.animateStockItem {
-                onProductClick(item)
+                    Log.d("DEBUGRES1", "Item clicked: $item")
+                    onProductClick(item)
                 }
             }
         }

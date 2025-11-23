@@ -73,7 +73,8 @@ object Mapper {
             sellingPrice = this.sellingPrice,
             sellDate = this.sellDate,
             sellTime = this.sellTime,
-            lastUpdate = this.lastUpdate
+            lastUpdate = this.lastUpdate,
+            deleted = false
         )
     }
 
@@ -101,7 +102,9 @@ object Mapper {
             amount = this.amount,
             paymentMethod = this.paymentMethod,
             lastUpdate = this.lastUpdate,
-            storeId = ""
+            storeId = "",
+            userId = "",
+            deleted = false
         )
     }
 
@@ -125,7 +128,9 @@ object Mapper {
             time = this.time,
             totalCash = this.totalCash,
             lastUpdate = this.lastUpdate,
-            storeId = ""
+            storeId = "",
+            userId = "",
+            deleted = false
         )
     }
 

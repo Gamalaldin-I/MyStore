@@ -1,6 +1,7 @@
 package com.example.htopstore.util.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class BillDetailsAdapter(
         // Click only if it's a sold item
         holder.binding.root.setOnLongClickListener {
             onItemClicked(item)
+            Log.d("DEBUGRES", "Item clicked: $item")
             true
         }
 

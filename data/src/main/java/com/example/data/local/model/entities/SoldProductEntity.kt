@@ -12,15 +12,9 @@ import androidx.room.PrimaryKey
             entity = BillEntity::class,
             parentColumns = ["saleId"],
             childColumns = ["saleId"],
-            onDelete = ForeignKey.SET_NULL
-        ),
-        ForeignKey(
-            entity = ProductEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["productId"],
-            onDelete = ForeignKey.SET_NULL)
-    ],
-    indices = [Index("saleId"), Index("productId")]
+            onDelete = ForeignKey.CASCADE
+        )],
+    indices = [Index("saleId")]
 )
 data class SoldProductEntity(
     @PrimaryKey

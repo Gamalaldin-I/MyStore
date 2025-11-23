@@ -11,7 +11,6 @@ import com.example.htopstore.R
 import com.example.htopstore.databinding.ArchiveItemBinding
 
 class ArchiveRecycler(private val data: ArrayList<Product>,
-                      val onDelete:(p: Product, position:Int)->Unit,
                       private val onClick:(p: Product)->Unit) :
     RecyclerView.Adapter<ArchiveRecycler.pHolder>(){
         val categoryTrans = GetCategoryLocalName()
@@ -36,9 +35,6 @@ class ArchiveRecycler(private val data: ArrayList<Product>,
             .into(b.productImg)
         b.productBrand.text = d.name
         b.productType.text = categoryTrans(d.category)
-        b.delete.setOnClickListener {
-            onDelete(d,position)
-        }
         holder.itemView.setOnClickListener {
             onClick(d)
         }

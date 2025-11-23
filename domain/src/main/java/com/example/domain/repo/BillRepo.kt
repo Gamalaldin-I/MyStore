@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface BillRepo {
     //for sales details for bills Activity
-     fun getBillsByDate(date: String): Flow<List<Bill>>
+    suspend fun insertBill(bill: Bill): Pair<Boolean, String>
+    suspend fun fetchBills():Pair<Boolean,String>
+    fun getBillsByDate(date: String): Flow<List<Bill>>
     suspend fun getAllBills(): List<Bill>
     suspend fun getBillsByDateRange(since: String, to:String): List<Bill>
     suspend fun getBillsTillDate(date: String): List<Bill>

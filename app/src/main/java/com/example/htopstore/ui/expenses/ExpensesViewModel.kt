@@ -50,7 +50,9 @@ class ExpensesViewModel @Inject constructor(
             paymentMethod = method,
             description = description,
             storeId = "",
-            lastUpdate = "${DateHelper.getCurrentDate()}/${DateHelper.getCurrentTime()}")
+            lastUpdate = DateHelper.getCurrentTimestampTz(),
+            userId = "",
+            deleted = false)
         insertNewExpense(expense, onFinished)
     }
 

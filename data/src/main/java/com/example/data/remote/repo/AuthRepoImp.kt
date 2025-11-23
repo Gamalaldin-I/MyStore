@@ -73,7 +73,7 @@ class AuthRepoImp
 
             } catch (e: Exception) {
                 Log.e(TAG, "login error: ${e.message}", e)
-                withContext(Dispatchers.Main) { onResult(false, e.message ?: "Login error") }
+                withContext(Dispatchers.Main) { onResult(false,"Login error") }
             }
         }
     }
@@ -180,7 +180,7 @@ class AuthRepoImp
     } catch (e: Exception)
     {
         Log.e("SignWithGoogle", "Error: ${e.message}", e)
-        Pair(false, e.message ?: "Google sign-in error")
+        Pair(false,"Google sign-in error")
     }
 }
 
@@ -244,7 +244,7 @@ class AuthRepoImp
 
             } catch (e: Exception) {
                 Log.e(TAG, "registerOwner error: ${e.message}", e)
-                withContext(Dispatchers.Main) { onResult(false, e.message ?: "Registration error") }
+                withContext(Dispatchers.Main) { onResult(false,"Registration error, check your connection") }
             }
         }
     }
@@ -262,7 +262,7 @@ class AuthRepoImp
                  Pair(true,"Logout successful")
             } catch (e: Exception) {
                 Log.e(TAG, "logout error: ${e.message}", e)
-                 Pair(false, e.message ?: "Logout error")
+                 Pair(false,"Logout error check your connection")
             }
         }
     }

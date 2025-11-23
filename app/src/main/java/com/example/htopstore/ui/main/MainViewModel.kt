@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val productRepo:ProductRepo,
     private val changeProfileImageUseCase:ChangeProfileImageUseCase,
-    private val removeProfileImageUseCase: RemoveProfileImageUseCase
+    private val removeProfileImageUseCase: RemoveProfileImageUseCase,
 
 ): ViewModel(){
     private val _message = MutableLiveData<String>()
@@ -87,9 +87,14 @@ class MainViewModel @Inject constructor(
                 onFinish()
             }
         }
-    fun sell(cartList: List<CartProduct>, discount: Int = 0,onFinish: () -> Unit) {
+    fun sell(cartList: List<CartProduct>, discount: Int = 0, onProgress :(Float)->Unit,onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            sellUseCase(cartList, discount)
+            sellUseCase(cartList = cartList,
+                        discount =discount){
+                progress->
+                onProgress(progress)
+
+            }
             withContext(Dispatchers.Main){
                 onFinish()
             }
@@ -156,6 +161,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+
     private val messageToStringRes = mapOf(
             "Error reading image" to R.string.error_reading_image,
             "Image uploaded successfully" to R.string.image_uploaded_successfully,

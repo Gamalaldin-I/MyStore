@@ -11,7 +11,6 @@ import com.example.domain.model.Product
 import com.example.htopstore.databinding.FragmentArchiveBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.ArchiveRecycler
-import com.example.htopstore.util.helper.DialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,47 +33,27 @@ class ArchiveFragment : Fragment() {
         binding = FragmentArchiveBinding.inflate(layoutInflater)
         val view = binding.root
         adapter = ArchiveRecycler(
-            data = products,
-            onDelete = { it, pos -> showAlertDialog(it, pos) })
-        { it ->
+            data = products){ it ->
             goToProductActivity(it.id)
         }
         binding.archiveRecycler.adapter = adapter
-        getUnAvailableProducts()
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getUnAvailableProducts()
     }
 
     private fun getUnAvailableProducts(){
         vm.archive.observe(viewLifecycleOwner){
             if(it.isEmpty()){
-                binding.emptyHint.visibility = View.VISIBLE
+                binding.emptyLayout.visibility = View.VISIBLE
             }
             else{
-                binding.emptyHint.visibility = View.GONE
+                binding.emptyLayout.visibility = View.GONE
 
                 adapter.updateTheList(it as ArrayList<Product>)
-            }
-        }
-    }
-
-    private fun showAlertDialog(p: Product, pos:Int){
-        DialogBuilder.showAlertDialog(
-            context = requireContext(),
-            message = "Are you sure you want to delete this product?",
-            title = "Delete Product",
-            positiveButton = "Yes",
-            negativeButton = "No",
-            onConfirm = { onDelete(p,pos)  },
-            onCancel = {  }
-        )
-    }
-
-    private fun onDelete(p: Product, pos: Int){
-        vm.deleteProduct(p.id,p.productImage){
-            adapter.updateAfterDeletion(pos)
-            products.remove(p)
-            if(products.isEmpty()){
-                binding.emptyHint.visibility = View.VISIBLE
             }
         }
     }
@@ -85,6 +64,4 @@ class ArchiveFragment : Fragment() {
         startActivity(intent)
 
     }
-
-
 }

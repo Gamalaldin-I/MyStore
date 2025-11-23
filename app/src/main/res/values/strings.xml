@@ -492,4 +492,5 @@
     <string name="open_settings">Open settings</string>
     <string name="offline_help_text">Make sure Wi-Fi or mobile data is turned on</string>
     <string name="inactive">Inactive</string>
+    <string name="business_day">Business Day</string>
 </resources>

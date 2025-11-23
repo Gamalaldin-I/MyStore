@@ -15,4 +15,5 @@ data class SoldProduct(
     val price: Double,
     val sellingPrice: Double,
     var lastUpdate: String,
+    var deleted: Boolean
     )

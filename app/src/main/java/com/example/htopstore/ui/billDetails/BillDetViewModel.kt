@@ -49,8 +49,15 @@ class BillDetViewModel @Inject constructor(
         onEmptyProducts: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            _message.postValue(insertReturnProduct(soldProduct, returnRequest))
-            getBill(soldProduct.billId!!) { onEmptyProducts() }
+            when (val result = insertReturnProduct(soldProduct, returnRequest)) {
+                is ReturnProductUseCase.ReturnResult.Error -> {
+                    _message.postValue("Return failed: ${result.message}")
+                }
+                is ReturnProductUseCase.ReturnResult.Success -> {
+                    _message.postValue(result.message)
+                    getBill(soldProduct.billId!!) { onEmptyProducts() }
+                }
+            }
         }
     }
 

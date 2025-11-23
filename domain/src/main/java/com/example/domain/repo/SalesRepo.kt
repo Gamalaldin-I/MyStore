@@ -1,15 +1,14 @@
 package com.example.domain.repo
 
-import com.example.domain.model.Bill
 import com.example.domain.model.SoldProduct
 import kotlinx.coroutines.flow.Flow
 
 interface SalesRepo{
 
     //for sell operation
-    suspend fun insertBill(bill: Bill)
-    suspend fun insertBillDetails(soldProducts: List<SoldProduct>)
-    suspend fun updateQuantityAvailableAfterSell(productId: String, count:Int)
+    suspend fun insertBillDetails(soldProducts: List<SoldProduct>):Pair<Boolean,String>
+    suspend fun updateQuantityAvailableAfterSell(productId: String, count:Int):Pair<Boolean,String>
+    suspend fun fetchSalesFromRemote():Pair<Boolean,String>
 
     //for sales and returns views
     suspend fun getAllSalesAndReturns(): List<SoldProduct>
