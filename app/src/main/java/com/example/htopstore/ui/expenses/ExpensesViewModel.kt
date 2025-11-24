@@ -37,7 +37,7 @@ class ExpensesViewModel @Inject constructor(
         description: String,
         onFinished: () -> Unit
     ){
-        if (amount.isEmpty() || category.isEmpty() || method.isEmpty() || description.isEmpty()){
+        if (amount.isEmpty() || category.isEmpty() || method.isEmpty()){
             _message.value = "Please fill all fields"
             return
         }

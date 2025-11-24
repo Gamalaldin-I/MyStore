@@ -13,37 +13,54 @@ import kotlinx.coroutines.withContext
 
 /**
  * Use case for processing sales transactions
- * Handles cart checkout, stock updates, and bill generation
+ * Handles cart checkout, stock updates, and bill generation with automatic retry mechanism
  */
 class SellUseCase(
     private val salesRepo: SalesRepo,
     private val billRepo: BillRepo
-) {
-
+){
     companion object {
         private const val TAG = "SellUseCase"
         private const val MIN_VALID_QUANTITY = 1
     }
 
-
+    /**
+     * Process a sale transaction
+     * @param cartList List of products in cart
+     * @param discount Discount percentage (0-100)
+     * @param billInserted Whether bill was already inserted (for retry operations)
+     * @param soldItemsInserted Whether sold items were already inserted (for retry operations)
+     * @param onProgress Progress callback (0-100)
+     * @throws IllegalArgumentException if inputs are invalid
+     * @throws Exception if transaction fails (will create pending action for retry)
+     */
     suspend operator fun invoke(
+        id:Int = -1,
         cartList: List<CartProduct>,
         discount: Int = 0,
-        onProgress: (Float) -> Unit
-    ) {
-        // Validate inputs
+        billInserted: Boolean = false,
+        soldItemsInserted: Boolean = false,
+        onProgress: (Float) -> Unit,
+    ):String{
+        // Validate inputs early
         validateInputs(cartList, discount)
 
-        // Initialize operation
+        // Initialize transaction metadata
         val operationId = IdGenerator.generateTimestampedId()
         val currentDate = DateHelper.getCurrentDate()
         val currentTime = DateHelper.getCurrentTime()
         val timestamp = DateHelper.getCurrentTimestampTz()
+        val actionId = id
 
         Log.d(TAG, "Starting sale: ID=$operationId, Items=${cartList.size}, Discount=$discount%")
 
+        // Track completion state for retry logic
+        var isBillInserted = billInserted
+        var areSoldItemsInserted = soldItemsInserted
+        var updatedCartList = cartList
+
         try {
-            // Process cart items
+            // Step 1: Process cart items and update stock
             val soldProducts = processCartItems(
                 cartList = cartList,
                 operationId = operationId,
@@ -54,13 +71,15 @@ class SellUseCase(
                 onProgress = onProgress
             )
 
-            // Validate processed items
+            // Update the cart list with stock update status
+            updatedCartList = cartList.map { it.copy() }
+
             if (soldProducts.isEmpty()) {
                 Log.w(TAG, "No valid products to sell after processing")
-                return
+                return "No valid products to sell after processing"
             }
-
-            // Calculate total and create bill
+            onProgress(80f)
+            // Step 2: Calculate total and create bill
             val totalCash = calculateTotal(soldProducts)
             val bill = createBill(
                 id = operationId,
@@ -70,15 +89,59 @@ class SellUseCase(
                 discount = discount,
                 timestamp = timestamp
             )
+            // Step 3: Insert bill if not already done
+            if (!isBillInserted) {
+                isBillInserted = billRepo.insertBill(bill).first
+                if (!isBillInserted) {
+                    throw Exception("Failed to insert bill")
+                }
+                onProgress(90f)
+                Log.d(TAG, "Bill inserted: ID=${bill.id}")
+            }
 
-            // Persist to database
-            saveSaleTransaction(bill, soldProducts)
+            // Step 4: Insert sold items if not already done
+            if (!areSoldItemsInserted) {
+                areSoldItemsInserted = salesRepo.insertBillDetails(soldProducts).first
+                if (!areSoldItemsInserted) {
+                    throw Exception("Failed to insert sold items")
+                }
+                onProgress(100f)
+                Log.d(TAG, "Sold items inserted: Count=${soldProducts.size}")
+            }
 
-            Log.d(TAG, "Sale completed: ${soldProducts.size} items, Total=$totalCash")
+            Log.d(TAG, "Sale completed successfully: ${soldProducts.size} items, Total=$totalCash")
+            if(actionId!=-1){
+                salesRepo.updatePendingSellAction(
+                    id = actionId,
+                    status = "Approved",
+                    soldProducts = updatedCartList,
+                    discount = discount,
+                    billInserted = true,
+                    soldItemsInserted = true
+                )
+            }
+            return "Sale completed successfully"
 
         } catch (e: Exception) {
-            Log.e(TAG, "Sale failed: ${e.message}", e)
-            throw e
+            Log.e(TAG, "Sale failed at stage - Bill inserted: $isBillInserted, Items inserted: $areSoldItemsInserted", e)
+
+            // Create pending action for retry
+            try {
+                salesRepo.insertPendingSellAction(
+                    cartList = updatedCartList,
+                    discount = discount,
+                    billInserted = isBillInserted,
+                    soldItemsInserted = areSoldItemsInserted
+                )
+                Log.d(TAG, "Pending action created for retry - Operation ID: $operationId")
+                return "Pending action created for retry"
+            } catch (pendingException: Exception) {
+                Log.e(TAG, "Critical: Failed to create pending action", pendingException)
+                // Re-throw original exception with context
+                throw Exception("Sale failed and could not create retry action: ${e.message}", e)
+            }
+            // Re-throw original exception
+            throw Exception("Sale transaction failed: ${e.message}", e)
         }
     }
 
@@ -90,6 +153,9 @@ class SellUseCase(
         }
         require(discount in 0..100) {
             "Discount must be between 0 and 100"
+        }
+        require(cartList.all { it.sellingCount >= MIN_VALID_QUANTITY }) {
+            "All cart items must have valid quantities (>= $MIN_VALID_QUANTITY)"
         }
     }
 
@@ -124,15 +190,17 @@ class SellUseCase(
                 timestamp = timestamp
             )
 
-            // Update stock
-            updateStock(item)
+            // Update stock if not already updated
+            if (!item.stockUpdated) {
+                updateStock(item)
+            }
 
             soldProducts.add(soldProduct)
 
-            // Update progress
+            // Update progress on main thread
             val progress = (index + 1) * progressStep
-            withContext(Dispatchers.Main){
-            onProgress(progress)
+            withContext(Dispatchers.Main) {
+                onProgress(progress)
             }
 
             Log.d(TAG, "Processed: ${item.name} x${item.sellingCount} = ${soldProduct.sellingPrice * item.sellingCount}")
@@ -173,19 +241,16 @@ class SellUseCase(
 
     private fun calculatePriceAfterDiscount(price: Double, discountPercent: Int): Double {
         if (discountPercent <= 0) return price
-
-        val discountAmount = (price * discountPercent) / 100.0
-        return price - discountAmount
+        return price * (1 - discountPercent / 100.0)
     }
 
     private suspend fun updateStock(item: CartProduct) {
-        try {
-            salesRepo.updateQuantityAvailableAfterSell(item.id, item.sellingCount)
-            Log.d(TAG, "Stock updated: ${item.name} (-${item.sellingCount})")
-        } catch (e: Exception) {
-            Log.e(TAG, "Stock update failed: ${item.name} - ${e.message}")
-            throw Exception("Failed to update stock for ${item.name}", e)
-        }
+        val result = salesRepo.updateQuantityAvailableAfterSell(item.id, item.sellingCount).first
+       /* if (!result) {
+            throw Exception("Failed to update stock for ${item.name}: $msg")
+        }*/
+        item.stockUpdated = result
+        Log.d(TAG, "Stock updated: ${item.name} (-${item.sellingCount})")
     }
 
     private fun calculateTotal(soldProducts: List<SoldProduct>): Double {
@@ -211,16 +276,5 @@ class SellUseCase(
             userId = "",
             deleted = false
         )
-    }
-
-    private suspend fun saveSaleTransaction(bill: Bill, soldProducts: List<SoldProduct>) {
-        try {
-            billRepo.insertBill(bill)
-            salesRepo.insertBillDetails(soldProducts)
-            Log.d(TAG, "Transaction saved: Bill=${bill.id}, Items=${soldProducts.size}")
-        } catch (e: Exception) {
-            Log.e(TAG, "Transaction save failed: ${e.message}")
-            throw Exception("Failed to save transaction", e)
-        }
     }
 }

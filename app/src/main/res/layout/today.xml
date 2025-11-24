@@ -2,148 +2,131 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Today"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/text_primary"
-            />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
         android:background="@drawable/bg_day_brief"
-        android:layout_margin ="20dp"
+        android:gravity="center"
         android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/grid_sales"
+                app:tint="#3EB2E0" />
+
+            <TextView
+                android:id="@+id/salesValue"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/grid_sales"
-                    app:tint="#3EB2E0" />
+                android:layout_height="wrap_content"
+                android:text="500"
+                android:textColor="@color/revenue_positive"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/salesValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="500"
-                    android:textColor="@color/revenue_positive"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Sales value"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Sales value"
-                    android:textSize="12sp" />
-            </LinearLayout>
         <View
             android:layout_width="2dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_day_brief"
-            android:backgroundTint="@color/neutral_100"
-            android:layout_height="match_parent"/>
+            android:backgroundTint="@color/neutral_100" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/grid_outcome"
+                app:tint="#DA6E26" />
+
+            <TextView
+                android:id="@+id/expenses"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/grid_outcome"
-                    app:tint="#DA6E26" />
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="@color/revenue_negative"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/expenses"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textColor="@color/revenue_negative"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Expenses"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Expenses"
-                    android:textSize="12sp" />
-            </LinearLayout>
         <View
             android:layout_width="2dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_day_brief"
-            android:backgroundTint="@color/neutral_100"
-            android:layout_height="match_parent"/>
+            android:backgroundTint="@color/neutral_100" />
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/trading"
+                app:tint="#14BD89" />
+
+
+            <TextView
+                android:id="@+id/profit"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/trading"
-                    app:tint="#14BD89" />
+                android:layout_height="wrap_content"
+                android:text="150"
+                android:textColor="@color/profit_margin"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-
-                <TextView
-                    android:id="@+id/profit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="150"
-                    android:textColor="@color/profit_margin"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Net profit"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Net profit"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

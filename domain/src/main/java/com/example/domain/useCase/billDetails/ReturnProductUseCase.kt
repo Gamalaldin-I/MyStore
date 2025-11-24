@@ -45,7 +45,7 @@ class ReturnProductUseCase(
             ReturnResult.Error(e.message ?: "Invalid return request")
         } catch (e: Exception) {
             Log.e(TAG, "Return failed: ${e.message}", e)
-            ReturnResult.Error("Failed to process return: ${e.message}")
+            ReturnResult.Error("Failed to process return")
         }
     }
 

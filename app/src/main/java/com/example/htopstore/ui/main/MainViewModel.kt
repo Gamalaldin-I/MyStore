@@ -89,12 +89,13 @@ class MainViewModel @Inject constructor(
         }
     fun sell(cartList: List<CartProduct>, discount: Int = 0, onProgress :(Float)->Unit,onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            sellUseCase(cartList = cartList,
+            val msg = sellUseCase(cartList = cartList,
                         discount =discount){
                 progress->
                 onProgress(progress)
 
             }
+            _message.postValue(msg)
             withContext(Dispatchers.Main){
                 onFinish()
             }

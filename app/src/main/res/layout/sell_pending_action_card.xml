@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/neutral_300"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Product Image (Compact) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageContainer"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/neutral_300"
+            app:strokeWidth="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/firstProductImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/product_image"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Main Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageContainer"
+            app:layout_constraintEnd_toStartOf="@id/statusBadge"
+            app:layout_constraintStart_toEndOf="@id/imageContainer"
+            app:layout_constraintTop_toTopOf="@id/imageContainer">
+
+            <!-- Transaction Title -->
+            <TextView
+                android:id="@+id/pendingSellTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/sale_transaction"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Sale #TX-20240115-001" />
+
+            <!-- Total Amount -->
+            <TextView
+                android:id="@+id/totalCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/default_amount"
+                android:textColor="@color/primary_accent_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pendingSellTitle"
+                tools:text="$1,234.56" />
+
+            <!-- Status Row -->
+            <LinearLayout
+                android:id="@+id/statusRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalCash">
+
+                <!-- Bill Status Chip -->
+                <ImageView
+                    android:id="@+id/billStatusIcon"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="@color/success"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/isBillInserted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/bill_saved"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp"
+                    tools:text="Bill" />
+
+                <!-- Separator -->
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="@color/neutral_300" />
+
+                <!-- Items Status Chip -->
+                <ImageView
+                    android:id="@+id/itemsStatusIcon"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_error_circle"
+                    app:tint="@color/error"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/areSoldItemsInserted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/items_saved"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp"
+                    tools:text="Items" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Status Badge (Compact) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/statusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/warning"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:text="@string/pending"
+                android:textAllCaps="true"
+                android:textColor="@color/warning"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="PENDING" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Compact Progress Bar -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:indeterminate="false"
+            android:progress="65"
+            app:indicatorColor="@color/primary_accent_blue"
+            app:trackColor="@color/neutral_200"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageContainer"
+            tools:progress="65" />
+
+        <!-- Progress Label (Inline with buttons) -->
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/syncing_progress"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Syncing 65%" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

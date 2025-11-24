@@ -5,7 +5,9 @@ import com.example.data.Mapper.toSoldProduct
 import com.example.data.Mapper.toSoldProductEntity
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
+import com.example.data.local.model.entities.PendingSellAction
 import com.example.data.remote.repo.RemoteSalesRepo
+import com.example.domain.model.CartProduct
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.SalesRepo
 import kotlinx.coroutines.Dispatchers
@@ -57,10 +59,39 @@ class SalesRepoImp(private val salesDao: SalesDao,
 
     }
 
+    override suspend fun insertPendingSellAction(
+        cartList: List<CartProduct>,
+        discount: Int,
+        billInserted: Boolean,
+        progress: Int,
+        soldItemsInserted: Boolean
+    ) {
+        val newSellPendingAction = PendingSellAction(
+            id = 0,
+            soldProducts=cartList,
+            discount = discount,
+            progress = progress,
+            billInserted= billInserted,
+            soldItemsInserted=soldItemsInserted
+        )
+    }
+
+    override suspend fun updatePendingSellAction(
+        id: Int,
+        status: String,
+        soldProducts: List<CartProduct>,
+        discount: Int,
+        progress: Int,
+        billInserted: Boolean,
+        soldItemsInserted: Boolean
+    ) {
+        TODO("Not yet implemented")
+    }
+
+
     override suspend fun getAllSalesAndReturns(): List<SoldProduct> =
-        withContext(Dispatchers.IO) {
             salesDao.getAllSalesAndReturns().map { it.toSoldProduct() }
-        }
+
 
     override suspend fun getSoldOnly(): List<SoldProduct> =
         withContext(Dispatchers.IO) {

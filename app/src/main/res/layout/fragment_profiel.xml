@@ -18,8 +18,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:layout_marginTop="20dp"
             app:title="Profile"
-            app:titleTextColor="@color/text_primary" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,28 +40,44 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Profile Header -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profileHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:paddingVertical="24dp"
-                android:background="@android:color/white"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_profile">
 
-                <!-- Avatar -->
+                <!-- Pattern Overlay -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/patternOverlay"
+                    android:layout_width="0dp"
+                    app:riv_corner_radius="10dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/pattern"
+                    android:alpha="0.15"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Avatar Container -->
                 <FrameLayout
+                    android:id="@+id/avatarContainer"
                     android:layout_width="100dp"
-                    android:layout_height="100dp">
+                    android:layout_marginTop="20dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:cardCornerRadius="50dp"
-                        app:cardElevation="0dp"
                         app:strokeWidth="2dp"
-                        app:strokeColor="#E0E0E0">
+                        app:strokeColor="@color/action_primary"
+                        app:cardElevation="0dp">
 
                         <ImageView
                             android:id="@+id/profileAvatar"
@@ -66,10 +86,8 @@
                             android:src="@drawable/icon_profile"
                             android:scaleType="centerCrop"
                             android:contentDescription="@string/profile_picture" />
-
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Small Edit Icon -->
                     <ImageView
                         android:id="@+id/editPhotoBtn"
                         android:layout_width="32dp"
@@ -81,9 +99,7 @@
                         android:padding="6dp"
                         app:tint="@android:color/white"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:contentDescription="@string/change_photo" />
-
+                        android:focusable="true" />
                 </FrameLayout>
 
                 <!-- Name -->
@@ -95,8 +111,10 @@
                     android:text="Hataba"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    tools:ignore="HardcodedText" />
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/avatarContainer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <!-- Email -->
                 <TextView
@@ -106,24 +124,32 @@
                     android:layout_marginTop="4dp"
                     android:text="john.doe@example.com"
                     android:textSize="14sp"
-                    android:textColor="@color/text_tertiary" />
+                    android:textColor="@color/white_60"
+                    app:layout_constraintTop_toBottomOf="@id/profileNameTV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <!-- Role -->
                 <TextView
                     android:id="@+id/roleChip"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/employee"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary_accent_blue"
-                    android:textStyle="bold"
+                    android:background="@drawable/chart_bg"
+                    android:backgroundTint="#F6F7F8"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
-                    android:background="@drawable/chip_background"
-                    android:backgroundTint="#E3F2FD" />
+                    android:text="@string/employee"
+                    android:textColor="@color/action_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profileEmailTV" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Personal Information -->
             <LinearLayout

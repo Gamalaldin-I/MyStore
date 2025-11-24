@@ -244,7 +244,6 @@ class CartFragment : Fragment() {
     }
 
     private fun onSaleComplete() {
-        showToast("Sale completed successfully!")
         clearCart()
     }
 

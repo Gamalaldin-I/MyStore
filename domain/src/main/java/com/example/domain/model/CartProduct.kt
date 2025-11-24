@@ -8,5 +8,6 @@ data class CartProduct(
     val maxLimitCount:Int,
     val buyingPrice: Double,
     val pricePerOne: Double,
-    var sellingCount: Int = 1
+    var sellingCount: Int = 1,
+    var stockUpdated: Boolean = false
 )

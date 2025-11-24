@@ -12,44 +12,62 @@
         android:layout_height="match_parent">
 
         <!-- App Bar -->
+
+        <!-- Professional Header with Material Design 3 -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="0dp"
-            android:paddingVertical="8dp"
-            android:layout_margin="10dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:paddingEnd="16dp"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
+                    android:id="@+id/toolbarTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Shopping Cart"
-                    android:textColor="@color/onSurface"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:text="Shopping cart"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:letterSpacing="0.01"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/clearCartBtn" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/clearCartBtn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:src="@drawable/icon_delete"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/error"
-                    android:contentDescription="Clear cart" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    app:icon="@drawable/icon_delete"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/button_danger"
+                    app:cornerRadius="24dp"
+                    app:backgroundTint="#2CEDB1BF"
+                    app:elevation="2dp"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:contentDescription="@string/staff" />
 
-            </LinearLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.MaterialToolbar>
-
         <!-- Content Container -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/operationView"

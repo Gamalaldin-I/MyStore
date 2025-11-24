@@ -8,22 +8,18 @@
     tools:context=".ui.main.ArchiveFragment">
 
     <!-- Header -->
+
+    <!-- Professional Header with Material Design 3 -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Archive"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginStart="4dp" />
-    </com.google.android.material.appbar.MaterialToolbar>
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        app:title="Archive"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
