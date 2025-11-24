@@ -1,13 +1,15 @@
 package com.example.data.repo
 
 import android.util.Log
+import com.example.data.Mapper.toPendingSellAction
+import com.example.data.Mapper.toPendingSellActionEntity
 import com.example.data.Mapper.toSoldProduct
 import com.example.data.Mapper.toSoldProductEntity
+import com.example.data.local.dao.PendingSellDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
-import com.example.data.local.model.entities.PendingSellAction
 import com.example.data.remote.repo.RemoteSalesRepo
-import com.example.domain.model.CartProduct
+import com.example.domain.model.PendingSellAction
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.SalesRepo
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +19,8 @@ import kotlinx.coroutines.withContext
 
 class SalesRepoImp(private val salesDao: SalesDao,
                    private val productDao: ProductDao,
-                   private val remote: RemoteSalesRepo
+                   private val remote: RemoteSalesRepo,
+                   private val pendingSellDao:PendingSellDao
 ): SalesRepo {
 
     override suspend fun getReturns(): List<SoldProduct> =
@@ -60,32 +63,27 @@ class SalesRepoImp(private val salesDao: SalesDao,
     }
 
     override suspend fun insertPendingSellAction(
-        cartList: List<CartProduct>,
-        discount: Int,
-        billInserted: Boolean,
-        progress: Int,
-        soldItemsInserted: Boolean
+        pendingSellAction: PendingSellAction
     ) {
-        val newSellPendingAction = PendingSellAction(
-            id = 0,
-            soldProducts=cartList,
-            discount = discount,
-            progress = progress,
-            billInserted= billInserted,
-            soldItemsInserted=soldItemsInserted
-        )
+        pendingSellDao.insertPendingSellAction(pendingSellAction.toPendingSellActionEntity())
     }
 
     override suspend fun updatePendingSellAction(
-        id: Int,
-        status: String,
-        soldProducts: List<CartProduct>,
-        discount: Int,
-        progress: Int,
-        billInserted: Boolean,
-        soldItemsInserted: Boolean
-    ) {
-        TODO("Not yet implemented")
+        updatedSellPendingAction: PendingSellAction
+    ){
+        pendingSellDao.updatePendingSellAction(updatedSellPendingAction.toPendingSellActionEntity())
+    }
+
+    override fun getAllPendingAndApproved(): Flow<List<PendingSellAction>> {
+        return pendingSellDao.getAllPendingSellActions().map { list->
+            list.map {
+                it.toPendingSellAction()
+            }
+            }
+    }
+
+    override suspend fun deleteApprovedSellAction() {
+        pendingSellDao.deleteAllApprovedActions()
     }
 
 

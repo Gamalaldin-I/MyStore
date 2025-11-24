@@ -30,13 +30,14 @@ class BillDetViewModel @Inject constructor(
     val message: LiveData<String> = _message
 
 
-    fun getBill(id: String, onEmptyProducts: () -> Unit) {
+    fun getBill(id: String, confirmDeleteIfEmpty:()-> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val sellOp = getBillDetails(id)
             withContext(Dispatchers.Main) {
                 _sellOp.value = sellOp
                 if (sellOp.soldProducts.isEmpty()) {
-                    deleteBill(id) { onEmptyProducts() }
+                    //show alert Dialog to delete bill
+                    confirmDeleteIfEmpty()
                 }
             }
         }
@@ -46,7 +47,7 @@ class BillDetViewModel @Inject constructor(
     fun onClick(
         soldProduct: SoldProduct,
         returnRequest: SoldProduct,
-        onEmptyProducts: () -> Unit
+        confirmDeleteIfEmpty: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = insertReturnProduct(soldProduct, returnRequest)) {
@@ -55,7 +56,7 @@ class BillDetViewModel @Inject constructor(
                 }
                 is ReturnProductUseCase.ReturnResult.Success -> {
                     _message.postValue(result.message)
-                    getBill(soldProduct.billId!!) { onEmptyProducts() }
+                    getBill(soldProduct.billId!!) { confirmDeleteIfEmpty() }
                 }
             }
         }

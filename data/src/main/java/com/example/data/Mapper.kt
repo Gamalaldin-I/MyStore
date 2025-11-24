@@ -2,12 +2,14 @@ package com.example.data
 
 import com.example.data.local.model.entities.BillEntity
 import com.example.data.local.model.entities.ExpenseEntity
+import com.example.data.local.model.entities.PendingSellActionEntity
 import com.example.data.local.model.entities.ProductEntity
 import com.example.data.local.model.entities.SoldProductEntity
 import com.example.data.local.model.relation.SalesOpsWithDetails
 import com.example.domain.model.Bill
 import com.example.domain.model.BillWithDetails
 import com.example.domain.model.Expense
+import com.example.domain.model.PendingSellAction
 import com.example.domain.model.Product
 import com.example.domain.model.SoldProduct
 
@@ -138,6 +140,30 @@ object Mapper {
         return BillWithDetails(
             bill = this.saleOp.toBill(),
             soldProducts = this.soldProducts.map { it.toSoldProduct() }
+        )
+    }
+    fun PendingSellAction.toPendingSellActionEntity(): PendingSellActionEntity{
+        return PendingSellActionEntity(
+            id = this.id,
+            status = this.status,
+            soldProducts = this.soldProducts,
+            discount = this.discount,
+            progress = this.progress,
+            billId = this.billId,
+            billInserted = this.billInserted,
+            soldItemsInserted = this.soldItemsInserted,
+        )
+    }
+    fun PendingSellActionEntity.toPendingSellAction(): PendingSellAction{
+        return PendingSellAction(
+            id = this.id,
+            status = this.status,
+            soldProducts = this.soldProducts,
+            discount = this.discount,
+            progress = this.progress,
+            billId = this.billId,
+            billInserted = this.billInserted,
+            soldItemsInserted = this.soldItemsInserted,
         )
     }
 

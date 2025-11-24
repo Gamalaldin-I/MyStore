@@ -3,6 +3,7 @@ package com.example.htopstore.di.module
 import android.content.Context
 import androidx.room.Room
 import com.example.data.local.dao.ExpenseDao
+import com.example.data.local.dao.PendingSellDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
 import com.example.data.local.roomDb.AppDataBase
@@ -37,6 +38,11 @@ object DataModule {
     @Singleton
     fun provideProductDao(db: AppDataBase): ProductDao {
         return db.productDao()
+    }
+    @Provides
+    @Singleton
+    fun providePendingSellActionDao(db: AppDataBase): PendingSellDao {
+        return db.pendingSellDao()
     }
     @Provides
     @Singleton

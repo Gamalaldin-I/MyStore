@@ -20,6 +20,7 @@ import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
+import com.example.htopstore.ui.pendingSell.PendingSellActionsActivity
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.ui.staff.StaffActivity
@@ -138,7 +139,7 @@ class HomeFragment : Fragment() {
         // Handle View All button for Top 5 Sales
         binding.viewAllSales.setOnClickListener {
             // Navigate to full sales list or analytics
-            startActivity(Intent(requireContext(), AnalysisActivity::class.java))
+            startActivity(Intent(requireContext(), PendingSellActionsActivity::class.java))
         }
     }
 

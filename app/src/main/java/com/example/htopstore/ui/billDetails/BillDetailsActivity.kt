@@ -12,9 +12,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.domain.model.BillWithDetails
 import com.example.domain.model.SoldProduct
 import com.example.domain.util.DateHelper
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityBillDetailsBinding
 import com.example.htopstore.util.adapters.BillDetailsAdapter
 import com.example.htopstore.util.helper.DialogBuilder
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
 import java.util.Locale
@@ -76,10 +78,18 @@ class BillDetailsActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.getBill(id, onEmptyProducts = {
-            Toast.makeText(this, "Bill has been deleted", Toast.LENGTH_SHORT).show()
-            finish()
-        })
+        viewModel.getBill(id) {
+            showDeleteConfirmationDialog{
+                viewModel.deleteBill(id){
+                    Toast.makeText(
+                        this,
+                        "Bill deleted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+            }
+        }
     }
 
     private fun setupAdapter() {
@@ -252,5 +262,17 @@ class BillDetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         DialogBuilder.hideReturnDialog()
+    }
+
+    private fun showDeleteConfirmationDialog(onConfirm: () -> Unit) {
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Delete Bill")
+            .setMessage("Are you sure you want to delete this bill?")
+            .setPositiveButton("Delete") { _, _ ->
+                onConfirm()
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
     }
 }

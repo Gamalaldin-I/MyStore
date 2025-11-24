@@ -36,6 +36,10 @@ class BillRepoImp(
             }
         }
     }
+
+    override suspend fun isBillFoundInDB(id: String): Boolean =
+        remote.isTheBillFound(id)
+
     override  fun getBillsByDate(date: String): Flow<List<Bill>> =
         salesDao.getBillsByDate(date).map{ list ->
             list.map { it.toBill() }

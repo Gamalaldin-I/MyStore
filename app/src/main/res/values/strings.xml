@@ -500,8 +500,6 @@
     <string name="items_saved">Items</string>
     <string name="approved">Completed</string>
     <string name="syncing_progress">Syncing…</string>
-    <?xml version="1.0" encoding="utf-8"?>
-        <!-- Plurals for pending sales count -->
         <plurals name="pending_sales_count">
             <item quantity="one">%d Pending Sale</item>
             <item quantity="other">%d Pending Sales</item>
@@ -523,4 +521,8 @@
         <string name="no_pending_desc">All sales have been successfully synced</string>
         <string name="back_to_sales">Back to Sales</string>
         <string name="loading_pending">Loading pending sales...</string>
+    <!-- Pending Sell Actions -->
+    <string name="all_items_synced_successfully">All items synced successfully!</string>
+
+
 </resources>

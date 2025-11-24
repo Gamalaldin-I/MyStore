@@ -160,4 +160,9 @@ class RemoteBillRepo(
             Pair(false, "Error deleting bill")
         }
     }
+    suspend fun isTheBillFound(id:String): Boolean{
+        val bill= supabase.from(BILLS).select{
+            filter { eq("id", id) }}.decodeSingle<Bill>()
+        return bill.storeId.isNotEmpty()
+    }
 }

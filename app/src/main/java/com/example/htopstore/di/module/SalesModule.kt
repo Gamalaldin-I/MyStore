@@ -5,6 +5,8 @@ import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.RemoteSalesRepo
 import com.example.domain.repo.BillRepo
 import com.example.domain.repo.SalesRepo
+import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
+import com.example.domain.useCase.pendingSellActions.UpdateSellActionUseCase
 import com.example.domain.useCase.sales.GetAllSalesAndReturnsByDateUseCase
 import com.example.domain.useCase.sales.GetAllSalesAndReturnsUseCase
 import com.example.domain.useCase.sales.GetReturnsByDateUseCase
@@ -32,8 +34,10 @@ object SalesModule {
 
 
     @Provides
-    fun provideSellUseCase(salesRepo: SalesRepo,billRepo: BillRepo): SellUseCase {
-        return SellUseCase(salesRepo,billRepo)
+    fun provideSellUseCase(salesRepo: SalesRepo,billRepo: BillRepo,
+                           addSellPendingActionUseCase: AddSellPendingActionUseCase,
+                           updateSellActionUseCase: UpdateSellActionUseCase): SellUseCase {
+        return SellUseCase(salesRepo,billRepo,addSellPendingActionUseCase,updateSellActionUseCase)
     }
     @Provides
     fun provideGetAllSalesAndReturnsUseCase(salesRepo: SalesRepo): GetAllSalesAndReturnsUseCase {

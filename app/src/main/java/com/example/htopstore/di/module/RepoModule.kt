@@ -1,5 +1,6 @@
 package com.example.htopstore.di.module
 import com.example.data.local.dao.ExpenseDao
+import com.example.data.local.dao.PendingSellDao
 import com.example.data.local.dao.ProductDao
 import com.example.data.local.dao.SalesDao
 import com.example.data.remote.repo.RemoteBillRepo
@@ -33,8 +34,8 @@ object RepoModule {
     }
 
     @Provides
-    fun provideSalesRepo(productDao: ProductDao,salesDao: SalesDao,remote: RemoteSalesRepo): SalesRepo {
-        return SalesRepoImp(salesDao,productDao,remote)
+    fun provideSalesRepo(productDao: ProductDao,salesDao: SalesDao,remote: RemoteSalesRepo,pendingDao: PendingSellDao): SalesRepo {
+        return SalesRepoImp(salesDao,productDao,remote,pendingDao)
     }
 
     @Provides

@@ -41,9 +41,7 @@ class RemoteSalesRepo(
         }
 
         return try {
-            sales.forEach { soldProduct ->
-                supabase.from(SALES).insert(soldProduct)
-            }
+            supabase.from(SALES).insert(sales)
             onResult()
             Pair(true, "Sales added successfully")
 
