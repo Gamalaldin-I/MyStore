@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.PendingSellAction
-import com.example.domain.util.Constants
 import com.example.htopstore.R
 import com.example.htopstore.databinding.SellPendingActionCardBinding
 
@@ -65,12 +64,6 @@ class SellPendingRecycler :
 
         // Status Badge
         binding.status.text = data.status
-        val statusColor = if (data.status == Constants.STATUS_PENDING) {
-            holder.itemView.context.getColor(R.color.process_pending)
-        } else {
-            holder.itemView.context.getColor(R.color.action_primary)
-        }
-        binding.status.setTextColor(statusColor)
 
         // First Product Image
         Glide.with(binding.firstProductImage.context)

@@ -9,6 +9,7 @@ import com.example.domain.repo.BillRepo
 import com.example.domain.repo.SalesRepo
 import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
 import com.example.domain.useCase.pendingSellActions.UpdateSellActionUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import kotlinx.coroutines.Dispatchers
@@ -155,7 +156,7 @@ class SellUseCase(
             }
 
             Log.d(TAG, "Sale completed successfully. total=$total")
-            return "Sale completed successfully"
+            return Constants.SELL_COMPLETED_MESSAGE
 
         } catch (e: Exception) {
             Log.e(TAG, "Sale failed (billInserted=$localBillInserted, itemsInserted=$localSoldItemsInserted)", e)
@@ -178,7 +179,7 @@ class SellUseCase(
                 }
 
                 Log.d(TAG, "PendingSellAction created for op=$operationId progress=${pending.progress}")
-                return "Pending action created for retry"
+                return Constants.SELL_FAILED_MESSAGE
             } catch (pendingEx: Exception) {
                 Log.e(TAG, "Failed to create pending action", pendingEx)
                 // if even creating pending fails, rethrow original error for caller to handle

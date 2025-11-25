@@ -24,6 +24,10 @@ object Constants {
     const val GOOGLE_PROVIDER = "Google"
     const val EMAIL_PROVIDER = "Email"
 
+    const val SELL_COMPLETED_MESSAGE = "Sale completed successfully"
+    const val SELL_FAILED_MESSAGE = "Pending action created for retry later"
+
+
 
 
 

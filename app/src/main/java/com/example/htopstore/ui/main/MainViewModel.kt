@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
     val totalSales: LiveData<Double?> = getTotalSalesByDateUseCase(todayDate).asLiveData()
 
 
-    fun sell(cartList: List<CartProduct>, discount: Int = 0, onProgress :(Float)->Unit,onFinish: () -> Unit) {
+    fun sell(cartList: List<CartProduct>,discount: Int = 0, onProgress :(Float)->Unit,onFinish: (msg:String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val msg = sellUseCase(cartList = cartList,
                         discount =discount){
@@ -63,13 +63,11 @@ class MainViewModel @Inject constructor(
                 onProgress(progress)
 
             }
-            _message.postValue(msg)
             withContext(Dispatchers.Main){
-                onFinish()
+                onFinish(msg)
             }
         }
     }
-
 
 
     fun fetchProductsFromRemote(){

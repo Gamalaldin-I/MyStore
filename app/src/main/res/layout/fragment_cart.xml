@@ -12,8 +12,6 @@
         android:layout_height="match_parent">
 
         <!-- App Bar -->
-
-        <!-- Professional Header with Material Design 3 -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -68,6 +66,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.MaterialToolbar>
+
         <!-- Content Container -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/operationView"
@@ -85,7 +84,7 @@
                 android:layout_marginTop="6dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp"
-                android:backgroundTint="@color/primary"
+                android:backgroundTint="@color/action_primary"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -136,6 +135,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="12"
+                                android:layout_marginStart="10dp"
                                 android:textColor="@color/white"
                                 android:textSize="32sp"
                                 android:textStyle="bold"
@@ -216,7 +216,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="false"
-                android:paddingBottom="16dp"
+                android:paddingBottom="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@id/summaryCard"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -225,15 +225,15 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/cart_item" />
 
-            <!-- Summary Card -->
+            <!-- Enhanced Summary Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/summaryCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="12dp"
                 android:backgroundTint="@color/surface"
                 app:layout_constraintBottom_toBottomOf="parent">
 
@@ -241,15 +241,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <!-- Subtotal Row -->
                     <LinearLayout
-                        android:id="@+id/discountLo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:paddingVertical="4dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -257,7 +257,7 @@
                             android:layout_weight="1"
                             android:text="Subtotal"
                             android:textColor="@color/onSurfaceVariant"
-                            android:textSize="15sp" />
+                             />
 
                         <TextView
                             android:id="@+id/totalValue"
@@ -265,7 +265,6 @@
                             android:layout_height="wrap_content"
                             android:text="1200.00"
                             android:textColor="@color/onSurface"
-                            android:textSize="16sp"
                             android:textStyle="bold"
                             tools:text="1200.00" />
 
@@ -274,7 +273,8 @@
                             android:layout_height="wrap_content"
                             android:text=" LE"
                             android:textColor="@color/onSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textSize="15sp"
+                            android:layout_marginStart="2dp" />
 
                     </LinearLayout>
 
@@ -282,9 +282,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="3dp"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:paddingVertical="4dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -292,14 +293,14 @@
                             android:layout_weight="1"
                             android:text="Discount"
                             android:textColor="@color/onSurfaceVariant"
-                            android:textSize="15sp" />
+                            />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="- "
                             android:textColor="@color/success"
-                            android:textSize="16sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -308,7 +309,6 @@
                             android:layout_height="wrap_content"
                             android:text="200.00"
                             android:textColor="@color/success"
-                            android:textSize="16sp"
                             android:textStyle="bold"
                             tools:text="180.00" />
 
@@ -317,77 +317,82 @@
                             android:layout_height="wrap_content"
                             android:text=" LE"
                             android:textColor="@color/onSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textSize="15sp"
+                            android:layout_marginStart="2dp" />
 
                     </LinearLayout>
 
                     <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="16dp"
+                        android:layout_height="0.5dp"
+                        android:layout_marginVertical="7dp"
                         android:background="@color/outline" />
 
-                    <!-- Total Row -->
+                    <!-- Total Section -->
                     <LinearLayout
-                        android:id="@+id/footer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Amount"
+                            android:textColor="@color/onSurfaceVariant"
+                            android:alpha="0.8" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal"
+                            android:gravity="bottom">
+
+                            <TextView
+                                android:id="@+id/totalAfter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1000.00"
+                                android:textColor="@color/action_primary"
+                                android:textSize="20sp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginStart="5dp"
+                                android:textStyle="bold"
+                                android:letterSpacing="-0.02"
+                                tools:text="1200.00" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total"
-                                android:textColor="@color/onSurfaceVariant"
-                                android:textSize="14sp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:orientation="horizontal"
-                                android:gravity="bottom">
-
-                                <TextView
-                                    android:id="@+id/totalAfter"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="1000.00"
-                                    android:textColor="@color/action_primary"
-                                    android:textSize="25sp"
-                                    android:textStyle="bold"
-                                    tools:text="1200.00" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text=" LE"
-                                    android:textColor="@color/background_dark"
-                                    android:textSize="16sp"
-                                    android:textStyle="bold"
-                                    android:layout_marginStart="4dp"
-                                    android:layout_marginBottom="6dp" />
-
-                            </LinearLayout>
+                                android:text=" LE"
+                                android:textColor="@color/background_dark"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:layout_marginStart="6dp"
+                                 />
 
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center">
+
+
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/sellNow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="56dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
                             android:text="Complete Sale"
                             android:textAllCaps="false"
-                            android:textSize="16sp"
-                            android:paddingHorizontal="32dp"
                             app:icon="@drawable/ic_check"
                             app:iconGravity="textStart"
                             app:cornerRadius="16dp"
@@ -423,7 +428,6 @@
                 android:contentDescription="Empty cart" />
 
             <TextView
-                android:id="@+id/hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -455,12 +459,12 @@
 
         </LinearLayout>
 
-        <!-- Professional Loading Overlay -->
+        <!-- Enhanced Loading Overlay -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/loadingOverlay"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/action_primary"
+            android:background="#E6000000"
             android:clickable="true"
             android:elevation="20dp"
             android:focusable="true"
@@ -468,16 +472,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:backgroundTint="@color/surface"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="12dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -488,20 +491,20 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="32dp">
+                    android:padding="36dp">
 
-                    <!-- Animated Icon -->
+                    <!-- Animated Icon Container -->
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:backgroundTint="@color/primary_accent_blue"
-                        app:cardCornerRadius="40dp"
-                        app:cardElevation="0dp">
+                        app:cardCornerRadius="48dp"
+                        app:cardElevation="8dp">
 
                         <ImageView
                             android:id="@+id/loadingIcon"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
                             android:layout_gravity="center"
                             android:contentDescription="Processing"
                             android:src="@drawable/ic_check"
@@ -514,48 +517,50 @@
                         android:id="@+id/loadingTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="28dp"
                         android:gravity="center"
                         android:text="Processing Sale"
                         android:textColor="@color/onSurface"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.01" />
 
                     <!-- Subtitle -->
                     <TextView
                         android:id="@+id/loadingSubtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="Updating inventory..."
                         android:textColor="@color/onSurfaceVariant"
-                        android:textSize="14sp" />
+                        android:textSize="15sp"
+                        android:alpha="0.8" />
 
                     <!-- Progress Section -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="32dp"
                         android:orientation="vertical">
 
                         <!-- Progress Bar -->
                         <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/progressBar"
                             android:layout_width="match_parent"
-                            android:layout_height="8dp"
+                            android:layout_height="10dp"
                             android:progress="45"
                             app:indicatorColor="@color/action_primary"
                             app:trackColor="@color/outline"
-                            app:trackCornerRadius="4dp"
-                            app:trackThickness="8dp"
+                            app:trackCornerRadius="5dp"
+                            app:trackThickness="10dp"
                             tools:progress="45" />
 
-                        <!-- Progress Text -->
+                        <!-- Progress Info -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="16dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -566,15 +571,15 @@
                                 android:layout_weight="1"
                                 android:text="Processing items..."
                                 android:textColor="@color/onSurfaceVariant"
-                                android:textSize="13sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/progressPercentage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="45%"
-                                android:textColor="@color/primary"
-                                android:textSize="14sp"
+                                android:textColor="@color/action_primary"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 tools:text="45%" />
 
@@ -587,12 +592,121 @@
                         android:id="@+id/itemCounter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:alpha="0.7"
+                        android:layout_marginTop="20dp"
+                        android:alpha="0.6"
                         android:text="3 of 5 items"
                         android:textColor="@color/onSurfaceVariant"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         tools:text="3 of 5 items" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Success/Error Message Overlay -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#DC000000"
+            android:clickable="true"
+            android:elevation="25dp"
+            android:focusable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/messageCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:backgroundTint="@color/surface"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="40dp">
+
+                    <!-- Success/Error Icon -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/messageIconContainer"
+                        android:backgroundTint="@color/success"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/messageIcon"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Status"
+                            android:src="@drawable/ic_check"
+                            app:tint="@color/white" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Message Title -->
+                    <TextView
+                        android:id="@+id/messageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:text="Success!"
+                        android:textColor="@color/onSurface"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <!-- Message Description -->
+                    <TextView
+                        android:id="@+id/messageDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:text="Sale completed successfully"
+                        android:textColor="@color/onSurfaceVariant"
+                        android:textSize="15sp"
+                        android:alpha="0.8" />
+
+                    <!-- Optional Details -->
+                    <TextView
+                        android:id="@+id/messageDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="5 items sold for 1200.00 LE"
+                        android:textColor="@color/onSurfaceVariant"
+                        android:textSize="13sp"
+                        android:alpha="0.6"
+                        android:visibility="gone" />
+
+                    <!-- Dismiss Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/dismissMessageBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="28dp"
+                        android:text="Done"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:paddingHorizontal="48dp"
+                        app:cornerRadius="16dp"
+                        style="@style/Widget.Material3.Button" />
 
                 </LinearLayout>
 

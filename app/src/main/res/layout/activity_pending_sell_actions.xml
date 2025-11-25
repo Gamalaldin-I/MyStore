@@ -8,6 +8,13 @@
     android:background="@color/background"
     tools:context=".ui.pendingSell.PendingSellActionsActivity">
 
+    <!-- Gradient Background Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/gradient_blue"
+        android:alpha="0.05" />
+
     <!-- App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -20,78 +27,101 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="64dp"
             android:background="@android:color/transparent"
-            app:title="Pending sell actions"
+            app:navigationIcon="@drawable/back_arrow"
+            app:navigationIconTint="@color/primary_light"
+            app:title="Pending Sales"
+            app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             app:titleTextColor="@color/text_primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Main Content -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
 
-
+            <!-- Status Card with Enhanced Design -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/statusCard"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 app:cardBackgroundColor="@color/primary_light"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
-                    android:id="@+id/cardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="15dp">
 
-                    <!-- Header Section -->
+                    <!-- Header Section with Enhanced Layout -->
                     <LinearLayout
-                        android:id="@+id/headerSection"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Icon -->
+                        <!-- Icon Container with Gradient -->
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/iconContainer"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
+                            android:layout_width="50dp"
+                            android:layout_margin="10dp"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/background_surface_dark"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="3dp">
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="6dp">
 
-                            <ImageView
-                                android:id="@+id/headerIcon"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@string/pending"
-                                android:src="@drawable/ic_sync"
-                                app:tint="@color/white" />
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <!-- Pulse Effect Background (behind icon) -->
+                                <View
+                                    android:id="@+id/pulseEffect"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/gradient_green"
+                                    android:alpha="0"
+                                    android:visibility="gone" />
+
+                                <!-- Animated Icon (on top) -->
+                                <ImageView
+                                    android:id="@+id/headerIcon"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/pending"
+                                    android:src="@drawable/ic_sync"
+                                    app:tint="@color/white" />
+
+                            </FrameLayout>
 
                         </com.google.android.material.card.MaterialCardView>
 
-                        <!-- Header Info -->
+                        <!-- Header Info with Enhanced Typography -->
                         <LinearLayout
-                            android:id="@+id/headerInfo"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginEnd="12dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
@@ -101,6 +131,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.01"
                                 android:text="@string/pending_count"
                                 android:textColor="@color/text_primary"
                                 android:textStyle="bold"
@@ -110,52 +141,54 @@
                                 android:id="@+id/pendingSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="3dp"
-                                android:alpha="0.7"
+                                android:layout_marginTop="4dp"
+                                android:alpha="0.8"
                                 android:text="@string/sync_required"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="13sp"
-                                tools:text="Sync required to complete" />
+                                android:textSize="14sp"
+                                tools:text="Waiting for sync" />
                         </LinearLayout>
 
-                        <!-- Sync All Button -->
+                        <!-- Enhanced Sync Button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/syncAllBtn"
                             style="@style/Widget.Material3.Button.ElevatedButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                            android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:minWidth="0dp"
-                            android:paddingHorizontal="10dp"
+                            android:paddingHorizontal="16dp"
                             android:text="@string/sync_all"
                             android:textAllCaps="false"
-                            android:textSize="14sp"
+                            android:textSize="15sp"
                             app:backgroundTint="@color/background_surface_dark"
-                            app:cornerRadius="12dp"
+                            app:cornerRadius="16dp"
+                            app:elevation="4dp"
                             app:icon="@drawable/ic_sync"
                             app:iconGravity="textStart"
-                            app:iconPadding="2dp"
-                            app:iconSize="18dp"
+                            app:iconPadding="6dp"
+                            app:iconSize="20dp"
                             app:iconTint="@color/white" />
 
                     </LinearLayout>
 
-                    <!-- Progress Section -->
+                    <!-- Enhanced Progress Section -->
                     <LinearLayout
                         android:id="@+id/progressSection"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginTop="20dp"
                         android:orientation="vertical"
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <!-- Progress Header -->
+                        <!-- Progress Header with Better Spacing -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingBottom="10dp">
 
                             <TextView
                                 android:id="@+id/overallProgressText"
@@ -164,7 +197,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif-medium"
                                 android:textColor="@color/text_primary"
-                                android:textSize="13sp"
+                                android:textSize="14sp"
                                 tools:text="Syncing 2 of 3..." />
 
                             <TextView
@@ -173,132 +206,188 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
                                 android:textColor="@color/background_surface_dark"
-                                android:textSize="13sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 tools:text="67%" />
                         </LinearLayout>
 
-                        <!-- Progress Bar -->
+                        <!-- Modern Progress Bar -->
                         <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/overallProgress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:indeterminate="false"
                             app:indicatorColor="@color/background_surface_dark"
                             app:trackColor="@color/neutral_200"
-                            app:trackCornerRadius="6dp"
-                            app:trackThickness="8dp"
+                            app:trackCornerRadius="8dp"
+                            app:trackThickness="10dp"
                             tools:progress="67" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView> <!-- RecyclerView -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- RecyclerView with Enhanced Spacing -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pendingSalesRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:paddingHorizontal="16dp"
                 android:paddingBottom="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statusCard"
+                app:layout_constraintTop_toBottomOf="@id/statusCard"
                 tools:itemCount="3"
                 tools:listitem="@layout/sell_pending_action_card" />
 
-            <!-- Empty State -->
-            <LinearLayout
+            <!-- Beautiful Empty State -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/emptyStateLayout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="32dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerCard"
+                app:layout_constraintTop_toBottomOf="@id/statusCard"
                 tools:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/emptyStateImage"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:alpha="0.5"
-                    android:contentDescription="@string/no_pending_sales"
-                    android:src="@drawable/ic_empty"
-                    app:tint="@color/neutral_300" />
-
-                <TextView
-                    android:id="@+id/emptyStateTitle"
-                    android:layout_width="wrap_content"
+                <!-- Centered Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/all_synced"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/emptyStateMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="@string/no_pending_desc"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    android:orientation="vertical"
+                    android:padding="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/emptyStateBtn"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/back_to_sales"
-                    app:icon="@drawable/back_arrow"
-                    app:iconGravity="textStart" />
+                    <!-- Success Icon with Background Circle -->
+                    <FrameLayout
+                        android:layout_width="140dp"
+                        android:layout_height="140dp">
 
-            </LinearLayout>
+                        <!-- Background Circle -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/circle_background"
+                            android:backgroundTint="@color/primary_light"
+                            android:alpha="0.2" />
 
-            <!-- Loading State -->
-            <LinearLayout
+                        <!-- Success Icon -->
+                        <ImageView
+                            android:id="@+id/emptyStateImage"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/no_pending_sales"
+                            android:src="@drawable/ic_check_circle"
+                            app:tint="@color/primary_light" />
+
+                    </FrameLayout>
+
+                    <!-- Title with Better Typography -->
+                    <TextView
+                        android:id="@+id/emptyStateTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.01"
+                        android:text="@string/all_synced"
+                        android:textColor="@color/text_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <!-- Description -->
+                    <TextView
+                        android:id="@+id/emptyStateMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="4dp"
+                        android:text="@string/no_pending_desc"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:alpha="0.9" />
+
+                    <!-- Enhanced Back Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/emptyStateBtn"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="32dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingHorizontal="32dp"
+                        android:text="@string/back_to_sales"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/back_arrow"
+                        app:iconGravity="textStart"
+                        app:iconSize="22dp"
+                        app:iconPadding="8dp" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Modern Loading State -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/loadingStateLayout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="32dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerCard"
+                app:layout_constraintTop_toBottomOf="@id/statusCard"
                 tools:visibility="gone">
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/loadingIndicator"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    app:indicatorColor="@color/action_primary"
-                    app:trackColor="@color/neutral_200" />
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/loadingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/loading_pending"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    <!-- Enhanced Loading Indicator -->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/loadingIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true"
+                        app:indicatorColor="@color/action_primary"
+                        app:indicatorSize="56dp"
+                        app:trackColor="@color/neutral_200"
+                        app:trackThickness="5dp" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/loadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/loading_pending"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
