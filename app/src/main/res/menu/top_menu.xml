@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item
+            android:id="@+id/profile"
+            android:title="@string/profile"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/icon_profile" />
+        <item
+            android:id="@+id/pending"
+            app:showAsAction="ifRoom"
+            android:title="@string/pending_actions"
+            android:iconTint="@color/alert_critical"
+            android:icon="@drawable/ic_error_circle" />
+
+        <item
+            android:id="@+id/archive"
+            android:title="@string/archive"
+            app:showAsAction="withText"
+            android:icon="@drawable/nav_archive" />
+
+        <item
+            android:id="@+id/staff"
+            android:title="@string/staff"
+            android:icon="@drawable/icon_staff" />
+</menu>

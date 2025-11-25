@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/main"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".ui.main.ArchiveFragment">
+    tools:context=".ui.archive.ArchiveActivity">
 
     <!-- Header -->
 

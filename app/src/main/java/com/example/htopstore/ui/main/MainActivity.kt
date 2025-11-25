@@ -14,89 +14,42 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val vm: MainViewModel by viewModels()
+
+    private val cartFragment = CartFragment()
+    private val stockFragment = StockFragment()
+    private val mainFragment = HomeFragment()
+    private var activeFragment: Fragment = mainFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        showOfArchiveLen()
-        val cartFragment = CartFragment()
-        val stockFragment = StockFragment()
-        val main = HomeFragment()
-        val archive = ArchiveFragment()
-        val profile = ProfileFragment()
-        replaceCurrentFragment(stockFragment)
-        //to listen if the employee status changed
-        //onEmployeeStatusChanged()
-        vm.message.observe(this){
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
 
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.mainFrameLayout, mainFragment)
+            add(R.id.mainFrameLayout, stockFragment).hide(stockFragment)
+            add(R.id.mainFrameLayout, cartFragment).hide(cartFragment)
+        }.commit()
 
-        //set the bottom navigation view
+        // Observe messages
+        vm.message.observe(this) { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
+
         binding.mainNavigationBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.stock -> {
-                    replaceCurrentFragment(stockFragment)
-                    true
-                }
-
-                R.id.main -> {
-                    replaceCurrentFragment(main)
-                    true
-                }
-
-                R.id.cart -> {
-                    replaceCurrentFragment(cartFragment)
-                    true
-                }
-
-                R.id.archive -> {
-                    replaceCurrentFragment(archive)
-                    true
-                }
-
-                R.id.profile -> {
-                    replaceCurrentFragment(profile)
-                    true
-                }
-
+                R.id.stock -> switchFragment(stockFragment)
+                R.id.main -> switchFragment(mainFragment)
+                R.id.cart -> switchFragment(cartFragment)
                 else -> false
             }
         }
     }
 
-    private fun showOfArchiveLen() {
-        vm.archiveSize.observe(this) {
-            if (it == 0) {
-                binding.mainNavigationBar.removeBadge(R.id.archive)
-                return@observe
-            }
-            var badge = binding.mainNavigationBar.getOrCreateBadge(R.id.archive)
-            badge.isVisible = true
-            badge.text = it.toString()
+    private fun switchFragment(target: Fragment): Boolean {
+        if (activeFragment != target) {
+            supportFragmentManager.beginTransaction().hide(activeFragment).show(target).commit()
+            activeFragment = target
         }
+        return true
     }
-
-    fun replaceCurrentFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayout, fragment)
-            commit()
-        }
-    }
-
-    /*fun onEmployeeStatusChanged() {
-        vm.startListening()
-        vm.employeeStatus.observe(this) {
-            Log.d("MainActivity1", "onEmployeeStatusChanged: $it")
-            if (it != Constants.STATUS_HIRED) {
-                // go to inbox and clear the store data
-                vm.clearStoreData()
-                startActivity(Intent(this@MainActivity, InboxActivity::class.java))
-                finish()
-            }
-        }
-    }*/
-
-
 }

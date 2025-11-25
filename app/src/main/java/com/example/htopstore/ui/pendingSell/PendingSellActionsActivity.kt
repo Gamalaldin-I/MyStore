@@ -1,8 +1,11 @@
-// ==================== FILE 1: PendingSellActionsActivity.kt ====================
 package com.example.htopstore.ui.pendingSell
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +28,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
     private var isSyncing = false
     private var syncedCount = 0
     private var failedCount = 0
+    private var rotationAnimator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +73,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
     private fun observeData() {
         viewModel.actions.observe(this) { actions ->
             if (actions.isNullOrEmpty()) {
-                showEmptyState()
+                animateToEmptyState()
             } else {
                 showContentState()
                 updateHeaderInfo(actions.size)
@@ -111,13 +115,13 @@ class PendingSellActionsActivity : AppCompatActivity() {
 
         if (totalActions == 0) return
 
+        // Start smooth animations
+        startIconRotation()
+
         binding.apply {
             syncAllBtn.isEnabled = false
             syncAllBtn.text = getString(R.string.syncing_all)
-            overallProgress.visibility = View.VISIBLE
-            overallProgress.max = 100
             overallProgress.progress = 0
-            overallProgressText.visibility = View.VISIBLE
         }
 
         viewModel.syncAllPendingActions(
@@ -134,6 +138,26 @@ class PendingSellActionsActivity : AppCompatActivity() {
         )
     }
 
+
+    private fun startIconRotation() {
+        rotationAnimator?.cancel()
+        rotationAnimator = ObjectAnimator.ofFloat(binding.headerIcon, View.ROTATION, 0f, 360f).apply {
+            duration = 1200
+            interpolator = LinearInterpolator()
+            repeatCount = ValueAnimator.INFINITE
+            start()
+        }
+    }
+
+    private fun stopIconRotation() {
+        rotationAnimator?.cancel()
+        binding.headerIcon.animate()
+            .rotation(0f)
+            .setDuration(300)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
+    }
+
     private fun updateSyncProgress(
         progress: Float,
         currentIndex: Int,
@@ -141,16 +165,18 @@ class PendingSellActionsActivity : AppCompatActivity() {
         success: Boolean?
     ) {
         val overallProgress = ((currentIndex.toFloat() / totalActions) * 100).toInt()
-        val itemProgress = progress.toInt()
 
         binding.apply {
-            this.overallProgress.progress = overallProgress
-            overallProgressText.text = "Syncing ${currentIndex + 1}/$totalActions ($itemProgress%)"
+            // Smooth progress update
+            this.overallProgress.setProgressCompat(overallProgress, true)
+
+            overallProgressText.text = "Syncing ${currentIndex + 1} of $totalActions..."
+            progressPercentage.text = "$overallProgress%"
         }
 
-        // Update individual item progress in the adapter
+        // Update individual item progress in adapter
         viewModel.actions.value?.getOrNull(currentIndex)?.let { action ->
-            adapter.updateProgress(action.id, itemProgress)
+            adapter.updateProgress(action.id, progress.toInt())
         }
 
         // Track success/failure when item completes
@@ -165,18 +191,30 @@ class PendingSellActionsActivity : AppCompatActivity() {
 
     private fun handleSyncComplete(totalActions: Int) {
         isSyncing = false
+        stopIconRotation()
 
         binding.apply {
-            overallProgress.visibility = View.GONE
-            overallProgressText.visibility = View.GONE
-            syncAllBtn.isEnabled = true
-            syncAllBtn.text = getString(R.string.sync_all)
+            // Complete the progress bar
+            overallProgress.setProgressCompat(100, true)
+            progressPercentage.text = "100%"
+            overallProgressText.text = "Completed!"
+
+            // Small celebration animation
+
         }
 
         // Delete approved actions
         viewModel.deleteAllApprovedActions()
 
-        // Build detailed result message
+        // Show result after animation
+        binding.root.postDelayed({
+            showSyncResultDialog(totalActions)
+        }, 400)
+    }
+
+    private fun showSyncResultDialog(totalActions: Int) {
+        // Collapse the progress section
+
         val resultMessage = buildString {
             if (failedCount == 0) {
                 append(getString(R.string.all_items_synced_successfully))
@@ -188,7 +226,12 @@ class PendingSellActionsActivity : AppCompatActivity() {
             }
         }
 
-        // Show success message
+        // Re-enable button
+        binding.apply {
+            syncAllBtn.isEnabled = true
+            syncAllBtn.text = getString(R.string.sync_all)
+        }
+
         MaterialAlertDialogBuilder(this)
             .setTitle(
                 if (failedCount == 0) "Sync Complete"
@@ -196,7 +239,6 @@ class PendingSellActionsActivity : AppCompatActivity() {
             )
             .setMessage(resultMessage)
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                // Check if there are still pending actions
                 if (viewModel.actions.value.isNullOrEmpty()) {
                     finish()
                 }
@@ -225,16 +267,32 @@ class PendingSellActionsActivity : AppCompatActivity() {
             loadingStateLayout.visibility = View.GONE
             emptyStateLayout.visibility = View.GONE
             pendingSalesRecyclerView.visibility = View.VISIBLE
-            headerCard.visibility = View.VISIBLE
         }
     }
 
-    private fun showEmptyState() {
+    private fun animateToEmptyState() {
         binding.apply {
-            loadingStateLayout.visibility = View.GONE
-            pendingSalesRecyclerView.visibility = View.GONE
-            headerCard.visibility = View.GONE
-            emptyStateLayout.visibility = View.VISIBLE
+            // Fade out content
+            pendingSalesRecyclerView.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    pendingSalesRecyclerView.visibility = View.GONE
+                    loadingStateLayout.visibility = View.GONE
+
+                    // Show empty state
+                    emptyStateLayout.visibility = View.VISIBLE
+                    emptyStateLayout.alpha = 0f
+                    emptyStateLayout.translationY = 20f
+
+                    emptyStateLayout.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }
+                .start()
         }
     }
 
@@ -248,6 +306,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        rotationAnimator?.cancel()
         isSyncing = false
     }
 }

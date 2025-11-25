@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.main
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,8 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.domain.model.Product
 import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.util.CartHelper
 import com.example.htopstore.databinding.FragmentCartBinding
@@ -20,6 +23,7 @@ import com.example.htopstore.util.CartHandler
 import com.example.htopstore.util.adapters.CartRecycler
 import com.example.htopstore.util.helper.DialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 @AndroidEntryPoint
@@ -33,6 +37,7 @@ class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartHandler: CartHandler
+    private var cartList :List<Product> = emptyList()
     private val viewModel: MainViewModel by activityViewModels()
 
     private var discount = 0
@@ -50,13 +55,15 @@ class CartFragment : Fragment() {
         binding = FragmentCartBinding.inflate(inflater, container, false)
         setupUI()
         setControllers()
+        lifecycleScope.launch {
+        CartHelper.cartList.collect { list ->
+            cartList = list
+            refreshCart()
+        }
+        }
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        refreshCart()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -70,7 +77,7 @@ class CartFragment : Fragment() {
     }
 
     private fun refreshCart() {
-        if (CartHelper.getAddedTOCartProducts().isEmpty()) {
+        if (cartList.isEmpty()) {
             showEmptyState()
         } else {
             showCartContent()
@@ -80,7 +87,7 @@ class CartFragment : Fragment() {
     // ==================== Cart Content Management ====================
 
     private fun showCartContent() {
-        cartHandler = CartHandler(CartHelper.getAddedTOCartProducts())
+        cartHandler = CartHandler(cartList as ArrayList)
         total = cartHandler.getTheTotalCartPrice()
 
         // Reset discount
@@ -277,6 +284,7 @@ class CartFragment : Fragment() {
         disableUserInteractions()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateLoadingProgress(progress: Float, totalItems: Int) {
         val progressInt = progress.toInt().coerceIn(0, 100)
 

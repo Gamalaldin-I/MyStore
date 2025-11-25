@@ -34,21 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/staff" />
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/staff"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/icon_staff"
-                android:background="@drawable/delete_shadow"
-                android:backgroundTint="@color/action_primary"
-                app:riv_corner_radius="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:contentDescription="@string/staff" />
-
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 

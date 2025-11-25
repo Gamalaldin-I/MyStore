@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:id="@+id/stock"
-      android:title="@string/store"
-     android:icon="@drawable/nav_store"/>
-    <item android:id="@+id/archive"
-        android:title="@string/archive"
-        android:icon="@drawable/nav_archive"/>
+
 
     <item android:id="@+id/main"
         android:title="@string/home"
         android:icon="@drawable/nav_main"/>
 
+
+    <item android:id="@+id/stock"
+      android:title="@string/store"
+     android:icon="@drawable/nav_store"/>
+
 <item android:id="@+id/cart"
     android:title="@string/cart"
     android:icon="@drawable/nav_bag_smile"/>
 
-    <item android:id="@+id/profile"
-        android:title="Profile"
-        android:icon="@drawable/icon_profile"/>
 
 </menu>

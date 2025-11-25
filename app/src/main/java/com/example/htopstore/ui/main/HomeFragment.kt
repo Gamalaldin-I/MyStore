@@ -4,8 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,15 +17,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.domain.util.DateHelper
+import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentHomeBinding
 import com.example.htopstore.ui.adding.AddProductActivity
 import com.example.htopstore.ui.analysis.AnalysisActivity
+import com.example.htopstore.ui.archive.ArchiveActivity
 import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
 import com.example.htopstore.ui.pendingSell.PendingSellActionsActivity
 import com.example.htopstore.ui.product.ProductActivity
+import com.example.htopstore.ui.profile.ProfileActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.ui.staff.StaffActivity
 import com.example.htopstore.util.adapters.LowStockAdapter
@@ -139,7 +146,7 @@ class HomeFragment : Fragment() {
         // Handle View All button for Top 5 Sales
         binding.viewAllSales.setOnClickListener {
             // Navigate to full sales list or analytics
-            startActivity(Intent(requireContext(), PendingSellActionsActivity::class.java))
+            startActivity(Intent(requireContext(), AnalysisActivity::class.java))
         }
     }
 
@@ -156,7 +163,6 @@ class HomeFragment : Fragment() {
         val expenses = binding.grid.expenses
         val sales = binding.grid.sales
         val scan = binding.grid.scan
-        val staff = binding.staff
 
         add.setOnClickListener {
             goTo(add) {
@@ -194,11 +200,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        staff.setOnClickListener {
-            goTo(staff) {
-                startActivity(Intent(requireContext(), StaffActivity::class.java))
-            }
-        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -248,4 +250,46 @@ class HomeFragment : Fragment() {
         intent.putExtra("day", day)
         startActivity(intent)
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.toolbar
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        setHasOptionsMenu(true)
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+
+            R.id.profile -> {
+                startActivity(Intent(requireContext(), ProfileActivity::class.java))
+                true
+            }
+
+            R.id.archive -> {
+                startActivity(Intent(requireContext(), ArchiveActivity::class.java))
+                    true
+            }
+
+            R.id.staff -> {
+                startActivity(Intent(requireContext(), StaffActivity::class.java))
+                true
+            }
+            R.id.pending -> {
+                startActivity(Intent(requireContext(), PendingSellActionsActivity::class.java))
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
 }

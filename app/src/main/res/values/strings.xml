@@ -500,29 +500,30 @@
     <string name="items_saved">Items</string>
     <string name="approved">Completed</string>
     <string name="syncing_progress">Syncing…</string>
-        <plurals name="pending_sales_count">
-            <item quantity="one">%d Pending Sale</item>
-            <item quantity="other">%d Pending Sales</item>
-        </plurals>
+    <plurals name="pending_sales_count">
+        <item quantity="one">%d Pending Sale</item>
+        <item quantity="other">%d Pending Sales</item>
+    </plurals>
 
-        <string name="syncing_progress_detail">Syncing %1$d of %2$d...</string>
+    <string name="syncing_progress_detail">Syncing %1$d of %2$d...</string>
 
 
-
-        <!-- Pending Sell Activity -->
-        <string name="pending_sales">Pending Sales</string>
-        <string name="pending_icon">Pending sales icon</string>
-        <string name="pending_count">Pending Sales</string>
-        <string name="sync_required">Sync required to complete</string>
-        <string name="sync_all">Sync All</string>
-        <string name="syncing_all">Syncing all...</string>
-        <string name="no_pending_sales">No pending sales</string>
-        <string name="all_synced">All Synced!</string>
-        <string name="no_pending_desc">All sales have been successfully synced</string>
-        <string name="back_to_sales">Back to Sales</string>
-        <string name="loading_pending">Loading pending sales...</string>
+    <!-- Pending Sell Activity -->
+    <string name="pending_sales">Pending Sales</string>
+    <string name="pending_icon">Pending sales icon</string>
+    <string name="pending_count">Pending Sales</string>
+    <string name="sync_required">Sync required to complete</string>
+    <string name="sync_all">Sync All</string>
+    <string name="syncing_all">Syncing all...</string>
+    <string name="no_pending_sales">No pending sales</string>
+    <string name="all_synced">All Synced!</string>
+    <string name="no_pending_desc">All sales have been successfully synced</string>
+    <string name="back_to_sales">Back to Sales</string>
+    <string name="loading_pending">Loading pending sales...</string>
     <!-- Pending Sell Actions -->
     <string name="all_items_synced_successfully">All items synced successfully!</string>
+    <string name="profile">Profile</string>
+    <string name="pending_actions">Pending actions</string>
 
 
 </resources>

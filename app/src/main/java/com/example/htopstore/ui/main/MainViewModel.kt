@@ -1,32 +1,19 @@
 package com.example.htopstore.ui.main
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.data.local.roomDb.AppDataBase
-import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
-import com.example.domain.model.Store
-import com.example.domain.model.User
-import com.example.domain.model.category.UserRoles
 import com.example.domain.repo.ProductRepo
 import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
-import com.example.domain.useCase.auth.LogoutUseCase
-import com.example.domain.useCase.product.DeleteProductUseCase
-import com.example.domain.useCase.product.GetArchiveProductsUseCase
-import com.example.domain.useCase.product.GetArchiveSizeUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
-import com.example.domain.useCase.profile.ChangeProfileImageUseCase
-import com.example.domain.useCase.profile.RemoveProfileImageUseCase
-import com.example.domain.useCase.profile.UpdateNameUseCase
 import com.example.domain.useCase.sales.SellUseCase
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
@@ -38,23 +25,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val db: AppDataBase,
-    private val pref: SharedPref,
-    private val logoutUseCase: LogoutUseCase,
-    private val updateNameUseCase: UpdateNameUseCase,
     getTop5InSalesUseCase: GetTop5UseCase,
     getLowStockUseCase: GetLowStockUseCase,
     getAvailableProductsUseCase: GetAvailableProductsUseCase,
-    getArchiveProductsUseCase: GetArchiveProductsUseCase,
-    private val deleteProductUseCase: DeleteProductUseCase,
     private val sellUseCase: SellUseCase,
-    getArchiveSizeUseCase: GetArchiveSizeUseCase,
     getProfitByDayUseCase: GetProfitByDayUseCase,
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val productRepo:ProductRepo,
-    private val changeProfileImageUseCase:ChangeProfileImageUseCase,
-    private val removeProfileImageUseCase: RemoveProfileImageUseCase,
 
 ): ViewModel(){
     private val _message = MutableLiveData<String>()
@@ -63,15 +41,12 @@ class MainViewModel @Inject constructor(
 
     val todayDate = DateHelper.getCurrentDate()
 
-    val archiveSize: LiveData<Int> = getArchiveSizeUseCase().asLiveData()
 
     val top5: LiveData<List<Product>> = getTop5InSalesUseCase().asLiveData()
 
     val lowStock: LiveData<List<Product>> = getLowStockUseCase().asLiveData()
 
     val products: LiveData<List<Product>> = getAvailableProductsUseCase().asLiveData()
-
-    val archive: LiveData<List<Product>> = getArchiveProductsUseCase().asLiveData()
 
     val profit: LiveData<Double?> = getProfitByDayUseCase(todayDate).asLiveData()
 
@@ -80,13 +55,6 @@ class MainViewModel @Inject constructor(
     val totalSales: LiveData<Double?> = getTotalSalesByDateUseCase(todayDate).asLiveData()
 
 
-    fun deleteProduct(id:String, image:String,onFinish:()->Unit) =
-        viewModelScope.launch(Dispatchers.IO){
-            deleteProductUseCase(id,image)
-            withContext(Dispatchers.Main){
-                onFinish()
-            }
-        }
     fun sell(cartList: List<CartProduct>, discount: Int = 0, onProgress :(Float)->Unit,onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val msg = sellUseCase(cartList = cartList,
@@ -101,28 +69,9 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-    fun getUserData():User{
-        return pref.getUser()
-    }
-    fun getStoreData():Store{
-        return pref.getStore()
-    }
-    fun getRole():String? {
-        val role = pref.getRole()
-        return UserRoles.entries.find { it.role == role }?.roleName
-    }
 
-    fun logout(onResult: (Boolean, String) -> Unit){
-        viewModelScope.launch{
-            val (success, msg) = logoutUseCase()
-            if(success){
-                pref.clearPrefs()
-                withContext(Dispatchers.IO){db.clearAllTables()}
-            }
-            onResult(success, msg)
-            _message.postValue(msg)
-    }
-    }
+
+
     fun fetchProductsFromRemote(){
         viewModelScope.launch{
         val msg = productRepo.fetchProductsFromRemoteIntoLocal()
@@ -132,36 +81,6 @@ class MainViewModel @Inject constructor(
 
 
 
-    fun updateName(name: String, onView: () -> Unit) {
-        viewModelScope.launch{
-           val  (success, msg) = withContext(Dispatchers.IO){updateNameUseCase(name)}
-                if(success) onView()
-                _message.postValue(msg)
-            }
-    }
-
-
-    fun isLoginFromGoogle(): Boolean{
-        return pref.isLoginFromGoogle()
-    }
-    fun getProfileImage():String{
-        return pref.getProfileImage().toString()
-    }
-    fun changePhoto(uri:Uri){
-        viewModelScope.launch(Dispatchers.IO){
-            changeProfileImageUseCase(uri){
-                success, msg ->
-                _message.postValue(msg)
-            }
-        }
-    }
-    fun removeProfilePhoto() {
-        viewModelScope.launch(Dispatchers.IO) {
-            removeProfileImageUseCase { success, msg ->
-                _message.postValue(msg)
-            }
-        }
-    }
 
 
     private val messageToStringRes = mapOf(

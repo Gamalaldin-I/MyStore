@@ -71,7 +71,6 @@ class SellPendingRecycler :
             holder.itemView.context.getColor(R.color.action_primary)
         }
         binding.status.setTextColor(statusColor)
-        binding.statusBadge.strokeColor = statusColor
 
         // First Product Image
         Glide.with(binding.firstProductImage.context)
