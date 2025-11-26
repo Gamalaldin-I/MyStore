@@ -3,7 +3,9 @@ package com.example.htopstore.di.module
 import com.example.domain.repo.SalesRepo
 import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
 import com.example.domain.useCase.pendingSellActions.DeleteApprovedSellActionsUseCase
+import com.example.domain.useCase.pendingSellActions.DeletePendingActionByIdUseCase
 import com.example.domain.useCase.pendingSellActions.GetAllSellActionsUseCase
+import com.example.domain.useCase.pendingSellActions.GetSellPendingActionByIdUseCase
 import com.example.domain.useCase.pendingSellActions.UpdateSellActionUseCase
 import dagger.Module
 import dagger.Provides
@@ -33,6 +35,16 @@ object PendingSellActionModule {
     @Singleton
     fun provideGettingPendingSellActionUseCase(repo: SalesRepo): GetAllSellActionsUseCase{
         return GetAllSellActionsUseCase(repo)
+    }
+    @Provides
+    @Singleton
+    fun provideDeletePendingActionByIdUseCase(repo: SalesRepo): DeletePendingActionByIdUseCase{
+        return DeletePendingActionByIdUseCase(repo)
+    }
+    @Provides
+    @Singleton
+    fun provideGetPendingActionByIdUseCase(repo: SalesRepo): GetSellPendingActionByIdUseCase{
+        return GetSellPendingActionByIdUseCase(repo)
     }
 
 }

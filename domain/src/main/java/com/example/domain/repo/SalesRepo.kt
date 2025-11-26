@@ -13,7 +13,9 @@ interface SalesRepo{
     suspend fun insertPendingSellAction(pending: PendingSellAction)
     suspend fun updatePendingSellAction(pending: PendingSellAction)
     fun getAllPendingAndApproved(): Flow<List<PendingSellAction>>
+    suspend fun getPendingActionById(id:Int): PendingSellAction
     suspend fun deleteApprovedSellAction()
+    suspend fun deletePendingActionById(id: Int)
 
 
 

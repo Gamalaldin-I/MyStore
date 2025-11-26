@@ -16,6 +16,13 @@ interface PendingSellDao {
     @Update
     suspend fun updatePendingSellAction(action: PendingSellActionEntity)
 
+    @Query("Delete from pending_sell_operations where id = :id")
+    suspend fun deletePendingSellAction(id: Int)
+
+
+    @Query("Select * from pending_sell_operations where id = :id")
+    suspend fun getPendingSellActionById(id: Int): PendingSellActionEntity
+
     @Query("SELECT * FROM pending_sell_operations")
      fun getAllPendingSellActions(): Flow<List<PendingSellActionEntity>>
 

@@ -7,17 +7,22 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.PendingSellAction
 import com.example.domain.useCase.pendingSellActions.DeleteApprovedSellActionsUseCase
+import com.example.domain.useCase.pendingSellActions.DeletePendingActionByIdUseCase
 import com.example.domain.useCase.pendingSellActions.GetAllSellActionsUseCase
+import com.example.domain.useCase.pendingSellActions.GetSellPendingActionByIdUseCase
 import com.example.domain.useCase.sales.SellUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class PendingSellActionViewModel @Inject constructor(
     getAllSellActionsUseCase: GetAllSellActionsUseCase,
     private val deleteApprovedSellActionsUseCase: DeleteApprovedSellActionsUseCase,
+    private val deletePendingActionByIdUseCase: DeletePendingActionByIdUseCase,
+    private val getSellPendingActionByIdUseCase: GetSellPendingActionByIdUseCase,
     private val sellUseCase: SellUseCase
 ): ViewModel(){
 
@@ -82,6 +87,46 @@ class PendingSellActionViewModel @Inject constructor(
 
             Log.d(TAG, "Sync completed for all actions")
             onFinish()
+        }
+    }
+    fun syncPendingProcess(pendingSellAction: PendingSellAction,
+                           onProgress: (Float) -> Unit,
+                           onFinish: (msg:String) -> Unit){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val msg = sellUseCase(
+                id = pendingSellAction.id,
+                billId = pendingSellAction.billId,
+                cartList = pendingSellAction.soldProducts,
+                discount = pendingSellAction.discount,
+                billInserted = pendingSellAction.billInserted,
+                soldItemsInserted = pendingSellAction.soldItemsInserted) { progress ->
+                    onProgress(progress)
+                }
+                withContext(Dispatchers.Main){
+                onFinish(msg)
+            }
+            }catch (_:Exception){
+                withContext(Dispatchers.Main){
+                onFinish("Failed to sync transaction. Please try again.")
+                }
+            }
+        }
+    }
+    fun deletePendingActionById(id: Int,onFinish: () -> Unit){
+        viewModelScope.launch(Dispatchers.IO){
+            deletePendingActionByIdUseCase(id)
+            withContext(Dispatchers.Main){
+                onFinish()
+            }
+        }
+    }
+    fun getPendingActionById(id: Int,onGet: (PendingSellAction) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO){
+            val penAc = getSellPendingActionByIdUseCase(id)
+            withContext(Dispatchers.Main){
+                onGet(penAc)
+            }
         }
     }
 }

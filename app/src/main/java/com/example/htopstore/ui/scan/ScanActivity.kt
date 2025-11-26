@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,18 +32,6 @@ class ScanActivity : AppCompatActivity() {
 
     private val vm: ScanViewModel by viewModels()
 
-    // Gallery launcher for scanning barcodes from images
-    private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val selectedImageUri = result.data?.data
-                if (selectedImageUri != null) {
-                    // Here you would implement barcode detection from image
-                    // For now, show a toast
-                    Toast.makeText(this, "Image selected - implement barcode ${selectedImageUri} detection from image", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {

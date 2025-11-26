@@ -82,8 +82,16 @@ class SalesRepoImp(private val salesDao: SalesDao,
             }
     }
 
+    override suspend fun getPendingActionById(id: Int): PendingSellAction {
+        return pendingSellDao.getPendingSellActionById(id).toPendingSellAction()
+    }
+
     override suspend fun deleteApprovedSellAction() {
         pendingSellDao.deleteAllApprovedActions()
+    }
+
+    override suspend fun deletePendingActionById(id: Int) {
+        pendingSellDao.deletePendingSellAction(id)
     }
 
 

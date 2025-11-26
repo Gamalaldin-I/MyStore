@@ -10,7 +10,9 @@ import com.example.domain.model.PendingSellAction
 import com.example.htopstore.R
 import com.example.htopstore.databinding.SellPendingActionCardBinding
 
-class SellPendingRecycler :
+class SellPendingRecycler(
+    private val onClick: (Int) -> Unit
+):
     ListAdapter<PendingSellAction, SellPendingRecycler.SellPendingHolder>(DiffCallback()) {
 
     class SellPendingHolder(val binding: SellPendingActionCardBinding) :
@@ -64,6 +66,17 @@ class SellPendingRecycler :
 
         // Status Badge
         binding.status.text = data.status
+        binding.statusBadge.setCardBackgroundColor(
+            holder.itemView.context.
+            getColor(
+                when (data.status) {
+                    "Pending" -> R.color.process_pending
+                    "Approved" -> R.color.process_approved
+                    else -> {R.color.background_dark}
+                }
+        )
+        )
+
 
         // First Product Image
         Glide.with(binding.firstProductImage.context)
@@ -75,6 +88,9 @@ class SellPendingRecycler :
         // Progress Bar
         binding.progress.progress = data.progress
         binding.progressText.text = "Syncing... ${data.progress}%"
+        binding.root.setOnClickListener {
+            onClick(data.id)
+        }
     }
 
     private fun getTotalCash(pendingAction: PendingSellAction): Int {

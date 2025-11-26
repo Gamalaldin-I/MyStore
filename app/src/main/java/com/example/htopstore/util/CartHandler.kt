@@ -18,7 +18,7 @@ class CartHandler(cartAddedList: ArrayList<Product>){
             buyingPrice = product.buyingPrice,
             pricePerOne = product.sellingPrice,
             maxLimitCount = product.count,
-            sellingCount = 1
+            sellingCount = product.soldCount
         )
         cartList.add(cartProduct)
     }

@@ -3,6 +3,8 @@ package com.example.htopstore.ui.pendingSell
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -27,7 +29,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPendingSellActionsBinding
     private val viewModel: PendingSellActionViewModel by viewModels()
-    private val adapter = SellPendingRecycler()
+    private val adapter = SellPendingRecycler{onClick(it)}
 
     private var isSyncing = false
     private var syncedCount = 0
@@ -284,6 +286,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
             .start()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateSyncProgress(
         progress: Float,
         currentIndex: Int,
@@ -315,6 +318,7 @@ class PendingSellActionsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun handleSyncComplete(totalActions: Int) {
         isSyncing = false
         stopIconRotation()
@@ -510,7 +514,11 @@ class PendingSellActionsActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun onClick(id:Int){
+        val intent = Intent(this, PendingSellOperationActivity::class.java)
+        intent.putExtra("PenId",id)
+        startActivity(intent)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -11,11 +11,25 @@ object CartHelper {
     val cartList: StateFlow<List<Product>> = _cartList.asStateFlow()
 
     fun addToTheCartList(product: Product) {
-        val currentList = _cartList.value.toMutableList()
-        if (currentList.any { it.id == product.id }) return
-        currentList.add(product)
-        _cartList.value = currentList
+        if (product.count <= 0) return
+
+        val list = _cartList.value.toMutableList()
+        val index = list.indexOfFirst { it.id == product.id }
+
+        if (index != -1) {
+            val item = list[index]
+
+            if (item.soldCount < product.count) {
+                list[index] = item.copy(soldCount = item.soldCount + 1)
+            }
+
+        } else {
+            list.add(product.copy(soldCount = 1))
+        }
+
+        _cartList.value = list
     }
+
 
     fun removeFromTheCartList(productId: String) {
         val currentList = _cartList.value.toMutableList()
