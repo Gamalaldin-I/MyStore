@@ -1,8 +1,12 @@
 package com.example.htopstore.di.module
 
+import com.example.data.local.dao.PendingSellDao
+import com.example.data.local.dao.ProductDao
+import com.example.data.local.dao.SalesDao
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.RemoteSalesRepo
+import com.example.data.repo.SalesRepoImp
 import com.example.domain.repo.BillRepo
 import com.example.domain.repo.SalesRepo
 import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
@@ -31,6 +35,12 @@ object SalesModule {
     fun provideRemoteSalesRepo(supaBase: SupabaseClient, netWorkHelper: NetworkHelperInterface,pref: SharedPref): RemoteSalesRepo {
         return RemoteSalesRepo(supabase = supaBase, pref = pref, networkManager = netWorkHelper)
     }
+    @Provides
+    @Singleton
+    fun provideSalesRepo(productDao: ProductDao,salesDao: SalesDao,remote: RemoteSalesRepo,pendingDao: PendingSellDao): SalesRepo {
+        return SalesRepoImp(salesDao,productDao,remote,pendingDao)
+    }
+
 
 
     @Provides

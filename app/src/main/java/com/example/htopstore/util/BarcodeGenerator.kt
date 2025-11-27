@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
-import com.example.domain.model.SelectionQrProduct
+import com.example.domain.model.Product
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
@@ -20,7 +20,7 @@ import kotlin.random.Random
 
 object BarcodeGenerator {
     var scannedCode:String? = null
-    fun generateProductBarcodesPDF(context: Context, products: List<SelectionQrProduct>, columns: Int = 4) {
+    fun generateProductBarcodesPDF(context: Context, products: List<Product>, columns: Int = 4) {
         if (products.isEmpty()) {
             Toast.makeText(context, "No products to generate barcodes", Toast.LENGTH_SHORT).show()
             return
@@ -72,7 +72,7 @@ object BarcodeGenerator {
                         paint
                     )
                     canvas.drawText(
-                        "${product.name} (${product.type})",
+                        "${product.name} (${product.category})",
                         x.toFloat(),
                         (y + barcodeHeight + 20).toFloat(),
                         paint

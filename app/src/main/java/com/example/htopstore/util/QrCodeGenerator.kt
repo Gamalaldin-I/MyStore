@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
-import com.example.domain.model.SelectionQrProduct
+import com.example.domain.model.Product
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
@@ -19,7 +19,7 @@ import java.io.FileOutputStream
 
 object QrCodeGenerator {
 
-    fun generateProductQRsPDF(context: Context, products: List<SelectionQrProduct>, columns: Int = 5) {
+    fun generateProductQRsPDF(context: Context, products: List<Product>, columns: Int = 5) {
         if (products.isEmpty()) {
             Toast.makeText(context, "No products to generate QR codes", Toast.LENGTH_SHORT).show()
             return

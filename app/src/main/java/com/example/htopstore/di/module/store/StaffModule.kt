@@ -1,4 +1,4 @@
-package com.example.htopstore.di.module
+package com.example.htopstore.di.module.store
 
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.StaffRepoImp
@@ -24,12 +24,12 @@ object StaffModule {
         return StaffRepoImp(supabase = supabaseClient, pref = pref)
     }
     @Provides
-    fun provideEmployeesUseCase(staffRepo: StaffRepo): GetStoreEmployeesUseCase{
+    fun provideEmployeesUseCase(staffRepo: StaffRepo): GetStoreEmployeesUseCase {
         return GetStoreEmployeesUseCase(staffRepo)
     }
 
     @Provides
-    fun provideRejectOrRehireUseCase(staffRepo: StaffRepo): RejectOrRehireUseCase{
+    fun provideRejectOrRehireUseCase(staffRepo: StaffRepo): RejectOrRehireUseCase {
         return RejectOrRehireUseCase(staffRepo)
     }
 

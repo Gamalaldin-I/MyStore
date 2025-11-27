@@ -27,12 +27,15 @@ class AuthRepoImp
     private val sharedPref: SharedPref,
     private val networkHelper: NetworkHelperInterface
 ) : AuthRepo {
+    val c = Constants
 
     companion object {
         private const val TAG = "SUPABASE_AUTH"
         private const val USERS = "users"
         private const val STORES = "stores"
         private const val SIGNUP_COOLDOWN = 60000L // 60 seconds
+        private const val EMAIL ="email"
+        private const val ID ="id"
     }
 
     private var lastSignupTime = 0L
@@ -42,7 +45,7 @@ class AuthRepoImp
     // =====================================================
     override fun login(email: String, password: String, onResult: (Boolean, String) -> Unit) {
         if(!networkHelper.isConnected()) {
-            onResult(false, "No internet connection")
+            onResult(false, c.NO_INTERNET_CONNECTION)
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -63,17 +66,17 @@ class AuthRepoImp
                         }
                         if (fUser.provider == GOOGLE_PROVIDER) sharedPref.setLoginFromGoogle()
                         sharedPref.saveUser(fUser)
-                        withContext(Dispatchers.Main) { onResult(true, "Login successful") }
+                        withContext(Dispatchers.Main) { onResult(true,c.LOGIN_SUCCESS_MESSAGE) }
                     } else {
-                        withContext(Dispatchers.Main) { onResult(false, "User not found") }
+                        withContext(Dispatchers.Main) { onResult(false,c.USER_NOT_FOUND) }
                     }
                 } ?: withContext(Dispatchers.Main) {
-                    onResult(false, "Login failed")
+                    onResult(false,c.LOGIN_FAILED)
                 }
 
             } catch (e: Exception) {
                 Log.e(TAG, "login error: ${e.message}", e)
-                withContext(Dispatchers.Main) { onResult(false,"Login error") }
+                withContext(Dispatchers.Main) { onResult(false,c.LOGIN_FAILED) }
             }
         }
     }
@@ -81,13 +84,13 @@ class AuthRepoImp
     private suspend fun fetchUser(id: String, email: String): User? {
         try {
             supabase.from(USERS).update(
-                mapOf("email" to email)
+                mapOf(EMAIL to email)
             ) {
                 filter {
-                    eq("id", id)
+                    eq(ID, id)
                 }
             }
-            return supabase.from(USERS).select { filter { eq("id", id) } }.decodeSingle<User>()
+            return supabase.from(USERS).select { filter { eq(ID, id) } }.decodeSingle<User>()
         } catch (e: Exception) {
             Log.e(TAG, "fetchUser error: ${e.message}", e)
             return null
@@ -95,7 +98,7 @@ class AuthRepoImp
     }
 
     private suspend fun fetchStore(storeId: String): Store? = try {
-        supabase.from(STORES).select { filter { eq("id", storeId) } }.decodeSingle<Store>()
+        supabase.from(STORES).select { filter { eq(ID, storeId) } }.decodeSingle<Store>()
     } catch (e: Exception) {
         Log.e(TAG, "fetchStore error: ${e.message}", e)
         null
@@ -111,7 +114,7 @@ class AuthRepoImp
     ): Pair<Boolean, String> {
         return try {
             if(!networkHelper.isConnected()) {
-                return  Pair(false, "No internet connection")}
+                return  Pair(false, c.NO_INTERNET_CONNECTION)}
 
             //sign with google
             supabase.auth.signInWith(IDToken) {
@@ -120,13 +123,13 @@ class AuthRepoImp
             }
 
             val user = supabase.auth.currentUserOrNull()
-                ?: return Pair(false, "Google sign-in failed: No user returned")
+                ?: return Pair(false,c.GOOGLE_SIGN_FAILED)
 
             //get the user
             val existingUser = try {
                 supabase.from(USERS)
                     .select {
-                        filter { eq("id", user.id) }
+                        filter { eq(ID, user.id) }
                     }
                     .decodeSingle<User>()
             } catch (_: Exception) {
@@ -148,7 +151,7 @@ class AuthRepoImp
                     }
                 }
 
-                return Pair(true, "Google Sign-in successful")
+                return Pair(true, c.GOOGLE_SIGN_SUCCESS_MESSAGE)
             }
 
             //case new user
@@ -175,12 +178,12 @@ class AuthRepoImp
         sharedPref.saveUser(newUser)
         sharedPref.setLoginFromGoogle()
 
-        Pair(true, "Account created successfully")
+        Pair(true, c.ACCOUNT_CREATED_MESSAGE)
 
     } catch (e: Exception)
     {
         Log.e("SignWithGoogle", "Error: ${e.message}", e)
-        Pair(false,"Google sign-in error")
+        Pair(false,c.GOOGLE_SIGN_FAILED)
     }
 }
 
@@ -198,7 +201,7 @@ class AuthRepoImp
         onResult: (Boolean, String) -> Unit
     ) {
         if(!networkHelper.isConnected()) {
-            onResult(false, "No internet connection")
+            onResult(false, c.NO_INTERNET_CONNECTION)
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -207,7 +210,7 @@ class AuthRepoImp
                 val wait = ((SIGNUP_COOLDOWN - (currentTime - lastSignupTime)) / 1000).toInt()
                 Log.w(TAG, "Please wait $wait seconds before another signup.")
                 withContext(Dispatchers.Main) {
-                    onResult(false, "Please wait seconds before trying again.")
+                    onResult(false,c.PLEASE_WAIT)
                 }
                 return@launch
             }
@@ -236,15 +239,15 @@ class AuthRepoImp
 
                     lastSignupTime = System.currentTimeMillis()
                     withContext(Dispatchers.Main) {
-                        onResult(true, "Registered successfully")
+                        onResult(true,c.SIGNUP_SUCCESS_MESSAGE)
                     }
                 } else {
-                    withContext(Dispatchers.Main) { onResult(false, "Registration failed") }
+                    withContext(Dispatchers.Main) { onResult(false,c.REGISTER_FAILED) }
                 }
 
             } catch (e: Exception) {
                 Log.e(TAG, "registerOwner error: ${e.message}", e)
-                withContext(Dispatchers.Main) { onResult(false,"Registration error, check your connection") }
+                withContext(Dispatchers.Main) { onResult(false,c.CHECK_YOU_INTERNET_CONNECTION) }
             }
         }
     }
@@ -256,13 +259,13 @@ class AuthRepoImp
     override suspend fun logout(): Pair<Boolean,String> {
             return try {
                 if(!networkHelper.isConnected()){
-                    return Pair(false, "No internet connection")
+                    return Pair(false,c.NO_INTERNET_CONNECTION)
                 }
                 supabase.auth.signOut()
-                 Pair(true,"Logout successful")
+                 Pair(true,c.LOGOUT_SUCCESS_MESSAGE)
             } catch (e: Exception) {
-                Log.e(TAG, "logout error: ${e.message}", e)
-                 Pair(false,"Logout error check your connection")
+                Log.e(TAG, "${c.LOGOUT_ERROR}: ${e.message}", e)
+                 Pair(false,c.CHECK_YOU_INTERNET_CONNECTION)
             }
         }
     }

@@ -1,5 +1,11 @@
 package com.example.htopstore.di.module
 
+import android.content.Context
+import com.example.data.local.dao.ProductDao
+import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
+import com.example.data.remote.repo.RemoteProductRepo
+import com.example.data.repo.ProductRepoImp
 import com.example.domain.repo.ProductRepo
 import com.example.domain.useCase.product.AddProductUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
@@ -11,13 +17,42 @@ import com.example.domain.useCase.product.UpdateProductUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.jan.supabase.SupabaseClient
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ProductModule {
 
     //operation on product
+    @Provides
+    @Singleton
+    fun provideProductRepo(productDao: ProductDao,
+                           remote: RemoteProductRepo): ProductRepo {
+        return ProductRepoImp(
+            productDao= productDao,
+            remote= remote)
+    }
+    @Provides
+    @Singleton
+    fun provideRemoteProductRepo(
+        @ApplicationContext context: Context,
+        supabase: SupabaseClient,
+        pref: SharedPref,
+        networkHelper: NetworkHelperInterface
+    ):RemoteProductRepo{
+        return RemoteProductRepo(
+            supabase = supabase,
+            pref = pref,
+            context = context,
+            networkHelper = networkHelper
+        )
+    }
+
+
+
     @Provides
     fun provideAddProductUseCase(productRepo: ProductRepo): AddProductUseCase {
         return AddProductUseCase(productRepo)

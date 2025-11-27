@@ -1,4 +1,4 @@
-package com.example.htopstore.di.module
+package com.example.htopstore.di.module.data
 
 import android.content.Context
 import com.example.data.remote.NetworkHelperInterface
@@ -16,7 +16,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNetworkHelperInterface(@ApplicationContext context: Context): NetworkHelperInterface{
+    fun provideNetworkHelperInterface(@ApplicationContext context: Context): NetworkHelperInterface {
         return NetworkHelper(context)
     }
 }

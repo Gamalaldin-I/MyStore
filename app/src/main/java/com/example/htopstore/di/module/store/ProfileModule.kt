@@ -1,5 +1,4 @@
-package com.example.htopstore.di.module
-
+package com.example.htopstore.di.module.store
 
 import android.content.Context
 import com.example.data.local.sharedPrefs.SharedPref
@@ -24,11 +23,12 @@ object ProfileModule {
     fun provideProfileRepo(
         supa: SupabaseClient,
         pref: SharedPref,
-        @ApplicationContext context: Context): ProfileRepo = ProfileRepoImp(
-            supabase = supa,
-            pref = pref,
-            context = context
-        )
+        @ApplicationContext context: Context
+    ): ProfileRepo = ProfileRepoImp(
+        supabase = supa,
+        pref = pref,
+        context = context
+    )
 
     @Provides
     fun provideChangeProfilePhoto(repo: ProfileRepo) = ChangeProfileImageUseCase(repo)
@@ -42,7 +42,7 @@ object ProfileModule {
     }
 
     @Provides
-    fun provideChangeNameUseCase(repo: ProfileRepo): UpdateNameUseCase{
+    fun provideChangeNameUseCase(repo: ProfileRepo): UpdateNameUseCase {
         return UpdateNameUseCase(repo)
     }
     @Provides

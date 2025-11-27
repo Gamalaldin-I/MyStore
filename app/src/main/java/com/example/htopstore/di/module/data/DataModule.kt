@@ -1,4 +1,4 @@
-package com.example.htopstore.di.module
+package com.example.htopstore.di.module.data
 
 import android.content.Context
 import androidx.room.Room

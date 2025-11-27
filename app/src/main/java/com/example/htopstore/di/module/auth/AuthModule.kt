@@ -1,4 +1,4 @@
-package com.example.htopstore.di.module
+package com.example.htopstore.di.module.auth
 
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.NetworkHelperInterface
@@ -19,7 +19,7 @@ import io.github.jan.supabase.SupabaseClient
 object AuthModule {
 
     @Provides
-    fun provideAuthRepo(db: SupabaseClient, pref: SharedPref,networkHelper: NetworkHelperInterface): AuthRepo {
+    fun provideAuthRepo(db: SupabaseClient, pref: SharedPref, networkHelper: NetworkHelperInterface): AuthRepo {
         return AuthRepoImp(
             supabase = db,
             sharedPref = pref,
@@ -29,11 +29,13 @@ object AuthModule {
 
     @Provides
     fun provideLoginUseCase(authRepo: AuthRepo): LoginUseCase {
-        return LoginUseCase(authRepo)}
+        return LoginUseCase(authRepo)
+    }
 
     @Provides
     fun provideRegisterOwnerUseCase(authRepo: AuthRepo): RegisterUseCase {
-        return RegisterUseCase(authRepo)}
+        return RegisterUseCase(authRepo)
+    }
 
 
     @Provides
@@ -42,7 +44,7 @@ object AuthModule {
     }
 
     @Provides
-    fun provideSignWithGoogle(repo: AuthRepo): SignWithGoogleUseCase{
+    fun provideSignWithGoogle(repo: AuthRepo): SignWithGoogleUseCase {
         return SignWithGoogleUseCase(repo)
     }
 

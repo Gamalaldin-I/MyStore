@@ -1,67 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".ui.genCode.GenCodeActivity">
+    android:background="@color/background">
 
-    <!-- Modern Header with Elevation -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/surface"
-        android:elevation="4dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:elevation="0dp">
 
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="4dp"
-            android:paddingEnd="16dp">
-
-            <ImageButton
-                android:id="@+id/backArrow"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="back"
-                android:padding="12dp"
-                android:src="@drawable/back_arrow"
-                app:tint="@color/primary_accent_blue" />
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/back_arrow"
+            app:navigationIconTint="@color/primary_accent_blue"
+            app:title="Code Generator"
+            app:titleTextColor="@color/text_primary">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/selectionCount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/qr_generator"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp" />
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/delete_shadow"
+                android:paddingHorizontal="12dp"
+                android:backgroundTint="@color/action_primary"
+                android:paddingVertical="4dp"
+                android:text="0 selected"
+                android:textColor="@color/primary_accent_blue"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-        </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
-    </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Main Content Area -->
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,15 +56,83 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Code Type Selection Card -->
+            <!-- Search Bar -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/codeTypeCard"
+                android:id="@+id/searchCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="5dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/action_primary"
+                app:cardBackgroundColor="@color/surface_elevated"
+                app:layout_constraintTop_toBottomOf="@id/headerCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_search"
+                        app:tint="@color/text_tertiary"
+                        android:contentDescription="Search" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@android:color/transparent"
+                        android:hint="Search products..."
+                        android:textColorHint="@color/text_tertiary"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp" />
+
+                    <ImageView
+                        android:id="@+id/btnClearSearch"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/text_tertiary"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:contentDescription="Clear search" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- Code Type Selection -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
+                android:layout_margin="5dp"
                 app:cardElevation="2dp"
-                app:contentPadding="16dp">
+                app:contentPadding="16dp"
+                app:strokeColor="@color/action_primary"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,86 +143,157 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Code Type"
+                        android:text="Coding"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10dp"
-                        app:layout_constraintBottom_toTopOf="@+id/footer"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:orientation="horizontal">
 
-                        <RadioButton
+                        <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/barcode"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="30dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
                             android:button="@drawable/ic_barcode"
+                            android:buttonTint="@color/primary_accent_blue"
                             android:checked="true"
-                            android:padding="10dp"
-                            android:text="Barcode" />
+                            android:padding="12dp"
+                            android:text="@string/barcode"
+                            android:textSize="14sp" />
 
-                        <RadioButton
+                        <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/qrCode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
                             android:button="@drawable/ic_qr"
-                            android:padding="10dp"
-                            android:text="QR code" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/primary_accent_blue"
+                            android:padding="12dp"
+                            android:text="QR Code"
+                            android:textSize="14sp" />
+
                     </RadioGroup>
-
-
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Products List -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Action Buttons Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Select Products"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Products"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selectAllBtn"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="Select All"
+                    android:textColor="@color/primary_accent_blue"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_check"
+                    app:iconSize="16dp"
+                    app:iconTint="@color/primary_accent_blue" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearSelectionBtn"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="Clear"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    app:icon="@drawable/return_bg"
+                    app:iconSize="16dp"
+                    app:iconTint="@color/text_secondary" />
+
+            </LinearLayout>
+
+            <!-- Products RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingBottom="8dp"
+                android:paddingBottom="100dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
                 tools:listitem="@layout/product_selection_item" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/emptyStateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:alpha="0.3"
+                    android:src="@drawable/ic_empty"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="No products found"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Try adjusting your search"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Action Card -->
+    <!-- Bottom Action Sheet -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bottomCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="0dp"
+        android:layout_gravity="bottom"
+        app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal"
             android:padding="16dp">
 
@@ -178,7 +304,7 @@
                 android:layout_height="56dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
+                android:enabled="false"
                 android:text="Print"
                 android:textColor="@color/quality_premium"
                 app:icon="@drawable/ic_printer"
@@ -196,8 +322,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_accent_blue"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/generate_qrs_pdf"
+                android:enabled="false"
+                android:text="PDF"
                 android:textColor="@color/text_white"
                 app:icon="@drawable/ic_pdf"
                 app:iconGravity="textStart"
@@ -208,4 +334,4 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
