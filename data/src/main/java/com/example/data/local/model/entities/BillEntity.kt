@@ -11,5 +11,6 @@ data class BillEntity(
     val date: String,
     val time: String,
     val totalCash: Double,
-    var lastUpdate:String
+    var lastUpdate:String,
+    val userId: String,
 )

@@ -78,6 +78,7 @@ object Constants {
     ////////////////////////////////////////////////
     const val EXPENSE_ADDED_MESSAGE = "Expense added successfully"
     const val EXPENSE_DELETED_MESSAGE = "Expense deleted successfully"
+    const val EXPENSES_FETCHED ="Expenses fetched successfully"
     const val EXPENSE_ADDED_FAILED_MESSAGE = "Expense added failed"
     const val EXPENSE_DELETED_FAILED_MESSAGE = "Expense deleted failed"
 

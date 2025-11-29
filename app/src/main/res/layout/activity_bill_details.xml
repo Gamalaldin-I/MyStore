@@ -18,9 +18,9 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="15dp"
             app:navigationIcon="@drawable/back_arrow"
             app:navigationIconTint="@color/action_primary">
 
@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="8dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -49,7 +50,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
-                        android:text="#INV-12345"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         tools:text="#INV-12345" />
@@ -72,7 +72,7 @@
                     android:id="@+id/printButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Print"
                     android:padding="12dp"
@@ -85,11 +85,51 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable Content -->
+    <!-- Loading View -->
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/primary_accent_blue"
+                app:trackThickness="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Loading bill details..."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Main Content -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -98,13 +138,115 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Employee Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/employeeCard"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/neutral_100"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <!-- Employee Avatar with Status -->
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            app:riv_corner_radius="20dp"
+                            android:id="@+id/employeeAvatar"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            app:strokeColor="@color/primary_accent_blue"
+                            app:strokeWidth="2dp"
+                            tools:src="@tools:sample/avatars" />
+
+                        <!-- Status Indicator -->
+                        <View
+                            android:id="@+id/status"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:backgroundTint="@color/action_success"
+                            android:background="@drawable/chart_bg" />
+
+                    </FrameLayout>
+
+                    <!-- Employee Info -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="Sold By"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/employeeName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            tools:text="John Doe" />
+
+                        <TextView
+                            android:id="@+id/employeeRole"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp"
+                            tools:text="Sales Associate" />
+
+                    </LinearLayout>
+
+                    <!-- Contact Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/contactEmployeeBtn"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="Contact employee"
+                        app:icon="@android:drawable/ic_dialog_email"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Receipt Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                android:layout_margin="5dp"
+                android:layout_marginHorizontal="5dp"
+                app:cardElevation="2dp"
                 app:strokeColor="@color/neutral_100"
                 app:strokeWidth="1dp">
 
@@ -115,101 +257,164 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Date & Time Section -->
+                    <!-- Header with Icon -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Date -->
-                        <LinearLayout
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/grid_bills"
+                            app:tint="@color/primary_accent_blue" />
+
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Transaction Details"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp" />
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginBottom="8dp"
-                                android:src="@drawable/ic_calender"
-                                app:tint="@color/primary_accent_blue" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif"
-                                android:text="Date"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="20-7-2025"
-                                android:textColor="@color/text_primary"
-                                android:textSize="15sp"
-                                />
-
-                        </LinearLayout>
-
-                        <!-- Vertical Divider -->
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/neutral_200" />
-
-                        <!-- Time -->
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            app:cardBackgroundColor="#92FB97"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginBottom="8dp"
-                                android:src="@drawable/icon_time"
-                                app:tint="@color/primary_accent_blue" />
-
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif"
-                                android:text="Time"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="8dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="4dp">
 
-                            <TextView
-                                android:id="@+id/time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="10:12 AM"
-                                android:textColor="@color/text_primary"
-                                android:textSize="15sp"
-                                tools:text="10:12 AM" />
+                                <ImageView
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:src="@drawable/ic_done"
+                                    app:tint="@color/success" />
 
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Completed"
+                                    android:textColor="@color/success"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
-                    <!-- Divider -->
-                    <View
+                    <!-- Date & Time Section -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:background="@color/neutral_200" />
+                        app:cardBackgroundColor="@color/background"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <!-- Date -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:src="@drawable/ic_calender"
+                                    app:tint="@color/primary_accent_blue" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Date"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="15sp"
+                                    tools:text="20-7-2025" />
+
+                            </LinearLayout>
+
+                            <!-- Vertical Divider -->
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@color/neutral_200" />
+
+                            <!-- Time -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:src="@drawable/icon_time"
+                                    app:tint="@color/primary_accent_blue" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Time"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="15sp"
+                                    tools:text="10:12 AM" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <!-- Pricing Breakdown -->
                     <LinearLayout
@@ -225,7 +430,6 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/textView"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -239,7 +443,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
-                                android:text="$250"
                                 android:textColor="@color/text_primary"
                                 android:textSize="16sp"
                                 tools:text="$250" />
@@ -248,13 +451,14 @@
 
                         <!-- Discount -->
                         <LinearLayout
+                            android:id="@+id/discountLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
-                                android:id="@+id/disTitle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -277,7 +481,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-medium"
-                                    android:text="25%"
                                     android:textColor="@color/text_white"
                                     android:textSize="12sp"
                                     tools:text="25%" />
@@ -289,50 +492,71 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
-                                android:text="-$50"
                                 android:textColor="@color/revenue_negative"
                                 android:textSize="16sp"
                                 tools:text="-$50" />
 
                         </LinearLayout>
 
-                        <!-- Dashed Divider -->
+                        <!-- Divider -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="16dp"
-                            android:background="@color/neutral_300" />
+                            android:background="@drawable/gradient_teal" />
 
                         <!-- Total -->
-                        <LinearLayout
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/grid_item_img_bg"
-                            android:orientation="horizontal"
-                            android:padding="16dp">
+                            app:cardBackgroundColor="#E5EEFD"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp">
 
-                            <TextView
-                                android:id="@+id/after"
-                                android:layout_width="0dp"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="@string/total_is"
-                                android:textColor="@color/text_primary"
-                                android:textSize="18sp" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="16dp">
 
-                            <TextView
-                                android:id="@+id/afterDiscount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="$200"
-                                android:textColor="@color/primary_accent_blue"
-                                android:textSize="28sp"
-                                tools:text="$200" />
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
 
-                        </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="sans-serif"
+                                        android:text="Total Amount"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="13sp" />
+
+                                    <TextView
+                                        android:id="@+id/afterDiscount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:textColor="@color/primary_accent_blue"
+                                        android:textSize="28sp"
+                                        tools:text="$200" />
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:alpha="0.3"
+                                    android:src="@drawable/ic_money"
+                                    app:tint="@color/primary_accent_blue" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
@@ -341,66 +565,84 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Items Section -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp">
+                android:layout_marginHorizontal="5dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/neutral_100"
+                app:strokeWidth="1dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/nav_bag"
-                    app:tint="@color/primary_accent_blue" />
-
-                <TextView
-                    android:id="@+id/SaleDetails"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/sold_items"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp" />
+                    android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    app:cardBackgroundColor="@color/revenue_positive"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp">
+                    <!-- Items Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/background"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_done"
-                        app:tint="@color/text_white" />
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/nav_bag"
+                            app:tint="@color/primary_accent_blue" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        <TextView
+                            android:id="@+id/SaleDetails"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/sold_items"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
 
-            </LinearLayout>
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            app:cardBackgroundColor="@color/action_success"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
-            <!-- Items List -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingVertical="10dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/sold_item" />
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_done"
+                                app:tint="@color/text_white" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <!-- Items List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/sold_item" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Bottom Spacing -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="24dp" />
 
         </LinearLayout>
 

@@ -48,7 +48,10 @@ class ExpensesFragment private constructor(): Fragment() {
         }
     }
     private fun onItemClick(expense: Expense) {
-        DialogBuilder.showExpensesDetailsDialog(expense, requireContext())
+        vm.getEmployee(expense.userId)
+        vm.user.observe(viewLifecycleOwner){
+            if(it!=null) DialogBuilder.showExpensesDetailsDialog(expense,it,requireContext())
+        }
     }
 
 }

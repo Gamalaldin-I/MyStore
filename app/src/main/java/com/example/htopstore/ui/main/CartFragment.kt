@@ -299,7 +299,7 @@ class CartFragment : Fragment() {
             )}
             else{
                 showErrorMessage(
-                    title = "Sale Failed!",
+                    title = "Sale Pending!",
                     description = "Transaction failed",
                     details = msg
                 )

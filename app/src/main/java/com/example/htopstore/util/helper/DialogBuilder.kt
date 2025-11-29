@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.domain.model.Expense
 import com.example.domain.model.SoldProduct
+import com.example.domain.model.User
+import com.example.domain.model.category.UserRoles
 import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import com.example.htopstore.R
@@ -45,7 +49,7 @@ object DialogBuilder {
         dialog.show()
 
     }
-    fun showExpensesDetailsDialog(expense: Expense, context: Context){
+    fun showExpensesDetailsDialog(expense: Expense,user:User,context: Context){
         if (expenseDetailsDialog != null) {
             expenseDetailsDialog?.dismiss()
         }
@@ -54,18 +58,18 @@ object DialogBuilder {
         this.expenseDetailsDialog?.setCancelable(true)
         // set the views
         val reason = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dDescription)
-        val date = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dDate)
-        val amount = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dTotal)
-        val method = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dMethod)
-        val time = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dTime)
-        val category = this.expenseDetailsDialog?.findViewById<TextView>(R.id.dCategory)
+        val name = this.expenseDetailsDialog?.findViewById<TextView>(R.id.employeeName)
+        val role = this.expenseDetailsDialog?.findViewById<TextView>(R.id.employeeRole)
+        val avatar = this.expenseDetailsDialog?.findViewById<ImageView>(R.id.employeeAvatar)
         // set the data
         reason?.text = expense.description
-        date?.text = expense.date
-        amount?.text = expense.amount.toString()
-        method?.text = expense.paymentMethod
-        time?.text = expense.time
-        category?.text = expense.category
+        name?.text = user.name
+        role?.text = UserRoles.entries[user.role].name
+        Glide.with(context)
+            .load(user.photoUrl)
+            .placeholder(R.drawable.ic_camera)
+            .error(R.drawable.ic_camera)
+            .into(avatar!!)
         // show the dialog
         this.expenseDetailsDialog?.show()
     }

@@ -90,7 +90,8 @@ object Mapper {
             category = this.category,
             amount = this.amount,
             paymentMethod = this.paymentMethod,
-            lastUpdate = this.lastUpdate
+            lastUpdate = this.lastUpdate,
+            userId = this.userId
         )
     }
 
@@ -105,7 +106,7 @@ object Mapper {
             paymentMethod = this.paymentMethod,
             lastUpdate = this.lastUpdate,
             storeId = "",
-            userId = "",
+            userId = this.userId,
             deleted = false
         )
     }
@@ -118,7 +119,8 @@ object Mapper {
             date = this.date,
             time = this.time,
             totalCash = this.totalCash,
-            lastUpdate = this.lastUpdate
+            lastUpdate = this.lastUpdate,
+            userId = this.userId,
         )
     }
 
@@ -131,7 +133,7 @@ object Mapper {
             totalCash = this.totalCash,
             lastUpdate = this.lastUpdate,
             storeId = "",
-            userId = "",
+            userId = this.userId,
             deleted = false
         )
     }

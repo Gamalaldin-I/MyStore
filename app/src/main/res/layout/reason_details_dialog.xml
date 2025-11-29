@@ -3,77 +3,97 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:padding="10dp"
+    android:padding="16dp"
     android:layout_height="wrap_content">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/employeeCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/bg_receipt"
-        android:backgroundTint="#17C71135"
-        android:padding="20dp"
+        android:layout_marginHorizontal="5dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/neutral_100"
+        app:strokeWidth="1dp">
 
-        <TextView
-            android:id="@+id/dTotal"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bussinessb"
-            android:text="$250"
-            android:textColor="@color/revenue_negative"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/dDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bussinessb"
-            android:text="Day 20-7-2025"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!-- Employee Avatar with Status -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/dTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/bussinessb"
-            android:text="20:22"
-            android:textColor="@color/text_tertiary"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/dDate"
-            app:layout_constraintTop_toTopOf="parent" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/employeeAvatar"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="20dp"
+                    app:strokeColor="@color/primary_accent_blue"
+                    app:strokeWidth="2dp"
+                    tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/dMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bussinessb"
-            android:text="Method: Cash"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/dTotal"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- Status Indicator -->
+                <View
+                    android:id="@+id/status"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/chart_bg"
+                    android:backgroundTint="@color/action_success" />
 
-    <TextView
-        android:id="@+id/dCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bussinessb"
-        android:text="Category: Electricity"
-        android:textColor="@color/text_secondary"
-        android:layout_margin="10dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+            </FrameLayout>
+
+            <!-- Employee Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Sold By"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/employeeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    tools:text="John Doe" />
+
+                <TextView
+                    android:id="@+id/employeeRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    tools:text="Sales Associate" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/dDescription"
@@ -85,7 +105,7 @@
         android:textColor="@color/text_tertiary"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/employeeCard" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

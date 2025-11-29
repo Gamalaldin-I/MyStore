@@ -7,8 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.useCase.analisys.GetDaysOfWorkUseCase
 import com.example.domain.useCase.analisys.GetSpecificDayUseCase
 import com.example.domain.useCase.bill.FetchAllNewBillsUseCase
+import com.example.domain.useCase.expenses.FetchAllOutComesUseCase
+import com.example.domain.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +19,8 @@ import javax.inject.Inject
 class DaysViewModel @Inject constructor(
     private val getDaysOfWorkUseCase: GetDaysOfWorkUseCase,
     private val getSpecificDayUseCase: GetSpecificDayUseCase,
-    private val fetchBillsAndSalesFromRemoteUseCase: FetchAllNewBillsUseCase
+    private val fetchBillsAndSalesFromRemoteUseCase: FetchAllNewBillsUseCase,
+    private val fetchExpensesUseCase: FetchAllOutComesUseCase
 ) : ViewModel() {
 
     private val _days = MutableLiveData<List<String>>()
@@ -61,6 +65,19 @@ class DaysViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
             try {
+                val defBillsAndSales = async { fetchBillsAndSalesFromRemoteUseCase() }
+                val exFetched = fetchExpensesUseCase()
+                val (successBillsAndSales, msgBillsAndSales) = defBillsAndSales.await()
+
+                if (!successBillsAndSales) {
+                    _message.postValue(msgBillsAndSales)
+                }
+                if (exFetched) {
+                    Constants.EXPENSES_FETCHED
+                }
+
+
+
                 val (success, msg) = fetchBillsAndSalesFromRemoteUseCase()
                 if (!success) {
                     _message.postValue(msg)

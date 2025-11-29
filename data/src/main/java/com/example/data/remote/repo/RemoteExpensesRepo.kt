@@ -22,7 +22,11 @@ class RemoteExpensesRepo(
 
     suspend fun addExpense(expense: Expense,onLocal:suspend ()->Unit):Pair<Boolean,String>{
         try{
-            supabase.from(TABLE_NAME).insert(expense)
+            val inserted = expense.copy(
+                storeId = pref.getStore().id,
+                userId = pref.getUser().id
+            )
+            supabase.from(TABLE_NAME).insert(inserted)
             onLocal()
             return Pair(true,c.EXPENSE_ADDED_MESSAGE)
 
