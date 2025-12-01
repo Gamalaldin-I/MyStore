@@ -16,6 +16,8 @@ import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityCreateStoreBinding
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
+import com.example.htopstore.util.adapters.CategoriesAdapter
+import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +26,21 @@ class CreateStoreActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateStoreBinding
     private val viewModel: CreateStoreViewModel by viewModels()
+    private val adapter: CategoriesAdapter by lazy { CategoriesAdapter(viewModel.getCategories()){
+        cat, onDeleteView ->
+            DialogBuilder.showAlertDialog(
+                context = this,
+                title = cat,
+                message = "Are you sure to delete $cat category",
+                negativeButton = "Cancel",
+                positiveButton = "Confirm",
+                onConfirm = {
+                    viewModel.deleteCategory(cat){
+                        onDeleteView()
+                    }},
+                onCancel = {})
+    }
+    }
 
     private var selectedImageUri: Uri? = null
     private lateinit var selectedPlan: Plan
@@ -64,8 +81,10 @@ class CreateStoreActivity : AppCompatActivity() {
 
     private fun setupCreateMode() {
         selectedPlan = viewModel.getFreePlan()
-        binding.storePlanSec.rbFree.isChecked = true
-        updatePlanCardStyling(binding.storePlanSec.planFree, true)
+        //binding.storePlanSec.rbFree.isChecked = true
+        //updatePlanCardStyling(binding.storePlanSec.planFree, true)
+        binding.categoryLo.root.visibility = View.GONE
+
 
         viewModel.validateToMain {
             navigateToMain()
@@ -74,12 +93,16 @@ class CreateStoreActivity : AppCompatActivity() {
 
     private fun setupUpdateMode() {
         val store = viewModel.getStore()
+        selectedPlan = viewModel.getFreePlan()
 
         binding.apply {
             // Hide elements not needed in update mode
             logoutBtn.visibility = View.GONE
             successMessage.visibility = View.GONE
             subtitleText.visibility = View.GONE
+            categoryLo.root.visibility = View.VISIBLE
+            //setupCategoryAdapter
+            categoryLo.rvCategories.adapter = adapter
 
             // Update text labels
             btnCreateStore.text = getString(R.string.update_store)
@@ -94,7 +117,7 @@ class CreateStoreActivity : AppCompatActivity() {
             loadStoreLogo(store.logoUrl)
 
             // Set selected plan
-            selectPlan(store.plan)
+            //selectPlan(store.plan)
         }
     }
 
@@ -116,7 +139,7 @@ class CreateStoreActivity : AppCompatActivity() {
     }
 
     private fun selectPlan(planName: String) {
-        binding.storePlanSec.apply {
+        /*binding.storePlanSec.apply {
             when (planName) {
                 getString(R.string.free_plan) -> {
                     rbFree.isChecked = true
@@ -144,7 +167,7 @@ class CreateStoreActivity : AppCompatActivity() {
                     updatePlanCardStyling(planFree, true)
                 }
             }
-        }
+        }*/
     }
 
     private fun setupClickListeners() {
@@ -164,17 +187,28 @@ class CreateStoreActivity : AppCompatActivity() {
             }
 
             // Plan selection
-            setupPlanSelection()
+            //setupPlanSelection()
 
             // Submit button
             btnCreateStore.setOnClickListener {
                 handleSubmit()
             }
+            categoryLo.btnAddCategory.setOnClickListener {
+                val cat = categoryLo.etCategoryName.text.toString()
+                if(cat.isNotEmpty()){
+                    viewModel.addCategory(cat.trim()){
+                        adapter.insertNew(cat.trim())
+                        categoryLo.etCategoryName.clearFocus()
+                        categoryLo.etCategoryName.setText("")
+                    }
+                }
+            }
+
         }
     }
 
     private fun setupPlanSelection() {
-        binding.storePlanSec.apply {
+        /*binding.storePlanSec.apply {
             val planItems = listOf(
                 PlanItem(planFree, rbFree, viewModel.getFreePlan()),
                 PlanItem(planSilver, rbSilver, viewModel.getSilverPlan()),
@@ -191,7 +225,7 @@ class CreateStoreActivity : AppCompatActivity() {
                     item.card.performClick()
                 }
             }
-        }
+        }*/
     }
 
     private fun selectPlanItem(selected: PlanItem, allItems: List<PlanItem>) {
@@ -268,8 +302,10 @@ class CreateStoreActivity : AppCompatActivity() {
         viewModel.createStore(storeData, selectedPlan) { success, message ->
             hideLoading()
             if (success) {
-                showToast(getString(R.string.store_created_successfully))
-                navigateToMain()
+                viewModel.addCategory("General"){
+                    showToast(getString(R.string.store_created_successfully))
+                    navigateToMain()
+                }
             } else {
                 showToast(message)
             }
@@ -355,14 +391,14 @@ class CreateStoreActivity : AppCompatActivity() {
         binding.apply {
             loadingOverlay.visibility = View.VISIBLE
             loadingText.text = message
-            setInteractiveElementsEnabled(false)
+            //setInteractiveElementsEnabled(false)
         }
     }
 
     private fun hideLoading() {
         binding.apply {
             loadingOverlay.visibility = View.GONE
-            setInteractiveElementsEnabled(true)
+            //setInteractiveElementsEnabled(true)
         }
     }
 
@@ -373,12 +409,12 @@ class CreateStoreActivity : AppCompatActivity() {
         storeFormSec.etStorePhone.isEnabled = enabled
         storeFormSec.etStoreAddress.isEnabled = enabled
 
-        storePlanSec.apply {
+       /* storePlanSec.apply {
             planFree.isClickable = enabled
             planSilver.isClickable = enabled
             planGold.isClickable = enabled
             planPlatinum.isClickable = enabled
-        }
+        }*/
     }
 
     private fun manageActivityMode() {

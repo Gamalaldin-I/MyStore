@@ -22,6 +22,7 @@ class RemoteSalesRepo(
         private const val SALES = "soldProducts"
         private const val PRODUCTS = "products"
         private const val TAG = "REMOTE_SALES_REPO"
+        private const val STORE_ID = "storeId"
     }
 
     // --------------------------------------------------
@@ -68,13 +69,18 @@ class RemoteSalesRepo(
             val sales = if (lastUpdate.isEmpty()) {
                 // First time → fetch all
                 supabase.from(SALES)
-                    .select()
+                    .select{
+                        filter { eq(STORE_ID, pref.getStore().id) }
+                    }
                     .decodeList<SoldProduct>()
             } else {
                 // Fetch only new sales
                 supabase.from(SALES)
                     .select {
-                        filter { gt("lastUpdate", lastUpdate) }
+                        filter {
+                            eq(STORE_ID, pref.getStore().id)
+                            gt("lastUpdate", lastUpdate)
+                        }
                     }
                     .decodeList<SoldProduct>()
             }

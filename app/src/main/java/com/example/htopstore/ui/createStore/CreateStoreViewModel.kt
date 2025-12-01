@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.createStore
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +10,9 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.Plan
 import com.example.domain.model.Store
 import com.example.domain.useCase.auth.LogoutUseCase
+import com.example.domain.useCase.store.AddCategoryUseCase
 import com.example.domain.useCase.store.AddStoreUseCase
+import com.example.domain.useCase.store.DeleteCategoryUseCase
 import com.example.domain.useCase.store.UpdateStoreDataUseCase
 import com.example.domain.util.IdGenerator
 import com.example.htopstore.R
@@ -26,7 +29,9 @@ class CreateStoreViewModel
     private val pref: SharedPref,
     private val addStoreUseCase: AddStoreUseCase,
     private val updateStoreUseCase: UpdateStoreDataUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val addNewCategoryUseCase: AddCategoryUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase
 ):AndroidViewModel(app){
 
 
@@ -48,6 +53,7 @@ class CreateStoreViewModel
             productsCount = 0,
             operationsCount = 0,
             resetDate = "30/11",
+            categories = ""
         )
         viewModelScope.launch(Dispatchers.IO){
             val result = addStoreUseCase(newStore)
@@ -133,4 +139,30 @@ class CreateStoreViewModel
             onResult(success, msg)
             _message.postValue(msg)
         }
-    }}
+    }
+
+    fun deleteCategory(cat:String,onDeleteView:(String)->Unit){
+        viewModelScope.launch {
+            val (success, msg) = deleteCategoryUseCase(cat)
+            if(success){
+                withContext(Dispatchers.Main) { onDeleteView(cat) }
+            }
+            _message.postValue(msg)
+        }
+    }
+    fun addCategory(cat:String,onInsert:(String)->Unit){
+        viewModelScope.launch {
+            val (success, msg) = addNewCategoryUseCase(cat)
+            if(success){
+                withContext(Dispatchers.Main) { onInsert(cat) }
+            }
+            _message.postValue(msg)
+        }
+    }
+    fun getCategories(): MutableList<String>{
+        val list = pref.getStore().categories.split(",") as MutableList<String>
+        Log.d("TAGLO", "getCategories: $list")
+        return list
+    }
+
+}

@@ -17,6 +17,7 @@ class RemoteExpensesRepo(
     companion object{
         private const val TABLE_NAME = "expenses"
         private const val TAG = "Expenses"
+        private const val STORE_ID = "storeId"
     }
 
 
@@ -59,11 +60,18 @@ class RemoteExpensesRepo(
         try {
             val expenses = if (pref.getLastExpensesUpdate().isEmpty()){
                 //get all expenses for the firs time
-                supabase.from(TABLE_NAME).select().decodeList<Expense>()
+                supabase.from(TABLE_NAME).select(){
+                    filter{
+                        eq(STORE_ID,pref.getStore().id)
+                    }
+                }
+                        .decodeList<Expense>()
+
             }else{
                 //get only the new expenses
                 supabase.from(TABLE_NAME).select{
                     filter {
+                        eq(STORE_ID,pref.getStore().id)
                         gt("lastUpdate",pref.getLastExpensesUpdate())
                     }
                 }.decodeList<Expense>()

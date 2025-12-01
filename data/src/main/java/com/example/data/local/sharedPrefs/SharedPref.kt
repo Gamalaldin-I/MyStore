@@ -41,6 +41,7 @@ class SharedPref(context: Context) {
         const val LAST_BILLS_UPDATE = "lastBillsUpdate"
         const val LAST_SALES_UPDATE = "lastSalesUpdate"
         const val LAST_EXPENSES_UPDATE = "lastExpensesUpdate"
+        const val STORE_CATEGORIES = "storeCategories"
     }
 
     /////////////////////////////////////////////////
@@ -137,6 +138,7 @@ class SharedPref(context: Context) {
             putInt(Keys.PLAN_OPERATION_LIMIT, store.planOperationLimit)
             putString(Keys.STORE_LOGO, store.logoUrl)
             putString(Keys.RESET_DATE, store.resetDate)
+            putString(Keys.STORE_CATEGORIES, store.categories)
         }.apply()
     }
 
@@ -153,7 +155,8 @@ class SharedPref(context: Context) {
             logoUrl = sharedPref.getString(Keys.STORE_LOGO, "")!!,
             resetDate = sharedPref.getString(Keys.RESET_DATE, "")!!,
             productsCount = 0,
-            operationsCount = 0
+            operationsCount = 0,
+            categories = sharedPref.getString(Keys.STORE_CATEGORIES, "")!!
         )
     }
 

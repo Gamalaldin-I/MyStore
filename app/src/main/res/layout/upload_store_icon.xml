@@ -8,7 +8,7 @@
         android:id="@+id/logoCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/background_dark"
+        app:cardBackgroundColor="@color/text_white"
         app:cardCornerRadius="24dp"
         app:cardElevation="2dp"
         android:layout_margin="8dp"
@@ -31,11 +31,11 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:clickable="true"
-                app:cardBackgroundColor="@color/background_dark"
+                app:cardBackgroundColor="@color/background_card"
                 android:focusable="true"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp"
-                app:strokeColor="@color/input_border_focus"
+                app:strokeColor="@color/gradient_gray_end"
                 app:strokeWidth="2dp">
 
                 <FrameLayout
@@ -48,7 +48,8 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/store_logo"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/nav_store" />
+                        android:src="@drawable/nav_store"
+                        />
 
                     <!-- Upload Overlay -->
                     <View

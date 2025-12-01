@@ -105,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Today's Summary"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/action_primary"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium" />
@@ -159,8 +159,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Top 5 Products"
-                            android:textColor="@color/text_primary"
+                            android:text="Top 10"
+                            android:textColor="@color/action_primary"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium" />

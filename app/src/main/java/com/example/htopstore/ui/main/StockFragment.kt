@@ -14,7 +14,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Product
-import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.ui.product.ProductActivity
@@ -30,7 +29,6 @@ class StockFragment : Fragment() {
     private var checkedId = -1
     private lateinit var binding: FragmentStoreBinding
     private val vm: MainViewModel by activityViewModels()
-    private val getCatLocalName = GetCategoryLocalName()
     private val adapter by lazy {
         StockRecycler { product ->
             val intent = Intent(requireContext(), ProductActivity::class.java)
@@ -178,7 +176,7 @@ class StockFragment : Fragment() {
         vm.fetchProductsFromRemote()
         vm.products.observe(viewLifecycleOwner) { products ->
             allProducts = products
-            categories = products.map { getCatLocalName(it.category) }.distinct()
+            categories = products.map {it.category}.distinct()
 
             setupChips()
             applyFiltersAndSearch()
@@ -203,7 +201,7 @@ class StockFragment : Fragment() {
         val selectedCategory = selectedChip?.text?.toString()
         if (selectedCategory != null && selectedCategory != allText) {
             filteredProducts = filteredProducts.filter {
-                getCatLocalName(it.category) == selectedCategory
+                it.category == selectedCategory
             }
         }
 
@@ -212,7 +210,7 @@ class StockFragment : Fragment() {
             filteredProducts = filteredProducts.filter { product ->
                 product.name.contains(currentSearchQuery, ignoreCase = true) ||
                         product.id.contains(currentSearchQuery, ignoreCase = true) ||
-                        getCatLocalName(product.category).contains(currentSearchQuery, ignoreCase = true)
+                        product.category.contains(currentSearchQuery, ignoreCase = true)
             }
         }
 

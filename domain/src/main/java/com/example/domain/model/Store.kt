@@ -15,6 +15,7 @@ data class Store(
     var productsCount:Int,
     var operationsCount: Int,
     var resetDate: String,
-    var logoUrl: String
+    var logoUrl: String,
+    var categories:String
 )
 

@@ -2,10 +2,10 @@ package com.example.htopstore.util.helper
 
 import android.content.Context
 import android.widget.ArrayAdapter
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.category.ExpenseCategory
 import com.example.domain.model.category.PaymentMethod
 import com.example.domain.model.category.UserRoles
-import com.example.domain.useCase.localize.GetCategoriesUseCase
 import com.example.domain.util.DateHelper.DAY
 import com.example.domain.util.DateHelper.MONTH
 import com.example.domain.util.DateHelper.WEEK
@@ -15,7 +15,6 @@ import java.util.Locale
 
 object AutoCompleteHelper {
 
-    val categories = GetCategoriesUseCase()
 
     private fun getAdapter(context: Context, options:List<String>): ArrayAdapter<String> {
         val adapter = ArrayAdapter(context, R.layout.spinner_item, options)
@@ -23,7 +22,7 @@ object AutoCompleteHelper {
         return adapter
         }
     fun getCategoriesAdapter(context: Context): ArrayAdapter<String> {
-        val options = categories()
+        val options = SharedPref(context).getStore().categories.split(",")
         return getAdapter(context,options)
     }
     fun getPaymentMethodAdapter(context: Context): ArrayAdapter<String> {

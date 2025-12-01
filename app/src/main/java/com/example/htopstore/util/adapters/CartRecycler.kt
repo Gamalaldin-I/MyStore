@@ -6,14 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.CartProduct
-import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.domain.useCase.localize.NAE.ae
 import com.example.htopstore.R
 import com.example.htopstore.databinding.CartItemBinding
 
 class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item: CartProduct)-> Unit, val onIncOrDec :() ->Unit) :
     RecyclerView.Adapter<CartRecycler.pHolder>() {
-        val catTrans = GetCategoryLocalName()
 
     // Create ViewHolder class
     class pHolder(val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -28,7 +26,7 @@ class CartRecycler(private val data: ArrayList<CartProduct>, val onDelete:(item:
     override fun onBindViewHolder(holder: pHolder, position: Int) {
         val currentItem = data[position]
         holder.binding.productBrand.text = currentItem.name
-        holder.binding.productType.text = catTrans(currentItem.type)
+        holder.binding.productType.text = currentItem.type
         val imagePath = currentItem.image
         val context = holder.binding.productImg.context
         Glide.with(context)

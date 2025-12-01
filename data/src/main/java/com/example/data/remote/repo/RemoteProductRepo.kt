@@ -125,13 +125,18 @@ class RemoteProductRepo(
         try {
             if(pref.getLastProductsUpdate().isEmpty()){
                 //get all products for first time after login
-                val products = supabase.from(PRODUCTS).select().decodeList<Product>()
+                val products = supabase.from(PRODUCTS).select(){
+                    filter {
+                        eq("storeId", pref.getStore().id)
+                    }
+                }.decodeList<Product>()
                 Log.d(TAG, "products: all products ${products.size}")
                 return submitList(products)
             }else{
                 //get all products that updated since last update
                 val updatedProducts = supabase.from(PRODUCTS).select{
                     filter {
+                        eq("storeId", pref.getStore().id)
                         gte("lastUpdate", pref.getLastProductsUpdate())
                     }
                 }.decodeList<Product>()

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.Store
 import com.example.domain.model.UpdateStoreRequest
 import com.example.domain.repo.StoreRepo
@@ -21,7 +22,8 @@ import kotlinx.coroutines.withContext
 class StoreRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
-    private val context: Context
+    private val context: Context,
+    private val netWorkHelper: NetworkHelperInterface
 ) : StoreRepo {
 
     companion object {
@@ -35,6 +37,7 @@ class StoreRepoImp(
 
     override suspend fun createStore(store: Store): Pair<Boolean, String> {
         return try {
+            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
             withContext(Dispatchers.IO) {
                 // Upload logo if provided
                 val logoUrl = uploadLogo(store.logoUrl, pref.getUser().id)
@@ -62,7 +65,7 @@ class StoreRepoImp(
                 pref.saveStore(store)
                 val updatedUser = pref.getUser().copy(
                     storeId = store.id,
-                    status = Constants.STATUS_HIRED
+                    status = STATUS_HIRED
                 )
                 pref.saveUser(updatedUser)
 
@@ -76,6 +79,7 @@ class StoreRepoImp(
 
     override suspend fun updateStore(store: Store): Pair<Boolean, String> {
         return try {
+            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
             withContext(Dispatchers.IO) {
                 // Handle logo update
                 val logoUrl = handleLogoUpdate(store.logoUrl)
@@ -108,13 +112,73 @@ class StoreRepoImp(
         }
     }
 
+    override suspend fun addCategory(category: String): Pair<Boolean, String> {
+
+        try {
+            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
+            // Check if category already exists
+            val currentCategories = pref.getStore().categories.split(",")
+            if (currentCategories.contains(category)) {
+                return Pair(false, "Category already exists")
+            }
+            val updatedCategories = currentCategories.toMutableList()
+            updatedCategories.add(category)
+            supabase.from(STORES_TABLE).update(
+                mapOf<String, String>(
+                    "categories" to updatedCategories.joinToString(",")
+                )
+            ) {
+                filter {
+                    eq("id", pref.getStore().id)
+                }
+
+            }
+            pref.saveStore(pref.getStore().copy(categories = updatedCategories.joinToString(",")))
+            return Pair(true, "Category added successfully")
+        }catch (e: Exception){
+            Log.e(TAG, "addCategory error: ${e.message}", e)
+            return Pair(false, "Failed to add category")
+        }
+    }
+
+    override suspend fun deleteCategory(category: String): Pair<Boolean, String> {
+        try {
+            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
+            val currentCategories = pref.getStore().categories.split(",")
+            if (!currentCategories.contains(category)) {
+                return Pair(false, "Category does not exist")
+            }
+            val updatedCategories = currentCategories.toMutableList()
+            updatedCategories.remove(category)
+            supabase.from(STORES_TABLE).update(
+                mapOf<String, String>(
+                    "categories" to updatedCategories.joinToString(",")
+                )
+            )
+            {
+                filter {
+                    eq("id", pref.getStore().id)
+                }
+            }
+            pref.saveStore(pref.getStore().copy(categories = updatedCategories.joinToString(",")))
+            return Pair(true, "Category deleted successfully")
+        }
+        catch (e: Exception){
+            Log.e(TAG, "deleteCategory error: ${e.message}", e)
+            return Pair(false, "Failed to delete category")
+        }
+
+    }
+
     /**
      * Handles logo update logic:
      * - If new logo URI is provided, upload it
      * - Otherwise, keep the existing logo URL
      */
     private suspend fun handleLogoUpdate(logoUri: String?): String {
+        if(!netWorkHelper.isConnected()) return Constants.NO_INTERNET_CONNECTION
         return when {
+
             // New logo provided - upload it
             !logoUri.isNullOrEmpty() && isLocalUri(logoUri) -> {
                 uploadLogo(logoUri, pref.getUser().id) ?: pref.getStore().logoUrl

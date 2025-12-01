@@ -2,9 +2,12 @@ package com.example.htopstore.di.module.store
 
 import android.content.Context
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.StoreRepoImp
 import com.example.domain.repo.StoreRepo
+import com.example.domain.useCase.store.AddCategoryUseCase
 import com.example.domain.useCase.store.AddStoreUseCase
+import com.example.domain.useCase.store.DeleteCategoryUseCase
 import com.example.domain.useCase.store.UpdateStoreDataUseCase
 import dagger.Module
 import dagger.Provides
@@ -24,16 +27,26 @@ object StoreModule {
     fun provideStoreRepo(
         @ApplicationContext context: Context,
         supabase: SupabaseClient,
-        pref: SharedPref
+        pref: SharedPref,
+        networkHelper: NetworkHelperInterface
     ): StoreRepo {
         return StoreRepoImp(
             supabase = supabase,
             pref = pref,
-            context = context
+            context = context, netWorkHelper = networkHelper
         )
     }
     @Provides
     fun provideUpdateStoreUseCase(repo: StoreRepo): UpdateStoreDataUseCase {
         return UpdateStoreDataUseCase(repo)
     }
+    @Provides
+    fun provideDeleteCategoryUseCase(repo: StoreRepo): DeleteCategoryUseCase {
+        return DeleteCategoryUseCase(repo)
+    }
+    @Provides
+    fun provideAddCategoryUseCase(repo: StoreRepo): AddCategoryUseCase {
+        return AddCategoryUseCase(repo)
+    }
+
 }

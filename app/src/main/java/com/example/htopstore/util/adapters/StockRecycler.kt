@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.Product
-import com.example.domain.useCase.localize.GetCategoryLocalName
 import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.util.CartHelper
 import com.example.htopstore.R
@@ -19,7 +18,6 @@ import com.example.htopstore.util.helper.Animator.animateStockItem
 
 class StockRecycler(private val onProductClick: (Product) -> Unit):
     ListAdapter<Product, StockRecycler.PHolder>(DiffCallback()) {
-    private val catTrans = GetCategoryLocalName()
     class PHolder(val binding: ItemCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PHolder {
@@ -48,7 +46,7 @@ class StockRecycler(private val onProductClick: (Product) -> Unit):
 
             productBrand.text = item.name
             productPrice.text = item.sellingPrice.toInt().ae()
-            productType.text = catTrans(item.category)
+            productType.text = item.category
             count.text = "${item.count}/${(item.count + item.soldCount)}"
 
             addToCart.setOnClickListener {
