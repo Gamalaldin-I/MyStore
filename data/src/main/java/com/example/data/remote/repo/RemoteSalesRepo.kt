@@ -42,6 +42,7 @@ class RemoteSalesRepo(
         }
 
         return try {
+            sales.map { it.storeId = pref.getStore().id }
             supabase.from(SALES).insert(sales)
             onResult()
             Pair(true, "Sales added successfully")

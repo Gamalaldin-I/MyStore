@@ -275,7 +275,8 @@ class SellUseCase(
             sellDate = sellDate,
             sellTime = sellTime,
             lastUpdate = timestamp,
-            deleted = false
+            deleted = false,
+            storeId = ""
         )
     }
 

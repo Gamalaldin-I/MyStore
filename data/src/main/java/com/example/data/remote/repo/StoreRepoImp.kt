@@ -23,7 +23,7 @@ class StoreRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
     private val context: Context,
-    private val netWorkHelper: NetworkHelperInterface
+    private val networkHelper: NetworkHelperInterface
 ) : StoreRepo {
 
     companion object {
@@ -33,189 +33,259 @@ class StoreRepoImp(
         private const val STORES_LOGO_BUCKET = "Stores"
         private const val LOGO_PREFIX = "logo_"
         private const val LOGO_EXTENSION = ".jpg"
+        private const val CATEGORY_SEPARATOR = ","
+
+        // Error messages
+        private const val ERROR_CREATE_STORE = "Failed to create store"
+        private const val ERROR_UPDATE_STORE = "Failed to update store"
+        private const val ERROR_ADD_CATEGORY = "Failed to add category"
+        private const val ERROR_DELETE_CATEGORY = "Failed to delete category"
+        private const val ERROR_UPLOAD_LOGO = "Failed to upload logo"
+        private const val ERROR_READ_IMAGE = "Failed to read image"
+
+        private const val SUCCESS_CREATE_STORE = "Store created successfully"
+        private const val SUCCESS_UPDATE_STORE = "Store updated successfully"
+        private const val SUCCESS_ADD_CATEGORY = "Category added successfully"
+        private const val SUCCESS_DELETE_CATEGORY = "Category deleted successfully"
+
+        private const val CATEGORY_EXISTS = "Category already exists"
+        private const val CATEGORY_NOT_EXISTS = "Category does not exist"
     }
 
     override suspend fun createStore(store: Store): Pair<Boolean, String> {
-        return try {
-            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
-            withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
+            try {
+                // Check network connectivity
+                if (!networkHelper.isConnected()) {
+                    return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
+                }
+
                 // Upload logo if provided
                 val logoUrl = uploadLogo(store.logoUrl, pref.getUser().id)
-                store.logoUrl = logoUrl ?: ""
+                val storeWithLogo = store.copy(logoUrl = logoUrl ?: "")
 
                 // Execute database operations in parallel
-                val updateUserTask = async {
-                    supabase.from(USERS_TABLE).update(
-                        mapOf("storeId" to store.id,
-                        "status" to STATUS_HIRED)){
-                            filter {
-                                eq("id", pref.getUser().id)
-                            }
-                    }
-                }
+                val results = awaitAll(
+                    async { updateUserStatus(pref.getUser().id, storeWithLogo.id) },
+                    async { insertStore(storeWithLogo) }
+                )
 
-                val insertStoreTask = async {
-                    supabase.from(STORES_TABLE).insert(store)
+                // Check if any operation failed
+                if (results.any { !it }) {
+                    return@withContext Pair(false, ERROR_CREATE_STORE)
                 }
-
-                // Wait for both operations to complete
-                awaitAll(updateUserTask, insertStoreTask)
 
                 // Update local preferences
-                pref.saveStore(store)
-                val updatedUser = pref.getUser().copy(
-                    storeId = store.id,
-                    status = STATUS_HIRED
-                )
-                pref.saveUser(updatedUser)
+                updateLocalStoreData(storeWithLogo)
 
-                Pair(true, "Store created successfully")
+                Pair(true, SUCCESS_CREATE_STORE)
+            } catch (e: Exception) {
+                Log.e(TAG, "createStore error: ${e.message}", e)
+                Pair(false, e.message ?: ERROR_CREATE_STORE)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "createStore error: ${e.message}", e)
-            Pair(false, "Failed to create store")
         }
     }
 
     override suspend fun updateStore(store: Store): Pair<Boolean, String> {
-        return try {
-            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
-            withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
+            try {
+                // Check network connectivity
+                if (!networkHelper.isConnected()) {
+                    return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
+                }
+
                 // Handle logo update
                 val logoUrl = handleLogoUpdate(store.logoUrl)
-                store.logoUrl = logoUrl
+                val storeWithLogo = store.copy(logoUrl = logoUrl)
 
-                // Prepare update request
-                val updateData = UpdateStoreRequest(
-                    name = store.name,
-                    phone = store.phone,
-                    location = store.location,
-                    planProductLimit = store.planProductLimit,
-                    planOperationLimit = store.planOperationLimit,
-                    plan = store.plan,
-                    logoUrl = store.logoUrl
-                )
+                // Prepare and execute update
+                val updateData = createUpdateRequest(storeWithLogo)
 
-                // Update store in database
                 supabase.from(STORES_TABLE).update(updateData) {
                     filter { eq("id", pref.getStore().id) }
                 }
 
                 // Update local preferences
-                pref.saveStore(store)
+                pref.saveStore(storeWithLogo)
 
-                Pair(true, "Store updated successfully")
+                Pair(true, SUCCESS_UPDATE_STORE)
+            } catch (e: Exception) {
+                Log.e(TAG, "updateStore error: ${e.message}", e)
+                Pair(false, e.message ?: ERROR_UPDATE_STORE)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "updateStore error: ${e.message}", e)
-            Pair(false,"Failed to update store")
         }
     }
 
     override suspend fun addCategory(category: String): Pair<Boolean, String> {
-
-        try {
-            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
-            // Check if category already exists
-            val currentCategories = pref.getStore().categories.split(",")
-            if (currentCategories.contains(category)) {
-                return Pair(false, "Category already exists")
-            }
-            val updatedCategories = currentCategories.toMutableList()
-            updatedCategories.add(category)
-            supabase.from(STORES_TABLE).update(
-                mapOf<String, String>(
-                    "categories" to updatedCategories.joinToString(",")
-                )
-            ) {
-                filter {
-                    eq("id", pref.getStore().id)
+        return withContext(Dispatchers.IO) {
+            try {
+                // Validate inputs
+                if (category.isBlank()) {
+                    return@withContext Pair(false, "Category name cannot be empty")
                 }
 
+                if (!networkHelper.isConnected()) {
+                    return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
+                }
+
+                val trimmedCategory = category.trim()
+                val currentCategories = getCategoriesList()
+
+                // Check if category already exists (case-insensitive)
+                if (currentCategories.any { it.equals(trimmedCategory, ignoreCase = true) }) {
+                    return@withContext Pair(false, CATEGORY_EXISTS)
+                }
+
+                // Add new category
+                val updatedCategories = currentCategories + trimmedCategory
+                val categoriesString = updatedCategories.joinToString(CATEGORY_SEPARATOR)
+
+                // Update in database
+                updateCategoriesInDb(categoriesString)
+
+                // Update local preferences
+                pref.saveStore(pref.getStore().copy(categories = categoriesString))
+
+                Pair(true, SUCCESS_ADD_CATEGORY)
+            } catch (e: Exception) {
+                Log.e(TAG, "addCategory error: ${e.message}", e)
+                Pair(false, e.message ?: ERROR_ADD_CATEGORY)
             }
-            pref.saveStore(pref.getStore().copy(categories = updatedCategories.joinToString(",")))
-            return Pair(true, "Category added successfully")
-        }catch (e: Exception){
-            Log.e(TAG, "addCategory error: ${e.message}", e)
-            return Pair(false, "Failed to add category")
         }
     }
 
     override suspend fun deleteCategory(category: String): Pair<Boolean, String> {
-        try {
-            if(!netWorkHelper.isConnected()) return Pair(false, Constants.NO_INTERNET_CONNECTION)
-            val currentCategories = pref.getStore().categories.split(",")
-            if (!currentCategories.contains(category)) {
-                return Pair(false, "Category does not exist")
-            }
-            val updatedCategories = currentCategories.toMutableList()
-            updatedCategories.remove(category)
-            supabase.from(STORES_TABLE).update(
-                mapOf<String, String>(
-                    "categories" to updatedCategories.joinToString(",")
-                )
-            )
-            {
-                filter {
-                    eq("id", pref.getStore().id)
+        return withContext(Dispatchers.IO) {
+            try {
+                if (!networkHelper.isConnected()) {
+                    return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
                 }
-            }
-            pref.saveStore(pref.getStore().copy(categories = updatedCategories.joinToString(",")))
-            return Pair(true, "Category deleted successfully")
-        }
-        catch (e: Exception){
-            Log.e(TAG, "deleteCategory error: ${e.message}", e)
-            return Pair(false, "Failed to delete category")
-        }
 
+                val currentCategories = getCategoriesList()
+
+                // Check if category exists
+                if (!currentCategories.contains(category)) {
+                    return@withContext Pair(false, CATEGORY_NOT_EXISTS)
+                }
+
+                // Remove category
+                val updatedCategories = currentCategories - category
+                val categoriesString = updatedCategories.joinToString(CATEGORY_SEPARATOR)
+
+                // Update in database
+                updateCategoriesInDb(categoriesString)
+
+                // Update local preferences
+                pref.saveStore(pref.getStore().copy(categories = categoriesString))
+
+                Pair(true, SUCCESS_DELETE_CATEGORY)
+            } catch (e: Exception) {
+                Log.e(TAG, "deleteCategory error: ${e.message}", e)
+                Pair(false, e.message ?: ERROR_DELETE_CATEGORY)
+            }
+        }
     }
 
-    /**
-     * Handles logo update logic:
-     * - If new logo URI is provided, upload it
-     * - Otherwise, keep the existing logo URL
-     */
+    // Private helper methods
+
+    private suspend fun updateUserStatus(userId: String, storeId: String): Boolean {
+        return try {
+            supabase.from(USERS_TABLE).update(
+                mapOf(
+                    "storeId" to storeId,
+                    "status" to STATUS_HIRED
+                )
+            ) {
+                filter { eq("id", userId) }
+            }
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "updateUserStatus error: ${e.message}", e)
+            false
+        }
+    }
+
+    private suspend fun insertStore(store: Store): Boolean {
+        return try {
+            supabase.from(STORES_TABLE).insert(store)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "insertStore error: ${e.message}", e)
+            false
+        }
+    }
+
+    private fun updateLocalStoreData(store: Store) {
+        pref.saveStore(store)
+        val updatedUser = pref.getUser().copy(
+            storeId = store.id,
+            status = STATUS_HIRED
+        )
+        pref.saveUser(updatedUser)
+    }
+
+    private fun createUpdateRequest(store: Store): UpdateStoreRequest {
+        return UpdateStoreRequest(
+            name = store.name,
+            phone = store.phone,
+            location = store.location,
+            planProductLimit = store.planProductLimit,
+            planOperationLimit = store.planOperationLimit,
+            plan = store.plan,
+            logoUrl = store.logoUrl
+        )
+    }
+
+    private fun getCategoriesList(): List<String> {
+        val categories = pref.getStore().categories
+        return if (categories.isBlank()) {
+            emptyList()
+        } else {
+            categories.split(CATEGORY_SEPARATOR).filter { it.isNotBlank() }
+        }
+    }
+
+    private suspend fun updateCategoriesInDb(categories: String) {
+        supabase.from(STORES_TABLE).update(
+            mapOf("categories" to categories)
+        ) {
+            filter { eq("id", pref.getStore().id) }
+        }
+    }
+
     private suspend fun handleLogoUpdate(logoUri: String?): String {
-        if(!netWorkHelper.isConnected()) return Constants.NO_INTERNET_CONNECTION
         return when {
-
-            // New logo provided - upload it
-            !logoUri.isNullOrEmpty() && isLocalUri(logoUri) -> {
-                uploadLogo(logoUri, pref.getUser().id) ?: pref.getStore().logoUrl
-            }
-            // Keep existing logo
-            else -> pref.getStore().logoUrl
+            logoUri.isNullOrBlank() -> pref.getStore().logoUrl
+            isLocalUri(logoUri) -> uploadLogo(logoUri, pref.getUser().id) ?: pref.getStore().logoUrl
+            else -> logoUri // Already a remote URL
         }
     }
 
-    /**
-     * Checks if the URI is a local file URI (not a remote URL)
-     */
     private fun isLocalUri(uri: String): Boolean {
         return uri.startsWith("content://") ||
                 uri.startsWith("file://") ||
-                !uri.startsWith("http")
+                (!uri.startsWith("http://") && !uri.startsWith("https://"))
     }
 
-    /**
-     * Uploads a logo image to Supabase storage
-     * @param imageUriString The URI string of the image to upload
-     * @param userId The user ID to organize the storage folder
-     * @return The public URL of the uploaded image, or null if upload fails
-     */
     private suspend fun uploadLogo(imageUriString: String?, userId: String): String? {
-        if (imageUriString.isNullOrEmpty()) return null
+        if (imageUriString.isNullOrBlank()) return null
 
         return try {
             val imageUri = imageUriString.toUri()
 
-            // Read image bytes from URI
+            // Read image bytes
             val bytes = readImageBytes(imageUri) ?: run {
-                Log.e(TAG, "uploadLogo: Failed to read image bytes")
+                Log.e(TAG, "uploadLogo: $ERROR_READ_IMAGE")
                 return null
             }
 
-            // Delete old logos before uploading new one
+            // Validate image size (optional)
+            if (bytes.isEmpty()) {
+                Log.e(TAG, "uploadLogo: Image is empty")
+                return null
+            }
+
+            // Delete old logos
             deleteOldLogos(userId)
 
             // Upload new logo
@@ -232,9 +302,6 @@ class StoreRepoImp(
         }
     }
 
-    /**
-     * Reads image bytes from a URI
-     */
     private fun readImageBytes(imageUri: Uri): ByteArray? {
         return try {
             context.contentResolver.openInputStream(imageUri)?.use { inputStream ->
@@ -246,29 +313,24 @@ class StoreRepoImp(
         }
     }
 
-    /**
-     * Deletes old logo files from storage
-     */
     private suspend fun deleteOldLogos(userId: String) {
         try {
             val folderPath = "stores/$userId"
             val bucket = supabase.storage.from(STORES_LOGO_BUCKET)
 
             val existingFiles = bucket.list(folderPath)
-            existingFiles.forEach { file ->
-                if (file.name.startsWith(LOGO_PREFIX)) {
+            existingFiles
+                .filter { it.name.startsWith(LOGO_PREFIX) }
+                .forEach { file ->
                     bucket.delete("$folderPath/${file.name}")
                     Log.d(TAG, "deleteOldLogos: Deleted old logo - ${file.name}")
                 }
-            }
         } catch (e: Exception) {
-            Log.d(TAG, "deleteOldLogos: No old logos to delete or error occurred - ${e.message}")
+            // Not a critical error - log and continue
+            Log.d(TAG, "deleteOldLogos: ${e.message}")
         }
     }
 
-    /**
-     * Uploads image bytes to Supabase storage
-     */
     private suspend fun uploadLogoToStorage(bytes: ByteArray, userId: String): String {
         val folderPath = "stores/$userId"
         val fileName = "$LOGO_PREFIX${System.currentTimeMillis()}$LOGO_EXTENSION"

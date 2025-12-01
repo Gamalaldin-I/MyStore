@@ -1,7 +1,6 @@
 package com.example.htopstore.ui.createStore
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -160,8 +159,7 @@ class CreateStoreViewModel
         }
     }
     fun getCategories(): MutableList<String>{
-        val list = pref.getStore().categories.split(",") as MutableList<String>
-        Log.d("TAGLO", "getCategories: $list")
+        val list = pref.getStore().categories.split(",").filter { it.isNotBlank() } as MutableList<String>
         return list
     }
 

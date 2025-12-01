@@ -76,7 +76,8 @@ object Mapper {
             sellDate = this.sellDate,
             sellTime = this.sellTime,
             lastUpdate = this.lastUpdate,
-            deleted = false
+            deleted = false,
+            storeId = ""
         )
     }
 

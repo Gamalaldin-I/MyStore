@@ -22,7 +22,7 @@ object AutoCompleteHelper {
         return adapter
         }
     fun getCategoriesAdapter(context: Context): ArrayAdapter<String> {
-        val options = SharedPref(context).getStore().categories.split(",")
+        val options = SharedPref(context).getStore().categories.split(",").filter { it.isNotBlank() }
         return getAdapter(context,options)
     }
     fun getPaymentMethodAdapter(context: Context): ArrayAdapter<String> {

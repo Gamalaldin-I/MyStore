@@ -33,7 +33,8 @@ object StoreModule {
         return StoreRepoImp(
             supabase = supabase,
             pref = pref,
-            context = context, netWorkHelper = networkHelper
+            context = context,
+            networkHelper = networkHelper
         )
     }
     @Provides
