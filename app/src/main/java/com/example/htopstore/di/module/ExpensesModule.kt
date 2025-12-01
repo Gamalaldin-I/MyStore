@@ -5,6 +5,7 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.RemoteExpensesRepo
 import com.example.data.repo.ExpenseRepoImp
 import com.example.domain.repo.ExpensesRepo
+import com.example.domain.useCase.expenses.DeleteOutcomeUseCase
 import com.example.domain.useCase.expenses.FetchAllOutComesUseCase
 import com.example.domain.useCase.expenses.GetAllExpensesUseCase
 import com.example.domain.useCase.expenses.GetExpensesByDateUseCase
@@ -61,6 +62,10 @@ object ExpensesModule {
     @Provides
     fun provideGetExpensesByRange(expensesRepo: ExpensesRepo): GetTotalOfExpensesByRangeOfDateUseCase{
         return GetTotalOfExpensesByRangeOfDateUseCase(expensesRepo)
+    }
+    @Provides
+    fun provideDeleteOutcomeUseCase(repo: ExpensesRepo): DeleteOutcomeUseCase{
+        return DeleteOutcomeUseCase(repo)
     }
 
 }

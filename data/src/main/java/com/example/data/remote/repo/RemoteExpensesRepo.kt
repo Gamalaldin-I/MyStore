@@ -60,7 +60,7 @@ class RemoteExpensesRepo(
         try {
             val expenses = if (pref.getLastExpensesUpdate().isEmpty()){
                 //get all expenses for the firs time
-                supabase.from(TABLE_NAME).select(){
+                supabase.from(TABLE_NAME).select{
                     filter{
                         eq(STORE_ID,pref.getStore().id)
                     }

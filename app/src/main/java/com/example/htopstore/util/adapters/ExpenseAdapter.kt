@@ -8,7 +8,8 @@ import com.example.domain.model.Expense
 import com.example.domain.util.DateHelper
 import com.example.htopstore.databinding.ExpenseItemBinding
 
-class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: (expense: Expense)-> Unit) :
+class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: (expense: Expense)-> Unit
+,private val onDelete: (expense: Expense,onDeleteView:()->Unit)-> Unit):
     RecyclerView.Adapter<ExpenseAdapter.EHolder>() {
 
     // Create ViewHolder class
@@ -32,6 +33,14 @@ class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: 
         holder.binding.root.setOnClickListener {
             onClick(item)
         }
+        holder.binding.root.setOnLongClickListener {
+            onDelete(item){
+                data.remove(item)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, data.size)
+            }
+            true
+        }
     }
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<Expense>) {
@@ -39,10 +48,7 @@ class ExpenseAdapter(private val data: ArrayList<Expense>, private val onClick: 
         data.addAll(newData)
         notifyDataSetChanged()
     }
-    fun addExpense(expense: Expense) {
-        data.add(expense)
-        notifyItemInserted(data.size - 1)
-    }
+
 
     // Return the size of the data list
     override fun getItemCount(): Int {

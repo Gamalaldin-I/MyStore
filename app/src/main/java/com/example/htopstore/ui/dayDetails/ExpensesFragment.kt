@@ -44,7 +44,10 @@ class ExpensesFragment private constructor(): Fragment() {
         vm.expensesList.observe(viewLifecycleOwner){
             if(it.isEmpty()) binding.emptyHint.visibility = View.VISIBLE
             else {binding.emptyHint.visibility = View.GONE
-            binding.adapter.adapter = ExpenseAdapter(it as ArrayList<Expense>,::onItemClick) }
+            binding.adapter.adapter = ExpenseAdapter(it as ArrayList<Expense>,::onItemClick){
+                expense,onDeleteView-> onDelete(expense,onDeleteView)
+            }
+            }
         }
     }
     private fun onItemClick(expense: Expense) {
@@ -52,6 +55,20 @@ class ExpensesFragment private constructor(): Fragment() {
         vm.user.observe(viewLifecycleOwner){
             if(it!=null) DialogBuilder.showExpensesDetailsDialog(expense,it,requireContext())
         }
+    }
+    private fun onDelete(outcome: Expense,onDeleteView:()->Unit){
+        DialogBuilder.showAlertDialog(
+            context=requireContext(),
+            title = "Delete Expense",
+            message = "Are you sure you want to delete this expense?",
+            positiveButton = "Delete",
+            negativeButton = "Cancel",
+            onConfirm = {
+                vm.deleteOutCome(outcome){
+                    onDeleteView()
+                } },
+            onCancel = {}
+        )
     }
 
 }

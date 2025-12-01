@@ -14,6 +14,7 @@ import com.example.domain.useCase.analisys.GetProfitByDayUseCase
 import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.bill.GetBillByDateUseCase
+import com.example.domain.useCase.expenses.DeleteOutcomeUseCase
 import com.example.domain.useCase.expenses.GetExpensesByDateUseCase
 import com.example.domain.useCase.sales.GetReturnsByDateUseCase
 import com.example.domain.util.Constants
@@ -22,6 +23,7 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,12 +31,13 @@ class DayDetailsViewModel
     @Inject constructor(
         private val pref: SharedPref,
         private val supabaseClient: SupabaseClient,
-    private val getReturnsByDateUseCase: GetReturnsByDateUseCase,
-    private val getBillsByDateUseCase: GetBillByDateUseCase,
-    private val getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
-    private val getProfitByDayUseCase: GetProfitByDayUseCase,
-    private val getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
-    private val getExpensesListByDateUseCase: GetExpensesByDateUseCase
+        private val getReturnsByDateUseCase: GetReturnsByDateUseCase,
+        private val getBillsByDateUseCase: GetBillByDateUseCase,
+        private val getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
+        private val getProfitByDayUseCase: GetProfitByDayUseCase,
+        private val getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
+        private val getExpensesListByDateUseCase: GetExpensesByDateUseCase,
+        private val deleteOutcomeUseCase: DeleteOutcomeUseCase
     )
     : ViewModel() {
         private val  _loading = MutableLiveData<Boolean>()
@@ -117,6 +120,15 @@ class DayDetailsViewModel
                     )
                 )
             }
+        }
+    }
+    fun deleteOutCome(outcome:Expense,onView:()->Unit){
+        viewModelScope.launch {
+            val result = deleteOutcomeUseCase(outcome.id)
+            if(result.first){
+                withContext(Dispatchers.Main) {onView()}
+            }
+            _message.postValue(result.second)
         }
     }
 
