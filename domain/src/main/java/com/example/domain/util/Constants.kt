@@ -1,5 +1,8 @@
 package com.example.domain.util
 
+import com.example.domain.model.category.UserRoles
+import java.util.Locale
+
 object Constants {
 
 
@@ -20,9 +23,24 @@ object Constants {
     ////////////////////Roles////////////////////////
     /////////////////////////////////////////////////
     const val OWNER_ROLE = 0
-    const val ADMIN_ROLE = 1
-    const val CASHIER_ROLE = 2
-    const val EMPLOYEE_ROLE = 3
+    const val PARTNER_ROLE = 1
+    const val ADMIN_ROLE = 2
+    const val CASHIER_ROLE = 3
+    const val EMPLOYEE_ROLE = 4
+
+    private fun getTheEnglishNameOfRole(role:Int):String{
+        return UserRoles.entries.find { it.role == role }?.englishName ?: "Unknown"
+    }
+    private fun getArabicNameOfRole(role:Int):String{
+        return UserRoles.entries.find { it.role == role }?.arabicName ?: "غير معرف"
+    }
+    fun getRoleName(role:Int):String{
+        return when(Locale.getDefault().language){
+            "ar" -> getArabicNameOfRole(role)
+            else -> getTheEnglishNameOfRole(role)
+        }
+    }
+
     /////////////////////////////////////////////////
     ////////////////////STATUS///////////////////////
     /////////////////////////////////////////////////

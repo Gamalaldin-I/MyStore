@@ -18,6 +18,7 @@ class RemoteProductRepo(
     private val context: Context,
     private val networkHelper: NetworkHelperInterface
 ) {
+
     companion object {
         private const val PRODUCT_BUCKET = "Products"
         private const val PRODUCTS = "products"
@@ -26,10 +27,13 @@ class RemoteProductRepo(
     }
 
     // ==============================
-    // IMAGE UPLOAD/REMOVE FUNCTIONS
+    // IMAGE UPLOAD / REMOVE FUNCTIONS
     // ==============================
-
-    private suspend fun uploadImage(uri: android.net.Uri, path: String, fileName: String): String? {
+    private suspend fun uploadImage(
+        uri: android.net.Uri,
+        path: String,
+        fileName: String
+    ): String? {
         return try {
             val inputStream = context.contentResolver.openInputStream(uri)
             val bytes = inputStream?.readBytes() ?: return null
@@ -42,8 +46,7 @@ class RemoteProductRepo(
         }
     }
 
-
-    private suspend fun removePhoto(fileName: String, path: String): Boolean {
+    private suspend fun removePhoto(fileName: String, path: String): Boolean{
         return try {
             val bucket = supabase.storage.from(path)
             bucket.delete(fileName)
@@ -54,36 +57,50 @@ class RemoteProductRepo(
         }
     }
 
-
     // ==============================
     // PRODUCT FUNCTIONS
     // ==============================
 
-    suspend fun addProduct(product: Product, onResult: suspend (Product?) -> Unit) {
+    // --- ADD PRODUCT ---
+    suspend fun addProduct(
+        product: Product,
+        onResult: suspend (Product?, String) -> Unit
+    ) {
         if (!networkHelper.isConnected()) {
-            onResult(null)
+            onResult(null, "No internet connection")
             return
         }
+
         try {
             val inserted = product.copy(storeId = pref.getStore().id)
             val fileName = "${inserted.id}.jpg"
             val uri = inserted.productImage.toUri()
             val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
             inserted.productImage = url.orEmpty()
+
             supabase.from(PRODUCTS).insert(inserted)
-            onResult(inserted)
+            onResult(inserted, "Product added successfully")
         } catch (e: Exception) {
-            Log.e(TAG, "Error adding product: ${e.message}")
-            onResult(null)
+            Log.e(TAG, "Error adding product: ${e.message}", e)
+            onResult(null, "Failed to add product")
         }
     }
 
-    suspend fun deleteProduct(id: String, onResult: suspend () -> Unit):Pair<Boolean,String>{
-        val success = Pair(true,"Product deleted successfully")
-        val fail = Pair(false,"check your internet connection")
+    // --- DELETE PRODUCT ---
+    suspend fun deleteProduct(
+        id: String,
+        onResult: suspend () -> Unit
+    ):Pair<Boolean,String>{
+        if (!networkHelper.isConnected()) {
+            return Pair(false, "No internet connection")
+        }
+        val deleted =removePhoto("$id.jpg", PRODUCT_BUCKET)
+        if(!deleted){
+            return Pair(false, "Failed to delete image")
+        }
+
+
         try {
-            val result = removePhoto("$id.jpg", PRODUCT_BUCKET)
-            if (!result) return fail
             supabase.from(PRODUCTS).update(
                 DeleteBody(
                     lastUpdate = DateHelper.getCurrentTimestampTz(),
@@ -92,71 +109,74 @@ class RemoteProductRepo(
             ) {
                 filter { eq(ID, id) }
             }
+
             onResult()
-            return success
+            return Pair(true, "Product deleted successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error deleting product: ${e.message}", e)
-            return fail
+           return Pair(false, "Failed to delete product or not allowed by server")
         }
     }
 
-    suspend fun updateProduct(product: Product, onResult: suspend (Product?) -> Unit) {
-        //should assign the  key to the product
-        val updatedProduct = product.copy(storeId = pref.getStore().id)
+    // --- UPDATE PRODUCT ---
+    suspend fun updateProduct(
+        product: Product,
+        onResult: suspend (Product?, String) -> Unit
+    ) {
         if (!networkHelper.isConnected()) {
-            onResult(null)
+            onResult(null, "No internet connection")
             return
         }
+
+        val updatedProduct = product.copy(storeId = pref.getStore().id)
+
         try {
             supabase.from(PRODUCTS).update(updatedProduct) {
-                filter { eq(ID, updatedProduct.id)}
+                filter { eq(ID, updatedProduct.id) }
             }
-            onResult(updatedProduct)
+            onResult(updatedProduct, "Product updated successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error updating product: ${e.message}", e)
-            onResult(null)
+            onResult(null, "Failed to update product or not allowed by server")
         }
     }
 
+    // --- GET ALL PRODUCTS WITH LAST UPDATE ---
     suspend fun observeAllProductsWithLastUpdateAndDeleted(): Pair<List<Product>, String> {
         if (!networkHelper.isConnected()) {
             return Pair(emptyList(), "No internet connection")
         }
-        try {
-            if(pref.getLastProductsUpdate().isEmpty()){
-                //get all products for first time after login
-                val products = supabase.from(PRODUCTS).select(){
-                    filter {
-                        eq("storeId", pref.getStore().id)
-                    }
+
+        return try {
+            val products = if (pref.getLastProductsUpdate().isEmpty()) {
+                // First fetch after login
+                supabase.from(PRODUCTS).select {
+                    filter { eq("storeId", pref.getStore().id) }
                 }.decodeList<Product>()
-                Log.d(TAG, "products: all products ${products.size}")
-                return submitList(products)
-            }else{
-                //get all products that updated since last update
-                val updatedProducts = supabase.from(PRODUCTS).select{
+            } else {
+                // Fetch only updated products
+                supabase.from(PRODUCTS).select {
                     filter {
                         eq("storeId", pref.getStore().id)
                         gte("lastUpdate", pref.getLastProductsUpdate())
                     }
                 }.decodeList<Product>()
-                Log.d(TAG, "products: updated products ${updatedProducts.size}")
-                return submitList(updatedProducts)
             }
+
+            if (products.isEmpty()) {
+                Pair(emptyList(), "No products or updates found")
+            } else {
+                pref.setLastProductsUpdate()
+                Pair(products, "New products and updates found")
+            }
+
         } catch (e: Exception) {
-            Log.e(TAG, "Error getting all products: ${e.message}", e)
-            return Pair(emptyList(), "Error getting all products")
+            Log.e(TAG, "Error fetching products: ${e.message}", e)
+            Pair(emptyList(), "Failed to fetch products")
         }
-    }
-    private fun submitList(products: List<Product>): Pair<List<Product>, String> {
-        if (products.isEmpty()) {
-            return Pair(emptyList(), "No products or updates found")
-        }
-        //very important to update the last update time
-        pref.setLastProductsUpdate()
-        return Pair(products, "New products and updates found")
     }
 
+    // --- GET PRODUCT BY ID ---
     suspend fun getProductById(id: String): Product? {
         return try {
             supabase.from(PRODUCTS).select {
@@ -167,7 +187,4 @@ class RemoteProductRepo(
             null
         }
     }
-
-
-
 }

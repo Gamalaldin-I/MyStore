@@ -9,16 +9,17 @@ import com.example.data.local.roomDb.AppDataBase
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.Store
 import com.example.domain.model.User
-import com.example.domain.model.category.UserRoles
 import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.profile.ChangeProfileImageUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.UpdateNameUseCase
+import com.example.domain.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
 @HiltViewModel
 class ProfileViewModel
     @Inject constructor(
@@ -58,7 +59,7 @@ class ProfileViewModel
     }
     fun getRole():String? {
         val role = pref.getRole()
-        return UserRoles.entries.find { it.role == role }?.roleName
+        return Constants.getRoleName(role)
     }
 
 

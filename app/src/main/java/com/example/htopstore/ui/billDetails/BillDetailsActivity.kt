@@ -174,13 +174,7 @@ class BillDetailsActivity : AppCompatActivity() {
             employeeName.text = employee.name ?: "Unknown Employee"
 
             // Employee role/position
-            employeeRole.text = when(employee.role){
-                Constants.EMPLOYEE_ROLE -> "Employee"
-                Constants.OWNER_ROLE -> "Owner"
-                Constants.ADMIN_ROLE -> "Store Manager"
-                Constants.CASHIER_ROLE ->"Sales Associate"
-                else -> "Sales Associate"
-            }
+            employeeRole.text = Constants.getRoleName(employee.role)
 
             // Load employee avatar
             Glide.with(this@BillDetailsActivity)

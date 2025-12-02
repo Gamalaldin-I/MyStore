@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.User
-import com.example.domain.model.category.UserRoles
+import com.example.domain.util.Constants
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.databinding.FragmentEmployeesBinding
 import com.example.htopstore.util.adapters.EmployeeAdapter
@@ -191,9 +191,7 @@ class EmployeesFragment : Fragment() {
      * Get role name from role ID
      */
     private fun getUserRoleName(roleId:Int): String? {
-        return UserRoles.entries
-            .find { it.role == roleId }
-            ?.roleName
+        return Constants.getRoleName(roleId)
     }
 
     /**

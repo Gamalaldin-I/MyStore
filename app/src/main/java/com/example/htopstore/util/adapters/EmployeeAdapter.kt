@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.User
 import com.example.domain.util.Constants
-import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.R
 import com.example.htopstore.databinding.StaffMemberCardBinding
@@ -42,14 +41,8 @@ class EmployeeAdapter(
 
             // Role
             employeeRole.apply {
-                text = when(employee.role){
-                    OWNER_ROLE -> getString(context,R.string.owner)
-                    Constants.ADMIN_ROLE -> getString(context,R.string.manager)
-                    Constants.CASHIER_ROLE -> "Cashier"
-                    else -> getString(context,R.string.employee)
-                }
+                text = Constants.getRoleName(employee.role)
             }
-
             // Status chip
             val isHired = employee.status == STATUS_HIRED
             empStatusChip.apply {

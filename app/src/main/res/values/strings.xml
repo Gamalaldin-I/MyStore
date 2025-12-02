@@ -524,6 +524,7 @@
     <string name="all_items_synced_successfully">All items synced successfully!</string>
     <string name="profile">Profile</string>
     <string name="pending_actions">Pending actions</string>
+    <string name="profit">Profit</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
@@ -15,6 +16,7 @@ import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
 import com.example.domain.useCase.sales.SellUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,8 +35,11 @@ class MainViewModel @Inject constructor(
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val productRepo:ProductRepo,
+    pref: SharedPref
 
 ): ViewModel(){
+    val c = Constants
+    val r = pref.getRole()
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
@@ -97,11 +102,19 @@ class MainViewModel @Inject constructor(
             "Error updating email: %1\$s" to R.string.error_updating_email
         )
 
-        fun getStringResFromMessage(message: String): Int {
-            return messageToStringRes[message]?: R.string.unknown_error
-        }
+    fun getStringResFromMessage(message: String): Int {
+        return messageToStringRes[message]?: R.string.unknown_error
+    }
 
-
-
+    fun canViewProduct(): Boolean{
+        return (r!=c.EMPLOYEE_ROLE && r!=c.CASHIER_ROLE)
+    }
+    fun isAdmin(): Boolean{
+        //if he was owner, partner or admin
+        return (r!=c.EMPLOYEE_ROLE && r!=c.CASHIER_ROLE)
+    }
+    fun isCashier(): Boolean{
+        return (r==c.CASHIER_ROLE)
+    }
 
 }

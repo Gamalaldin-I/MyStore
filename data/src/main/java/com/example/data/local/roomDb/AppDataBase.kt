@@ -23,7 +23,7 @@ import com.example.data.local.model.entities.SoldProductEntity
         ExpenseEntity::class,
         PendingSellActionEntity::class
     ],
-    version = 1, exportSchema = false
+    version =1, exportSchema = false
     )
 @TypeConverters(PendingSellConverter::class)
 abstract class AppDataBase(): RoomDatabase() {

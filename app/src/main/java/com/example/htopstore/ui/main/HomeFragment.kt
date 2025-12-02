@@ -146,6 +146,7 @@ class HomeFragment : Fragment() {
         // Handle View All button for Top 5 Sales
         binding.viewAllSales.setOnClickListener {
             // Navigate to full sales list or analytics
+            //TODO:  add check for role first
             startActivity(Intent(requireContext(), AnalysisActivity::class.java))
         }
     }
@@ -163,15 +164,35 @@ class HomeFragment : Fragment() {
         val expenses = binding.grid.expenses
         val sales = binding.grid.sales
         val scan = binding.grid.scan
+        //hide sensitive buttons for non-admins
+        sales.visibility = View.GONE
+        generate.visibility = View.GONE
+        bills.visibility = View.GONE
+        add.visibility = View.GONE
+        binding.viewAllSales.visibility = View.GONE
+        if(viewModel.isAdmin()){
+            add.visibility = View.VISIBLE
+            bills.visibility = View.VISIBLE
+            generate.visibility = View.VISIBLE
+            sales.visibility = View.VISIBLE
+            binding.viewAllSales.visibility = View.VISIBLE
+        }
+
+        if(viewModel.isCashier()){
+            sales.visibility = View.VISIBLE
+            binding.viewAllSales.visibility = View.VISIBLE
+        }
 
         add.setOnClickListener {
             goTo(add) {
+                //TODO:  add check for role first
                 startActivity(Intent(requireContext(), AddProductActivity::class.java))
             }
         }
 
         bills.setOnClickListener {
             goTo(bills) {
+                //TODO:  add check for role first
                 startActivity(Intent(requireContext(), DaysActivity::class.java))
             }
         }
@@ -190,6 +211,7 @@ class HomeFragment : Fragment() {
 
         sales.setOnClickListener {
             goTo(sales) {
+                //TODO:  add check for role first
                 startActivity(Intent(requireContext(), AnalysisActivity::class.java))
             }
         }
@@ -239,9 +261,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun goToProductDetails(productId: String) {
-        val intent = Intent(requireContext(), ProductActivity::class.java)
-        intent.putExtra("productId", productId)
-        startActivity(intent)
+        if(viewModel.canViewProduct()){
+            //TODO:  add check for role first
+            val intent = Intent(requireContext(), ProductActivity::class.java)
+            intent.putExtra("productId", productId)
+            startActivity(intent)}
     }
 
     private fun goToDayDetails() {
@@ -255,6 +279,13 @@ class HomeFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        val staffItem = menu.findItem(R.id.staff)
+        val archiveItem = menu.findItem(R.id.archive)
+        if(!viewModel.isAdmin()){
+            staffItem.isVisible = false
+            archiveItem.isVisible = false
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -30,22 +30,22 @@ class ProductRepoImp (
 
     override suspend fun addProduct(product: Product): Pair<Boolean, String> {
         var res = ""
-        remote.addProduct(product){
-                if(it != null) {
-                    res = it.id
-                    productDao.addProduct(it.toData())
-                }
+        remote.addProduct(product) {rProduct,msg->
+            if (rProduct != null) {
+                res = rProduct.id
+                productDao.addProduct(rProduct.toData())
             }
-        if(res.isEmpty()){
-            return Pair(false,"check your internet connection")
+        }
+        return if(res.isEmpty()){
+            Pair(false,"check your internet connection")
         }else{
-            return Pair(true,"Product added successfully")
+            Pair(true,"Product added successfully")
         }
     }
 
     override suspend fun updateProduct(product: Product):Pair<Boolean,String>{
         var res =""
-        remote.updateProduct(product){
+        remote.updateProduct(product){ it, _ ->
             if(it != null){
                 res = it.id
                 productDao.updateProduct(it.toData())

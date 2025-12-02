@@ -31,9 +31,7 @@ class StockFragment : Fragment() {
     private val vm: MainViewModel by activityViewModels()
     private val adapter by lazy {
         StockRecycler { product ->
-            val intent = Intent(requireContext(), ProductActivity::class.java)
-            intent.putExtra("productId", product.id)
-            startActivity(intent)
+            onProductClick(product)
         }
     }
 
@@ -369,5 +367,16 @@ class StockFragment : Fragment() {
         super.onDestroyView()
         binding.swipeRefresh.setOnRefreshListener(null)
         binding.searchEditText.removeTextChangedListener(null)
+    }
+    ///////////////////////////////////////////////////////////////
+    //////////////////////Authorization///////////////////////////
+    /////////////////////////////////////////////////////////////
+    private fun onProductClick(product: Product) {
+        if(true){
+            //TODO:  add check for role first
+            val intent = Intent(requireContext(), ProductActivity::class.java)
+            intent.putExtra("productId", product.id)
+            startActivity(intent)
+        }
     }
 }
