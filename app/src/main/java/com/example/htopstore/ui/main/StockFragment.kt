@@ -19,6 +19,7 @@ import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.adapters.StockRecycler
 import com.example.htopstore.util.helper.Animator.animateSelectedChip
+import com.example.htopstore.util.helper.PermissionHelper
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -372,8 +373,7 @@ class StockFragment : Fragment() {
     //////////////////////Authorization///////////////////////////
     /////////////////////////////////////////////////////////////
     private fun onProductClick(product: Product) {
-        if(true){
-            //TODO:  add check for role first
+        if(PermissionHelper.canViewProduct(vm.r)){
             val intent = Intent(requireContext(), ProductActivity::class.java)
             intent.putExtra("productId", product.id)
             startActivity(intent)

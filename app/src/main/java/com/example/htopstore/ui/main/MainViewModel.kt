@@ -16,7 +16,6 @@ import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
 import com.example.domain.useCase.sales.SellUseCase
-import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +37,6 @@ class MainViewModel @Inject constructor(
     pref: SharedPref
 
 ): ViewModel(){
-    val c = Constants
     val r = pref.getRole()
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
@@ -106,15 +104,6 @@ class MainViewModel @Inject constructor(
         return messageToStringRes[message]?: R.string.unknown_error
     }
 
-    fun canViewProduct(): Boolean{
-        return (r!=c.EMPLOYEE_ROLE && r!=c.CASHIER_ROLE)
-    }
-    fun isAdmin(): Boolean{
-        //if he was owner, partner or admin
-        return (r!=c.EMPLOYEE_ROLE && r!=c.CASHIER_ROLE)
-    }
-    fun isCashier(): Boolean{
-        return (r==c.CASHIER_ROLE)
-    }
+
 
 }

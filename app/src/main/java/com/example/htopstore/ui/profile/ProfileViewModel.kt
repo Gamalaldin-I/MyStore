@@ -30,6 +30,7 @@ class ProfileViewModel
         private val removeProfileImageUseCase: RemoveProfileImageUseCase,
         private val updateNameUseCase: UpdateNameUseCase
         ): ViewModel() {
+            val role = pref.getRole()
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 

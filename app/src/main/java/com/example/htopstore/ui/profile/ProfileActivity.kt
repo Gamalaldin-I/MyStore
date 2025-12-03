@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
@@ -20,12 +19,14 @@ import com.example.htopstore.databinding.ActivityProfileBinding
 import com.example.htopstore.ui.changeEmail.ChangeEmailActivity
 import com.example.htopstore.ui.createStore.CreateStoreActivity
 import com.example.htopstore.ui.login.LoginActivity
+import com.example.htopstore.util.BaseActivity
 import com.example.htopstore.util.DataValidator.isValidName
+import com.example.htopstore.util.helper.PermissionHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity:BaseActivity(){
 
     private lateinit var binding: ActivityProfileBinding
     private val vm: ProfileViewModel by viewModels()
@@ -42,6 +43,8 @@ class ProfileActivity : AppCompatActivity() {
     // ---------------------------------------------------------------------------
     // Lifecycle
     // ---------------------------------------------------------------------------
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,9 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setupUI() {
         setEditingEnabled(false)
+       if(!PermissionHelper.isAdmin(vm.role)){
+            binding.updateStoreAction.visibility = View.GONE
+        }
     }
 
     private fun setupListeners() = binding.apply {
@@ -74,6 +80,7 @@ class ProfileActivity : AppCompatActivity() {
             editPhotoBtn.visibility = View.GONE
             finishBtn.visibility = View.GONE
         }
+
 
         editPhotoBtn.setOnClickListener { showPhotoOptions() }
         callBtn.setOnClickListener { makePhoneCall(storePhoneTV.text.toString()) }

@@ -34,6 +34,7 @@ import com.example.htopstore.ui.staff.StaffActivity
 import com.example.htopstore.util.adapters.LowStockAdapter
 import com.example.htopstore.util.adapters.Top5Adapter
 import com.example.htopstore.util.helper.Animator.animateGridItem
+import com.example.htopstore.util.helper.PermissionHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -170,7 +171,7 @@ class HomeFragment : Fragment() {
         bills.visibility = View.GONE
         add.visibility = View.GONE
         binding.viewAllSales.visibility = View.GONE
-        if(viewModel.isAdmin()){
+        if(PermissionHelper.isAdmin(viewModel.r)){
             add.visibility = View.VISIBLE
             bills.visibility = View.VISIBLE
             generate.visibility = View.VISIBLE
@@ -178,21 +179,19 @@ class HomeFragment : Fragment() {
             binding.viewAllSales.visibility = View.VISIBLE
         }
 
-        if(viewModel.isCashier()){
+        if(PermissionHelper.isCashier(viewModel.r)){
             sales.visibility = View.VISIBLE
             binding.viewAllSales.visibility = View.VISIBLE
         }
 
         add.setOnClickListener {
             goTo(add) {
-                //TODO:  add check for role first
                 startActivity(Intent(requireContext(), AddProductActivity::class.java))
             }
         }
 
         bills.setOnClickListener {
             goTo(bills) {
-                //TODO:  add check for role first
                 startActivity(Intent(requireContext(), DaysActivity::class.java))
             }
         }
@@ -261,8 +260,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun goToProductDetails(productId: String) {
-        if(viewModel.canViewProduct()){
-            //TODO:  add check for role first
+        if(PermissionHelper.canViewProduct(viewModel.r)){
             val intent = Intent(requireContext(), ProductActivity::class.java)
             intent.putExtra("productId", productId)
             startActivity(intent)}
@@ -281,7 +279,7 @@ class HomeFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         val staffItem = menu.findItem(R.id.staff)
         val archiveItem = menu.findItem(R.id.archive)
-        if(!viewModel.isAdmin()){
+        if(!PermissionHelper.isAdmin(viewModel.r)){
             staffItem.isVisible = false
             archiveItem.isVisible = false
         }

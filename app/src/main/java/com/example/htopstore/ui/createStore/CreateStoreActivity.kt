@@ -9,20 +9,21 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.domain.model.Plan
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityCreateStoreBinding
 import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.main.MainActivity
+import com.example.htopstore.util.BaseActivity
 import com.example.htopstore.util.adapters.CategoriesAdapter
 import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateStoreActivity : AppCompatActivity() {
+class CreateStoreActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreateStoreBinding
     private val viewModel: CreateStoreViewModel by viewModels()
@@ -127,6 +128,8 @@ class CreateStoreActivity : AppCompatActivity() {
                 .load(logoUrl)
                 .placeholder(R.drawable.nav_store)
                 .error(R.drawable.nav_store)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.storeLogoSec.ivStoreLogo)
 
             binding.storeLogoSec.apply {
