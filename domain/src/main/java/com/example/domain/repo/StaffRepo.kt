@@ -8,6 +8,7 @@ interface StaffRepo {
     // for employee
     suspend fun fireOrRehireEmployee(employeeId:String,reject:Boolean):Pair<Boolean,String>
     suspend fun preformAction(): Pair<Boolean,String>
+    suspend fun changeRoleOfEmployee(newRole:Int,empId:String):Pair<Boolean,String>
 
 
 

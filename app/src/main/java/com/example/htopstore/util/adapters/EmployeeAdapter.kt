@@ -17,7 +17,8 @@ import com.example.htopstore.util.helper.DialogBuilder
 import java.util.Locale
 
 class EmployeeAdapter(
-    private val onFireOrHire: (employee: User, fire: Boolean) -> Unit
+    private val onFireOrHire: (employee: User, fire: Boolean) -> Unit,
+    private val onDetails: (employee: User) -> Unit
 ) : ListAdapter<User, EmployeeAdapter.EHolder>(DiffCallback()) {
 
     class EHolder(val binding: StaffMemberCardBinding) : RecyclerView.ViewHolder(binding.root)
@@ -58,6 +59,11 @@ class EmployeeAdapter(
                 .placeholder(R.drawable.icon_profile)
                 .error(R.drawable.icon_profile)
                 .into(employeeAvatar)
+
+
+            employeeAvatar.setOnClickListener {
+                onDetails(employee)
+            }
 
             // Click listener for status change
             empStatusChip.setOnClickListener {

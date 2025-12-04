@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.staff
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.domain.model.User
 import com.example.domain.util.Constants
 import com.example.domain.util.Constants.STATUS_HIRED
 import com.example.htopstore.databinding.FragmentEmployeesBinding
+import com.example.htopstore.ui.emlpoyee.EmployeeActivity
 import com.example.htopstore.util.adapters.EmployeeAdapter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -61,10 +63,21 @@ class EmployeesFragment : Fragment() {
      * Setup RecyclerView with adapter
      */
     private fun setupRecyclerView() {
-        adapter = EmployeeAdapter { employee, shouldFire ->
-            employee.id?.let { employeeId ->
+        adapter = EmployeeAdapter(onFireOrHire = {
+            employee, shouldFire ->
+            employee.id.let { employeeId ->
                 viewModel.hireOrFire(employeeId, shouldFire)
             }
+        }){ emp->
+            val intent = Intent(requireContext(), EmployeeActivity::class.java)
+            intent.putExtra("employee_id", emp.id)
+            intent.putExtra("employee_name", emp.name)
+            intent.putExtra("employee_email", emp.email)
+            intent.putExtra("employee_role", emp.role)
+            intent.putExtra("employee_status", emp.status)
+            intent.putExtra("employee_photo_url", emp.photoUrl)
+            startActivity(intent)
+            requireActivity().finish()
         }
         binding.recyclerView.adapter = adapter
     }
@@ -239,3 +252,4 @@ class EmployeesFragment : Fragment() {
         STAFF
     }
 }
+

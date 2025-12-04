@@ -38,7 +38,10 @@ object AutoCompleteHelper {
         return getAdapter(context,options)
     }
     fun getRolesAdapter(context: Context): ArrayAdapter<String>{
-        val options = UserRoles.entries.map {it.englishName.capitalize(Locale.ROOT)}
+        val filtered = UserRoles.entries.filter{
+            it.role > SharedPref(context).getUser().role
+        }
+        val options = filtered.map {it.englishName}
         return getAdapter(context,options)
     }
 

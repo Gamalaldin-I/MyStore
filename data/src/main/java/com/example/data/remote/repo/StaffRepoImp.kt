@@ -8,6 +8,7 @@ import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.domain.util.Constants.STATUS_FIRED
 import com.example.domain.util.Constants.STATUS_HIRED
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 
 class StaffRepoImp(
@@ -89,6 +90,33 @@ class StaffRepoImp(
 
         }
 
+    override suspend fun changeRoleOfEmployee(
+        newRole: Int,
+        empId: String
+    ): Pair<Boolean, String> {
+        return try {
+            val sessionUser: User? = supabase.auth.currentUserOrNull()?.let { current ->
+                supabase.from("users")
+                    .select { filter { eq(USER_ID, current.id) } }
+                    .decodeSingle<User>()
+            }
+
+            if (sessionUser?.role != OWNER_ROLE) {
+                return Pair(false, "You are not allowed to change roles")
+            }
+
+            supabase.from("users").update(
+                mapOf(ROLE to newRole)
+            ) {
+                filter { eq(USER_ID, empId) }
+            }
+
+            Pair(true, "Successfully changed the role")
+        } catch (e: Exception) {
+            Log.d(TAG, "Error changing role: ${e.message}")
+            Pair(false, "Error changing role")
+        }
+    }
 }
 
 

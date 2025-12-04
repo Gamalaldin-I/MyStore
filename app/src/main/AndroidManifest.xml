@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.emlpoyee.EmployeeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.pendingSell.PendingSellOperationActivity"
             android:exported="false" />
         <activity

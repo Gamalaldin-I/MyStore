@@ -11,8 +11,6 @@ object Constants {
     /////////////////////////////////////////////////
     //status
     const val STATUS_PENDING="Pending"
-    const val SUCCESS = "Success"
-    const val FAILURE ="Failure"
     //errors
     const val NO_INTERNET_CONNECTION = "No internet connection"
     const val CHECK_YOU_INTERNET_CONNECTION = "Check you internet connection!"
@@ -40,6 +38,16 @@ object Constants {
             else -> getTheEnglishNameOfRole(role)
         }
     }
+    fun getRoleId(roleName: String): Int {
+        return when (roleName) {
+            UserRoles.Admin.englishName -> ADMIN_ROLE
+            UserRoles.Cashier.englishName-> CASHIER_ROLE
+            UserRoles.Partner.englishName -> PARTNER_ROLE
+            UserRoles.Employee.englishName -> EMPLOYEE_ROLE
+            else ->  OWNER_ROLE
+        }
+    }
+
 
     /////////////////////////////////////////////////
     ////////////////////STATUS///////////////////////
