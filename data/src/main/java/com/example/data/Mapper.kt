@@ -59,7 +59,8 @@ object Mapper {
             sellingPrice = this.sellingPrice,
             sellDate = this.sellDate,
             sellTime = this.sellTime,
-            lastUpdate = this.lastUpdate
+            lastUpdate = this.lastUpdate,
+            userId = this.userId
         )
     }
 
@@ -77,7 +78,8 @@ object Mapper {
             sellTime = this.sellTime,
             lastUpdate = this.lastUpdate,
             deleted = false,
-            storeId = ""
+            storeId = "",
+            userId = this.userId
         )
     }
 

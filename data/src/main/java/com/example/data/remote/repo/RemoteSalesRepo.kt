@@ -22,7 +22,6 @@ class RemoteSalesRepo(
         private const val SALES = "soldProducts"
         private const val PRODUCTS = "products"
         private const val TAG = "REMOTE_SALES_REPO"
-        private const val STORE_ID = "storeId"
     }
 
     // --------------------------------------------------
@@ -42,7 +41,10 @@ class RemoteSalesRepo(
         }
 
         return try {
-            sales.map { it.storeId = pref.getStore().id }
+            sales.map {
+                it.storeId = pref.getStore().id
+                it.userId = pref.getUser().id
+            }
             supabase.from(SALES).insert(sales)
             onResult()
             Pair(true, "Sales added successfully")
@@ -70,16 +72,13 @@ class RemoteSalesRepo(
             val sales = if (lastUpdate.isEmpty()) {
                 // First time → fetch all
                 supabase.from(SALES)
-                    .select{
-                        filter { eq(STORE_ID, pref.getStore().id) }
-                    }
+                    .select()
                     .decodeList<SoldProduct>()
             } else {
                 // Fetch only new sales
                 supabase.from(SALES)
                     .select {
                         filter {
-                            eq(STORE_ID, pref.getStore().id)
                             gt("lastUpdate", lastUpdate)
                         }
                     }

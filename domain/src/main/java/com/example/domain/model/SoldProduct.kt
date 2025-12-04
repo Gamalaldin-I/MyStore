@@ -16,5 +16,6 @@ data class SoldProduct(
     val sellingPrice: Double,
     var lastUpdate: String,
     var deleted: Boolean,
-    var storeId:String
+    var storeId:String,
+    var userId:String
     )

@@ -2,6 +2,7 @@ package com.example.htopstore.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,10 +13,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.domain.model.GridItem
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentHomeBinding
@@ -31,6 +34,7 @@ import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.ui.profile.ProfileActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.ui.staff.StaffActivity
+import com.example.htopstore.util.adapters.GridAdapter
 import com.example.htopstore.util.adapters.LowStockAdapter
 import com.example.htopstore.util.adapters.Top5Adapter
 import com.example.htopstore.util.helper.Animator.animateGridItem
@@ -159,68 +163,69 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleMainMenu() {
-        val add = binding.grid.addProducts
-        val bills = binding.grid.bills
-        val generate = binding.grid.generateQrs
-        val expenses = binding.grid.expenses
-        val sales = binding.grid.sales
-        val scan = binding.grid.scan
-        //hide sensitive buttons for non-admins
-        sales.visibility = View.GONE
-        generate.visibility = View.GONE
-        bills.visibility = View.GONE
-        add.visibility = View.GONE
-        binding.viewAllSales.visibility = View.GONE
-        if(PermissionHelper.isAdmin(viewModel.r)){
-            add.visibility = View.VISIBLE
-            bills.visibility = View.VISIBLE
-            generate.visibility = View.VISIBLE
-            sales.visibility = View.VISIBLE
-            binding.viewAllSales.visibility = View.VISIBLE
-        }
+        val isAdmin = PermissionHelper.isAdmin(viewModel.r)
+        val spanCount = if (isAdmin) 3 else 2
 
-        if(PermissionHelper.isCashier(viewModel.r)){
-            sales.visibility = View.VISIBLE
-            binding.viewAllSales.visibility = View.VISIBLE
-        }
-
-        add.setOnClickListener {
-            goTo(add) {
-                startActivity(Intent(requireContext(), AddProductActivity::class.java))
-            }
-        }
-
-        bills.setOnClickListener {
-            goTo(bills) {
+        val allItems = listOf(
+            GridItem(
+                id = "scan",
+                icon = R.drawable.grid_scan,
+                title = "Scan Code"
+            ) {
+                startActivity(Intent(requireContext(), ScanActivity::class.java))
+            },
+            GridItem(
+                id = "expenses",
+                icon = R.drawable.grid_outcome,
+                title = "Add outcome"
+            ) {
+                startActivity(Intent(requireContext(), ExpensesActivity::class.java))
+            },
+            GridItem(
+                id = "sales",
+                icon = R.drawable.nav_report,
+                title = "Analysis"
+            ) {
+                startActivity(Intent(requireContext(), AnalysisActivity::class.java))
+            },
+            GridItem(
+                id = "bills",
+                icon = R.drawable.grid_bills,
+                title = "Nota",
+            ) {
                 startActivity(Intent(requireContext(), DaysActivity::class.java))
-            }
-        }
-
-        generate.setOnClickListener {
-            goTo(generate) {
+            },
+            GridItem(
+                id = "add",
+                icon = R.drawable.grid_add,
+                title = getString(R.string.add_new),
+            ) {
+                startActivity(Intent(requireContext(), AddProductActivity::class.java))
+            },
+            GridItem(
+                id = "generate",
+                icon = R.drawable.grid_code,
+                title = "Generate codes"
+            ) {
                 startActivity(Intent(requireContext(), GenCodeActivity::class.java))
             }
-        }
+        )
+        val displayItems = if (isAdmin) allItems else allItems.take(4)
 
-        expenses.setOnClickListener {
-            goTo(expenses) {
-                startActivity(Intent(requireContext(), ExpensesActivity::class.java))
-            }
+        binding.grid.gridRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), spanCount)
+            adapter = GridAdapter(displayItems)
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.set(5, 5, 5, 5) // margins
+                }
+            })
         }
-
-        sales.setOnClickListener {
-            goTo(sales) {
-                //TODO:  add check for role first
-                startActivity(Intent(requireContext(), AnalysisActivity::class.java))
-            }
-        }
-
-        scan.setOnClickListener {
-            goTo(scan) {
-                startActivity(Intent(requireContext(), ScanActivity::class.java))
-            }
-        }
-
 
     }
 

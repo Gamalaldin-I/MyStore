@@ -67,16 +67,13 @@ class RemoteBillRepo(
             val bills = if (lastUpdate.isEmpty()) {
                 // First fetch → get all
                 supabase.from(BILLS)
-                    .select(){
-                        filter { eq("storeId", pref.getStore().id) }
-                    }
+                    .select()
                     .decodeList<Bill>()
             } else {
                 // Fetch only new data
                 supabase.from(BILLS)
-                    .select {
+                    .select{
                         filter {
-                            eq("storeId", pref.getStore().id)
                             gt("lastUpdate", lastUpdate)
                         }
                     }

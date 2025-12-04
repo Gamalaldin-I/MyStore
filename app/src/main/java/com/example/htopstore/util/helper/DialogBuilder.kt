@@ -146,7 +146,8 @@ object DialogBuilder {
                 id = IdGenerator.generateTimestampedId(),
                 lastUpdate = DateHelper.getCurrentTimestampTz(),
                 deleted = false,
-                storeId = ""
+                storeId = "",
+                userId = ""
             )
             onConfirm(willBack)
             hideReturnDialog()
