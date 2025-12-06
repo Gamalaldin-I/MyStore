@@ -78,7 +78,7 @@ class StaffRepoImp(
                     Pair(true,STATUS_HIRED)
                 }
                 else -> {
-                    Pair(false,status)
+                    Pair(false,STATUS_FIRED)
                 }
             }
              return result

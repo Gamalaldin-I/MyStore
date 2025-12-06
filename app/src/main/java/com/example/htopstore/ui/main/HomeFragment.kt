@@ -119,9 +119,13 @@ class HomeFragment : Fragment() {
         binding.lowStock.adapter.adapter = lowStockAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        handleMainMenu()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setControllers() {
-        handleMainMenu()
         handleTodaySummaryClicks()
         handleTopSalesButton()
     }
@@ -151,7 +155,6 @@ class HomeFragment : Fragment() {
         // Handle View All button for Top 5 Sales
         binding.viewAllSales.setOnClickListener {
             // Navigate to full sales list or analytics
-            //TODO:  add check for role first
             startActivity(Intent(requireContext(), AnalysisActivity::class.java))
         }
     }

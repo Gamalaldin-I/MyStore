@@ -8,8 +8,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.roomDb.AppDataBase
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.Product
+import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.product.AddProductUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.domain.util.IdGenerator
 import com.example.htopstore.util.BarcodeGenerator
@@ -24,7 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
-    private val addNewProductUseCase: AddProductUseCase
+    private val addNewProductUseCase: AddProductUseCase,
+    private val logoutUseCase:LogoutUseCase,
+    private val db: AppDataBase,
+    private val pref: SharedPref
 ) : ViewModel() {
 
     // LiveData for UI state
@@ -64,7 +71,8 @@ class AddProductViewModel @Inject constructor(
         brand: String,
         buyingPrice: String,
         sellingPrice: String,
-        count: String
+        count: String,
+        onFiredAction: () -> Unit
     ) {
         viewModelScope.launch {
             if (!validateFields(category, brand, buyingPrice, sellingPrice, count)) {
@@ -91,7 +99,9 @@ class AddProductViewModel @Inject constructor(
                         deleted = false
                     )
 
-                    saveProduct(product)
+                    saveProduct(product){
+                        onFiredAction()
+                    }
                 } else {
                     _validationMessage.value = "Failed to save image"
                     _uiState.value = _uiState.value?.copy(isLoading = false)
@@ -207,7 +217,7 @@ class AddProductViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveProduct(product: Product) {
+    private suspend fun saveProduct(product: Product,onFiredAction:()->Unit) {
         withContext(Dispatchers.IO) {
             try {
                 val (bool,msg) = addNewProductUseCase(product)
@@ -217,6 +227,9 @@ class AddProductViewModel @Inject constructor(
                         productSaved = bool,
                         shouldClearForm = bool
                     )
+                    if (!bool&&msg==Constants.STATUS_FIRED) {
+                        onFiredAction()
+                    }
                 }
                 _validationMessage.postValue(msg)
             } catch (e: Exception) {
@@ -248,6 +261,19 @@ class AddProductViewModel @Inject constructor(
                 if (file.exists()) file.delete()
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    fun logout(onResult: () -> Unit){
+        viewModelScope.launch{
+            val (success, msg) = logoutUseCase()
+            if(success){
+                pref.clearPrefs()
+                withContext(Dispatchers.IO){db.clearAllTables()}
+                withContext(Dispatchers.Main){
+                    onResult()
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.profile.ChangeProfileImageUseCase
+import com.example.domain.useCase.profile.ObserveRoleChangingUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.UpdateNameUseCase
 import com.example.domain.util.Constants
@@ -28,7 +29,8 @@ class ProfileViewModel
         private val pref: SharedPref,
         private val changeProfileImageUseCase:ChangeProfileImageUseCase,
         private val removeProfileImageUseCase: RemoveProfileImageUseCase,
-        private val updateNameUseCase: UpdateNameUseCase
+        private val updateNameUseCase: UpdateNameUseCase,
+        private val observeRoleChangingUseCase: ObserveRoleChangingUseCase
         ): ViewModel() {
             val role = pref.getRole()
     private val _message = MutableLiveData<String>()
@@ -82,6 +84,27 @@ class ProfileViewModel
         viewModelScope.launch(Dispatchers.IO) {
             removeProfileImageUseCase { success, msg ->
                 _message.postValue(msg)
+            }
+        }
+    }
+    fun observerRole(onPromoted: (Int)->Unit){
+        viewModelScope.launch(Dispatchers.IO){
+            val role = observeRoleChangingUseCase.observeRole()
+            if(role != -1 && role != pref.getRole()){
+                pref.setRole(role)
+                if(role>pref.getRole()) {
+                    withContext(Dispatchers.Main){
+                        onPromoted(0)
+                    }
+                }else{
+                    withContext(Dispatchers.Main){
+                        onPromoted(1)
+                    }
+                }
+            }else{
+                withContext(Dispatchers.Main){
+                    onPromoted(-1)
+                }
             }
         }
     }

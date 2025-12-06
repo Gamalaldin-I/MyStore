@@ -7,6 +7,7 @@ import com.example.domain.model.PendingSellAction
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.BillRepo
 import com.example.domain.repo.SalesRepo
+import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
 import com.example.domain.useCase.pendingSellActions.UpdateSellActionUseCase
 import com.example.domain.util.Constants
@@ -31,6 +32,7 @@ import kotlinx.coroutines.withContext
 class SellUseCase(
     private val salesRepo: SalesRepo,
     private val billRepo: BillRepo,
+    private val staffRepo: StaffRepo,
     private val addSellPendingActionUseCase: AddSellPendingActionUseCase,
     private val updateSellActionUseCase: UpdateSellActionUseCase
 ) {
@@ -61,6 +63,14 @@ class SellUseCase(
         soldItemsInserted: Boolean = false,
         onProgress: (Float) -> Unit
     ): String {
+
+        /////////////////////////////before operation/////////////////////////////////
+        val resOfGo = staffRepo.preformAction()
+        if(!resOfGo.first){
+            return resOfGo.second
+        }
+
+
         validateInputs(cartList, discount)
 
         val operationId = if (billId.isNotEmpty()) billId else IdGenerator.generateTimestampedId()

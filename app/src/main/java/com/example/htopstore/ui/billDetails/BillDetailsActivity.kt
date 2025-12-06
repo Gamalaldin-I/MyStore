@@ -20,6 +20,7 @@ import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityBillDetailsBinding
+import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.util.adapters.BillDetailsAdapter
 import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -279,7 +280,9 @@ class BillDetailsActivity : AppCompatActivity() {
     private fun onItemClick(soldProduct: SoldProduct) {
         DialogBuilder.showReturnDialog(this, soldProduct) { returnRequest ->
             showLoading()
-            viewModel.onClick(soldProduct, returnRequest) {
+            viewModel.onClick(soldProduct =soldProduct,
+                returnRequest = returnRequest,
+                onFiredAction = {onFiredAction()}) {
                 showDeleteConfirmationDialog {
                     showLoading()
                     viewModel.deleteBill(sellOp.bill.id) {
@@ -468,4 +471,11 @@ class BillDetailsActivity : AppCompatActivity() {
         super.onDestroy()
         DialogBuilder.hideReturnDialog()
     }
-}
+    private fun onFiredAction(){
+        //end the activity and logout the user
+        // go to the login
+        viewModel.logout{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()}
+    }}

@@ -10,6 +10,7 @@ import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.invitations.AcceptInviteUseCase
 import com.example.domain.useCase.invitations.GetAllEmailPendingInvitesUseCase
 import com.example.domain.useCase.invitations.RejectInviteUseCase
+import com.example.domain.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +25,9 @@ class InboxViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val pref: SharedPref
 ): ViewModel() {
+
+
+
 
     private val _invites = MutableLiveData<List<Invitation>>()
     val invites: LiveData<List<Invitation>> = _invites
@@ -40,7 +44,7 @@ class InboxViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val (invites, msg) = getAllEmailPendingInvitesUseCase()
             _invites.postValue(invites)
-            _msg.postValue("$msg  size ${invites.size}")
+            _msg.postValue(msg)
         }
     }
 
@@ -95,10 +99,17 @@ class InboxViewModel @Inject constructor(
             _msg.postValue(msg)
         }
     }
-    fun validToGoHome(goToMain:()->Unit){
-        if(pref.isLogin()&& pref.getStore().id.isNotEmpty()){
+    fun validToGoHome(goToMain:()->Unit,viewPendingStore:(name:String,photo:String)->Unit){
+        if(pref.isLogin()&&pref.getStore().id.isNotEmpty()&&pref.getUser().status == Constants.STATUS_HIRED){
             goToMain()
         }
-    }
+        else if(pref.isLogin()&&pref.getStore().id.isNotEmpty()){
+            viewPendingStore(pref.getStore().name,pref.getStore().logoUrl)
+            getAllPendingInvitations()
+        }
+        else{
+            getAllPendingInvitations()
+        }
 
+    }
 }

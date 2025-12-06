@@ -77,7 +77,7 @@
                         android:layout_height="match_parent"
                         app:cardCornerRadius="50dp"
                         app:strokeWidth="2dp"
-                        app:strokeColor="@color/action_primary"
+                        app:strokeColor="@color/background"
                         app:cardElevation="0dp">
 
                         <ImageView

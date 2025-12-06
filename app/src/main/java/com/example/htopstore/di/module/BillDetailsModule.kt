@@ -6,6 +6,7 @@ import com.example.data.remote.repo.RemoteBillRepo
 import com.example.data.remote.repo.RemoteSalesRepo
 import com.example.data.repo.BillDetailsRepoImp
 import com.example.domain.repo.BillDetailsRepo
+import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.bill.DeleteBillUseCase
 import com.example.domain.useCase.billDetails.GetBillDetailsUseCse
 import com.example.domain.useCase.billDetails.ReturnProductUseCase
@@ -31,8 +32,8 @@ object BillDetailsModule {
     }
 
     @Provides
-    fun provideInsertReturnProduct(localRpo: BillDetailsRepo): ReturnProductUseCase {
-        return ReturnProductUseCase(localRpo)
+    fun provideInsertReturnProduct(localRpo: BillDetailsRepo,staffRepo: StaffRepo): ReturnProductUseCase {
+        return ReturnProductUseCase(localRpo,staffRepo)
     }
 
     @Provides

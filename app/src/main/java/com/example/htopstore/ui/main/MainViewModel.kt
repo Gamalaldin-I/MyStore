@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.roomDb.AppDataBase
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.CartProduct
 import com.example.domain.model.Product
@@ -14,8 +15,10 @@ import com.example.domain.useCase.analisys.GetTotalExpensesByDateUseCase
 import com.example.domain.useCase.analisys.GetTotalSalesByDateUseCase
 import com.example.domain.useCase.analisys.product.GetLowStockUseCase
 import com.example.domain.useCase.analisys.product.GetTop5UseCase
+import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
 import com.example.domain.useCase.sales.SellUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +37,9 @@ class MainViewModel @Inject constructor(
     getTotalExpensesByDateUseCase: GetTotalExpensesByDateUseCase,
     getTotalSalesByDateUseCase: GetTotalSalesByDateUseCase,
     private val productRepo:ProductRepo,
-    pref: SharedPref
+    private val logoutUseCase:LogoutUseCase,
+    private val db: AppDataBase,
+    private val pref: SharedPref
 
 ): ViewModel(){
     val r = pref.getRole()
@@ -58,7 +63,9 @@ class MainViewModel @Inject constructor(
     val totalSales: LiveData<Double?> = getTotalSalesByDateUseCase(todayDate).asLiveData()
 
 
-    fun sell(cartList: List<CartProduct>,discount: Int = 0, onProgress :(Float)->Unit,onFinish: (msg:String) -> Unit) {
+    fun sell(cartList: List<CartProduct>,discount: Int = 0, onProgress :(Float)->Unit,
+             onFiredAction:()->Unit,
+             onFinish: (msg:String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val msg = sellUseCase(cartList = cartList,
                         discount =discount){
@@ -67,6 +74,9 @@ class MainViewModel @Inject constructor(
 
             }
             withContext(Dispatchers.Main){
+                if(msg== Constants.STATUS_FIRED){
+                    onFiredAction()
+                }
                 onFinish(msg)
             }
         }
@@ -104,6 +114,19 @@ class MainViewModel @Inject constructor(
         return messageToStringRes[message]?: R.string.unknown_error
     }
 
-
+    fun logout(onResult: () -> Unit){
+        viewModelScope.launch{
+            val (success, msg) = logoutUseCase()
+            if(success){
+                pref.clearPrefs()
+                withContext(Dispatchers.IO){db.clearAllTables()}
+                withContext(Dispatchers.Main){
+                    onResult()
+                }
+            }else{
+                _message.postValue(msg)
+            }
+        }
+    }
 
 }

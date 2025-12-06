@@ -7,6 +7,7 @@ import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.RemoteProductRepo
 import com.example.data.repo.ProductRepoImp
 import com.example.domain.repo.ProductRepo
+import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.product.AddProductUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
@@ -54,16 +55,16 @@ object ProductModule {
 
 
     @Provides
-    fun provideAddProductUseCase(productRepo: ProductRepo): AddProductUseCase {
-        return AddProductUseCase(productRepo)
+    fun provideAddProductUseCase(productRepo: ProductRepo,staffRepo: StaffRepo): AddProductUseCase {
+        return AddProductUseCase(productRepo,staffRepo)
     }
     @Provides
-    fun provideDeleteProductUseCase(productRepo: ProductRepo): DeleteProductUseCase {
-        return DeleteProductUseCase(productRepo)
+    fun provideDeleteProductUseCase(productRepo: ProductRepo,staffRepo: StaffRepo): DeleteProductUseCase {
+        return DeleteProductUseCase(productRepo,staffRepo)
     }
     @Provides
-    fun provideUpdateProductUseCase(productRepo: ProductRepo): UpdateProductUseCase {
-        return UpdateProductUseCase(productRepo)
+    fun provideUpdateProductUseCase(productRepo: ProductRepo,staffRepo: StaffRepo): UpdateProductUseCase {
+        return UpdateProductUseCase(productRepo,staffRepo)
     }
     @Provides
     fun provideGetProductUseCase(productRepo: ProductRepo): GetProductByIdUseCase {

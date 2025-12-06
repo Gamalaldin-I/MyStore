@@ -267,7 +267,7 @@ class InvitesFragment : Fragment() {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, "Store Invite Code")
-            putExtra(Intent.EXTRA_TEXT, "Your invite code: ${invite.code}")
+            putExtra(Intent.EXTRA_TEXT, invite.code)
         }
         startActivity(Intent.createChooser(shareIntent, "Share invite code"))
     }

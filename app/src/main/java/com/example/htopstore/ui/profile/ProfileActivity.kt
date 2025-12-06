@@ -51,6 +51,7 @@ class ProfileActivity:BaseActivity(){
         enableEdgeToEdge()
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        observePromoted()
 
         setupUI()
         setupListeners()
@@ -279,5 +280,17 @@ class ProfileActivity:BaseActivity(){
 
     private fun <T> openActivity(cls: Class<T>) {
         startActivity(Intent(this, cls))
+    }
+    private fun observePromoted(){
+        vm.observerRole { isPromoted ->
+            when(isPromoted){
+                0,1 -> {
+                    Toast.makeText(this, "You became a /an ${vm.getRole()}", Toast.LENGTH_SHORT).show()
+                    binding.roleChip.text = vm.getRole()
+                }
+                else -> {}
+
+            }
+        }
     }
 }

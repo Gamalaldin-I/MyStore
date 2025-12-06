@@ -30,6 +30,7 @@ import com.example.domain.util.CartHelper
 import com.example.domain.util.Constants
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentCartBinding
+import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.util.CartHandler
 import com.example.htopstore.util.adapters.CartRecycler
@@ -288,6 +289,9 @@ class CartFragment : Fragment() {
             discount = discount,
             onProgress = { progress ->
                 updateLoadingProgress(progress, itemCount)
+            },
+            onFiredAction ={
+                onFiredAction()
             }
         ) {msg->
             hideLoading()
@@ -731,5 +735,13 @@ class CartFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    private fun onFiredAction(){
+    //end the activity and logout the user
+    // go to the login
+        viewModel.logout{
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()}
     }
 }

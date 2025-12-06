@@ -4,106 +4,142 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
+import com.example.data.remote.NetworkHelperInterface
+import com.example.domain.model.User
 import com.example.domain.repo.ProfileRepo
+import com.example.domain.util.Constants
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
 
-@Suppress("DEPRECATION")
-class ProfileRepoImp (
+class ProfileRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
-    private val context: Context
-): ProfileRepo {
-    companion object{
-        private const val AVATARS_BUCKET = "Avatars"
-        private const val TAG = "ProfileRepoImp"
-        private const val USERS="users"
+    private val context: Context,
+    private val networkHelper: NetworkHelperInterface) : ProfileRepo {
 
-        // Redirect URLs
+    companion object {
+        private const val AVATARS_BUCKET = "Avatars"
+        private const val USERS = "users"
+        private const val TAG = "ProfileRepoImp"
         private const val RESET_PASSWORD_URL = "https://reset-password-api.vercel.app/index.html"
     }
+
+    // -------------------------------
+    // Helpers
+    // -------------------------------
+
+    private fun checkInternet(onResult: (Boolean, String) -> Unit): Boolean {
+        if (!networkHelper.isConnected()) {
+            onResult(false, Constants.NO_INTERNET_CONNECTION)
+            return false
+        }
+        return true
+    }
+
+    private fun getAvatarFileName(): String = "${pref.getUser().id}.jpg"
+
+    private fun buildPublicUrl(file: String): String {
+        return "${supabase.supabaseUrl}/storage/v1/object/public/$AVATARS_BUCKET/$file"
+    }
+
+    private fun logError(msg: String, e: Exception) {
+        Log.e(TAG, "$msg: ${e.message}", e)
+    }
+
+    // -------------------------------
+    // Upload Profile Image
+    // -------------------------------
 
     override suspend fun changeProfileImage(
         imageUri: Uri,
         onResult: (Boolean, String) -> Unit
-    ){
-        val fileName = "${pref.getUser().id}.jpg"
-        try {
-            val inputStream = context.contentResolver.openInputStream(imageUri)
-            val bytes = inputStream?.readBytes() ?:
-            return onResult(false, "Error reading image")
+    ) {
+        if (!checkInternet(onResult)) return
 
+        try {
+            val bytes = context.contentResolver.openInputStream(imageUri)?.use { it.readBytes() }
+                ?: return onResult(false, "Error reading image")
+
+            val fileName = getAvatarFileName()
             val bucket = supabase.storage.from(AVATARS_BUCKET)
+
             bucket.upload(fileName, bytes, upsert = true)
 
-            val url = "https://ayoanqjzciolnahljauc.supabase.co/storage/v1/object/public/$AVATARS_BUCKET/$fileName"
+            val url = buildPublicUrl(fileName)
 
-            // Save url locally
+            // Save in local storage
             pref.setProfileImage(url)
 
-            // Update in database
+            // Update DB
             supabase.from(USERS).update(
                 mapOf("photoUrl" to url)
-            ) {
-                filter {
-                    eq("id", pref.getUser().id)
-                }
-            }
+            ) { filter { eq("id", pref.getUser().id) } }
 
             onResult(true, "Image uploaded successfully")
+
         } catch (e: Exception) {
-            Log.e(TAG, "Error uploading image: ${e.message}", e)
-            onResult(false, "Error uploading image: ${e.message}")
+            logError("Error uploading image", e)
+            onResult(false, "Error: ${e.message}")
         }
     }
 
-    override suspend fun removeProfileImage(onResult: (Boolean, String) -> Unit){
-        try{
+    // -------------------------------
+    // Delete Profile Image
+    // -------------------------------
+
+    override suspend fun removeProfileImage(onResult: (Boolean, String) -> Unit) {
+        if (!checkInternet(onResult)) return
+
+        try {
             val bucket = supabase.storage.from(AVATARS_BUCKET)
+            bucket.delete(getAvatarFileName())
 
-            // Delete image from storage
-            bucket.delete("${pref.getUser().id}.jpg")
-
-            // Update database
+            // Clear DB
             supabase.from(USERS).update(
                 mapOf("photoUrl" to "")
-            ){
-                filter {
-                    eq("id", pref.getUser().id)
-                }
-            }
+            ) { filter { eq("id", pref.getUser().id) } }
 
-            // Update local preference
+            // Clear shared pref
             pref.setProfileImage("")
 
             onResult(true, "Image removed successfully")
+
         } catch (e: Exception) {
-            Log.e(TAG, "Error removing photo: ${e.message}", e)
-            onResult(false, "Error removing photo: ${e.message}")
+            logError("Error removing photo", e)
+            onResult(false, "Error: ${e.message}")
         }
     }
+
+    // -------------------------------
+    // Reset Password
+    // -------------------------------
 
     override suspend fun resetPassword(
         email: String,
         onResult: (Boolean, String) -> Unit
-    ){
+    ) {
+        if (!checkInternet(onResult)) return
+
         try {
-            supabase.auth.resetPasswordForEmail(
-                email = email,
-                redirectUrl = RESET_PASSWORD_URL
-            )
+            supabase.auth.resetPasswordForEmail(email, redirectUrl = RESET_PASSWORD_URL)
             onResult(true, "Password reset email sent successfully")
-        }
-        catch (e: Exception) {
-            Log.e(TAG, "Error resetting password: ${e.message}", e)
-            onResult(false, "Error resetting password: ${e.message}")
+        } catch (e: Exception) {
+            logError("Error resetting password", e)
+            onResult(false, "Error: ${e.message}")
         }
     }
 
+    // -------------------------------
+    // Update Name
+    // -------------------------------
+
     override suspend fun updateName(name: String): Pair<Boolean, String> {
+        if (!networkHelper.isConnected())
+            return false to Constants.NO_INTERNET_CONNECTION
+
         return try {
             val userId = pref.getUser().id
 
@@ -111,48 +147,72 @@ class ProfileRepoImp (
                 filter { eq("id", userId) }
             }
 
-            // Update local preference
+            // Update locally
             pref.saveUser(pref.getUser().copy(name = name))
 
             true to "Name updated successfully"
+
         } catch (e: Exception) {
-            Log.e(TAG, "Error updating name: ${e.message}", e)
-            false to "Error updating name: ${e.message}"
+            logError("Error updating name", e)
+            false to "Error: ${e.message}"
         }
     }
 
-    override suspend fun updateEmail(newEmail: String, password: String): Pair<Boolean, String>{
-        try {
-            val currentUser = supabase.auth.currentUserOrNull()
-            val currentEmail = currentUser?.email
+    // -------------------------------
+    // Update Email
+    // -------------------------------
 
-            if (currentEmail == null) {
-                return Pair(false, "The session of the user is not valid")
-            }
+    override suspend fun updateEmail(newEmail: String, password: String): Pair<Boolean, String> {
+        if (!networkHelper.isConnected())
+            return false to Constants.NO_INTERNET_CONNECTION
 
-            // Re-authenticate user with current password
+        return try {
+            val current = supabase.auth.currentUserOrNull()
+                ?: return false to "Invalid session"
+
+            val currentEmail = current.email
+                ?: return false to "Invalid session"
+
+            // Re-authenticate
             try {
                 supabase.auth.signInWith(Email) {
-                    this.email = currentEmail
+                    email = currentEmail
                     this.password = password
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error authenticating: ${e.message}", e)
-                return Pair(false, "The current password is incorrect")
+            } catch (_: Exception) {
+                return false to "The current password is incorrect"
             }
 
-            // Update email in Supabase Auth with redirect URL
-            supabase.auth.modifyUser {
-                email = newEmail
-            }
+            // Change email
+            supabase.auth.modifyUser { email = newEmail }
 
-            return Pair(true, "Email confirmation sent successfully. Please check your new email address.")
+            true to "Email confirmation sent. Please check your new inbox."
 
         } catch (e: Exception) {
-            Log.e(TAG, "Error updating email: ${e.message}", e)
-            return Pair(false, "Error updating email: ${e.message}")
+            logError("Error updating email", e)
+            false to "Error: ${e.message}"
+        }
+    }
+
+    // -------------------------------
+    // Observe Role from DB
+    // -------------------------------
+
+    override suspend fun observeRole(): Int {
+        if (!networkHelper.isConnected()) return -1
+
+        return try {
+            val id = pref.getUser().id
+
+            val user = supabase.from(USERS).select {
+                filter { eq("id", id) }
+            }.decodeSingle<User>()
+
+            user.role
+
+        } catch (e: Exception) {
+            logError("Error observing role", e)
+            -1
         }
     }
 }
-
-

@@ -3,6 +3,7 @@ package com.example.domain.useCase.billDetails
 import android.util.Log
 import com.example.domain.model.SoldProduct
 import com.example.domain.repo.BillDetailsRepo
+import com.example.domain.repo.StaffRepo
 import com.example.domain.util.IdGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -15,7 +16,8 @@ import kotlin.math.abs
  * Handles stock restoration, bill updates, and cash adjustments
  */
 class ReturnProductUseCase(
-    private val billDetailsRepo: BillDetailsRepo
+    private val billDetailsRepo: BillDetailsRepo,
+    private val staffRepo: StaffRepo,
 ) {
 
     companion object {
@@ -31,7 +33,15 @@ class ReturnProductUseCase(
         soldProduct: SoldProduct,
         returnRequest: SoldProduct
     ): ReturnResult = withContext(Dispatchers.IO) {
+
         try {
+
+            /////////////////////////////before operation/////////////////////////////////
+            val resOfGo = staffRepo.preformAction()
+            if(!resOfGo.first){
+                ReturnResult.Error(resOfGo.second)
+            }
+
             Log.d(TAG, "Processing return: ${soldProduct.name} x${returnRequest.quantity}")
 
             // Validate return request

@@ -9,6 +9,7 @@ import com.example.data.remote.repo.RemoteSalesRepo
 import com.example.data.repo.SalesRepoImp
 import com.example.domain.repo.BillRepo
 import com.example.domain.repo.SalesRepo
+import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.pendingSellActions.AddSellPendingActionUseCase
 import com.example.domain.useCase.pendingSellActions.UpdateSellActionUseCase
 import com.example.domain.useCase.sales.GetAllSalesAndReturnsByDateUseCase
@@ -45,9 +46,10 @@ object SalesModule {
 
     @Provides
     fun provideSellUseCase(salesRepo: SalesRepo,billRepo: BillRepo,
+                           staffRepo: StaffRepo,
                            addSellPendingActionUseCase: AddSellPendingActionUseCase,
                            updateSellActionUseCase: UpdateSellActionUseCase): SellUseCase {
-        return SellUseCase(salesRepo,billRepo,addSellPendingActionUseCase,updateSellActionUseCase)
+        return SellUseCase(salesRepo,billRepo,staffRepo,addSellPendingActionUseCase,updateSellActionUseCase)
     }
     @Provides
     fun provideGetAllSalesAndReturnsUseCase(salesRepo: SalesRepo): GetAllSalesAndReturnsUseCase {

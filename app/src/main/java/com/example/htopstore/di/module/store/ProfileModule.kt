@@ -5,6 +5,7 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.ProfileRepoImp
 import com.example.domain.repo.ProfileRepo
 import com.example.domain.useCase.profile.ChangeProfileImageUseCase
+import com.example.domain.useCase.profile.ObserveRoleChangingUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.ResetPasswordUseCase
 import com.example.domain.useCase.profile.UpdateEmailUseCase
@@ -48,5 +49,9 @@ object ProfileModule {
     @Provides
     fun provideUpdateEmailUseCase(repo: ProfileRepo): UpdateEmailUseCase {
         return UpdateEmailUseCase(repo)
+    }
+    @Provides
+    fun provideObserveRoleUseCase(repo: ProfileRepo): ObserveRoleChangingUseCase {
+        return ObserveRoleChangingUseCase(repo)
     }
 }

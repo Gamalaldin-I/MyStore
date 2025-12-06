@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.roomDb.AppDataBase
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.BillWithDetails
 import com.example.domain.model.SoldProduct
 import com.example.domain.model.User
+import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.bill.DeleteBillUseCase
 import com.example.domain.useCase.billDetails.GetBillDetailsUseCse
 import com.example.domain.useCase.billDetails.ReturnProductUseCase
@@ -24,11 +26,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BillDetViewModel @Inject constructor(
-    private val pref: SharedPref,
     private val supabaseClient: SupabaseClient,
     private val getBillDetails: GetBillDetailsUseCse,
     private val insertReturnProduct: ReturnProductUseCase,
-    private val deleteBillUseCase: DeleteBillUseCase
+    private val deleteBillUseCase: DeleteBillUseCase,
+    private val logoutUseCase:LogoutUseCase,
+    private val db: AppDataBase,
+    private val pref: SharedPref
 ) : ViewModel() {
 
     private val _sellOp = MutableLiveData<BillWithDetails>()
@@ -110,6 +114,7 @@ class BillDetViewModel @Inject constructor(
     fun onClick(
         soldProduct: SoldProduct,
         returnRequest: SoldProduct,
+        onFiredAction:()->Unit,
         confirmDeleteIfEmpty: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -120,6 +125,9 @@ class BillDetViewModel @Inject constructor(
                     is ReturnProductUseCase.ReturnResult.Error -> {
                         withContext(Dispatchers.Main) {
                             _isLoading.value = false
+                            if(result.message == Constants.STATUS_FIRED){
+                                onFiredAction()
+                            }
                             _message.value = "Return failed: ${result.message}"
                         }
                     }
@@ -199,13 +207,20 @@ class BillDetViewModel @Inject constructor(
         }
     }
 
-    // Clear error message after it's been shown
-    fun clearError() {
-        _error.value = ""
-    }
 
-    // Clear message after it's been shown
-    fun clearMessage() {
-        _message.value = ""
+
+    fun logout(onResult: () -> Unit){
+        viewModelScope.launch{
+            val (success, msg) = logoutUseCase()
+            if(success){
+                pref.clearPrefs()
+                withContext(Dispatchers.IO){db.clearAllTables()}
+                withContext(Dispatchers.Main){
+                    onResult()
+                }
+            }else{
+                _message.postValue(msg)
+            }
+        }
     }
 }

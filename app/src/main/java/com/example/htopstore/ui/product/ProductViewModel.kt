@@ -5,11 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.data.local.roomDb.AppDataBase
+import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.Product
+import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetProductByIdUseCase
 import com.example.domain.useCase.product.UpdateProductUseCase
 import com.example.domain.util.CartHelper
+import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +27,11 @@ class ProductViewModel @Inject constructor(
     private val getProductUseCase: GetProductByIdUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
-    private val app: Application
+    private val app: Application,
+    private val logoutUseCase:LogoutUseCase,
+    private val db: AppDataBase,
+    private val pref: SharedPref
+
 ) : AndroidViewModel(app) {
 
     private val _product = MutableLiveData<Product?>()
@@ -43,7 +51,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun updateProduct(newProductData: Product, onFinish: () -> Unit) {
+    fun updateProduct(newProductData: Product,onFiredAction:()->Unit, onFinish: () -> Unit) {
 
         val validationError = validateProductData(
             type = newProductData.category,
@@ -61,13 +69,15 @@ class ProductViewModel @Inject constructor(
         )
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val(bool)=updateProductUseCase(updatedProduct)
+                val(bool,msg)=updateProductUseCase(updatedProduct)
                 if(bool){
                 _message.postValue(app.getString(R.string.product_updated_successfully))
                 withContext(Dispatchers.Main) { onFinish() }
                 }
                 else{
-                    _message.postValue(app.getString(R.string.error_updating_product))
+                    if(msg == Constants.STATUS_FIRED){
+                        onFiredAction()
+                    }else {_message.postValue(app.getString(R.string.error_updating_product))}
                 }
             } catch (e: Exception) {
                 _message.postValue(app.getString(R.string.error_updating_product, e.message ?: ""))
@@ -75,14 +85,20 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun deleteProduct(product: Product, onFinish: () -> Unit) {
+    fun deleteProduct(product: Product, onFiredAction:()->Unit,onFinish: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                val (success,msg) = deleteProductUseCase(product.id, product.productImage)
-                if(success){
                 withContext(Dispatchers.Main) {
-                    CartHelper.removeFromTheCartList(product.id)
+                    if(success){
+
+                        CartHelper.removeFromTheCartList(product.id)
                     onFinish()
+
+                }else{
+                    if(msg == Constants.STATUS_FIRED){
+                        onFiredAction()
+                    }
                 }
                 }
                 _message.postValue(msg)
@@ -107,6 +123,20 @@ class ProductViewModel @Inject constructor(
             sell <= 0 -> app.getString(R.string.invalid_selling_price)
             sell <= purchase -> app.getString(R.string.selling_price_must_be_greater)
             else -> null
+        }
+    }
+    fun logout(onResult: () -> Unit){
+        viewModelScope.launch{
+            val (success, msg) = logoutUseCase()
+            if(success){
+                pref.clearPrefs()
+                withContext(Dispatchers.IO){db.clearAllTables()}
+                withContext(Dispatchers.Main){
+                    onResult()
+                }
+            }else{
+                _message.postValue(msg)
+            }
         }
     }
 }

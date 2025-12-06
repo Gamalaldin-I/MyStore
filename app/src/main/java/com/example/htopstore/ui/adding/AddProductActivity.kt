@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityAddPactBinding
+import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.util.BarcodeGenerator
 import com.example.htopstore.util.helper.AutoCompleteHelper
@@ -148,6 +149,7 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setControllers() {
         // Camera button - opens camera
         binding.takePhoto.setOnClickListener {
@@ -173,7 +175,9 @@ class AddProductActivity : AppCompatActivity() {
                 buyingPrice = binding.buyingPriceET.text.toString(),
                 sellingPrice = binding.sellingPriceET.text.toString(),
                 count = binding.countET.text.toString()
-            )
+            ){
+                onFiredAction()
+            }
         }
 
         // Back button
@@ -273,5 +277,13 @@ class AddProductActivity : AppCompatActivity() {
         if (isFinishing) {
             BarcodeGenerator.scannedCode = null
         }
+    }
+    private fun onFiredAction(){
+        //end the activity and logout the user
+        // go to the login
+        viewModel.logout{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()}
     }
 }

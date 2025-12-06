@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.useCase.auth.RegisterUseCase
 import com.example.domain.useCase.auth.SignWithGoogleUseCase
+import com.example.domain.util.Constants
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.R
 import com.example.htopstore.util.DataValidator.validEmail
@@ -52,8 +53,9 @@ class SignupViewModel @Inject constructor(
     fun goto(){
         val storeId = sharedPref.getStore().id
         val role = sharedPref.getUser().role
+        val status = sharedPref.getUser().status
         val isLogin = sharedPref.isLogin()
-        if (storeId.isNotEmpty()&&isLogin){
+        if (storeId.isNotEmpty()&&isLogin&&status == Constants.STATUS_HIRED){
             _goTo.value = MAIN_ACTIVITY
         }
         else if(role == OWNER_ROLE&& isLogin) {

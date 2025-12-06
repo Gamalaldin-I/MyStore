@@ -1,6 +1,7 @@
 package com.example.htopstore.ui.product
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,7 @@ import com.example.domain.util.CartHelper
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityProductBinding
+import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.util.helper.AutoCompleteHelper
 import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.appbar.AppBarLayout
@@ -290,7 +292,7 @@ class ProductActivity : AppCompatActivity() {
             lastUpdate = DateHelper.getTimeStampMilliSecond()
         }
 
-        vm.updateProduct(currentProduct) {
+        vm.updateProduct(currentProduct,onFiredAction={onFiredAction()}) {
             finish()
         }
     }
@@ -318,7 +320,7 @@ class ProductActivity : AppCompatActivity() {
             return
         }
 
-        vm.deleteProduct(currentProduct) {
+        vm.deleteProduct(product=currentProduct,onFiredAction={onFiredAction()})  {
             finish()
         }
     }
@@ -337,5 +339,13 @@ class ProductActivity : AppCompatActivity() {
 
         CartHelper.addToTheCartList(product = currentProduct)
         Toast.makeText(this,getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show()
+    }
+    private fun onFiredAction(){
+        //end the activity and logout the user
+        // go to the login
+        vm.logout{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()}
     }
 }
