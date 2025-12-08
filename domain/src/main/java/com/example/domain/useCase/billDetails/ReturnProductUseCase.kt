@@ -2,9 +2,13 @@ package com.example.domain.useCase.billDetails
 
 import android.util.Log
 import com.example.domain.model.SoldProduct
+import com.example.domain.model.Store
+import com.example.domain.model.User
 import com.example.domain.repo.BillDetailsRepo
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.IdGenerator
+import com.example.domain.util.NotificationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -18,6 +22,7 @@ import kotlin.math.abs
 class ReturnProductUseCase(
     private val billDetailsRepo: BillDetailsRepo,
     private val staffRepo: StaffRepo,
+    private val notificationSender: InsertNotificationUseCase
 ) {
 
     companion object {
@@ -31,7 +36,9 @@ class ReturnProductUseCase(
 
     suspend operator fun invoke(
         soldProduct: SoldProduct,
-        returnRequest: SoldProduct
+        returnRequest: SoldProduct,
+        user:User,
+        store:Store
     ): ReturnResult = withContext(Dispatchers.IO) {
 
         try {
@@ -48,7 +55,7 @@ class ReturnProductUseCase(
             validateReturnRequest(soldProduct, returnRequest)
 
             // Process the return
-            processReturn(soldProduct, returnRequest)
+            processReturn(soldProduct, returnRequest,user,store)
 
         } catch (e: IllegalArgumentException) {
             Log.w(TAG, "Validation failed: ${e.message}")
@@ -99,7 +106,9 @@ class ReturnProductUseCase(
 
     private suspend fun processReturn(
         soldProduct: SoldProduct,
-        returnRequest: SoldProduct
+        returnRequest: SoldProduct,
+        user: User,
+        store: Store
     ): ReturnResult {
         val returnQuantity = abs(returnRequest.quantity)
 
@@ -113,6 +122,13 @@ class ReturnProductUseCase(
         val updateMessage = updateBillProduct(soldProduct, returnQuantity)
 
         Log.d(TAG, "Return completed: $updateMessage")
+        val notification = NotificationManager.createUpdateBillNotification(
+            user =user,
+            storeId = store.id,
+            billId = soldProduct.billId!!,
+            returnRequest)
+        notificationSender(notification)
+
         return ReturnResult.Success(updateMessage)
     }
 

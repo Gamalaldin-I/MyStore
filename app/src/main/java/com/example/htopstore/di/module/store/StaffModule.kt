@@ -3,6 +3,7 @@ package com.example.htopstore.di.module.store
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.repo.StaffRepoImp
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.useCase.staff.ChangeEmpRoleUseCase
 import com.example.domain.useCase.staff.GetStoreEmployeesUseCase
 import com.example.domain.useCase.staff.RejectOrRehireUseCase
@@ -20,9 +21,10 @@ object StaffModule {
     @Provides
     fun provideStaffRepo(
         supabaseClient: SupabaseClient,
-        pref: SharedPref
+        pref: SharedPref,
+        insertNotificationUseCase: InsertNotificationUseCase
     ): StaffRepo {
-        return StaffRepoImp(supabase = supabaseClient, pref = pref)
+        return StaffRepoImp(supabase = supabaseClient, pref = pref, notificationUseCase = insertNotificationUseCase)
     }
     @Provides
     fun provideEmployeesUseCase(staffRepo: StaffRepo): GetStoreEmployeesUseCase {

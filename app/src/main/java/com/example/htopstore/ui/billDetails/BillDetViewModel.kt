@@ -68,7 +68,7 @@ class BillDetViewModel @Inject constructor(
                         id = billWithDetails.bill.userId,
                         name = "Unknown Employee",
                         email = "",
-                        role = 3,
+                        role = Constants.EMPLOYEE_ROLE,
                         photoUrl ="",
                         status = Constants.STATUS_FIRED,
                         storeId = "",
@@ -121,7 +121,7 @@ class BillDetViewModel @Inject constructor(
             try {
                 _isLoading.postValue(true)
 
-                when (val result = insertReturnProduct(soldProduct, returnRequest)) {
+                when (val result = insertReturnProduct(soldProduct, returnRequest,pref.getUser(),pref.getStore())) {
                     is ReturnProductUseCase.ReturnResult.Error -> {
                         withContext(Dispatchers.Main) {
                             _isLoading.value = false

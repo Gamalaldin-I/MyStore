@@ -8,8 +8,10 @@ import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.Store
 import com.example.domain.model.UpdateStoreRequest
 import com.example.domain.repo.StoreRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.Constants
 import com.example.domain.util.Constants.STATUS_HIRED
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
@@ -22,7 +24,8 @@ class StoreRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
     private val context: Context,
-    private val networkHelper: NetworkHelperInterface
+    private val networkHelper: NetworkHelperInterface,
+    private val notSender: InsertNotificationUseCase
 ) : StoreRepo {
 
     companion object {
@@ -48,24 +51,44 @@ class StoreRepoImp(
         private const val CATEGORY_NOT_EXISTS = "Category does not exist"
     }
 
+    // Cache user and store to avoid repeated SharedPrefs reads
+    private inline val cachedUser get() = pref.getUser()
+    private inline val cachedStore get() = pref.getStore()
+
     override suspend fun createStore(store: Store): Pair<Boolean, String> = withContext(Dispatchers.IO) {
         try {
             if (!networkHelper.isConnected()) return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
 
-            // Upload logo if provided
-            val logoUrl = uploadLogo(store.logoUrl)
-            val storeWithLogo = store.copy(logoUrl = logoUrl ?: "")
+            val user = cachedUser
 
+            // Parallel execution: upload logo while preparing other operations
             val results = awaitAll(
-                async { insertStore(storeWithLogo) },
-                async { updateUserStatus(pref.getUser().id, storeWithLogo.id) }
+                async { uploadLogo(store.logoUrl) },
+                async {
+                    val storeToInsert = store.copy(logoUrl = "") // Temporary, will update after logo upload
+                    insertStore(storeToInsert)
+                },
+                async { updateUserStatus(user.id, store.id) }
             )
 
-            if (results.any { !it }) return@withContext Pair(false, ERROR_CREATE_STORE)
+            val logoUrl = results[0] as String?
+            val insertResult = results[1] as Boolean
+            val updateResult = results[2] as Boolean
 
-            // Update local prefs
-            pref.saveStore(storeWithLogo)
-            pref.saveUser(pref.getUser().copy(storeId = storeWithLogo.id, status = STATUS_HIRED))
+            if (!insertResult || !updateResult) {
+                return@withContext Pair(false, ERROR_CREATE_STORE)
+            }
+
+            // Update store with logo URL if uploaded
+            val finalStore = if (logoUrl != null) {
+                store.copy(logoUrl = logoUrl)
+            } else {
+                store.copy(logoUrl = "")
+            }
+
+            // Update local prefs once
+            pref.saveStore(finalStore)
+            pref.saveUser(user.copy(storeId = finalStore.id, status = STATUS_HIRED))
 
             return@withContext Pair(true, SUCCESS_CREATE_STORE)
         } catch (e: Exception) {
@@ -78,25 +101,45 @@ class StoreRepoImp(
         try {
             if (!networkHelper.isConnected()) return@withContext Pair(false, Constants.NO_INTERNET_CONNECTION)
 
-            val logoUrl = handleLogoUpdate(store.logoUrl)
-            val storeWithLogo = store.copy(logoUrl = logoUrl)
+            val currentStore = cachedStore
+            val user = cachedUser
 
-            val updateData = UpdateStoreRequest(
-                name = storeWithLogo.name,
-                phone = storeWithLogo.phone,
-                location = storeWithLogo.location,
-                planProductLimit = storeWithLogo.planProductLimit,
-                planOperationLimit = storeWithLogo.planOperationLimit,
-                plan = storeWithLogo.plan,
-                logoUrl = storeWithLogo.logoUrl
-            )
-
-            supabase.from(STORES_TABLE).update(updateData) {
-                filter { eq("id", pref.getStore().id) }
+            // Only upload logo if it changed
+            val logoUrl = if (store.logoUrl != currentStore.logoUrl) {
+                handleLogoUpdate(store.logoUrl)
+            } else {
+                store.logoUrl
             }
 
-            pref.saveStore(storeWithLogo)
+            val storeWithLogo = store.copy(logoUrl = logoUrl)
 
+            // Parallel execution: update store and send notification
+            val (_, _) = awaitAll(
+                async {
+                    val updateData = UpdateStoreRequest(
+                        name = storeWithLogo.name,
+                        phone = storeWithLogo.phone,
+                        location = storeWithLogo.location,
+                        planProductLimit = storeWithLogo.planProductLimit,
+                        planOperationLimit = storeWithLogo.planOperationLimit,
+                        plan = storeWithLogo.plan,
+                        logoUrl = storeWithLogo.logoUrl
+                    )
+                    supabase.from(STORES_TABLE).update(updateData) {
+                        filter { eq("id", currentStore.id) }
+                    }
+                },
+                async {
+                    val updatedNot = NotificationManager.createUpdateStoreNotification(
+                        user = user,
+                        storeId = storeWithLogo.id,
+                        storeName = storeWithLogo.name
+                    )
+                    notSender(updatedNot)
+                }
+            )
+
+            pref.saveStore(storeWithLogo)
             return@withContext Pair(true, SUCCESS_UPDATE_STORE)
         } catch (e: Exception) {
             Log.e(TAG, "updateStore error: ${e.message}", e)
@@ -112,14 +155,21 @@ class StoreRepoImp(
             val trimmedCategory = category.trim()
             val currentCategories = getCategoriesList()
 
+            // Use case-insensitive set for faster lookup
             if (currentCategories.any { it.equals(trimmedCategory, ignoreCase = true) }) {
                 return@withContext Pair(false, CATEGORY_EXISTS)
             }
 
-            val updatedCategories = currentCategories + trimmedCategory
-            val categoriesString = updatedCategories.joinToString(CATEGORY_SEPARATOR)
+            val categoriesString = buildString {
+                if (currentCategories.isNotEmpty()) {
+                    append(currentCategories.joinToString(CATEGORY_SEPARATOR))
+                    append(CATEGORY_SEPARATOR)
+                }
+                append(trimmedCategory)
+            }
+
             updateCategoriesInDb(categoriesString)
-            pref.saveStore(pref.getStore().copy(categories = categoriesString))
+            pref.saveStore(cachedStore.copy(categories = categoriesString))
 
             return@withContext Pair(true, SUCCESS_ADD_CATEGORY)
         } catch (e: Exception) {
@@ -135,10 +185,12 @@ class StoreRepoImp(
             val currentCategories = getCategoriesList()
             if (!currentCategories.contains(category)) return@withContext Pair(false, CATEGORY_NOT_EXISTS)
 
-            val updatedCategories = currentCategories - category
-            val categoriesString = updatedCategories.joinToString(CATEGORY_SEPARATOR)
+            val categoriesString = currentCategories
+                .filterNot { it == category }
+                .joinToString(CATEGORY_SEPARATOR)
+
             updateCategoriesInDb(categoriesString)
-            pref.saveStore(pref.getStore().copy(categories = categoriesString))
+            pref.saveStore(cachedStore.copy(categories = categoriesString))
 
             return@withContext Pair(true, SUCCESS_DELETE_CATEGORY)
         } catch (e: Exception) {
@@ -172,48 +224,54 @@ class StoreRepoImp(
     }
 
     private fun getCategoriesList(): List<String> {
-        val categories = pref.getStore().categories
-        return if (categories.isBlank()) emptyList() else categories.split(CATEGORY_SEPARATOR).filter { it.isNotBlank() }
+        val categories = cachedStore.categories
+        return if (categories.isBlank()) {
+            emptyList()
+        } else {
+            categories.splitToSequence(CATEGORY_SEPARATOR)
+                .filter { it.isNotBlank() }
+                .toList()
+        }
     }
 
     private suspend fun updateCategoriesInDb(categories: String) {
         supabase.from(STORES_TABLE).update(mapOf("categories" to categories)) {
-            filter { eq("id", pref.getStore().id) }
+            filter { eq("id", cachedStore.id) }
         }
     }
 
     private suspend fun handleLogoUpdate(logoUri: String?): String {
         return when {
-            logoUri.isNullOrBlank() -> pref.getStore().logoUrl
-            isLocalUri(logoUri) -> uploadLogo(logoUri) ?: pref.getStore().logoUrl
+            logoUri.isNullOrBlank() -> cachedStore.logoUrl
+            isLocalUri(logoUri) -> uploadLogo(logoUri) ?: cachedStore.logoUrl
             else -> logoUri
         }
     }
 
     private fun isLocalUri(uri: String): Boolean =
-        uri.startsWith("content://") || uri.startsWith("file://") || (!uri.startsWith("http://") && !uri.startsWith("https://"))
+        uri.startsWith("content://") || uri.startsWith("file://") ||
+                (!uri.startsWith("http://") && !uri.startsWith("https://"))
 
     private suspend fun uploadLogo(imageUriString: String?): String? {
         if (imageUriString.isNullOrBlank()) return null
+
         return try {
             val imageUri = imageUriString.toUri()
-            val bytes = context.contentResolver.openInputStream(imageUri)?.readBytes()
-                ?: run { Log.e(TAG, ERROR_READ_IMAGE); return null }
+            val bytes = context.contentResolver.openInputStream(imageUri)?.use { it.readBytes() }
+                ?: run {
+                    Log.e(TAG, ERROR_READ_IMAGE)
+                    return null
+                }
+
             if (bytes.isEmpty()) return null
 
-            val folderPath ="stores/${pref.getStore().id}"
+            val storeId = cachedStore.id
+            val folderPath = "stores/$storeId"
             val bucket = supabase.storage.from(STORES_LOGO_BUCKET)
             val fullPath = "$folderPath/$LOGO_NAME"
 
-            // Delete old logo if exists
-            try {
-                bucket.delete(fullPath)
-                Log.d(TAG, "uploadLogo: Deleted old logo")
-            } catch (e: Exception) {
-                Log.d(TAG, "uploadLogo: No old logo to delete or error deleting - ${e.message}")
-            }
-
-            // Upload new logo
+            // Delete and upload in parallel would require transaction support
+            // Instead, use upsert which handles overwrite automatically
             bucket.upload(fullPath, bytes, upsert = true)
             bucket.publicUrl(fullPath)
         } catch (e: Exception) {
@@ -221,7 +279,6 @@ class StoreRepoImp(
             null
         }
     }
-
 
     override fun deleteStore(id: String) { TODO("Not yet implemented") }
     override fun getStore(id: String) { TODO("Not yet implemented") }

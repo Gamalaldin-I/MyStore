@@ -8,6 +8,7 @@ import com.example.data.remote.repo.RemoteProductRepo
 import com.example.data.repo.ProductRepoImp
 import com.example.domain.repo.ProductRepo
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.useCase.product.AddProductUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
@@ -42,13 +43,15 @@ object ProductModule {
         @ApplicationContext context: Context,
         supabase: SupabaseClient,
         pref: SharedPref,
-        networkHelper: NetworkHelperInterface
+        networkHelper: NetworkHelperInterface,
+        insertNotificationUseCase: InsertNotificationUseCase
     ):RemoteProductRepo{
         return RemoteProductRepo(
             supabase = supabase,
             pref = pref,
             context = context,
-            networkHelper = networkHelper
+            networkHelper = networkHelper,
+            notSender = insertNotificationUseCase
         )
     }
 

@@ -7,7 +7,9 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.User
 import com.example.domain.repo.ProfileRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.Constants
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
@@ -18,13 +20,24 @@ class ProfileRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
     private val context: Context,
-    private val networkHelper: NetworkHelperInterface) : ProfileRepo {
+    private val networkHelper: NetworkHelperInterface,
+    private val notificationUseCase: InsertNotificationUseCase
+    ) : ProfileRepo {
 
     companion object {
         private const val AVATARS_BUCKET = "Avatars"
         private const val USERS = "users"
         private const val TAG = "ProfileRepoImp"
         private const val RESET_PASSWORD_URL = "https://reset-password-api.vercel.app/index.html"
+    }
+
+    private suspend fun insertNot(){
+        val upNot = NotificationManager.createUpdateUserNotification(
+            pref.getUser(),
+            pref.getStore().id,
+            pref.getUser().name
+        )
+        notificationUseCase(upNot)
     }
 
     // -------------------------------
@@ -149,6 +162,7 @@ class ProfileRepoImp(
 
             // Update locally
             pref.saveUser(pref.getUser().copy(name = name))
+            insertNot()
 
             true to "Name updated successfully"
 

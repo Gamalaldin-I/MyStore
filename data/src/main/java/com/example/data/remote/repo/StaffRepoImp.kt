@@ -4,16 +4,19 @@ import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.User
 import com.example.domain.repo.StaffRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.domain.util.Constants.STATUS_FIRED
 import com.example.domain.util.Constants.STATUS_HIRED
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 
 class StaffRepoImp(
     private val supabase: SupabaseClient,
-    private val pref: SharedPref
+    private val pref: SharedPref,
+    private val notificationUseCase: InsertNotificationUseCase
 ) : StaffRepo {
 
     companion object{
@@ -58,6 +61,13 @@ class StaffRepoImp(
                     eq(USER_ID,employeeId)
                 }
             }
+            val not = NotificationManager.createFireUserNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                pref.getUser().name,
+                reject
+            )
+            notificationUseCase(not)
             Pair(true,"")
         }catch (e: Exception){
             Log.d(TAG,"Error firing or rehiring employee: ${e.message}")
@@ -68,12 +78,12 @@ class StaffRepoImp(
     override suspend fun preformAction(): Pair<Boolean, String> {
          try {
             val userId = pref.getUser().id
-            val status = supabase.from(USERS).select{
+            val user = supabase.from(USERS).select{
                 filter {
                     eq(USER_ID,userId)
                 }
-            }.decodeSingle<User>().status
-            val result = when(status) {
+            }.decodeSingle<User>()
+            val result = when(user.status) {
                 STATUS_HIRED -> {
                     Pair(true,STATUS_HIRED)
                 }

@@ -6,14 +6,17 @@ import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.Bill
 import com.example.domain.model.DeleteBody
 import com.example.domain.model.remoteModels.BillCashUpdate
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.DateHelper
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 
 class RemoteBillRepo(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
-    private val networkManager: NetworkHelperInterface
+    private val networkManager: NetworkHelperInterface,
+    private val notificationSender: InsertNotificationUseCase
 ) {
 
     companion object {
@@ -41,6 +44,13 @@ class RemoteBillRepo(
 
             supabase.from(BILLS).insert(inserted)
             onResult()
+            val addedBillNotification = NotificationManager.createSellProductNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                bill,
+                bill.totalCash
+            )
+            notificationSender(addedBillNotification)
 
             Pair(true, "Bill added successfully")
 
@@ -122,6 +132,7 @@ class RemoteBillRepo(
                         }
             }
 
+
             onResult()
             Pair(true, "Bill updated successfully")
 
@@ -153,7 +164,12 @@ class RemoteBillRepo(
             ) {
                 filter { eq("id", id) }
             }
-
+            val deletedNot = NotificationManager.createDeleteBillNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                id
+            )
+            notificationSender(deletedNot)
             onResult()
             Pair(true, "Bill deleted successfully")
 

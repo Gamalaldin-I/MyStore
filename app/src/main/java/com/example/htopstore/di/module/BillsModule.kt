@@ -12,6 +12,7 @@ import com.example.domain.useCase.bill.GetAllBillsUseCase
 import com.example.domain.useCase.bill.GetBillByDateUseCase
 import com.example.domain.useCase.bill.GetBillsByDateRangeUseCase
 import com.example.domain.useCase.bill.GetBillsTillDateUseCase
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,11 +28,14 @@ object BillsModule {
     @Provides
     fun provideRemoteBillRepo(supaBase: SupabaseClient,
                               netWorkHelper: NetworkHelperInterface,
-                              pref: SharedPref): RemoteBillRepo {
+                              pref: SharedPref,
+                              insertNotificationUseCase: InsertNotificationUseCase
+    ): RemoteBillRepo {
         return RemoteBillRepo(
             supabase = supaBase,
             networkManager = netWorkHelper,
-            pref = pref
+            pref = pref,
+            notificationSender=insertNotificationUseCase
         )
     }
 

@@ -11,6 +11,7 @@ import com.example.domain.useCase.expenses.GetAllExpensesUseCase
 import com.example.domain.useCase.expenses.GetExpensesByDateUseCase
 import com.example.domain.useCase.expenses.GetTotalOfExpensesByRangeOfDateUseCase
 import com.example.domain.useCase.expenses.InsertNewExpenseUseCase
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,10 +24,13 @@ import javax.inject.Singleton
 object ExpensesModule {
     @Provides
     @Singleton
-    fun provideRemoteExpensesRepo(supabaseClient: SupabaseClient,pref: SharedPref): RemoteExpensesRepo {
+    fun provideRemoteExpensesRepo(supabaseClient: SupabaseClient,
+                                  insertNotificationUseCase: InsertNotificationUseCase,
+                                  pref: SharedPref): RemoteExpensesRepo {
         return RemoteExpensesRepo(
             supabase =supabaseClient,
-            pref = pref
+            pref = pref,
+            notiSenter = insertNotificationUseCase
         )
     }
     @Provides

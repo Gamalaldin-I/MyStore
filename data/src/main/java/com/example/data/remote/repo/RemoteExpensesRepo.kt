@@ -4,14 +4,17 @@ import android.util.Log
 import com.example.data.local.sharedPrefs.SharedPref
 import com.example.domain.model.DeleteBody
 import com.example.domain.model.Expense
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.Constants
 import com.example.domain.util.DateHelper
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 
 class RemoteExpensesRepo(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
+    private val notiSenter: InsertNotificationUseCase
 ){
     val c = Constants
     companion object{
@@ -29,6 +32,14 @@ class RemoteExpensesRepo(
             )
             supabase.from(TABLE_NAME).insert(inserted)
             onLocal()
+            //insert notification
+            val not = NotificationManager.createAddExpenseNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                expense.category,
+                expense.amount
+            )
+            notiSenter(not)
             return Pair(true,c.EXPENSE_ADDED_MESSAGE)
 
         }catch(e: Exception){
@@ -48,6 +59,14 @@ class RemoteExpensesRepo(
                     eq("id", id)
                 }
             }
+            val deletedNot = NotificationManager.createDeleteExpenseNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                expenseName = id
+            )
+            notiSenter(deletedNot)
+
+
             onLocal()
             return Pair(true, c.EXPENSE_DELETED_MESSAGE)
         }catch (e: Exception){

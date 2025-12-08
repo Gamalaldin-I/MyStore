@@ -289,7 +289,6 @@ class ProfileActivity:BaseActivity(){
                     binding.roleChip.text = vm.getRole()
                 }
                 else -> {}
-
             }
         }
     }

@@ -5,6 +5,7 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.NetworkHelperInterface
 import com.example.data.remote.repo.StoreRepoImp
 import com.example.domain.repo.StoreRepo
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.useCase.store.AddCategoryUseCase
 import com.example.domain.useCase.store.AddStoreUseCase
 import com.example.domain.useCase.store.DeleteCategoryUseCase
@@ -28,13 +29,15 @@ object StoreModule {
         @ApplicationContext context: Context,
         supabase: SupabaseClient,
         pref: SharedPref,
-        networkHelper: NetworkHelperInterface
+        networkHelper: NetworkHelperInterface,
+        insertNotificationUseCase: InsertNotificationUseCase
     ): StoreRepo {
         return StoreRepoImp(
             supabase = supabase,
             pref = pref,
             context = context,
-            networkHelper = networkHelper
+            networkHelper = networkHelper,
+            notSender = insertNotificationUseCase
         )
     }
     @Provides

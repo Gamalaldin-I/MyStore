@@ -29,6 +29,7 @@ import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.days.DaysActivity
 import com.example.htopstore.ui.expenses.ExpensesActivity
 import com.example.htopstore.ui.genCode.GenCodeActivity
+import com.example.htopstore.ui.notifications.NotificationsActivity
 import com.example.htopstore.ui.pendingSell.PendingSellActionsActivity
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.ui.profile.ProfileActivity
@@ -69,6 +70,7 @@ class HomeFragment : Fragment() {
         setupTop5Adapter()
         setupLowStockAdapter()
         observe()
+        handleMainMenu()
 
         return binding.root
     }
@@ -119,10 +121,7 @@ class HomeFragment : Fragment() {
         binding.lowStock.adapter.adapter = lowStockAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        handleMainMenu()
-    }
+
 
     @SuppressLint("SetTextI18n")
     private fun setControllers() {
@@ -321,6 +320,10 @@ class HomeFragment : Fragment() {
             }
             R.id.pending -> {
                 startActivity(Intent(requireContext(), PendingSellActionsActivity::class.java))
+                true
+            }
+            R.id.notification->{
+                startActivity(Intent(requireContext(), NotificationsActivity::class.java))
                 true
             }
 

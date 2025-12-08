@@ -10,6 +10,7 @@ import com.example.domain.useCase.invitations.GetAllEmailPendingInvitesUseCase
 import com.example.domain.useCase.invitations.GetStoreInvitesUseCase
 import com.example.domain.useCase.invitations.RejectInviteUseCase
 import com.example.domain.useCase.invitations.SendInvitationMailUseCase
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,11 +25,13 @@ object InvitationsModule {
     @Singleton
     fun provideInvitationRepoImp(
         supabaseClient: SupabaseClient,
+        insertNotificationUseCase: InsertNotificationUseCase,
         pref: SharedPref
     ): InvitationsRepo{
         return InvitationsRepoImp(
             supabase = supabaseClient,
-            pref = pref
+            pref = pref,
+            notificationSender =insertNotificationUseCase
         )
     }
 

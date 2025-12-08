@@ -7,7 +7,9 @@ import com.example.data.local.sharedPrefs.SharedPref
 import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.DeleteBody
 import com.example.domain.model.Product
+import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.util.DateHelper
+import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
@@ -16,7 +18,8 @@ class RemoteProductRepo(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
     private val context: Context,
-    private val networkHelper: NetworkHelperInterface
+    private val networkHelper: NetworkHelperInterface,
+    private val notSender: InsertNotificationUseCase
 ) {
 
     companion object {
@@ -79,6 +82,14 @@ class RemoteProductRepo(
             inserted.productImage = url.orEmpty()
 
             supabase.from(PRODUCTS).insert(inserted)
+            val addedNot = NotificationManager.createAddProductNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                product
+            )
+            notSender(addedNot)
+
+
             onResult(inserted, "Product added successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error adding product: ${e.message}", e)
@@ -109,6 +120,13 @@ class RemoteProductRepo(
             ) {
                 filter { eq(ID, id) }
             }
+            val deletedNot = NotificationManager.createDeleteProductNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                productId = id
+            )
+            notSender(deletedNot)
+
 
             onResult()
             return Pair(true, "Product deleted successfully")
@@ -134,6 +152,13 @@ class RemoteProductRepo(
             supabase.from(PRODUCTS).update(updatedProduct) {
                 filter { eq(ID, updatedProduct.id) }
             }
+            val updatedNot = NotificationManager.createUpdateProductNotification(
+                pref.getUser(),
+                pref.getStore().id,
+                product
+            )
+            notSender(updatedNot)
+
             onResult(updatedProduct, "Product updated successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error updating product: ${e.message}", e)

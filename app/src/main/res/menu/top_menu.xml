@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
         <item
             android:id="@+id/profile"
             android:title="@string/profile"
@@ -7,9 +8,7 @@
             android:icon="@drawable/icon_profile" />
         <item
             android:id="@+id/pending"
-            app:showAsAction="ifRoom"
             android:title="@string/pending_actions"
-            android:iconTint="@color/alert_critical"
             android:icon="@drawable/ic_error_circle" />
 
         <item
@@ -22,4 +21,10 @@
             android:id="@+id/staff"
             android:title="@string/staff"
             android:icon="@drawable/icon_staff" />
+
+        <item
+            android:id="@+id/notification"
+            android:title="Notification"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_notification" />
 </menu>
