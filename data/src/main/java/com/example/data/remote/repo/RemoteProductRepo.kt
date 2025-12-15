@@ -84,38 +84,7 @@ class RemoteProductRepo(
     // PRODUCT FUNCTIONS
     // ==============================
 
-    // --- ADD PRODUCT ---
-    suspend fun addProduct(
-        product: Product,
-        onResult: suspend (Product?, String) -> Unit
-    ) {
-        if (!networkHelper.isConnected()) {
-            onResult(null, "No internet connection")
-            return
-        }
 
-        try {
-            val inserted = product.copy(storeId = pref.getStore().id)
-            val fileName = "${inserted.id}.jpg"
-            val uri = inserted.productImage.toUri()
-            val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
-            inserted.productImage = url.orEmpty()
-
-            supabase.from(PRODUCTS).insert(inserted)
-            val addedNot = NotificationManager.createAddProductNotification(
-                pref.getUser(),
-                pref.getStore().id,
-                product
-            )
-            notSender(addedNot)
-
-
-            onResult(inserted, "Product added successfully")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error adding product: ${e.message}", e)
-            onResult(null, "Failed to add product")
-        }
-    }
     suspend fun addPendingProducts(
         list: List<Product>,
         onProgress: (Int) -> Unit,

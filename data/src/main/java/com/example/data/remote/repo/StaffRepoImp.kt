@@ -94,11 +94,10 @@ class StaffRepoImp(
              return result
          }catch (e: Exception){
             Log.d(TAG,"Error getting user status: ${e.message}")
-              return Pair(false,"Error getting user status")
-
-            }
-
-        }
+             throw Exception("Error getting user status")
+             return Pair(false,"Error getting user status")
+         }
+    }
 
     override suspend fun changeRoleOfEmployee(
         newRole: Int,

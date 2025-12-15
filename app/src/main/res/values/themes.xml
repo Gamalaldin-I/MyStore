@@ -199,7 +199,6 @@
         </style>
     <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/background_dark</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/nav_store</item>
         <item name="postSplashScreenTheme">@style/Theme.HTopStore</item>
     </style>
 

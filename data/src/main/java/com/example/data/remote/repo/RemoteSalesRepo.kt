@@ -113,7 +113,8 @@ class RemoteSalesRepo(
             return Pair(false, "No internet connection")
         }
         val currentProduct = supabase.from(PRODUCTS).select{filter { eq("id", id) }}.decodeSingle<Product>()
-
+        //very important line
+        if(isSell&&currentProduct.count<count) return Pair(false,"Sorry, Not enough quantity to sell")
         val updateBody = ProductQuantityUpdate(
             count = if (isSell) (currentProduct.count-count) else (currentProduct.count+count),
             soldCount = if (isSell) (currentProduct.soldCount+count) else (currentProduct.soldCount-count),

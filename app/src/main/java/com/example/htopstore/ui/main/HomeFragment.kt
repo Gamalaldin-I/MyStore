@@ -253,17 +253,17 @@ class HomeFragment : Fragment() {
 
         viewModel.profit.observe(viewLifecycleOwner) {
             val profit = it ?: 0.0
-            binding.today.profit.text = profit.ae()
+            binding.today.profit.text = if(profit>1000.0) "${profit/1000}K" else profit.toString()
         }
 
         viewModel.totalExpenses.observe(viewLifecycleOwner) { it ->
             val expenses = it ?: 0.0
-            binding.today.expenses.text = expenses.ae()
+            binding.today.expenses.text = if(expenses>1000.0) "${expenses/1000}K" else expenses.toString()
         }
 
         viewModel.totalSales.observe(viewLifecycleOwner) {
             val sales = it ?: 0.0
-            binding.today.salesValue.text = sales.ae()
+            binding.today.salesValue.text = if(sales>1000.0) "${sales/1000}K" else sales.toString()
         }
     }
 

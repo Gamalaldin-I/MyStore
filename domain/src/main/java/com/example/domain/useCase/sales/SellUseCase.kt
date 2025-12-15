@@ -64,11 +64,6 @@ class SellUseCase(
         onProgress: (Float) -> Unit
     ): String {
 
-        /////////////////////////////before operation/////////////////////////////////
-        val resOfGo = staffRepo.preformAction()
-        if(!resOfGo.first){
-            return resOfGo.second
-        }
 
 
         validateInputs(cartList, discount)
@@ -94,6 +89,13 @@ class SellUseCase(
         var localSoldItemsInserted = soldItemsInserted
 
         try {
+
+
+            /////////////////////////////before operation/////////////////////////////////
+            val resOfGo = staffRepo.preformAction()
+            if(!resOfGo.first){
+                return resOfGo.second
+            }
             // 1) Update stock & build soldProducts (progress 0..stockEnd)
             val soldProducts = processItemsUpdateStock(
                 cart = cartSnapshot,
