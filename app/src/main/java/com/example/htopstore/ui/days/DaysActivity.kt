@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityDaysBinding
 import com.example.htopstore.ui.dayDetails.DayDetailsActivity
 import com.example.htopstore.ui.widgets.DatePickerFragment
@@ -82,7 +83,7 @@ class DaysActivity : AppCompatActivity() {
             onEmptyState(false)
             adapter.updateData(daysList as ArrayList)
             binding.selectDay.text = ".."
-            binding.date.text = "All Days"
+            binding.date.text = getString(R.string.all_days)
         }
 
         vm.specificDay.observe(this) { day ->

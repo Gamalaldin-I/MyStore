@@ -673,4 +673,19 @@
     <string name="image_update_pending">Image will be updated when you save</string>
     <!-- Add these strings to your strings.xml -->
     <string name="uploading_image">Uploading image...</string>
+    <!-- for the home -->
+    <string name="analysis">Analysis</string>
+    <string name="generate_code">Generate code</string>
+    <string name="add_outcome">Add outcome</string>
+    <string name="scan_code">Scan code</string>
+    <string name="nota">Nota</string>
+    <string name="top_10">Top 10</string>
+    <string name="shopping_cart">Shopping cart</string>
+
+
+    <!--for analysis -->
+    <string name="mostProfitable">Most Profitable</string>
+    <string name="haveNotSold">Have Not Sold</string>
+
+
 </resources>

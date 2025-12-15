@@ -305,7 +305,7 @@ class CreateStoreActivity : BaseActivity() {
         viewModel.createStore(storeData, selectedPlan) { success, message ->
             hideLoading()
             if (success) {
-                viewModel.addCategory("General"){
+                viewModel.addCategory("Go to store setting to add categories"){
                     showToast(getString(R.string.store_created_successfully))
                     navigateToMain()
                 }

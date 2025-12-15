@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.domain.useCase.localize.NAE.ae
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityDayDetailsBinding
 import com.example.htopstore.util.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -41,9 +43,9 @@ class DayDetailsActivity : AppCompatActivity() {
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLo, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Bills"
-                1 -> tab.text = "Returns"
-                2 -> tab.text = "Expenses"
+                0 -> tab.text = getString(R.string.bills)
+                1 -> tab.text = getString(R.string.returns)
+                2 -> tab.text = getString(R.string.expenses)
             }
         }.attach()
     }
@@ -58,15 +60,15 @@ class DayDetailsActivity : AppCompatActivity() {
     private fun observe(){
         vm.profit.observe(this){ it ->
             val profit = it ?: 0.0
-            binding.dayDet.profit.text = profit.toString()
+            binding.dayDet.profit.text = profit.ae()
         }
         vm.totalSales.observe(this){
             val total =it ?: 0.0
-            binding.dayDet.salesValue.text = total.toString()
+            binding.dayDet.salesValue.text = total.ae()
         }
         vm.expenses.observe(this){
             val expenses = it ?: 0.0
-            binding.dayDet.expenses.text = expenses.toString()
+            binding.dayDet.expenses.text = expenses.ae()
         }
     }
 

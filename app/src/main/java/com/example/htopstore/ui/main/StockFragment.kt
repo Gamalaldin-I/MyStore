@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Product
+import com.example.domain.useCase.localize.NAE.ae
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentStoreBinding
 import com.example.htopstore.ui.product.ProductActivity
@@ -265,20 +266,14 @@ class StockFragment : Fragment() {
     }
 
     private fun updateResultsCount(count: Int) {
-        val countText = if (localLanguage == "ar") {
-            "$showingText $count $productsText"
-        } else {
-            "$showingText $count $productsText"
-        }
+        val countText = "$showingText ${count.ae()} $productsText"
+
         binding.tvResultsCount.text = countText
     }
 
     private fun updateHeaderCount() {
-        val countText = if (localLanguage == "ar") {
-            "$managingInventoryText • ${allProducts.size} منتج"
-        } else {
-            "$managingInventoryText • ${allProducts.size} items"
-        }
+        val countText = "$managingInventoryText • ${allProducts.size.ae()} $productsText"
+
         binding.tvStockCount.text = countText
     }
 

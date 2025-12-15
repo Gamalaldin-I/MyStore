@@ -202,11 +202,11 @@ interface SalesDao {
     @Query("""
     SELECT 
         CASE
-            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 6 AND 11 THEN 'صباح'
-            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 12 AND 14 THEN 'ظهر'
-            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 15 AND 17 THEN 'عصر'
-            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 18 AND 20 THEN 'مساء'
-            ELSE 'ليل'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 6 AND 11 THEN '0'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 12 AND 14 THEN '1'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 15 AND 17 THEN '2'
+            WHEN CAST(SUBSTR(sellTime, 1, 2) AS INTEGER) BETWEEN 18 AND 20 THEN '3'
+            ELSE '4'
         END AS period,
         SUM(quantity) AS totalQuantity
     FROM sales_details
@@ -222,13 +222,13 @@ interface SalesDao {
         @Query("""
         SELECT 
             CASE strftime('%w', sellDate)
-                WHEN '0' THEN 'الأحد'
-                WHEN '1' THEN 'الاثنين'
-                WHEN '2' THEN 'الثلاثاء'
-                WHEN '3' THEN 'الأربعاء'
-                WHEN '4' THEN 'الخميس'
-                WHEN '5' THEN 'الجمعة'
-                WHEN '6' THEN 'السبت'
+                WHEN '0' THEN '0'
+                WHEN '1' THEN '1'
+                WHEN '2' THEN '2'
+                WHEN '3' THEN '3'
+                WHEN '4' THEN '4'
+                WHEN '5' THEN '5'
+                WHEN '6' THEN '6'
             END AS dayOfWeek,
             SUM(quantity) AS totalQuantity
         FROM sales_details

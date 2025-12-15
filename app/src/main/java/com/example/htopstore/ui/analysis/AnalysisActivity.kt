@@ -3,6 +3,7 @@ package com.example.htopstore.ui.analysis
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityAnalysisBinding
 import com.example.htopstore.util.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -33,9 +34,9 @@ class AnalysisActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLo, binding.viewPager){
             tab,position ->
             when(position){
-                0 -> tab.text = "Product"
-                1 -> tab.text = "Sales"
-                2 -> tab.text = "Accountant"
+                0 -> tab.text = getString(R.string.products)
+                1 -> tab.text = getString(R.string.sales)
+                2 -> tab.text = getString(R.string.accountant)
         }
     }.attach()
 

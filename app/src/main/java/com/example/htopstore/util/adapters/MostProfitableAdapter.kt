@@ -31,7 +31,7 @@ class MostProfitableAdapter(private val data: MutableList<Product>,private val o
             .into(holder.binding.productImg)
         holder.binding.Name.text = product.name
         holder.binding.category.text = product.category
-        holder.binding.quantity.text = ((product.sellingPrice - product.buyingPrice)*product.soldCount).toString()
+        holder.binding.quantity.text = ((product.sellingPrice - product.buyingPrice)*product.soldCount).toInt().toString()
         holder.binding.root.setOnClickListener {
             onClick(product)
         }

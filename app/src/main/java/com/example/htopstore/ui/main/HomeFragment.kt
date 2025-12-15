@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.domain.model.GridItem
+import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.util.DateHelper
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentHomeBinding
@@ -172,28 +173,28 @@ class HomeFragment : Fragment() {
             GridItem(
                 id = "scan",
                 icon = R.drawable.grid_scan,
-                title = "Scan Code"
+                title = getString(R.string.scancode),
             ) {
                 startActivity(Intent(requireContext(), ScanActivity::class.java))
             },
             GridItem(
                 id = "expenses",
                 icon = R.drawable.grid_outcome,
-                title = "Add outcome"
+                title = getString(R.string.add_outcome),
             ) {
                 startActivity(Intent(requireContext(), ExpensesActivity::class.java))
             },
             GridItem(
                 id = "sales",
                 icon = R.drawable.nav_report,
-                title = "Analysis"
+                title = getString(R.string.analysis),
             ) {
                 startActivity(Intent(requireContext(), AnalysisActivity::class.java))
             },
             GridItem(
                 id = "bills",
                 icon = R.drawable.grid_bills,
-                title = "Nota",
+                title = getString(R.string.nota),
             ) {
                 startActivity(Intent(requireContext(), DaysActivity::class.java))
             },
@@ -207,7 +208,7 @@ class HomeFragment : Fragment() {
             GridItem(
                 id = "generate",
                 icon = R.drawable.grid_code,
-                title = "Generate codes"
+                title = getString(R.string.generateqrcodes),
             ) {
                 startActivity(Intent(requireContext(), GenCodeActivity::class.java))
             }
@@ -240,7 +241,7 @@ class HomeFragment : Fragment() {
         viewModel.lowStock.observe(viewLifecycleOwner) { lowStockItems ->
             lowStockAdapter.updateData(lowStockItems)
             // Update low stock count chip
-            binding.lowStockCount.text = "${lowStockItems.size} items"
+            binding.lowStockCount.text = "${lowStockItems.size.ae()} ${getString(R.string.items)}"
 
             // Show/hide low stock card based on items
             binding.lowStockCard.visibility = if (lowStockItems.isEmpty()) {
@@ -252,17 +253,17 @@ class HomeFragment : Fragment() {
 
         viewModel.profit.observe(viewLifecycleOwner) {
             val profit = it ?: 0.0
-            binding.today.profit.text = profit.toString()
+            binding.today.profit.text = profit.ae()
         }
 
         viewModel.totalExpenses.observe(viewLifecycleOwner) { it ->
             val expenses = it ?: 0.0
-            binding.today.expenses.text = expenses.toString()
+            binding.today.expenses.text = expenses.ae()
         }
 
         viewModel.totalSales.observe(viewLifecycleOwner) {
             val sales = it ?: 0.0
-            binding.today.salesValue.text = sales.toString()
+            binding.today.salesValue.text = sales.ae()
         }
     }
 

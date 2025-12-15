@@ -18,6 +18,7 @@ import com.example.domain.util.DateHelper.DAY
 import com.example.domain.util.DateHelper.MONTH
 import com.example.domain.util.DateHelper.WEEK
 import com.example.domain.util.DateHelper.YEAR
+import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentProductAnalysisBinding
 import com.example.htopstore.ui.product.ProductActivity
 import com.example.htopstore.util.Visualiser.drawPieChart
@@ -79,7 +80,7 @@ class ProductAnalysisFragment : Fragment() {
         }
         // make the adapter horizontal
         // Make it horizontal
-        binding.top5.title.text = "Most Profitable"
+        binding.top5.title.text = getString(R.string.mostProfitable)
         viewPager = binding.top5.viewPager
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         viewPager.offscreenPageLimit = 3
@@ -101,7 +102,7 @@ class ProductAnalysisFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setupLowStockAdapter() {
-        binding.haveNotSold.title.text = "Have Not Sold"
+        binding.haveNotSold.title.text = getString(R.string.haveNotSold)
         haveNotSoldAdapter = LowStockAdapter(mutableListOf(),false) {
             goToProductDetails(it.id)
         }

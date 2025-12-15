@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.ExpensesWithCategory
 import com.example.domain.model.SalesProfitByPeriod
+import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.util.DateHelper.DAY
 import com.example.domain.util.DateHelper.MONTH
 import com.example.domain.util.DateHelper.WEEK
@@ -18,6 +19,7 @@ import com.example.htopstore.util.Visualiser.drawPieChart
 import com.example.htopstore.util.helper.AutoCompleteHelper
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -68,33 +70,52 @@ class SalesAnalysisFragment : Fragment() {
         }
 
         vm.avgOfSales.observe(viewLifecycleOwner) {
-            binding.numbers.avgOfSell.text = it?.toInt()?.toString() ?: "0"
+            binding.numbers.avgOfSell.text = it?.toInt()?.ae() ?: "0"
         }
 
         vm.numberOfSales.observe(viewLifecycleOwner) {
-            binding.numbers.salesOps.text = it?.toInt()?.toString() ?: "0"
+            binding.numbers.salesOps.text = it?.toInt()?.ae() ?: "0"
         }
 
         vm.totalSales.observe(viewLifecycleOwner) {
-            binding.numbers.totalSales.text = it?.toInt()?.toString() ?: "0"
+            binding.numbers.totalSales.text = it?.toInt()?.ae() ?: "0"
         }
 
         vm.theHoursWithHighestSales.observe(viewLifecycleOwner) {
-            binding.numbers.topHour.text = it ?: "-"
+            binding.numbers.topHour.text = getThePeriod(it) ?: "-"
         }
 
         vm.profit.observe(viewLifecycleOwner) {
-            binding.numbers.profit.text = it?.toInt()?.toString() ?: "0"
+            binding.numbers.profit.text = it?.toInt()?.ae() ?: "0"
         }
 
         vm.theDaysWithHighestSales.observe(viewLifecycleOwner) {
-            binding.numbers.topDay.text = it ?: "-"
+            binding.numbers.topDay.text = getTheDay(it) ?: "-"
         }
 
         vm.expensesWithCategory.observe(viewLifecycleOwner) { expenses ->
             updateExpenses(expenses)
         }
     }
+    private fun getThePeriod(period: String): String {
+        val index = period.toInt()
+        val arabicList = listOf("صباح","ظهر","عصر","مساء","ليل")
+        val englishList = listOf("Morning","Afternoon","Mid day","Evening","Night")
+        return if (Locale.getDefault().language == "ar")
+            arabicList[index]
+        else
+            englishList[index]
+    }
+    private fun getTheDay(day: String): String{
+        val dayIndex = day.toInt()
+        val arabicList = listOf("الأحد","الأثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت")
+        val englishList = listOf("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+        return if (Locale.getDefault().language == "ar")
+            arabicList[dayIndex]
+        else
+            englishList[dayIndex]
+    }
+
 
     private fun updateExpenses(expenses: List<ExpensesWithCategory>?) {
         if (expenses.isNullOrEmpty()) {

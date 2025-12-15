@@ -32,7 +32,7 @@
                     android:id="@+id/toolbarTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Shopping cart"
+                    android:text="@string/shopping_cart"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:letterSpacing="0.01"

@@ -9,7 +9,7 @@
 
     <!-- ==================== التنقل والإجراءات العامة ==================== -->
     <string name="home">الرئيسية</string>
-    <string name="inbox">البريد الوارد</string>
+    <string name="inbox">الرسائل</string>
     <string name="store">المتجر</string>
     <string name="stock">المخزون</string>
     <string name="sales">المبيعات</string>
@@ -24,7 +24,7 @@
     <string name="edit">تعديل</string>
     <string name="cancel">إلغاء</string>
     <string name="continue_button">متابعة</string>
-    <string name="ok">حسنًا</string>
+    <string name="ok">حسناً</string>
     <string name="back">رجوع</string>
     <string name="back_button">رجوع</string>
 
@@ -41,27 +41,27 @@
     <string name="sign_up">إنشاء حساب</string>
     <string name="create_account">إنشاء حساب</string>
     <string name="create_your_account">إنشاء حسابك</string>
-    <string name="sign_up_to_get_started_with_stora">سجّل لتبدأ إدارة أعمالك</string>
+    <string name="sign_up_to_get_started_with_stora">سجّل الآن لتبدأ إدارة مشروعك</string>
     <string name="already_have_an_account">لديك حساب بالفعل؟</string>
-    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">بالتسجيل، فإنك توافق على شروط الخدمة وسياسة الخصوصية</string>
+    <string name="by_creating_an_account_you_agree_to_our_nterms_of_service_and_privacy_policy">بإنشاء حساب، فإنك توافق على شروط الخدمة وسياسة الخصوصية</string>
 
     <!-- تسجيل الدخول -->
     <string name="log_in">تسجيل الدخول</string>
     <string name="login">دخول</string>
-    <string name="welcome_back">مرحبًا بعودتك</string>
-    <string name="sign_in_to_continue_to_your_account">سجّل الدخول للمتابعة</string>
+    <string name="welcome_back">أهلاً بعودتك</string>
+    <string name="sign_in_to_continue_to_your_account">سجّل دخولك للمتابعة</string>
     <string name="don_t_have_an_account">ليس لديك حساب؟</string>
     <string name="remember_me">تذكرني</string>
     <string name="forgot">نسيت كلمة المرور؟</string>
     <string name="by_continuing_you_agree_to_our_terms_of_service_and_privacy_policy">بالمتابعة، فإنك توافق على شروط الخدمة وسياسة الخصوصية</string>
 
     <!-- تسجيل الدخول بجوجل -->
-    <string name="continue_with_google">المتابعة بحساب Google</string>
+    <string name="continue_with_google">المتابعة بحساب جوجل</string>
     <string name="or">أو</string>
     <string name="google_auth" tools:ignore="TypographyDashes">288889154483-20c80tgrv71541migl3vrt7rq8edb824.apps.googleusercontent.com</string>
 
     <!-- حقول النموذج -->
-    <string name="full_name">الاسم الكامل</string>
+    <string name="full_name">الاسم بالكامل</string>
     <string name="email_address">البريد الإلكتروني</string>
     <string name="password">كلمة المرور</string>
     <string name="current_password">كلمة المرور الحالية</string>
@@ -71,7 +71,7 @@
 
     <!-- متطلبات كلمة المرور -->
     <string name="password_must_contain">يجب أن تحتوي كلمة المرور على:</string>
-    <string name="password_requirements">8 أحرف على الأقل، حرف كبير واحد، رقم واحد</string>
+    <string name="password_requirements">8 أحرف على الأقل، حرف كبير، رقم</string>
     <string name="at_least_8_characters_n_one_uppercase_letter_n_one_number_or_special_character">• 8 أحرف على الأقل\n• حرف كبير واحد\n• رقم أو رمز خاص</string>
     <string name="password_strength">قوة كلمة المرور:</string>
 
@@ -88,7 +88,7 @@
     <string name="current_email">البريد الإلكتروني الحالي</string>
     <string name="new_email">البريد الإلكتروني الجديد</string>
     <string name="change_email_button">تغيير البريد الإلكتروني</string>
-    <string name="security_note_change_email">سنرسل رابط تحقق إلى بريدك الجديد للأمان</string>
+    <string name="security_note_change_email">سنرسل رابط تحقق إلى بريدك الجديد للحماية</string>
     <string name="no_email_found">لم يتم العثور على بريد إلكتروني</string>
 
     <!-- تسجيل الخروج -->
@@ -101,13 +101,13 @@
     <string name="select_your_role">اختر دورك</string>
     <string name="role_hint">اختر كيف ستستخدم ستورا</string>
 
-    <string name="business_owner">صاحب عمل</string>
-    <string name="owner">مالك</string>
-    <string name="manage_business_team">أدر متجرك وفريقك</string>
-    <string name="manage_your_business_and_team">أدر عملك وفريقك</string>
+    <string name="business_owner">صاحب مشروع</string>
+    <string name="owner">المالك</string>
+    <string name="manage_business_team">إدارة متجرك وفريقك</string>
+    <string name="manage_your_business_and_team">إدارة مشروعك وفريقك</string>
 
     <string name="employee">موظف</string>
-    <string name="join_work_team">انضم إلى فريقك</string>
+    <string name="join_work_team">انضم لفريقك</string>
     <string name="join_and_work_with_your_team">انضم وتعاون مع فريقك</string>
 
     <string name="manager">مدير</string>
@@ -122,8 +122,8 @@
     <string name="store_details">تفاصيل المتجر</string>
     <string name="store_information">معلومات المتجر</string>
     <string name="store_form_hint">أخبرنا عن متجرك</string>
-    <string name="almost_there">أوشكت على الانتهاء!</string>
-    <string name="your_account_will_be_ready_in_seconds">حسابك سيكون جاهزًا خلال لحظات</string>
+    <string name="almost_there">كاد أن ينتهي!</string>
+    <string name="your_account_will_be_ready_in_seconds">حسابك سيكون جاهزاً في لحظات</string>
     <string name="complete_setup">إكمال الإعداد</string>
 
     <!-- معلومات المتجر -->
@@ -131,10 +131,10 @@
     <string name="store_location">موقع المتجر</string>
     <string name="location">الموقع</string>
     <string name="phone_number">رقم الهاتف</string>
-    <string name="upload_store_logo">تحميل شعار المتجر</string>
+    <string name="upload_store_logo">رفع شعار المتجر</string>
     <string name="store_logo">شعار المتجر</string>
     <string name="change_photo">تغيير الصورة</string>
-    <string name="upload">تحميل</string>
+    <string name="upload">رفع</string>
 
     <!-- تحديثات المتجر -->
     <string name="update_store">تحديث المتجر</string>
@@ -146,10 +146,10 @@
     <!-- ==================== الملف الشخصي ==================== -->
     <string name="user_profile">الملف الشخصي</string>
     <string name="personal_information">المعلومات الشخصية</string>
-    <string name="profile_picture">الصورة الشخصية</string>
+    <string name="profile_picture">صورة الملف الشخصي</string>
     <string name="update_name">تحديث الاسم</string>
-    <string name="logged_in_as">مسجل الدخول باسم</string>
-    <string name="change_profile_photo">تغيير الصورة الشخصية</string>
+    <string name="logged_in_as">مسجل الدخول كـ</string>
+    <string name="change_profile_photo">تغيير صورة الملف الشخصي</string>
     <string name="choose_from_gallery">اختيار من المعرض</string>
     <string name="remove_photo">إزالة الصورة</string>
     <string name="call_store">الاتصال بالمتجر</string>
@@ -159,17 +159,17 @@
 
     <!-- نظرة عامة على الدعوات -->
     <string name="invitations">الدعوات</string>
-    <string name="store_invitation">دعوة متجر</string>
+    <string name="store_invitation">دعوة للمتجر</string>
     <string name="you_ve_been_invited_to_join">تمت دعوتك للانضمام</string>
-    <string name="invitation_code">رمز الدعوة</string>
+    <string name="invitation_code">كود الدعوة</string>
     <string name="create_new_invite">إنشاء دعوة</string>
-    <string name="employee_email">البريد الإلكتروني للموظف</string>
+    <string name="employee_email">بريد الموظف الإلكتروني</string>
     <string name="generate_invite">إنشاء دعوة</string>
 
     <!-- حالة الدعوة -->
     <string name="pending">قيد الانتظار</string>
-    <string name="accepted">مقبولة</string>
-    <string name="rejected">مرفوضة</string>
+    <string name="accepted">مقبول</string>
+    <string name="rejected">مرفوض</string>
     <string name="active">نشط</string>
 
     <!-- إجراءات الدعوة -->
@@ -177,22 +177,22 @@
     <string name="reject">رفض</string>
     <string name="share">مشاركة</string>
     <string name="invite_to">دعوة إلى</string>
-    <string name="sent">مُرسل</string>
-    <string name="created">أُنشئت</string>
+    <string name="sent">تم الإرسال</string>
+    <string name="created">تم الإنشاء</string>
 
     <!-- تفاصيل الدعوة -->
     <string name="reject_invite_title">رفض الدعوة</string>
     <string name="reject_invite_message">هل أنت متأكد من رفض هذه الدعوة؟</string>
-    <string name="invites_sent">دعوات مُرسلة</string>
+    <string name="invites_sent">دعوة مرسلة</string>
 
     <!-- أعضاء الفريق -->
-    <string name="members">الأعضاء</string>
+    <string name="members">أعضاء</string>
     <string name="member">عضو</string>
     <string name="search_employees">البحث في أعضاء الفريق…</string>
     <string name="filter_employees">تصفية الفريق</string>
-    <string name="no_employees">لا يوجد أعضاء في الفريق</string>
-    <string name="no_employees_yet">لا يوجد أعضاء بعد</string>
-    <string name="add_your_first_employee_to_get_started">ادعُ أول عضو للبدء</string>
+    <string name="no_employees">لا يوجد أعضاء فريق</string>
+    <string name="no_employees_yet">لا يوجد أعضاء فريق بعد</string>
+    <string name="add_your_first_employee_to_get_started">ادعُ أول عضو في فريقك للبدء</string>
 
     <!-- الحالات الفارغة -->
     <string name="no_invitations_yet">لا توجد دعوات بعد</string>
@@ -209,7 +209,7 @@
     <string name="add_new_products">إضافة منتجات</string>
     <string name="add_product">إضافة منتج</string>
     <string name="product_details">تفاصيل المنتج</string>
-    <string name="product_id">معرّف المنتج</string>
+    <string name="product_id">رقم المنتج</string>
     <string name="product_image">صورة المنتج</string>
 
     <!-- خصائص المنتج -->
@@ -217,21 +217,21 @@
     <string name="category_label">الفئة</string>
     <string name="categories">الفئات</string>
     <string name="categories_label">الفئات</string>
-    <string name="all_categories">جميع الفئات</string>
+    <string name="all_categories">كل الفئات</string>
     <string name="type">الفئة</string>
 
-    <string name="brand_name">العلامة التجارية</string>
-    <string name="brand_label">العلامة التجارية</string>
+    <string name="brand_name">الماركة</string>
+    <string name="brand_label">الماركة</string>
     <string name="barcode">الباركود</string>
 
     <!-- التسعير -->
     <string name="pricing">التسعير</string>
-    <string name="buying_price">سعر التكلفة</string>
-    <string name="buying_price_label">سعر التكلفة</string>
+    <string name="buying_price">سعر الشراء</string>
+    <string name="buying_price_label">سعر الشراء</string>
     <string name="selling_price">سعر البيع</string>
     <string name="selling_price_label">سعر البيع</string>
-    <string name="profit_per_item">الربح لكل وحدة</string>
-    <string name="profit_label">الربح لكل وحدة</string>
+    <string name="profit_per_item">الربح لكل قطعة</string>
+    <string name="profit_label">الربح لكل قطعة</string>
     <string name="l_e">ج.م</string>
     <string name="le">ج.م</string>
     <string name="sign_le">%s ج.م</string>
@@ -242,8 +242,8 @@
     <string name="quantity_label">الكمية</string>
     <string name="count">الكمية</string>
     <string name="in_stock">متوفر</string>
-    <string name="added_at">أُضيف:</string>
-    <string name="added_date">أُضيف: %s</string>
+    <string name="added_at">تمت الإضافة:</string>
+    <string name="added_date">تمت الإضافة: %s</string>
 
     <!-- حالة المخزون -->
     <string name="stock_title">المخزون</string>
@@ -252,8 +252,8 @@
     <string name="managing_inventory_count">إدارة المخزون • %d منتج</string>
     <string name="items_label">المنتجات</string>
     <string name="low_stock">مخزون منخفض</string>
-    <string name="out_of_stock">نفذ من المخزون</string>
-    <string name="product_out_of_stock">المنتج غير متوفر</string>
+    <string name="out_of_stock">نفد المخزون</string>
+    <string name="product_out_of_stock">المنتج نفد من المخزون</string>
 
     <!-- الحالات الفارغة -->
     <string name="empty_stock">مخزون فارغ</string>
@@ -265,15 +265,15 @@
     <!-- إجراءات المنتج -->
     <string name="delete_product">حذف المنتج</string>
     <string name="add_to_cart">إضافة للسلة</string>
-    <string name="clear_id">مسح المعرّف</string>
+    <string name="clear_id">مسح الرقم</string>
     <string name="scan">مسح</string>
-    <string name="not_scanned">لم يُمسح</string>
+    <string name="not_scanned">لم يتم المسح</string>
     <string name="sold_count">تم بيع %d</string>
 
 
     <!-- ==================== المبيعات والمعاملات ==================== -->
     <string name="sell_now">بيع الآن</string>
-    <string name="sold">مُباع</string>
+    <string name="sold">تم البيع</string>
     <string name="sold_items">المنتجات المباعة</string>
     <string name="bills">الفواتير</string>
     <string name="returns">المرتجعات</string>
@@ -289,29 +289,29 @@
 
 
     <!-- ==================== أدوات QR ==================== -->
-    <string name="qr_generator">منشئ رمز QR</string>
+    <string name="qr_generator">منشئ QR</string>
     <string name="generate_qrs_pdf">تصدير PDF</string>
-    <string name="generateqrcodes">إنشاء رموز QR</string>
-    <string name="scancode">مسح الرمز</string>
+    <string name="generateqrcodes">إنشاء أكواد QR</string>
+    <string name="scancode">مسح الكود</string>
 
 
-    <!-- ==================== خطط الاشتراك ==================== -->
-    <string name="choose_your_plan">اختر خطتك</string>
-    <string name="select_the_perfect_plan_for_your_business">اختر الخطة المثالية لعملك</string>
+    <!-- ==================== باقات الاشتراك ==================== -->
+    <string name="choose_your_plan">اختر باقتك</string>
+    <string name="select_the_perfect_plan_for_your_business">اختر الباقة المثالية لمشروعك</string>
     <string name="you_can_upgrade_or_downgrade_your_plan_anytime_from_settings">يمكنك الترقية أو التخفيض في أي وقت من الإعدادات</string>
 
-    <string name="free_plan">مجانية</string>
+    <string name="free_plan">مجاني</string>
     <string name="free_plan_offer">50 منتج • 100 عملية بيع/شهر</string>
 
-    <string name="silver_plan">فضية</string>
+    <string name="silver_plan">فضي</string>
     <string name="silver_plan_offer">200 منتج • 500 عملية بيع/شهر</string>
 
-    <string name="gold_plan">ذهبية</string>
+    <string name="gold_plan">ذهبي</string>
     <string name="golden_plan_offer">1,000 منتج • مبيعات غير محدودة</string>
-    <string name="popular">الأكثر شعبية</string>
+    <string name="popular">الأكثر شيوعاً</string>
 
-    <string name="platinum">بلاتينية</string>
-    <string name="platinum_plan_offer">غير محدود • دعم ذو أولوية</string>
+    <string name="platinum">بلاتيني</string>
+    <string name="platinum_plan_offer">غير محدود • دعم أولوية</string>
 
 
     <!-- ==================== الوسائط والصور ==================== -->
@@ -330,30 +330,30 @@
     <string name="password_icon">أيقونة كلمة المرور</string>
     <string name="phone_icon">أيقونة الهاتف</string>
     <string name="logout_icon">أيقونة تسجيل الخروج</string>
-    <string name="empty_state_image">رسم الحالة الفارغة</string>
+    <string name="empty_state_image">صورة الحالة الفارغة</string>
     <string name="offline_icon">أيقونة عدم الاتصال</string>
 
 
     <!-- ==================== حالات التحميل ==================== -->
-    <string name="please_wait">يُرجى الانتظار…</string>
-    <string name="please_wait_a_moment">يُرجى الانتظار لحظة</string>
-    <string name="saving">جارٍ الحفظ…</string>
-    <string name="logging_out">جارٍ تسجيل الخروج…</string>
-    <string name="creating_account">جارٍ إنشاء حسابك…</string>
-    <string name="signing_you_in">جارٍ تسجيل الدخول…</string>
-    <string name="signing_in_progress">جارٍ تسجيل الدخول…</string>
-    <string name="signing_in_with_google">جارٍ تسجيل الدخول بحساب Google…</string>
-    <string name="connecting_to_google">جارٍ الاتصال بـ Google…</string>
-    <string name="sending_reset_link">جارٍ إرسال رابط إعادة التعيين…</string>
-    <string name="creating_your_store">جارٍ إنشاء متجرك…</string>
-    <string name="updating_store">جارٍ تحديث متجرك…</string>
+    <string name="please_wait">من فضلك انتظر…</string>
+    <string name="please_wait_a_moment">انتظر لحظة من فضلك</string>
+    <string name="saving">جاري الحفظ…</string>
+    <string name="logging_out">جاري تسجيل الخروج…</string>
+    <string name="creating_account">جاري إنشاء حسابك…</string>
+    <string name="signing_you_in">جاري تسجيل دخولك…</string>
+    <string name="signing_in_progress">جاري تسجيل دخولك…</string>
+    <string name="signing_in_with_google">جاري تسجيل الدخول بجوجل…</string>
+    <string name="connecting_to_google">جاري الاتصال بجوجل…</string>
+    <string name="sending_reset_link">جاري إرسال رابط إعادة التعيين…</string>
+    <string name="creating_your_store">جاري إنشاء متجرك…</string>
+    <string name="updating_store">جاري تحديث متجرك…</string>
 
 
     <!-- ==================== رسائل النجاح ==================== -->
     <string name="success">نجح</string>
     <string name="login_successful">تم تسجيل الدخول بنجاح</string>
     <string name="login_success">تم تسجيل الدخول بنجاح</string>
-    <string name="google_signin_successful">تم تسجيل الدخول بحساب Google</string>
+    <string name="google_signin_successful">تم تسجيل الدخول بجوجل</string>
     <string name="account_created_successfully">تم إنشاء الحساب بنجاح</string>
     <string name="owner_registered_successfully">تم تسجيل المالك بنجاح</string>
     <string name="register_owner_success">تم تسجيل المالك بنجاح</string>
@@ -366,27 +366,57 @@
     <string name="invite_rejected">تم رفض الدعوة</string>
     <string name="product_updated_successfully">تم تحديث المنتج بنجاح</string>
     <string name="product_deleted_successfully">تم حذف المنتج بنجاح</string>
-    <string name="added_to_cart">تمت الإضافة إلى السلة</string>
+    <string name="added_to_cart">تمت الإضافة للسلة</string>
     <string name="password_reset_email_sent">تم إرسال بريد إعادة تعيين كلمة المرور</string>
-    <string name="email_confirmation_sent">تم إرسال بريد التأكيد. يُرجى التحقق من بريدك الوارد.</string>
-    <string name="email_change_success_message">تم إرسال بريد التحقق. تحقق من بريدك لإكمال التغيير.</string>
+    <string name="email_confirmation_sent">تم إرسال بريد التأكيد. من فضلك راجع صندوق الوارد.</string>
+    <string name="email_change_success_message">تم إرسال بريد التحقق. راجع صندوق الوارد لإكمال التغيير.</string>
     <string name="name_updated_successfully">تم تحديث الاسم بنجاح</string>
-    <string name="image_uploaded_successfully">تم تحميل الصورة بنجاح</string>
+    <string name="image_uploaded_successfully">تم رفع الصورة بنجاح</string>
     <string name="image_removed_successfully">تمت إزالة الصورة بنجاح</string>
 
 
     <!-- ==================== رسائل الخطأ ==================== -->
 
+    <!-- أخطاء عامة -->
+    <string name="unknown_error">حدث خطأ ما</string>
+    <string name="error_generic">خطأ: %s</string>
+    <string name="error_network">خطأ في الشبكة. حاول مرة أخرى.</string>
+
+    <!-- أخطاء المصادقة -->
+    <string name="login_failed">فشل تسجيل الدخول</string>
+    <string name="login_error">خطأ في تسجيل الدخول</string>
+    <string name="user_not_found">المستخدم غير موجود</string>
+    <string name="google_signin_failed">فشل تسجيل الدخول بجوجل</string>
+    <string name="google_signin_error">خطأ في تسجيل الدخول بجوجل</string>
+    <string name="registration_failed">فشل التسجيل</string>
+    <string name="registration_error">خطأ في التسجيل</string>
+    <string name="register_failed">فشل التسجيل</string>
+    <string name="register_error">خطأ في التسجيل</string>
+    <string name="employee_registration_failed">فشل تسجيل الموظف</string>
+    <string name="employee_registration_error">خطأ في تسجيل الموظف</string>
+    <string name="employee_register_failed">فشل تسجيل الموظف</string>
+    <string name="employee_register_error">خطأ في تسجيل الموظف</string>
+    <string name="logout_error">خطأ في تسجيل الخروج</string>
+    <string name="account_found_error">الحساب موجود بالفعل. من فضلك سجل الدخول.</string>
+    <string name="signup_first_error">من فضلك سجّل أولاً</string>
+    <string name="session_not_valid">انتهت صلاحية جلستك</string>
+    <string name="please_wait_before_signup">من فضلك انتظر بضع ثوان قبل المحاولة مرة أخرى</string>
+    <string name="wait_before_signup">من فضلك انتظر %1$d ثانية قبل المحاولة مرة أخرى</string>
+
+    <!-- أخطاء التحقق من النموذج -->
+    <string name="please_fill_all_fields">من فضلك املأ جميع الحقول</string>
+    <string name="no_changes">لا توجد تغييرات للحفظ</string>
+
     <!-- أخطاء البريد الإلكتروني -->
     <string name="error_email_required">البريد الإلكتروني مطلوب</string>
     <string name="email_required">البريد الإلكتروني مطلوب</string>
     <string name="error_invalid_email">البريد الإلكتروني غير صالح</string>
-    <string name="invalid_email">يُرجى إدخال بريد إلكتروني صالح</string>
-    <string name="enter_valid_email">يُرجى إدخال بريد إلكتروني صالح</string>
-    <string name="error_same_email">يجب أن يكون البريد الإلكتروني الجديد مختلفًا</string>
-    <string name="error_no_email">لا يوجد بريد إلكتروني مرتبط بهذا الحساب</string>
-    <string name="error_email_already_exists">البريد الإلكتروني مُستخدم بالفعل</string>
-    <string name="enter_email_first">يُرجى إدخال بريدك الإلكتروني أولاً</string>
+    <string name="invalid_email">من فضلك أدخل بريداً إلكترونياً صالحاً</string>
+    <string name="enter_valid_email">من فضلك أدخل بريداً إلكترونياً صالحاً</string>
+    <string name="error_same_email">يجب أن يكون البريد الجديد مختلفاً</string>
+    <string name="error_no_email">لا يوجد بريد مرتبط بهذا الحساب</string>
+    <string name="error_email_already_exists">البريد مستخدم بالفعل</string>
+    <string name="enter_email_first">من فضلك أدخل بريدك أولاً</string>
 
     <!-- أخطاء كلمة المرور -->
     <string name="error_password_required">كلمة المرور مطلوبة</string>
@@ -396,12 +426,12 @@
     <string name="error_wrong_password">كلمة المرور غير صحيحة</string>
     <string name="current_password_incorrect">كلمة المرور الحالية غير صحيحة</string>
     <string name="password_requirements_not_met">كلمة المرور لا تستوفي المتطلبات</string>
-    <string name="passwords_do_not_match">كلمتا المرور غير متطابقتين</string>
+    <string name="passwords_do_not_match">كلمات المرور غير متطابقة</string>
     <string name="error_resetting_password">خطأ في إعادة تعيين كلمة المرور: %1$s</string>
 
     <!-- أخطاء الاسم -->
     <string name="name_required">الاسم مطلوب</string>
-    <string name="invalid_name">الاسم غير صالح</string>
+    <string name="invalid_name">اسم غير صالح</string>
     <string name="error_updating_name">خطأ في تحديث الاسم: %1$s</string>
 
     <!-- أخطاء المتجر -->
@@ -415,24 +445,24 @@
     <string name="phone_required">رقم الهاتف مطلوب</string>
     <string name="phone_length">رقم الهاتف يجب أن يكون %d أرقام</string>
     <string name="phone_digits_only">رقم الهاتف يجب أن يحتوي على أرقام فقط</string>
-    <string name="enter_valid_phone_number">يُرجى إدخال رقم هاتف صالح</string>
-    <string name="phone_not_available">رقم الهاتف غير متوفر</string>
+    <string name="enter_valid_phone_number">من فضلك أدخل رقم هاتف صالح</string>
+    <string name="phone_not_available">رقم الهاتف غير متاح</string>
 
     <!-- أخطاء المنتج -->
-    <string name="invalid_product_id">معرّف المنتج غير صالح</string>
+    <string name="invalid_product_id">رقم المنتج غير صالح</string>
     <string name="product_not_found">المنتج غير موجود</string>
-    <string name="product_data_not_available">بيانات المنتج غير متوفرة</string>
+    <string name="product_data_not_available">بيانات المنتج غير متاحة</string>
     <string name="category_required">الفئة مطلوبة</string>
-    <string name="please_select_type">يُرجى اختيار فئة</string>
-    <string name="brand_required">العلامة التجارية مطلوبة</string>
-    <string name="please_enter_brand">يُرجى إدخال العلامة التجارية</string>
-    <string name="valid_buying_price">أدخل سعر تكلفة صالح</string>
-    <string name="invalid_buying_price">سعر التكلفة غير صالح</string>
+    <string name="please_select_type">من فضلك اختر فئة</string>
+    <string name="brand_required">الماركة مطلوبة</string>
+    <string name="please_enter_brand">من فضلك أدخل الماركة</string>
+    <string name="valid_buying_price">أدخل سعر شراء صالح</string>
+    <string name="invalid_buying_price">سعر شراء غير صالح</string>
     <string name="valid_selling_price">أدخل سعر بيع صالح</string>
-    <string name="invalid_selling_price">سعر البيع غير صالح</string>
-    <string name="selling_price_must_be_greater">سعر البيع يجب أن يكون أعلى من سعر التكلفة</string>
+    <string name="invalid_selling_price">سعر بيع غير صالح</string>
+    <string name="selling_price_must_be_greater">سعر البيع يجب أن يكون أعلى من سعر الشراء</string>
     <string name="valid_quantity">أدخل كمية صالحة</string>
-    <string name="invalid_count">الكمية غير صالحة</string>
+    <string name="invalid_count">كمية غير صالحة</string>
     <string name="error_loading_product">خطأ في تحميل المنتج: %s</string>
     <string name="error_updating_product">خطأ في تحديث المنتج: %s</string>
     <string name="error_deleting_product">خطأ في حذف المنتج: %s</string>
@@ -440,20 +470,19 @@
     <!-- أخطاء الصور -->
     <string name="failed_to_update_photo">فشل تحديث الصورة</string>
     <string name="error_reading_image">خطأ في قراءة الصورة</string>
-    <string name="error_uploading_image">خطأ في تحميل الصورة: %1$s</string>
+    <string name="error_uploading_image">خطأ في رفع الصورة: %1$s</string>
     <string name="error_removing_photo">خطأ في إزالة الصورة: %1$s</string>
-    <string name="error_updating_email">خطأ في تحديث البريد الإلكتروني: %1$s</string>
+    <string name="error_updating_email">خطأ في تحديث البريد: %1$s</string>
 
 
     <!-- ==================== التنبيهات والتأكيدات ==================== -->
 
     <!-- تنبيهات المنتج -->
     <string name="loss_warning_title">تحذير</string>
-    <string name="loss_warning_message">سعر البيع أقل من سعر التكلفة. ستتكبد خسارة. هل تريد المتابعة؟</string>
+    <string name="loss_warning_message">سعر البيع أقل من سعر الشراء. ستتكبد خسارة. هل تريد المتابعة؟</string>
     <string name="delete_confirmation_title">حذف المنتج</string>
     <string name="delete_confirmation_message">هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.</string>
     <string name="delete_button">حذف</string>
-
 
     <!-- ==================== حالة عدم الاتصال ==================== -->
     <string name="offline_title">لا يوجد اتصال بالإنترنت</string>
@@ -461,218 +490,204 @@
     <string name="no_connection">لا يوجد اتصال</string>
     <string name="retry">إعادة المحاولة</string>
     <string name="open_settings">فتح الإعدادات</string>
-    <string name="offline_help_text">تأكد من تشغيل Wi-Fi أو بيانات الجوال</string>
-    <string name="unknown_error">حدث خطأ ما</string>
-    <string name="error_generic">خطأ: %s</string>
-    <string name="error_network">خطأ في الشبكة. يُرجى المحاولة مرة أخرى.</string>
+    <string name="offline_help_text">تأكد من تشغيل الواي فاي أو بيانات الجوال</string>
+    <string name="inactive">غير نشط</string>
+    <string name="business_day">يوم عمل</string>
 
-    <!-- أخطاء المصادقة -->
-    <string name="login_failed">فشل تسجيل الدخول</string>
-    <string name="login_error">خطأ في تسجيل الدخول</string>
-    <string name="user_not_found">المستخدم غير موجود</string>
-    <string name="google_signin_failed">فشل تسجيل الدخول بحساب Google</string>
-    <string name="google_signin_error">خطأ في تسجيل الدخول بحساب Google</string>
-    <string name="registration_failed">فشل التسجيل</string>
-    <string name="registration_error">خطأ في التسجيل</string>
-    <string name="register_failed">فشل التسجيل</string>
-    <string name="register_error">خطأ في التسجيل</string>
-    <string name="employee_registration_failed">فشل تسجيل الموظف</string>
-    <string name="employee_registration_error">خطأ في تسجيل الموظف</string>
-    <string name="employee_register_failed">فشل تسجيل الموظف</string>
-    <string name="employee_register_error">خطأ في تسجيل الموظف</string>
-    <string name="logout_error">خطأ في تسجيل الخروج</string>
-    <string name="account_found_error">الحساب موجود بالفعل. يُرجى تسجيل الدخول.</string>
-    <string name="signup_first_error">يُرجى التسجيل أولاً</string>
-    <string name="session_not_valid">انتهت صلاحية جلستك</string>
-    <string name="please_wait_before_signup">يُرجى الانتظار بضع ثوانٍ قبل المحاولة مرة أخرى</string>
-    <string name="wait_before_signup">يُرجى الانتظار %1$d ثانية قبل المحاولة مرة أخرى</string>
-    <!-- أخطاء التحقق من النموذج -->
-    <string name="please_fill_all_fields">يُرجى ملء جميع الحقول</string>
-    <string name="no_changes">لا توجد تغييرات للحفظ</string>
-    <string name="inactive">Inactive</string>
-    <string name="business_day">Business Day</string>
-    <!-- Pending Sell Card -->
-    <string name="sale_transaction">Sale Transaction</string>
+    <string name="sale_transaction">عملية بيع</string>
     <string name="default_amount">$0.00</string>
-    <string name="bill_saved">Bill</string>
-    <string name="items_saved">Items</string>
-    <string name="approved">Completed</string>
-    <string name="syncing_progress">Syncing…</string>
-
-    <!-- Plurals for pending sales count -->
-    <plurals name="pending_sales_count" tools:ignore="MissingQuantity">
-        <item quantity="one">%d Pending Sale</item>
-        <item quantity="other">%d Pending Sales</item>
+    <string name="bill_saved">فاتورة</string>
+    <string name="items_saved">منتجات</string>
+    <string name="approved">مكتمل</string>
+    <string name="syncing_progress">جاري المزامنة…</string>
+    <plurals name="pending_sales_count">
+        <item quantity="zero">لا توجد مبيعات معلقة</item>
+        <item quantity="one">مبيعة واحدة معلقة</item>
+        <item quantity="two">مبيعتان معلقتان</item>
+        <item quantity="few">%d مبيعات معلقة</item>
+        <item quantity="many">%d مبيعة معلقة</item>
+        <item quantity="other">%d مبيعة معلقة</item>
     </plurals>
 
-    <string name="syncing_progress_detail">Syncing %1$d of %2$d...</string>
+    <string name="syncing_progress_detail">جاري مزامنة %1$d من %2$d…</string>
 
 
+    <!-- نشاط البيع المعلق -->
+    <string name="pending_sales">المبيعات المعلقة</string>
+    <string name="pending_icon">أيقونة المبيعات المعلقة</string>
+    <string name="pending_count">المبيعات المعلقة</string>
+    <string name="sync_required">يتطلب مزامنة للإكمال</string>
+    <string name="sync_all">مزامنة الكل</string>
+    <string name="syncing_all">جاري مزامنة الكل…</string>
+    <string name="no_pending_sales">لا توجد مبيعات معلقة</string>
+    <string name="all_synced">تمت المزامنة بالكامل!</string>
+    <string name="no_pending_desc">تمت مزامنة جميع المبيعات بنجاح</string>
+    <string name="back_to_sales">العودة للمبيعات</string>
+    <string name="loading_pending">جاري تحميل المبيعات المعلقة…</string>
 
-    <!-- Pending Sell Activity -->
-    <string name="pending_sales">Pending Sales</string>
-    <string name="pending_icon">Pending sales icon</string>
-    <string name="pending_count">Pending Sales</string>
-    <string name="sync_required">Sync required to complete</string>
-    <string name="sync_all">Sync All</string>
-    <string name="syncing_all">Syncing all...</string>
-    <string name="no_pending_sales">No pending sales</string>
-    <string name="all_synced">All Synced!</string>
-    <string name="no_pending_desc">All sales have been successfully synced</string>
-    <string name="back_to_sales">Back to Sales</string>
-    <string name="loading_pending">Loading pending sales...</string>
-    <!-- Pending Sell Actions -->
-    <string name="all_items_synced_successfully">All items synced successfully!</string>
-    <string name="profile">Profile</string>
-    <string name="pending_actions">Pending actions</string>
-    <string name="profit">Profit</string>
-    <string name="financial_report">Financial Report</string>
-    <string name="no_date_selected">No date selected</string>
-    <string name="total_sales">Total Sales</string>
-    <string name="total_expenses">Total Expenses</string>
-    <string name="total_profit">Total Profit</string>
-    <string name="buying">Buying</string>
-    <string name="buying_value">Buying Value</string>
-    <string name="net_profit">Net Profit</string>
-    <string name="transactions">Transactions</string>
-    <string name="pending_products">Pending Products</string>
-    <string name="loading_archive">Loading archive...</string>
-    <string name="empty_archive">Empty archive</string>
-    <string name="no_archived_items">No Archived Items</string>
-    <string name="deleted_or_unavailable_products_nwill_appear_here">Deleted or unavailable products\nwill appear here</string>
-    <string name="bill_details">Bill Details</string>
-    <string name="loading_bill_details">Loading bill details...</string>
-    <string name="sold_by">Sold By</string>
-    <string name="transaction_details">Transaction Details</string>
-    <string name="completed">Completed</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
-    <string name="total_amount">Total Amount</string>
-    <string name="enter_your_new_email_address_and_current_password_to_change_your_email">Enter your new email address and current password to change your email.</string>
-    <string name="if_you_updated_your_email_and_could_nt_login_by_the_new_one_retry_with_another_email_be_careful_and_don_t_share_it">If you updated your email and could\'nt login by the new one retry with another email, be careful and don\'t share it.</string>
-    <string name="track_your_daily_performance">Track your daily performance</string>
-    <string name="days">Days</string>
-    <string name="date_filter">Date Filter</string>
-    <string name="all_days">All Days</string>
-    <string name="selected">Selected</string>
-    <string name="reset">Reset</string>
-    <string name="recent_days">Recent Days</string>
-    <string name="no_days_found">No Days Found</string>
-    <string name="start_tracking_your_business_nperformance_day_by_day">Start tracking your business\nperformance day by day</string>
-    <string name="email">Email</string>
-    <string name="current_role">Current Role</string>
-    <string name="change_role">Change Role</string>
-    <string name="select_new_role">Select new role</string>
-    <string name="terminate_employee">Terminate Employee</string>
-    <string name="track_your_spending">Track your spending</string>
-    <string name="amount">Amount</string>
-    <string name="required">Required</string>
-    <string name="select">Select</string>
-    <string name="payment">Payment</string>
-    <string name="description">Description</string>
-    <string name="optional">Optional</string>
-    <string name="add_notes_about_this_expense">Add notes about this expense...</string>
-    <string name="add_expense">Add Expense</string>
-    <string name="processing">Processing...</string>
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="this_week">This Week</string>
-    <string name="loading_notifications">Loading notifications...</string>
-    <string name="no_notifications">No Notifications</string>
-    <string name="you_re_all_caught_up_nwe_ll_notify_you_when_something_new_arrives">You\'re all caught up! \nWe\'ll notify you when something new arrives.</string>
-    <string name="something_went_wrong">Something went wrong</string>
-    <string name="unable_to_load_notifications">Unable to load notifications</string>
-    <string name="upload_products">Upload Products</string>
-    <string name="uploading_products">Uploading Products</string>
-    <string name="please_wait_while_we_process_your_products">Please wait while we process your products</string>
-    <string name="preparing_products">Preparing products...</string>
-    <string name="products_uploaded_successfully">Products uploaded successfully</string>
-    <string name="_5_products_uploaded_successfully">5 products uploaded successfully</string>
-    <string name="done">Done</string>
-    <string name="no_products_yet">No Products Yet</string>
-    <string name="you_haven_t_added_any_products_yet_nadd_products_to_get_started_with_uploading">You haven\'t added any products yet.\nAdd products to get started with uploading.</string>
-    <string name="items">Items</string>
-    <string name="subtotal">Subtotal</string>
-    <string name="total">Total</string>
-    <string name="sync_now">Sync Now</string>
-    <string name="search_products">Search products...</string>
-    <string name="coding">Coding</string>
-    <string name="qr_code">QR Code</string>
-    <string name="products">Products</string>
-    <string name="select_all">Select All</string>
-    <string name="clear">Clear</string>
-    <string name="no_products_found">No products found</string>
-    <string name="try_adjusting_your_search">Try adjusting your search</string>
-    <string name="print">Print</string>
-    <string name="scan_barcode">Scan Barcode</string>
-    <string name="align_barcode_within_the_frame">Align barcode within the frame</string>
-    <string name="position_the_barcode_within_the_frame">Position the barcode within the frame</string>
-    <string name="scanned_successfully">Scanned Successfully</string>
-    <string name="paid">Paid</string>
-    <string name="category_name">Category name</string>
-    <string name="add_new_category">Add New Category</string>
-    <string name="selling_categories">Selling Categories</string>
-    <string name="distribution_by_category">Distribution by category</string>
-    <string name="returning_categories">Returning Categories</string>
-    <string name="product_returns_by_category">Product returns by category</string>
-    <string name="cash">Cash</string>
-    <string name="via">via</string>
-    <string name="accountant">Accountant</string>
-    <string name="select_date_range_to_view_detailed_report">Select date range to view detailed report</string>
-    <string name="select_start_date">Select Start Date</string>
-    <string name="from_date">From Date</string>
-    <string name="select_date_range">Select Date Range</string>
-    <string name="to_date">To Date</string>
-    <string name="select_end_date">Select End Date</string>
-    <string name="quick_select">Quick Select</string>
-    <string name="this_month">This Month</string>
-    <string name="this_year">This Year</string>
-    <string name="calculate">Calculate</string>
-    <string name="export_report">Export Report</string>
-    <string name="no_sales">No Sales</string>
-    <string name="complete_sale">Complete Sale</string>
-    <string name="add_products_to_get_started">Add products to get started</string>
-    <string name="scan_product">Scan Product</string>
-    <string name="processing_sale">Processing Sale</string>
-    <string name="updating_inventory">Updating inventory...</string>
-    <string name="processing_items">Processing items...</string>
-    <string name="sale_completed_successfully">Sale completed successfully</string>
-    <string name="today_s_summary">Today\'s Summary</string>
-    <string name="view_all">View All</string>
-    <string name="low_stock_alert">Low Stock Alert</string>
-    <string name="product_analysis">📊 Product Analysis</string>
-    <string name="track_performance_and_sales_insights">Track performance and sales insights</string>
-    <string name="select_duration">Select duration</string>
-    <string name="no_returns">No returns</string>
-    <string name="sales_analysis">📈 Sales Analysis</string>
-    <string name="monitor_your_business_performance">Monitor your business performance</string>
-    <string name="no_sales_data_available">📊 No sales data available</string>
-    <string name="breakdown_by_category">Breakdown by category</string>
-    <string name="no_internet">No Internet</string>
-    <string name="check_your_connection">Check your connection</string>
-    <string name="least_selling">Least Selling</string>
-    <string name="best_seller">Best Seller</string>
-    <string name="confirm_return">Confirm Return</string>
-    <string name="return_quantity">Return Quantity</string>
-    <string name="return_item">Return Item</string>
-    <string name="select_quantity_to_return">Select quantity to return</string>
-    <string name="unit_price">Unit Price</string>
-    <string name="avg_per_sale">AVG per Sale</string>
-    <string name="top_day">Top Day</string>
-    <string name="operations">Operations</string>
-    <string name="best_time">Best Time</string>
-    <string name="performance_trends">Performance Trends</string>
-    <string name="sales_and_profit_over_time">Sales and profit over time</string>
-    <string name="sales_value">Sales value</string>
-    <!-- Add these strings to your strings.xml -->
-    <string name="update_product_image">Update Product Image</string>
-    <string name="take_photo">Take Photo</string>
-    <string name="update_image">Update Image</string>
-    <string name="image_changed">Image Changed</string>
-    <string name="error_opening_camera">Error opening camera</string>
-    <string name="image_update_pending">Image will be updated when you save</string>
-    <!-- Add these strings to your strings.xml -->
-    <string name="uploading_image">Uploading image...</string>
+    <string name="all_items_synced_successfully">تمت مزامنة جميع العناصر بنجاح!</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="pending_actions">الإجراءات المعلقة</string>
+    <string name="profit">الربح</string>
+    <string name="financial_report">التقرير المالي</string>
+    <string name="no_date_selected">لم يتم اختيار تاريخ</string>
+    <string name="total_sales">إجمالي المبيعات</string>
+    <string name="total_expenses">إجمالي المصروفات</string>
+    <string name="total_profit">إجمالي الربح</string>
+    <string name="buying">الشراء</string>
+    <string name="buying_value">قيمة الشراء</string>
+    <string name="net_profit">صافي الربح</string>
+    <string name="transactions">المعاملات</string>
+    <string name="pending_products">المنتجات المعلقة</string>
+    <string name="loading_archive">جاري تحميل الأرشيف…</string>
+    <string name="empty_archive">أرشيف فارغ</string>
+    <string name="no_archived_items">لا توجد عناصر مؤرشفة</string>
+    <string name="deleted_or_unavailable_products_nwill_appear_here">ستظهر المنتجات المحذوفة أو غير المتاحة\nهنا</string>
+    <string name="bill_details">تفاصيل الفاتورة</string>
+    <string name="loading_bill_details">جاري تحميل تفاصيل الفاتورة…</string>
+    <string name="sold_by">تم البيع بواسطة</string>
+    <string name="transaction_details">تفاصيل المعاملة</string>
+    <string name="completed">مكتمل</string>
+    <string name="date">التاريخ</string>
+    <string name="time">الوقت</string>
+    <string name="total_amount">المبلغ الإجمالي</string>
+    <string name="enter_your_new_email_address_and_current_password_to_change_your_email">أدخل عنوان بريدك الإلكتروني الجديد وكلمة المرور الحالية لتغيير بريدك.</string>
+    <string name="if_you_updated_your_email_and_could_nt_login_by_the_new_one_retry_with_another_email_be_careful_and_don_t_share_it">إذا قمت بتحديث بريدك ولم تتمكن من تسجيل الدخول به، جرّب بريداً آخر. كن حذراً ولا تشاركه.</string>
+    <string name="track_your_daily_performance">تتبع أدائك اليومي</string>
+    <string name="days">الأيام</string>
+    <string name="date_filter">تصفية التاريخ</string>
+    <string name="all_days">كل الأيام</string>
+    <string name="selected">مُحدّد</string>
+    <string name="reset">إعادة تعيين</string>
+    <string name="recent_days">الأيام الأخيرة</string>
+    <string name="no_days_found">لا توجد أيام</string>
+    <string name="start_tracking_your_business_nperformance_day_by_day">ابدأ تتبع أداء مشروعك\nيوماً بعد يوم</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="current_role">الدور الحالي</string>
+    <string name="change_role">تغيير الدور</string>
+    <string name="select_new_role">اختر دوراً جديداً</string>
+    <string name="terminate_employee">إنهاء خدمة الموظف</string>
+    <string name="track_your_spending">تتبع إنفاقك</string>
+    <string name="amount">المبلغ</string>
+    <string name="required">مطلوب</string>
+    <string name="select">اختر</string>
+    <string name="payment">الدفع</string>
+    <string name="description">الوصف</string>
+    <string name="optional">اختياري</string>
+    <string name="add_notes_about_this_expense">أضف ملاحظات عن هذا المصروف...</string>
+    <string name="add_expense">إضافة مصروف</string>
+    <string name="processing">جاري المعالجة...</string>
+    <string name="today">اليوم</string>
+    <string name="yesterday">أمس</string>
+    <string name="this_week">هذا الأسبوع</string>
+    <string name="loading_notifications">جاري تحميل الإشعارات...</string>
+    <string name="no_notifications">لا توجد إشعارات</string>
+    <string name="you_re_all_caught_up_nwe_ll_notify_you_when_something_new_arrives">أنت على اطلاع بكل شيء!\nسنخطرك عند وصول جديد.</string>
+    <string name="something_went_wrong">حدث خطأ ما</string>
+    <string name="unable_to_load_notifications">تعذر تحميل الإشعارات</string>
+    <string name="upload_products">رفع المنتجات</string>
+    <string name="uploading_products">جاري رفع المنتجات</string>
+    <string name="please_wait_while_we_process_your_products">من فضلك انتظر بينما نعالج منتجاتك</string>
+    <string name="preparing_products">جاري تجهيز المنتجات...</string>
+    <string name="products_uploaded_successfully">تم رفع المنتجات بنجاح</string>
+    <string name="_5_products_uploaded_successfully">تم رفع 5 منتجات بنجاح</string>
+    <string name="done">تم</string>
+    <string name="no_products_yet">لا توجد منتجات بعد</string>
+    <string name="you_haven_t_added_any_products_yet_nadd_products_to_get_started_with_uploading">لم تضف أي منتجات بعد.\nأضف منتجات للبدء بالرفع.</string>
+    <string name="items">المنتجات</string>
+    <string name="subtotal">المجموع الفرعي</string>
+    <string name="total">الإجمالي</string>
+    <string name="sync_now">مزامنة الآن</string>
+    <string name="search_products">البحث عن منتجات...</string>
+    <string name="coding">الترميز</string>
+    <string name="qr_code">كود QR</string>
+    <string name="products">المنتجات</string>
+    <string name="select_all">تحديد الكل</string>
+    <string name="clear">مسح</string>
+    <string name="no_products_found">لم يتم العثور على منتجات</string>
+    <string name="try_adjusting_your_search">جرّب تعديل بحثك</string>
+    <string name="print">طباعة</string>
+    <string name="scan_barcode">مسح الباركود</string>
+    <string name="align_barcode_within_the_frame">ضع الباركود داخل الإطار</string>
+    <string name="position_the_barcode_within_the_frame">ضع الباركود داخل الإطار</string>
+    <string name="scanned_successfully">تم المسح بنجاح</string>
+    <string name="paid">مدفوع</string>
+    <string name="category_name">اسم الفئة</string>
+    <string name="add_new_category">إضافة فئة جديدة</string>
+    <string name="selling_categories">فئات المبيعات</string>
+    <string name="distribution_by_category">التوزيع حسب الفئة</string>
+    <string name="returning_categories">فئات المرتجعات</string>
+    <string name="product_returns_by_category">مرتجعات المنتجات حسب الفئة</string>
+    <string name="cash">نقدي</string>
+    <string name="via">عن طريق</string>
+    <string name="accountant">المحاسب</string>
+    <string name="select_date_range_to_view_detailed_report">اختر نطاق التاريخ لعرض تقرير مفصل</string>
+    <string name="select_start_date">اختر تاريخ البدء</string>
+    <string name="from_date">من تاريخ</string>
+    <string name="select_date_range">اختر نطاق التاريخ</string>
+    <string name="to_date">إلى تاريخ</string>
+    <string name="select_end_date">اختر تاريخ الانتهاء</string>
+    <string name="quick_select">اختيار سريع</string>
+    <string name="this_month">هذا الشهر</string>
+    <string name="this_year">هذا العام</string>
+    <string name="calculate">احسب</string>
+    <string name="export_report">تصدير التقرير</string>
+    <string name="no_sales">لا توجد مبيعات</string>
+    <string name="complete_sale">إتمام البيع</string>
+    <string name="your_cart_is_empty">سلتك فارغة</string>
+    <string name="add_products_to_get_started">أضف منتجات للبدء</string>
+    <string name="scan_product">مسح المنتج</string>
+    <string name="processing_sale">جاري معالجة البيع</string>
+    <string name="updating_inventory">جاري تحديث المخزون...</string>
+    <string name="processing_items">جاري معالجة المنتجات...</string>
+    <string name="sale_completed_successfully">تم إتمام البيع بنجاح</string>
+    <string name="today_s_summary">ملخص اليوم</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="low_stock_alert">تنبيه مخزون منخفض</string>
+    <string name="product_analysis">📊 تحليل المنتجات</string>
+    <string name="track_performance_and_sales_insights">تتبع الأداء ورؤى المبيعات</string>
+    <string name="select_duration">اختر المدة</string>
+    <string name="no_returns">لا توجد مرتجعات</string>
+    <string name="sales_analysis">📈 تحليل المبيعات</string>
+    <string name="monitor_your_business_performance">راقب أداء مشروعك</string>
+    <string name="no_sales_data_available">📊 لا توجد بيانات مبيعات</string>
+    <string name="breakdown_by_category">التفصيل حسب الفئة</string>
+    <string name="no_internet">لا يوجد إنترنت</string>
+    <string name="check_your_connection">تحقق من اتصالك</string>
+    <string name="least_selling">الأقل مبيعاً</string>
+    <string name="best_seller">الأكثر مبيعاً</string>
+    <string name="confirm_return">تأكيد الإرجاع</string>
+    <string name="return_quantity">كمية الإرجاع</string>
+    <string name="return_item">إرجاع المنتج</string>
+    <string name="select_quantity_to_return">اختر الكمية المراد إرجاعها</string>
+    <string name="unit_price">سعر الوحدة</string>
+    <string name="avg_per_sale">المتوسط لكل عملية بيع</string>
+    <string name="top_day">أفضل يوم</string>
+    <string name="operations">العمليات</string>
+    <string name="best_time">أفضل وقت</string>
+    <string name="performance_trends">اتجاهات الأداء</string>
+    <string name="sales_and_profit_over_time">المبيعات والربح عبر الوقت</string>
+    <string name="sales_value">قيمة المبيعات</string>
+
+    <string name="update_product_image">تحديث صورة المنتج</string>
+    <string name="take_photo">التقاط صورة</string>
+    <string name="update_image">تحديث الصورة</string>
+    <string name="image_changed">تم تغيير الصورة</string>
+    <string name="error_opening_camera">خطأ في فتح الكاميرا</string>
+    <string name="image_update_pending">سيتم تحديث الصورة عند الحفظ</string>
+    <string name="uploading_image">جاري رفع الصورة...</string>
+    <!-- for the home -->
+
+    <string name="analysis">التحليلات</string>
+    <string name="generate_code">إنشاء كود</string>
+    <string name="add_outcome">إضافة مصروف</string>
+    <string name="scan_code">مسح الكود</string>
+    <string name="nota">السجل</string>
+    <string name="top_10">الأعلي مبيعا</string>
+    <string name="shopping_cart">السلة</string>
+
+
+    <string name="mostProfitable">الأعلي ربحية</string>
+    <string name="haveNotSold">لم تباع</string>
 
 </resources>
-

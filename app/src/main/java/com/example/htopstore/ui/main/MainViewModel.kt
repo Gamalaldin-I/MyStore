@@ -85,8 +85,7 @@ class MainViewModel @Inject constructor(
 
     fun fetchProductsFromRemote(){
         viewModelScope.launch{
-        val msg = productRepo.fetchProductsFromRemoteIntoLocal()
-            _message.postValue(msg)
+         productRepo.fetchProductsFromRemoteIntoLocal()
         }
     }
 

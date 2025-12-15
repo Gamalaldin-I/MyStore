@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.Product
+import com.example.domain.useCase.localize.NAE.ae
 import com.example.htopstore.R
 import com.example.htopstore.databinding.LowStockItemBinding
 
@@ -34,7 +35,7 @@ class LowStockAdapter(private val data: MutableList<Product>, private val forLow
             .into(holder.binding.productImg)
         holder.binding.Name.text = product.name
         holder.binding.category.text = product.category
-        holder.binding.quantity.text = product.count.toString()
+        holder.binding.quantity.text = product.count.ae()
         holder.binding.root.setOnClickListener {
             onClick(product)
         }
