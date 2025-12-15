@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val vm: MainViewModel by viewModels()
+    companion object{
+        const val BACK_INTERVAL_TIME = 2000
+    }
+    private var backPressedTime: Long = 0
 
     private val cartFragment = CartFragment()
     private val stockFragment = StockFragment()
@@ -51,5 +56,15 @@ class MainActivity : AppCompatActivity() {
             activeFragment = target
         }
         return true
+    }
+
+    @SuppressLint("ShowToast")
+    override fun onBackPressed() {
+        if (backPressedTime + BACK_INTERVAL_TIME > System.currentTimeMillis()){
+            super.onBackPressed()
+        }else{
+            backPressedTime = System.currentTimeMillis()
+            Toast.makeText(this@MainActivity,"Press back again to exit", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.domain.repo
 
+import android.net.Uri
 import com.example.domain.model.Product
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ interface ProductRepo {
     fun getAvailableProducts(): Flow<List<Product>>
     fun getArchiveProducts(): Flow<List<Product>>
     suspend fun addProduct(product: Product):Pair<Boolean,String>
+    suspend fun updateProductImage(uri:Uri,productId:String): Pair<Boolean,String>
     suspend fun updateProduct(product: Product): Pair<Boolean,String>
     suspend fun deleteProductById(id: String, image: String):Pair<Boolean,String>
     suspend fun isTheProductInTheStock(id:String): Boolean

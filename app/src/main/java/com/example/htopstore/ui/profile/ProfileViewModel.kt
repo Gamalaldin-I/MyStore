@@ -1,5 +1,6 @@
 package com.example.htopstore.ui.profile
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,15 +44,21 @@ class ProfileViewModel
             _message.postValue(msg)
         }
     }
-    fun logout(onResult: (Boolean, String) -> Unit){
+    fun logout(context: Context,onResult: (Boolean, String) -> Unit){
+        try {
         viewModelScope.launch{
             val (success, msg) = logoutUseCase()
             if(success){
                 pref.clearPrefs()
+                //clear cash
+                val cashDir = context.cacheDir
+                cashDir.deleteRecursively()
                 withContext(Dispatchers.IO){db.clearAllTables()}
             }
             onResult(success, msg)
             _message.postValue(msg)
+        }}catch (_: Exception){
+            onResult(false, "Something went wrong")
         }
     }
     fun getUserData():User{

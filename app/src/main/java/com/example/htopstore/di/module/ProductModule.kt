@@ -18,6 +18,7 @@ import com.example.domain.useCase.product.GetArchiveSizeUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
 import com.example.domain.useCase.product.GetPendingProductsYUseCase
 import com.example.domain.useCase.product.GetProductByIdUseCase
+import com.example.domain.useCase.product.UpdateProductImageUseCase
 import com.example.domain.useCase.product.UpdateProductUseCase
 import dagger.Module
 import dagger.Provides
@@ -103,6 +104,10 @@ object ProductModule {
     @Provides
     fun provideGetPendingProductsYUseCase(productRepo: ProductRepo): GetPendingProductsYUseCase{
         return GetPendingProductsYUseCase(productRepo)
+    }
+    @Provides
+    fun provideUpdateProductImageUseCase(productRepo: ProductRepo): UpdateProductImageUseCase{
+        return UpdateProductImageUseCase(productRepo)
     }
 
 }

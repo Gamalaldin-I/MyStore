@@ -1,6 +1,7 @@
 package com.example.data.remote.repo
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import com.example.data.local.sharedPrefs.SharedPref
@@ -35,7 +36,7 @@ class RemoteProductRepo(
     // IMAGE UPLOAD / REMOVE FUNCTIONS
     // ==============================
     private suspend fun uploadImage(
-        uri: android.net.Uri,
+        uri:Uri,
         path: String,
         fileName: String
     ): String? {
@@ -59,6 +60,23 @@ class RemoteProductRepo(
         } catch (e: Exception) {
             Log.e(TAG, "Error removing photo: ${e.message}", e)
             false
+        }
+    }
+    suspend fun updateImage(uri:Uri,productId:String): Pair<Boolean,String>{
+        try {
+            val fileName = "$productId.jpg"
+            val deleted = removePhoto(fileName,PRODUCT_BUCKET)
+            if(!deleted){
+                return Pair(false, "Failed to delete image")
+            }
+            val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
+            if(url.isNullOrEmpty()){
+                return Pair(false, "Failed to upload image")
+            }
+            return Pair(true,url)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating image: ${e.message}", e)
+            return Pair(false, "Failed to update image")
         }
     }
 

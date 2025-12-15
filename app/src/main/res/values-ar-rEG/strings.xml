@@ -615,7 +615,6 @@
     <string name="distribution_by_category">Distribution by category</string>
     <string name="returning_categories">Returning Categories</string>
     <string name="product_returns_by_category">Product returns by category</string>
-    <string name="return">RETURN</string>
     <string name="cash">Cash</string>
     <string name="via">via</string>
     <string name="accountant">Accountant</string>
@@ -665,6 +664,15 @@
     <string name="performance_trends">Performance Trends</string>
     <string name="sales_and_profit_over_time">Sales and profit over time</string>
     <string name="sales_value">Sales value</string>
+    <!-- Add these strings to your strings.xml -->
+    <string name="update_product_image">Update Product Image</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="update_image">Update Image</string>
+    <string name="image_changed">Image Changed</string>
+    <string name="error_opening_camera">Error opening camera</string>
+    <string name="image_update_pending">Image will be updated when you save</string>
+    <!-- Add these strings to your strings.xml -->
+    <string name="uploading_image">Uploading image...</string>
 
 </resources>
 

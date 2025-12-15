@@ -1,5 +1,7 @@
 package com.example.data.repo
 
+import android.net.Uri
+import android.util.Log
 import com.example.data.Mapper.toData
 import com.example.data.Mapper.toDomain
 import com.example.data.local.dao.ProductDao
@@ -8,8 +10,10 @@ import com.example.data.remote.repo.RemoteProductRepo
 import com.example.domain.model.Product
 import com.example.domain.repo.ProductRepo
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ProductRepoImp (
     private val productDao: ProductDao,
@@ -67,6 +71,23 @@ class ProductRepoImp (
             return Pair(true,"Added successfully")
         }catch(_: Exception){
             return Pair(false,"Error, try again")
+        }
+    }
+
+    override suspend fun updateProductImage(uri: Uri, productId: String): Pair<Boolean, String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val (success, url) = remote.updateImage(uri, productId)
+
+                if (success) {
+                    Pair(true, url)
+                } else {
+                    Pair(false, "Failed")
+                }
+            } catch (e: Exception) {
+                Log.e("ProductRepository", "Error updating image: ${e.message}", e)
+                Pair(false, e.message ?: "Error")
+            }
         }
     }
 

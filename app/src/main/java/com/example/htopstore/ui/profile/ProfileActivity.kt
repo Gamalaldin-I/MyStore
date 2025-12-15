@@ -262,7 +262,7 @@ class ProfileActivity:BaseActivity(){
     private fun performLogout() {
         Toast.makeText(this, R.string.logging_out, Toast.LENGTH_SHORT).show()
 
-        vm.logout { success, _ ->
+        vm.logout(this) { success, _ ->
             if (success) {
                 startActivity(
                     Intent(this, LoginActivity::class.java).apply {

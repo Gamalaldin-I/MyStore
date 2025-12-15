@@ -2,14 +2,19 @@ package com.example.htopstore.ui.product
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.domain.model.Product
 import com.example.domain.useCase.localize.NAE.ae
 import com.example.domain.useCase.localize.NAE.digit
@@ -21,7 +26,9 @@ import com.example.htopstore.ui.login.LoginActivity
 import com.example.htopstore.util.helper.AutoCompleteHelper
 import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
@@ -31,6 +38,32 @@ class ProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductBinding
     private var product: Product? = null
     private val vm: ProductViewModel by viewModels()
+
+    // Image handling
+    private var selectedImageUri: Uri? = null
+    private var tempCameraImageUri: Uri? = null
+
+    // Gallery launcher
+    private val galleryLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            selectedImageUri = it
+            loadImageIntoView(it)
+        }
+    }
+
+    // Camera launcher
+    private val cameraLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            tempCameraImageUri?.let {
+                selectedImageUri = it
+                loadImageIntoView(it)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +81,9 @@ class ProductActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // Handle collapsing toolbar title
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val scrollRange = appBarLayout.totalScrollRange
             val percentage = abs(verticalOffset).toFloat() / scrollRange.toFloat()
-
-            // You can add additional animations here if needed
         })
     }
 
@@ -82,6 +112,11 @@ class ProductActivity : AppCompatActivity() {
             onAddToCart()
         }
 
+        // Image update button
+        binding.updateImageButton.setOnClickListener {
+            showImageSourceDialog()
+        }
+
         // Setup real-time profit calculation
         binding.buyingPriceET.addTextChangedListener {
             calculateProfit()
@@ -92,12 +127,75 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    private fun showImageSourceDialog() {
+        val options = arrayOf(
+            getString(R.string.choose_from_gallery),
+            getString(R.string.take_photo)
+        )
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.update_product_image))
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> openGallery()
+                    1 -> openCamera()
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    private fun openGallery() {
+        galleryLauncher.launch("image/*")
+    }
+
+    private fun openCamera() {
+        try {
+            // Create the Pictures directory if it doesn't exist
+            val picturesDir = File(getExternalFilesDir(null), "Pictures")
+            if (!picturesDir.exists()) {
+                picturesDir.mkdirs()
+            }
+
+            // Create a file for the camera image
+            val imageFile = File(
+                picturesDir,
+                "product_${System.currentTimeMillis()}.jpg"
+            )
+
+            tempCameraImageUri = FileProvider.getUriForFile(
+                this,
+                "${packageName}.fileprovider",
+                imageFile
+            )
+
+            cameraLauncher.launch(tempCameraImageUri!!)
+        } catch (e: Exception) {
+            Toast.makeText(this, getString(R.string.error_opening_camera), Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+    }
+
+    private fun loadImageIntoView(uri: Uri) {
+        Glide.with(this)
+            .load(uri)
+            .placeholder(R.drawable.ic_camera)
+            .error(R.drawable.ic_camera)
+            .centerCrop()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(binding.productImage)
+
+        // Show indicator that image has been changed
+        binding.imageChangedIndicator.visibility = android.view.View.VISIBLE
+    }
+
     @SuppressLint("SetTextI18n")
     private fun fetchProduct() {
         val productId = intent.getStringExtra("productId")
 
         if (productId.isNullOrEmpty()) {
-            Toast.makeText(this,getString(R.string.invalid_product_id), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.invalid_product_id), Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -108,7 +206,7 @@ class ProductActivity : AppCompatActivity() {
                 product = it
                 displayProduct(it)
             } ?: run {
-                Toast.makeText(this,getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.product_data_not_available), Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -124,7 +222,6 @@ class ProductActivity : AppCompatActivity() {
                 .error(R.drawable.ic_camera)
                 .centerCrop()
                 .into(productImage)
-
 
             // Display product info in header
             type.text = product.category
@@ -153,6 +250,9 @@ class ProductActivity : AppCompatActivity() {
 
             // Update stock status badge color based on quantity
             updateStockStatus(product.count.toInt())
+
+            // Hide image changed indicator initially
+            imageChangedIndicator.visibility = android.view.View.GONE
         }
     }
 
@@ -168,8 +268,7 @@ class ProductActivity : AppCompatActivity() {
     }
 
     private fun updateStockStatus(count: Int) {
-        // You can add visual feedback based on stock level
-        // This is optional and can be implemented based on your design
+        // Optional: Add visual feedback based on stock level
     }
 
     @SuppressLint("SetTextI18n")
@@ -232,7 +331,7 @@ class ProductActivity : AppCompatActivity() {
             }
 
             if (brand.isEmpty()) {
-                productBrandLo.error =getString(R.string.brand_required)
+                productBrandLo.error = getString(R.string.brand_required)
                 return
             }
 
@@ -264,7 +363,9 @@ class ProductActivity : AppCompatActivity() {
                     title = getString(R.string.loss_warning_title),
                     positiveButton = getString(R.string.continue_button),
                     negativeButton = getString(R.string.cancel),
-                    onConfirm = { saveProductChanges(currentProduct, type, brand, buyingPrice, sellingPrice, count) },
+                    onConfirm = {
+                        saveProductChanges(currentProduct, type, brand, buyingPrice, sellingPrice, count)
+                    },
                     onCancel = {}
                 )
                 return
@@ -292,8 +393,37 @@ class ProductActivity : AppCompatActivity() {
             lastUpdate = DateHelper.getTimeStampMilliSecond()
         }
 
-        vm.updateProduct(currentProduct,onFiredAction={onFiredAction()}) {
-            finish()
+        // If image was changed, upload it first
+        if (selectedImageUri != null) {
+            binding.saveChanging.isEnabled = false
+            binding.saveChanging.text = getString(R.string.uploading_image)
+
+            vm.updateProductImage(
+                uri = selectedImageUri!!,
+                productId = currentProduct.id,
+                onSuccess = { newImageUrl ->
+                    currentProduct.productImage = newImageUrl
+                    vm.updateProduct(
+                        newProductData = currentProduct,
+                        onFiredAction = { onFiredAction() }
+                    ) {
+                        finish()
+                    }
+                },
+                onError = { errorMessage ->
+                    binding.saveChanging.isEnabled = true
+                    binding.saveChanging.text = getString(R.string.save)
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            )
+        } else {
+            // No image change, just update product data
+            vm.updateProduct(
+                newProductData = currentProduct,
+                onFiredAction = { onFiredAction() }
+            ) {
+                finish()
+            }
         }
     }
 
@@ -320,7 +450,7 @@ class ProductActivity : AppCompatActivity() {
             return
         }
 
-        vm.deleteProduct(product=currentProduct,onFiredAction={onFiredAction()})  {
+        vm.deleteProduct(product = currentProduct, onFiredAction = { onFiredAction() }) {
             finish()
         }
     }
@@ -338,14 +468,14 @@ class ProductActivity : AppCompatActivity() {
         }
 
         CartHelper.addToTheCartList(product = currentProduct)
-        Toast.makeText(this,getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show()
     }
-    private fun onFiredAction(){
-        //end the activity and logout the user
-        // go to the login
-        vm.logout{
+
+    private fun onFiredAction() {
+        vm.logout {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()}
+            finish()
+        }
     }
 }
