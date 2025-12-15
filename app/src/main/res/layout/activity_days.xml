@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Days"
+                android:text="@string/days"
                 android:textColor="@color/text_primary"
                 android:textSize="28sp" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif"
-                android:text="Track your daily performance"
+                android:text="@string/track_your_daily_performance"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Date Filter"
+                android:text="@string/date_filter"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
 
@@ -140,7 +140,7 @@
                             android:ellipsize="end"
                             android:fontFamily="sans-serif-medium"
                             android:maxLines="1"
-                            android:text="All Days"
+                            android:text="@string/all_days"
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             tools:text="Oct 26, 2025" />
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:fontFamily="sans-serif"
-                            android:text="Selected"
+                            android:text="@string/selected"
                             android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
 
@@ -166,7 +166,7 @@
                     android:layout_height="52dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Reset"
+                    android:text="@string/reset"
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     app:icon="@drawable/ic_refresh"
@@ -189,7 +189,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Recent Days"
+        android:text="@string/recent_days"
         android:textColor="@color/text_primary"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -250,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="No Days Found"
+            android:text="@string/no_days_found"
             android:textColor="@color/text_primary"
             android:textSize="20sp" />
 
@@ -259,7 +259,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Start tracking your business\nperformance day by day"
+            android:text="@string/start_tracking_your_business_nperformance_day_by_day"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 

@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📊 Product Analysis"
+                    android:text="@string/product_analysis"
                     android:textSize="32sp"
                     android:textColor="@color/primary_accent_blue"
                     android:fontFamily="sans-serif-medium"
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Track performance and sales insights"
+                    android:text="@string/track_performance_and_sales_insights"
                     android:textSize="15sp"
                     android:textColor="@color/text_tertiary"
                     android:alpha="0.9"
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Select duration"
+                    android:hint="@string/select_duration"
                     app:boxBackgroundColor="@android:color/white"
                     app:boxStrokeColor="@color/action_primary"
                     app:boxStrokeWidth="2dp"

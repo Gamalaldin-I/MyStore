@@ -96,7 +96,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="8dp"
                         android:background="@android:color/transparent"
-                        android:hint="Search products..."
+                        android:hint="@string/search_products"
                         android:textColorHint="@color/text_tertiary"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp"
@@ -143,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="Coding"
+                        android:text="@string/coding"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -175,7 +175,7 @@
                             android:layout_weight="1"
                             android:buttonTint="@color/primary_accent_blue"
                             android:padding="12dp"
-                            android:text="QR Code"
+                            android:text="@string/qr_code"
                             android:textSize="14sp" />
 
                     </RadioGroup>
@@ -196,7 +196,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Products"
+                    android:text="@string/products"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="0dp"
-                    android:text="Select All"
+                    android:text="@string/select_all"
                     android:textColor="@color/primary_accent_blue"
                     android:textSize="12sp"
                     app:icon="@drawable/ic_check"
@@ -220,7 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="0dp"
-                    android:text="Clear"
+                    android:text="@string/clear"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     app:icon="@drawable/return_bg"
@@ -263,7 +263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="No products found"
+                    android:text="@string/no_products_found"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -272,7 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Try adjusting your search"
+                    android:text="@string/try_adjusting_your_search"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
 
@@ -305,7 +305,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:text="Print"
+                android:text="@string/print"
                 android:textColor="@color/quality_premium"
                 app:icon="@drawable/ic_printer"
                 app:iconGravity="textStart"

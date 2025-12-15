@@ -19,6 +19,38 @@ class ProductRepoImp (
     override  fun getProducts():Flow<List<Product>> {
        return productDao.getProducts().mapData()}
 
+    override suspend fun addPendingProducts(
+        listOfPending: List<Product>,
+        onProgress: (Int) -> Unit,
+        onFinish: () -> Unit
+    ) {
+        remote.addPendingProducts(listOfPending,
+            onLocal = {id,imageUrl ->
+            productDao.updateFromPendingToActive(id,imageUrl) },
+            onProgress =
+                {onProgress(it)},
+            onFinish =
+                {onFinish()})
+    }
+
+    override fun getPendingProducts(): Flow<List<Product>> {
+        return productDao.getAllPendingProducts().map{ list->
+            list.map {
+                it.toDomain()
+            }
+        }
+    }
+
+
+    override suspend fun deletePendingProduct(id: String): Boolean {
+        try {
+            productDao.deleteProductById(id)
+            return true
+        }catch (_: Exception){
+            return false
+        }
+    }
+
     override suspend fun getProductById(id: String): Product? =
         productDao.getProductById(id)?.toDomain()
 
@@ -29,17 +61,12 @@ class ProductRepoImp (
         productDao.getArchiveProducts().mapData()
 
     override suspend fun addProduct(product: Product): Pair<Boolean, String> {
-        var res = ""
-        remote.addProduct(product) {rProduct,msg->
-            if (rProduct != null) {
-                res = rProduct.id
-                productDao.addProduct(rProduct.toData())
-            }
-        }
-        return if(res.isEmpty()){
-            Pair(false,"check your internet connection")
-        }else{
-            Pair(true,"Product added successfully")
+        try {
+            val inserted = product.toData()
+            productDao.addProduct(inserted)
+            return Pair(true,"Added successfully")
+        }catch(_: Exception){
+            return Pair(false,"Error, try again")
         }
     }
 
@@ -48,7 +75,7 @@ class ProductRepoImp (
         remote.updateProduct(product){ it, _ ->
             if(it != null){
                 res = it.id
-                productDao.updateProduct(it.toData())
+                productDao.updateProduct(it.toData().copy(pending = false))
             }
         }
         if(res.isEmpty()){
@@ -79,7 +106,7 @@ class ProductRepoImp (
             if(it.deleted){
                 productDao.deleteProductById(it.id)
             }else{
-                productDao.addProduct(it.toData())
+                productDao.addProduct(it.toData().copy(pending = false))
             }
         }
         return msg

@@ -13,6 +13,8 @@ import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RemoteProductRepo(
     private val supabase: SupabaseClient,
@@ -96,6 +98,65 @@ class RemoteProductRepo(
             onResult(null, "Failed to add product")
         }
     }
+    suspend fun addPendingProducts(
+        list: List<Product>,
+        onProgress: (Int) -> Unit,
+        onLocal: suspend (id: String,imageUrl:String) -> Unit,
+        onFinish:()->Unit
+    ) {
+        val successOps = mutableMapOf<String, String>()
+        val total = list.size
+        var completed = 0
+
+        try {
+            for ((_, product) in list.withIndex()) {
+                val fileName = "${product.id}.jpg"
+                val uri = product.productImage.toUri()
+                val url = uploadImage(uri, PRODUCT_BUCKET, fileName)
+
+                if (!url.isNullOrEmpty()) {
+                    successOps[product.id] = url
+                }
+
+                completed++
+                val progressPercent = (completed.toDouble() / total * 50).toInt()
+                withContext(Dispatchers.Main) {onProgress(progressPercent)}
+            }
+
+            for ((index, product) in list.withIndex()) {
+                val uploadedUrl = successOps[product.id]
+                if (uploadedUrl != null) {
+                    val insertedProduct = Product(
+                        id = product.id,
+                        productImage = uploadedUrl,
+                        addingDate = product.addingDate,
+                        category = product.category,
+                        name = product.name,
+                        count = product.count,
+                        soldCount = product.soldCount,
+                        buyingPrice = product.buyingPrice,
+                        sellingPrice = product.sellingPrice,
+                        lastUpdate = product.lastUpdate,
+                        storeId = pref.getStore().id,
+                        deleted = product.deleted
+                    )
+                    supabase.from(PRODUCTS).insert(insertedProduct)
+                    onLocal(product.id,uploadedUrl)
+                }
+
+                val progressPercent = 50 + ((index + 1).toDouble() / total * 50).toInt()
+                withContext(Dispatchers.Main) {onProgress(progressPercent)}
+            }
+            withContext(Dispatchers.Main) {
+                onProgress(100)
+                onFinish()
+            }
+        } catch (e: Exception) {
+            Log.e("addPendingProducts", "Error adding pending products: ${e.message}", e)
+        }
+    }
+
+
 
     // --- DELETE PRODUCT ---
     suspend fun deleteProduct(

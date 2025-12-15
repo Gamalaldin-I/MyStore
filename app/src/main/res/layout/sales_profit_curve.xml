@@ -45,7 +45,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Performance Trends"
+                            android:text="@string/performance_trends"
                             android:textSize="22sp"
                             android:textColor="@color/text_white"
                             android:fontFamily="sans-serif-medium"/>
@@ -53,7 +53,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sales and profit over time"
+                            android:text="@string/sales_and_profit_over_time"
                             android:textSize="13sp"
                             android:textColor="@color/text_white"
                             android:alpha="0.85"

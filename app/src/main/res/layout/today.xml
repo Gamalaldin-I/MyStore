@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Sales value"
+                android:text="@string/sales_value"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Expenses"
+                android:text="@string/expenses"
                 android:textSize="12sp" />
         </LinearLayout>
 

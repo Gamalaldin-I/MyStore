@@ -9,11 +9,14 @@ import com.example.data.repo.ProductRepoImp
 import com.example.domain.repo.ProductRepo
 import com.example.domain.repo.StaffRepo
 import com.example.domain.useCase.notifications.InsertNotificationUseCase
+import com.example.domain.useCase.product.AddPendingProductsUseCase
 import com.example.domain.useCase.product.AddProductUseCase
+import com.example.domain.useCase.product.DeletePendingProductUseCase
 import com.example.domain.useCase.product.DeleteProductUseCase
 import com.example.domain.useCase.product.GetArchiveProductsUseCase
 import com.example.domain.useCase.product.GetArchiveSizeUseCase
 import com.example.domain.useCase.product.GetAvailableProductsUseCase
+import com.example.domain.useCase.product.GetPendingProductsYUseCase
 import com.example.domain.useCase.product.GetProductByIdUseCase
 import com.example.domain.useCase.product.UpdateProductUseCase
 import dagger.Module
@@ -32,10 +35,12 @@ object ProductModule {
     @Provides
     @Singleton
     fun provideProductRepo(productDao: ProductDao,
-                           remote: RemoteProductRepo): ProductRepo {
+                           remote: RemoteProductRepo,
+                           ): ProductRepo {
         return ProductRepoImp(
             productDao= productDao,
-            remote= remote)
+            remote= remote,
+            )
     }
     @Provides
     @Singleton
@@ -66,6 +71,10 @@ object ProductModule {
         return DeleteProductUseCase(productRepo,staffRepo)
     }
     @Provides
+    fun provideDeletePendingProductUseCase(productRepo: ProductRepo): DeletePendingProductUseCase {
+        return DeletePendingProductUseCase(productRepo)
+    }
+    @Provides
     fun provideUpdateProductUseCase(productRepo: ProductRepo,staffRepo: StaffRepo): UpdateProductUseCase {
         return UpdateProductUseCase(productRepo,staffRepo)
     }
@@ -87,6 +96,13 @@ object ProductModule {
     fun provideGetArchiveSizeUseCase(productRepo: ProductRepo): GetArchiveSizeUseCase {
         return GetArchiveSizeUseCase(productRepo)
     }
-
+    @Provides
+    fun uploadProductsUseCase(productRepo: ProductRepo): AddPendingProductsUseCase{
+        return AddPendingProductsUseCase(productRepo)
+    }
+    @Provides
+    fun provideGetPendingProductsYUseCase(productRepo: ProductRepo): GetPendingProductsYUseCase{
+        return GetPendingProductsYUseCase(productRepo)
+    }
 
 }

@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Financial Report"
+                android:text="@string/financial_report"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/onPrimary"
@@ -45,7 +45,7 @@
                 android:id="@+id/dateRangeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No date selected"
+                android:text="@string/no_date_selected"
                 android:textSize="14sp"
                 android:textColor="@color/onPrimary"
                 android:alpha="0.8"
@@ -99,7 +99,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="Sales"
+                        android:contentDescription="@string/sales"
                         android:padding="12dp"
                         android:src="@drawable/grid_sales"
                         app:tint="@color/white" />
@@ -122,7 +122,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="Total Sales"
+                    android:text="@string/total_sales"
                     android:textColor="@color/success_text"
                     android:textSize="12sp" />
 
@@ -162,7 +162,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="Expenses"
+                        android:contentDescription="@string/expenses"
                         android:padding="12dp"
                         android:src="@drawable/grid_outcome"
                         app:tint="@color/white" />
@@ -185,7 +185,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="Total Expenses"
+                    android:text="@string/total_expenses"
                     android:textColor="@color/onErrorContainer"
                     android:textSize="12sp" />
 
@@ -228,7 +228,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="Profit"
+                        android:contentDescription="@string/profit"
                         android:padding="12dp"
                         android:src="@drawable/ic_profit"
                         app:tint="@color/onPrimary" />
@@ -251,7 +251,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="Total Profit"
+                    android:text="@string/total_profit"
                     android:textColor="@color/onPrimaryContainer"
                     android:textSize="12sp" />
 
@@ -293,7 +293,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="Buying"
+                        android:contentDescription="@string/buying"
                         android:padding="12dp"
                         android:src="@drawable/ic_buy"
                         app:tint="@color/onTertiary" />
@@ -316,7 +316,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="Buying Value"
+                    android:text="@string/buying_value"
                     android:textColor="@color/onTertiaryContainer"
                     android:textSize="12sp" />
 
@@ -362,7 +362,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_profit"
                     android:padding="16dp"
-                    android:contentDescription="Net Profit" />
+                    android:contentDescription="@string/net_profit" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -378,7 +378,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:alpha="0.7"
-                    android:text="Net Profit"
+                    android:text="@string/net_profit"
                     android:textColor="@color/onSurfaceVariant"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -534,7 +534,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transactions"
+                android:text="@string/transactions"
                 android:textSize="11sp"
                 android:textColor="@color/onSurfaceVariant"
                 android:layout_marginTop="4dp" />

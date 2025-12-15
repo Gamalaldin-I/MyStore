@@ -15,5 +15,6 @@ data class ProductEntity(
     var soldCount:Int,
     var buyingPrice:Double,
     var sellingPrice:Double,
-    var lastUpdate:String
+    var lastUpdate:String,
+    var pending: Boolean = true
 )

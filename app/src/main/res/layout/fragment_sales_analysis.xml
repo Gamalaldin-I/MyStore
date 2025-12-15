@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📈 Sales Analysis"
+                    android:text="@string/sales_analysis"
                     android:textSize="32sp"
                     android:textColor="@color/action_primary"
                     android:fontFamily="sans-serif-medium"
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Monitor your business performance"
+                    android:text="@string/monitor_your_business_performance"
                     android:textSize="15sp"
                     android:textColor="@color/text_tertiary"
                     android:alpha="0.9"
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:hint="Select duration"
+                    android:hint="@string/select_duration"
                     app:boxBackgroundColor="@android:color/white"
                     app:boxStrokeColor="#10B981"
                     app:boxStrokeWidth="2dp"
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
-                android:text="📊 No sales data available"
+                android:text="@string/no_sales_data_available"
                 android:textSize="18sp"
                 android:textColor="#6B7280"
                 android:fontFamily="sans-serif-medium"
@@ -163,7 +163,7 @@
                                     android:id="@+id/expenses"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Expenses"
+                                    android:text="@string/expenses"
                                     android:textSize="22sp"
                                     android:textColor="@android:color/white"
                                     android:fontFamily="sans-serif-medium"/>
@@ -171,7 +171,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Breakdown by category"
+                                    android:text="@string/breakdown_by_category"
                                     android:textSize="13sp"
                                     android:textColor="@android:color/white"
                                     android:alpha="0.85"

@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Bill Details"
+                        android:text="@string/bill_details"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp" />
 
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Loading bill details..."
+                android:text="@string/loading_bill_details"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
@@ -197,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
-                            android:text="Sold By"
+                            android:text="@string/sold_by"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
 
@@ -277,7 +277,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="sans-serif-medium"
-                            android:text="Transaction Details"
+                            android:text="@string/transaction_details"
                             android:textColor="@color/text_primary"
                             android:textSize="18sp" />
 
@@ -309,7 +309,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-medium"
-                                    android:text="Completed"
+                                    android:text="@string/completed"
                                     android:textColor="@color/success"
                                     android:textSize="11sp" />
 
@@ -353,7 +353,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif"
-                                    android:text="Date"
+                                    android:text="@string/date"
                                     android:textColor="@color/text_secondary"
                                     android:textSize="12sp" />
 
@@ -396,7 +396,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif"
-                                    android:text="Time"
+                                    android:text="@string/time"
                                     android:textColor="@color/text_secondary"
                                     android:textSize="12sp" />
 
@@ -531,7 +531,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="sans-serif"
-                                        android:text="Total Amount"
+                                        android:text="@string/total_amount"
                                         android:textColor="@color/text_secondary"
                                         android:textSize="13sp" />
 

@@ -39,7 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Selling Categories"
+                    android:text="@string/selling_categories"
                     android:textSize="20sp"
                     android:textColor="#1A1A1A"
                     android:fontFamily="sans-serif-medium"/>
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Distribution by category"
+                android:text="@string/distribution_by_category"
                 android:textSize="13sp"
                 android:textColor="#6B7280"
                 android:layout_marginStart="16dp"
@@ -95,7 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Returning Categories"
+                    android:text="@string/returning_categories"
                     android:textSize="20sp"
                     android:textColor="#1A1A1A"
                     android:fontFamily="sans-serif-medium"/>
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Product returns by category"
+                android:text="@string/product_returns_by_category"
                 android:textSize="13sp"
                 android:textColor="#6B7280"
                 android:layout_marginStart="16dp"

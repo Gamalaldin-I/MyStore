@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Top Day"
+                    android:text="@string/top_day"
                     android:textSize="12sp"
                     android:textColor="@color/dept_sales"
                     android:fontFamily="sans-serif-medium"
@@ -143,11 +143,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Best Time"
-                    android:textSize="12sp"
-                    android:textColor="@color/action_primary"
                     android:fontFamily="sans-serif-medium"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="@string/best_time"
+                    android:textColor="@color/action_primary"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -214,7 +214,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AVG per Sale"
+                    android:text="@string/avg_per_sale"
                     android:textSize="12sp"
                     android:textColor="#A596CF"
                     android:fontFamily="sans-serif-medium"
@@ -285,7 +285,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Operations"
+                    android:text="@string/operations"
                     android:textSize="12sp"
                     android:textColor="#14ADA0"
                     android:fontFamily="sans-serif-medium"
@@ -356,7 +356,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Profit"
+                    android:text="@string/profit"
                     android:textSize="12sp"
                     android:textColor="#279646"
                     android:fontFamily="sans-serif-medium"
@@ -427,7 +427,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Total Sales"
+                    android:text="@string/total_sales"
                     android:textSize="12sp"
                     android:textColor="#E47510"
                     android:fontFamily="sans-serif-medium"

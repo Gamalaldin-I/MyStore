@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Return Item"
+                android:text="@string/return_item"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
 
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif"
-                android:text="Select quantity to return"
+                android:text="@string/select_quantity_to_return"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Return Quantity"
+                android:text="@string/return_quantity"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
 
@@ -264,7 +264,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 app:cornerRadius="12dp"
@@ -281,7 +281,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/warning_dark"
                 android:fontFamily="sans-serif-medium"
-                android:text="Confirm Return"
+                android:text="@string/confirm_return"
                 android:textAllCaps="false"
                 android:textColor="@color/text_white"
                 android:textSize="15sp"

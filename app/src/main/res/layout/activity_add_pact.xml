@@ -469,7 +469,18 @@
                             android:inputType="number"
                             android:textColor="@color/onSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
-
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/add_product"
+                        app:icon="@drawable/ic_add"
+                        android:textAllCaps="false"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="16dp"
+                        style="@style/Widget.Material3.Button" />
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -480,16 +491,17 @@
 
     <!-- Fixed Bottom Button -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/add"
+        android:id="@+id/pendingProducts"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        android:text="@string/add_product"
+        android:text="@string/pending_products"
         android:textAllCaps="false"
-        app:icon="@drawable/ic_add"
         app:iconGravity="textStart"
         app:cornerRadius="16dp"
         style="@style/Widget.Material3.Button" />
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

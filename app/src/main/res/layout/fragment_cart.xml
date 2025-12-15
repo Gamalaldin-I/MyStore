@@ -118,7 +118,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Discount"
+                            android:text="@string/discount"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:alpha="0.9" />
@@ -255,7 +255,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Subtotal"
+                            android:text="@string/subtotal"
                             android:textColor="@color/onSurfaceVariant"
                              />
 
@@ -271,10 +271,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" LE"
+                            android:text="@string/le"
                             android:textColor="@color/onSurfaceVariant"
                             android:textSize="15sp"
-                            android:layout_marginStart="2dp" />
+                            android:layout_marginStart="6dp" />
 
                     </LinearLayout>
 
@@ -291,7 +291,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Discount"
+                            android:text="@string/discount"
                             android:textColor="@color/onSurfaceVariant"
                             />
 
@@ -315,10 +315,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" LE"
+                            android:text="@string/le"
                             android:textColor="@color/onSurfaceVariant"
                             android:textSize="15sp"
-                            android:layout_marginStart="2dp" />
+                            android:layout_marginStart="6dp" />
 
                     </LinearLayout>
 
@@ -338,7 +338,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Amount"
+                            android:text="@string/total_amount"
                             android:textColor="@color/onSurfaceVariant"
                             android:alpha="0.8" />
 
@@ -365,7 +365,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text=" LE"
+                                android:text="@string/le"
                                 android:textColor="@color/background_dark"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
@@ -391,7 +391,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="5dp"
-                            android:text="Complete Sale"
+                            android:text="@string/complete_sale"
                             android:textAllCaps="false"
                             app:icon="@drawable/ic_check"
                             app:iconGravity="textStart"
@@ -431,7 +431,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Your cart is empty"
+                android:text="@string/your_cart_is_empty"
                 android:textColor="@color/onSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -440,7 +440,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Add products to get started"
+                android:text="@string/add_products_to_get_started"
                 android:textColor="@color/onSurfaceVariant"
                 android:textSize="14sp"
                 android:gravity="center" />
@@ -450,7 +450,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Scan Product"
+                android:text="@string/scan_product"
                 android:textAllCaps="false"
                 app:icon="@drawable/grid_scan"
                 app:iconGravity="textStart"
@@ -519,7 +519,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="28dp"
                         android:gravity="center"
-                        android:text="Processing Sale"
+                        android:text="@string/processing_sale"
                         android:textColor="@color/onSurface"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -532,7 +532,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="Updating inventory..."
+                        android:text="@string/updating_inventory"
                         android:textColor="@color/onSurfaceVariant"
                         android:textSize="15sp"
                         android:alpha="0.8" />
@@ -569,7 +569,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Processing items..."
+                                android:text="@string/processing_items"
                                 android:textColor="@color/onSurfaceVariant"
                                 android:textSize="14sp" />
 
@@ -677,7 +677,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:text="Sale completed successfully"
+                        android:text="@string/sale_completed_successfully"
                         android:textColor="@color/onSurfaceVariant"
                         android:textSize="15sp"
                         android:alpha="0.8" />
@@ -701,7 +701,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="56dp"
                         android:layout_marginTop="28dp"
-                        android:text="Done"
+                        android:text="@string/done"
                         android:textAllCaps="false"
                         android:textSize="16sp"
                         android:paddingHorizontal="48dp"

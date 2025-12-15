@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:text="No Internet"
+            android:text="@string/no_internet"
             android:textColor="@color/text_primary"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="Check your connection"
+            android:text="@string/check_your_connection"
             android:textAlignment="center"
             android:textColor="@color/text_secondary"
             android:textSize="16sp" />
@@ -55,7 +55,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             android:paddingHorizontal="32dp"
-            android:text="Retry"
+            android:text="@string/retry"
             android:textAllCaps="false" />
 
     </LinearLayout>

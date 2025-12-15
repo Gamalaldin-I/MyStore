@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="RETURN"
+                    android:text="@string/returns"
                     android:textSize="11sp"
                     android:textColor="@color/text_white"
                     android:letterSpacing="0.08" />
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amount"
+                android:text="@string/amount"
                 android:textSize="10sp"
                 android:textColor="@color/text_tertiary"
                 android:fontFamily="sans-serif-medium"
@@ -174,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="via"
+                android:text="@string/via"
                 android:textSize="11sp"
                 android:textColor="@color/text_tertiary"
                 android:fontFamily="sans-serif" />
@@ -184,7 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="Cash"
+                android:text="@string/cash"
                 android:textSize="12sp"
                 android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-medium" />

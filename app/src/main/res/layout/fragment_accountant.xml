@@ -37,7 +37,7 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Accountant"
+                        android:text="@string/accountant"
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:textColor="@color/onSurface" />
@@ -45,7 +45,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select date range to view detailed report"
+                        android:text="@string/select_date_range_to_view_detailed_report"
                         android:textSize="14sp"
                         android:textColor="@color/onSurfaceVariant"
                         android:layout_marginTop="4dp" />
@@ -75,7 +75,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Date Range"
+                        android:text="@string/select_date_range"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/onSurface"
@@ -85,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="From Date"
+                        android:text="@string/from_date"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/onSurfaceVariant"
@@ -95,7 +95,7 @@
                         android:id="@+id/PickFrom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Select Start Date"
+                        android:text="@string/select_start_date"
                         android:textAllCaps="false"
                         android:gravity="start|center_vertical"
                         android:paddingVertical="14dp"
@@ -110,7 +110,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="To Date"
+                        android:text="@string/to_date"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_accent_blue"
@@ -120,7 +120,7 @@
                         android:id="@+id/pickTo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Select End Date"
+                        android:text="@string/select_end_date"
                         android:textAllCaps="false"
                         android:gravity="start|center_vertical"
                         android:paddingVertical="14dp"
@@ -135,7 +135,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quick Select"
+                        android:text="@string/quick_select"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/onSurfaceVariant"
@@ -159,28 +159,28 @@
                                 android:id="@+id/chipToday"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Today"
+                                android:text="@string/today"
                                 style="@style/Widget.Material3.Chip.Filter" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipWeek"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="This Week"
+                                android:text="@string/this_week"
                                 style="@style/Widget.Material3.Chip.Filter" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipMonth"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="This Month"
+                                android:text="@string/this_month"
                                 style="@style/Widget.Material3.Chip.Filter" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipYear"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="This Year"
+                                android:text="@string/this_year"
                                 style="@style/Widget.Material3.Chip.Filter" />
 
                         </com.google.android.material.chip.ChipGroup>
@@ -208,7 +208,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            android:text="Reset"
+                            android:text="@string/reset"
                             android:textAllCaps="false"
                             android:paddingVertical="14dp"
                             app:icon="@drawable/ic_refresh"
@@ -222,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="Calculate"
+                            android:text="@string/calculate"
                             android:textAllCaps="false"
                             android:paddingVertical="14dp"
                             app:icon="@drawable/ic_calculate"
@@ -251,7 +251,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Export Report"
+                android:text="@string/export_report"
                 android:textAllCaps="false"
                 android:paddingVertical="14dp"
                 app:icon="@drawable/icon_share"

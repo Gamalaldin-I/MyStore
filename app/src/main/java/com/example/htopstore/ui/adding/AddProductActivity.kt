@@ -18,6 +18,7 @@ import androidx.core.content.FileProvider
 import com.example.htopstore.R
 import com.example.htopstore.databinding.ActivityAddPactBinding
 import com.example.htopstore.ui.login.LoginActivity
+import com.example.htopstore.ui.pendingProducts.PendingProductsActivity
 import com.example.htopstore.ui.scan.ScanActivity
 import com.example.htopstore.util.BarcodeGenerator
 import com.example.htopstore.util.helper.AutoCompleteHelper
@@ -165,6 +166,9 @@ class AddProductActivity : AppCompatActivity() {
         binding.productImg.setOnClickListener {
             // Optionally show a dialog to choose between camera and gallery
             askCameraPermission()
+        }
+        binding.pendingProducts.setOnClickListener {
+            startActivity(Intent(this, PendingProductsActivity::class.java))
         }
 
         // Add product button

@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Scan Barcode"
+                    android:text="@string/scan_barcode"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/white" />
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Align barcode within the frame"
+                    android:text="@string/align_barcode_within_the_frame"
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     android:alpha="0.8"
@@ -192,7 +192,7 @@
         android:id="@+id/instructionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Position the barcode within the frame"
+        android:text="@string/position_the_barcode_within_the_frame"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -246,7 +246,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Scanned Successfully"
+                    android:text="@string/scanned_successfully"
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     android:alpha="0.9" />
@@ -374,7 +374,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Processing..."
+                android:text="@string/processing"
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:layout_marginTop="16dp" />

@@ -81,4 +81,28 @@ interface ProductDao {
     fun getProductsThatHaveNotBeenSold(): List<ProductEntity>
 
 
+
+    //////////////////////////////////////////////////////////
+    /////////////////////FOR PENDING PRODUCTS////////////////
+    ////////////////////////////////////////////////////////
+    @Query(
+        """
+        SELECT * 
+        FROM product
+        where pending is 1
+    """
+    )
+    fun getAllPendingProducts(): Flow<List<ProductEntity>>
+
+
+    @Query(
+        """
+        Update product set pending = 0 , productImage =:imageUrl where id =:id
+    """
+    )
+    fun updateFromPendingToActive(id:String,imageUrl:String)
+
+
+
+
 }

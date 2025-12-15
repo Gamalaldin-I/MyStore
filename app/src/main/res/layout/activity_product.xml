@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.product.Pro">
+    tools:context=".ui.product.ProductActivity">
 
     <!-- App Bar Layout with Collapsing Toolbar -->
     <com.google.android.material.appbar.AppBarLayout

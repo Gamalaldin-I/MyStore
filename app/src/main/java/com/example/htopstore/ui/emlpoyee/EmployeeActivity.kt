@@ -9,6 +9,7 @@ import com.example.domain.util.Constants
 import com.example.htopstore.databinding.ActivityEmployeeBinding
 import com.example.htopstore.util.BaseActivity
 import com.example.htopstore.util.helper.AutoCompleteHelper
+import com.example.htopstore.util.helper.DialogBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,17 @@ class EmployeeActivity : BaseActivity() {
 
     private fun setupClickListeners() {
         binding.saveChanges.setOnClickListener {
-            handleSaveChanges()
+            DialogBuilder.showAlertDialog(
+                this,
+                "Know first!",
+                "Before change the user role you must sure he is logout\nfrom all devices first\nbecause any changes will be very sensetive for your store data?",
+                positiveButton = "Confirm",
+                negativeButton = "Cancel",
+                onConfirm = {
+                    handleSaveChanges()
+                },
+                onCancel = {}
+            )
         }
 
         binding.fire.setOnClickListener {

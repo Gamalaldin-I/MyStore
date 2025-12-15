@@ -42,28 +42,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="All" />
+                android:text="@string/all" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipToday"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today" />
+                android:text="@string/today" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipYesterday"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yesterday" />
+                android:text="@string/yesterday" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipThisWeek"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="This Week" />
+                android:text="@string/this_week" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Loading notifications..."
+            android:text="@string/loading_notifications"
             android:textColor="#757575"
             android:textSize="14sp" />
     </LinearLayout>
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
-            android:text="No Notifications"
+            android:text="@string/no_notifications"
             android:textColor="#424242"
             android:textSize="20sp" />
 
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="You're all caught up! \nWe'll notify you when something new arrives."
+            android:text="@string/you_re_all_caught_up_nwe_ll_notify_you_when_something_new_arrives"
             android:textColor="#757575"
             android:textSize="14sp" />
     </LinearLayout>
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Something went wrong"
+            android:text="@string/something_went_wrong"
             android:textColor="#424242"
             android:textSize="20sp" />
 
@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Unable to load notifications"
+            android:text="@string/unable_to_load_notifications"
             android:textColor="#757575"
             android:textSize="14sp" />
 
@@ -188,7 +188,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Retry" />
+            android:text="@string/retry" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
