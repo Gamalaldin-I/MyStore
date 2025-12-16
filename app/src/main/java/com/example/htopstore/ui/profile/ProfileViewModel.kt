@@ -12,6 +12,7 @@ import com.example.domain.model.Store
 import com.example.domain.model.User
 import com.example.domain.useCase.auth.LogoutUseCase
 import com.example.domain.useCase.profile.ChangeProfileImageUseCase
+import com.example.domain.useCase.profile.DeleteAccountUseCase
 import com.example.domain.useCase.profile.ObserveRoleChangingUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.UpdateNameUseCase
@@ -31,6 +32,7 @@ class ProfileViewModel
         private val changeProfileImageUseCase:ChangeProfileImageUseCase,
         private val removeProfileImageUseCase: RemoveProfileImageUseCase,
         private val updateNameUseCase: UpdateNameUseCase,
+        private val deleteAccount: DeleteAccountUseCase,
         private val observeRoleChangingUseCase: ObserveRoleChangingUseCase
         ): ViewModel() {
             val role = pref.getRole()
@@ -58,6 +60,23 @@ class ProfileViewModel
             onResult(success, msg)
             _message.postValue(msg)
         }}catch (_: Exception){
+            onResult(false, "Something went wrong")
+        }
+    }
+    fun deleteYourAccount(context: Context,onResult: (Boolean, String) -> Unit){
+        try {
+            viewModelScope.launch{
+                val (success, msg) = deleteAccount()
+                if(success){
+                    pref.clearPrefs()
+                    //clear cash
+                    val cashDir = context.cacheDir
+                    cashDir.deleteRecursively()
+                    withContext(Dispatchers.IO){db.clearAllTables()}
+                }
+                onResult(success, msg)
+                _message.postValue(msg)
+            }}catch (_: Exception){
             onResult(false, "Something went wrong")
         }
     }

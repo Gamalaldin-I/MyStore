@@ -686,6 +686,11 @@
     <!--for analysis -->
     <string name="mostProfitable">Most Profitable</string>
     <string name="haveNotSold">Have Not Sold</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="deleting_the_account">Deleting the account...</string>
+    <string name="account_deleted_successfully">Account deleted successfully</string>
+    <string name="are_you_sure_deleting">Are you sure you want to delete your account?</string>
+
 
 
 </resources>

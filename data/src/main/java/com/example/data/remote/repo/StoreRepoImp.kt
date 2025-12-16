@@ -280,6 +280,37 @@ class StoreRepoImp(
         }
     }
 
-    override fun deleteStore(id: String) { TODO("Not yet implemented") }
+    override suspend fun deleteStore(id: String):Pair<Boolean,String>{
+        try {
+            if(!networkHelper.isConnected()){
+                return false to Constants.NO_INTERNET_CONNECTION
+            }
+        //delete the store first
+            supabase.from(STORES_TABLE).delete {
+                filter { eq("id", id) }
+            }
+
+
+        // edit the exist users to be status fired and set store id to empty
+            supabase.from(USERS_TABLE).update(
+                mapOf<String,String>(
+                    "storeId" to "",
+                    "status" to "Fired"
+                )
+            ){
+                filter {
+                    eq("storeId", id)
+                }
+            }
+            return  true to "Store deleted successfully!"
+
+        }catch (e: Exception){
+            Log.e(TAG, "deleteStore error: ${e.message}", e)
+            return false to "Error in deleting the store or update users"
+        }
+
+
+
+    }
     override fun getStore(id: String) { TODO("Not yet implemented") }
 }

@@ -7,6 +7,6 @@ interface StoreRepo {
     suspend fun updateStore(store: Store): Pair<Boolean, String>
     suspend fun addCategory(category:String): Pair<Boolean,String>
     suspend fun deleteCategory(category:String): Pair<Boolean,String>
-    fun deleteStore(id:String)
+    suspend fun deleteStore(id:String): Pair<Boolean,String>
     fun getStore(id: String)
 }

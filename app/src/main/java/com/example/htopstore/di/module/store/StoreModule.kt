@@ -9,6 +9,7 @@ import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.useCase.store.AddCategoryUseCase
 import com.example.domain.useCase.store.AddStoreUseCase
 import com.example.domain.useCase.store.DeleteCategoryUseCase
+import com.example.domain.useCase.store.DeleteStoreUseCase
 import com.example.domain.useCase.store.UpdateStoreDataUseCase
 import dagger.Module
 import dagger.Provides
@@ -51,6 +52,10 @@ object StoreModule {
     @Provides
     fun provideAddCategoryUseCase(repo: StoreRepo): AddCategoryUseCase {
         return AddCategoryUseCase(repo)
+    }
+    @Provides
+    fun provideDeleteStoreUseCase(repo: StoreRepo): DeleteStoreUseCase {
+        return DeleteStoreUseCase(repo)
     }
 
 }

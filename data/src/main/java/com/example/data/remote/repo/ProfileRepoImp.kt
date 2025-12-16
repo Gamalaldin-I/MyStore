@@ -8,21 +8,26 @@ import com.example.data.remote.NetworkHelperInterface
 import com.example.domain.model.User
 import com.example.domain.repo.ProfileRepo
 import com.example.domain.useCase.notifications.InsertNotificationUseCase
+import com.example.domain.useCase.store.DeleteStoreUseCase
 import com.example.domain.util.Constants
 import com.example.domain.util.NotificationManager
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.functions.functions
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.storage.storage
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 
 class ProfileRepoImp(
     private val supabase: SupabaseClient,
     private val pref: SharedPref,
     private val context: Context,
     private val networkHelper: NetworkHelperInterface,
-    private val notificationUseCase: InsertNotificationUseCase
-    ) : ProfileRepo {
+    private val notificationUseCase: InsertNotificationUseCase,
+    val deleteStoreUseCase:DeleteStoreUseCase
+) : ProfileRepo {
 
     companion object {
         private const val AVATARS_BUCKET = "Avatars"
@@ -208,6 +213,84 @@ class ProfileRepoImp(
         }
     }
 
+    override suspend fun deleteAccount(): Pair<Boolean, String> {
+        if (!networkHelper.isConnected())
+            return false to Constants.NO_INTERNET_CONNECTION
+
+        return try {
+            Log.d(TAG, "Starting account deletion...")
+
+            //  update ـ session
+            supabase.auth.refreshCurrentSession()
+
+            val session = supabase.auth.currentSessionOrNull()
+            if (session == null) {
+                Log.e(TAG, "No active session found")
+                return false to "User not logged in or session expired"
+            }
+
+            val token = session.accessToken
+            if (token.isEmpty()) {
+                Log.e(TAG, "Access token is empty")
+                return false to "Access token is empty"
+            }
+
+            Log.d(TAG, "Token length: ${token.length}")
+            Log.d(TAG, "Token preview: ${token.take(50)}...")
+
+            // delete profile image
+            try {
+                removeProfileImageSuspend()
+                Log.d(TAG, "Profile image removed")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to remove profile image: ${e.message}")
+            }
+            // delete profile image
+            try {
+                deleteStoreIfRequired()
+                Log.d(TAG, "store checked")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to remove profile image: ${e.message}")
+            }
+
+            // ✅  Edge Function
+            Log.d(TAG, "Calling delete-account function...")
+            val response = supabase.functions.invoke(
+                function = "delete-account")
+
+
+            val responseBody = response.bodyAsText()
+            Log.d(TAG, "Response status: ${response.status}")
+            Log.d(TAG, "Response body: $responseBody")
+
+            if (response.status != HttpStatusCode.OK) {
+                Log.e(TAG, "Delete failed with status: ${response.status}")
+                return false to "Error deleting account: $responseBody"
+            }
+
+            Log.d(TAG, "Account deleted successfully!")
+            true to "Account deleted successfully"
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error deleting account", e)
+            false to "Error: ${e.message}"
+        }
+    }
+
+    private suspend fun removeProfileImageSuspend() {
+        val bucket = supabase.storage.from(AVATARS_BUCKET)
+        bucket.delete(getAvatarFileName())
+    }
+    private suspend fun deleteStoreIfRequired(){
+        //get the user first
+        val userId = pref.getUser().id
+        val user = supabase.from(USERS).select{filter { eq("id", userId) } }.decodeSingle<User>()
+        if(user.role == Constants.OWNER_ROLE){
+            deleteStoreUseCase(user.storeId)
+        }
+    }
+
+
     // -------------------------------
     // Observe Role from DB
     // -------------------------------
@@ -229,4 +312,5 @@ class ProfileRepoImp(
             -1
         }
     }
+
 }

@@ -488,6 +488,15 @@
                         android:textColor="@color/action_danger" />
 
                 </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/deleteAccountBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:textColor="@color/alert_critical"
+                    app:strokeColor="@color/alert_critical"
+                    app:strokeWidth="2dp"
+                    android:text="@string/delete_account"/>
 
             </LinearLayout>
 

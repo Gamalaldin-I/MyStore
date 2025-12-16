@@ -689,5 +689,10 @@
 
     <string name="mostProfitable">الأعلي ربحية</string>
     <string name="haveNotSold">لم تباع</string>
+    <string name="delete_account">حذف الحساب</string>
+
+    <string name="deleting_the_account">يتم حذف حسابك...</string>
+    <string name="account_deleted_successfully">تم حذف حسابك بنجاح</string>
+    <string name="are_you_sure_deleting">هل انت متأكد من أنك تريد حذف حسابك؟</string>
 
 </resources>

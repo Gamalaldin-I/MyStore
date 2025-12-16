@@ -7,11 +7,13 @@ import com.example.data.remote.repo.ProfileRepoImp
 import com.example.domain.repo.ProfileRepo
 import com.example.domain.useCase.notifications.InsertNotificationUseCase
 import com.example.domain.useCase.profile.ChangeProfileImageUseCase
+import com.example.domain.useCase.profile.DeleteAccountUseCase
 import com.example.domain.useCase.profile.ObserveRoleChangingUseCase
 import com.example.domain.useCase.profile.RemoveProfileImageUseCase
 import com.example.domain.useCase.profile.ResetPasswordUseCase
 import com.example.domain.useCase.profile.UpdateEmailUseCase
 import com.example.domain.useCase.profile.UpdateNameUseCase
+import com.example.domain.useCase.store.DeleteStoreUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,14 +30,16 @@ object ProfileModule {
         pref: SharedPref,
         @ApplicationContext context: Context,
         networkHelperInterface: NetworkHelperInterface,
-        insertNotificationUseCase: InsertNotificationUseCase
+        insertNotificationUseCase: InsertNotificationUseCase,
+        deleteStoreUseCase:DeleteStoreUseCase
 
     ): ProfileRepo = ProfileRepoImp(
         supabase = supa,
         pref = pref,
         context = context,
         networkHelperInterface,
-        notificationUseCase =insertNotificationUseCase
+        notificationUseCase =insertNotificationUseCase,
+        deleteStoreUseCase
     )
 
     @Provides
@@ -60,5 +64,9 @@ object ProfileModule {
     @Provides
     fun provideObserveRoleUseCase(repo: ProfileRepo): ObserveRoleChangingUseCase {
         return ObserveRoleChangingUseCase(repo)
+    }
+    @Provides
+    fun provideDeletingAccount(repo: ProfileRepo): DeleteAccountUseCase{
+        return DeleteAccountUseCase(repo)
     }
 }

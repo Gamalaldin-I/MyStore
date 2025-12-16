@@ -49,15 +49,17 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     testImplementation(libs.androidx.room.testing)
     implementation (libs.androidx.room.paging)
+    implementation("com.google.code.gson:gson:2.11.0")
 
 
     // ==========================
     // Supabase
     // ==========================
-    implementation("io.github.jan-tennert.supabase:storage-kt:2.4.1")
-    implementation("com.google.code.gson:gson:2.10.1")
+
     implementation("io.github.jan-tennert.supabase:gotrue-kt:2.4.1")
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.1")
-    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1") // Realtime listener
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.4.1")
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.4.1")
+    implementation("io.github.jan-tennert.supabase:functions-kt:2.4.1")
     implementation("io.ktor:ktor-client-android:2.3.5")
 }

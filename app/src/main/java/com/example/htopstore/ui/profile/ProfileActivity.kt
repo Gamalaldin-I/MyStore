@@ -27,6 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileActivity:BaseActivity(){
+    companion object{
+        const val DELETE_REQUEST_CODE = 0
+        const val LOGOUT_REQUEST = 1
+    }
 
     private lateinit var binding: ActivityProfileBinding
     private val vm: ProfileViewModel by viewModels()
@@ -82,6 +86,16 @@ class ProfileActivity:BaseActivity(){
             finishBtn.visibility = View.GONE
         }
 
+        deleteAccountBtn.setOnClickListener {
+            showLogoutConfirmation(
+                title = getString(R.string.delete_account),
+                positive = getString(R.string.continue_button),
+                message = getString(R.string.are_you_sure_deleting)
+            ) {
+                perform(DELETE_REQUEST_CODE)
+            }
+        }
+
 
         editPhotoBtn.setOnClickListener { showPhotoOptions() }
         callBtn.setOnClickListener { makePhoneCall(storePhoneTV.text.toString()) }
@@ -93,7 +107,14 @@ class ProfileActivity:BaseActivity(){
             startActivity(intent)
         }
 
-        logout.setOnClickListener { showLogoutConfirmation() }
+        logout.setOnClickListener { showLogoutConfirmation(
+            title = getString(R.string.logout),
+            positive = getString(R.string.logout),
+            message = getString(R.string.logout_message)
+        ) {
+            perform(LOGOUT_REQUEST)
+        }
+        }
 
         finishBtn.setOnClickListener {
             if (!isEditing) setEditingEnabled(true)
@@ -247,31 +268,50 @@ class ProfileActivity:BaseActivity(){
         })
     }
 
-    private fun showLogoutConfirmation() {
+    private fun showLogoutConfirmation(title:String,positive:String,message:String,onConfirm:()->Unit) {
         MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.logout_title)
-            .setMessage(R.string.logout_message)
-            .setPositiveButton(R.string.logout) { dialog, _ ->
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positive) { dialog, _ ->
                 dialog.dismiss()
-                performLogout()
+                onConfirm()
             }
             .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-    private fun performLogout() {
-        Toast.makeText(this, R.string.logging_out, Toast.LENGTH_SHORT).show()
+    private fun perform(req: Int) {
 
-        vm.logout(this) { success, _ ->
-            if (success) {
-                startActivity(
-                    Intent(this, LoginActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        when(req){
+            DELETE_REQUEST_CODE -> {
+                Toast.makeText(this,getString(R.string.deleting_the_account), Toast.LENGTH_SHORT).show()
+
+                vm.deleteYourAccount(this) { success, msg ->
+                    if (success) {
+                        onSuccess()
                     }
-                )
-                finish()
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                }
+            }
+            LOGOUT_REQUEST -> {
+                Toast.makeText(this, R.string.logging_out, Toast.LENGTH_SHORT).show()
+
+                vm.logout(this) { success, _ ->
+                    if (success) {
+                        onSuccess()
+                    }
+                }
             }
         }
+
+    }
+    private fun onSuccess(){
+        startActivity(
+            Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+        )
+        finish()
     }
 
     // ---------------------------------------------------------------------------
