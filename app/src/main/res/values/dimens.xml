@@ -5,4 +5,6 @@
     <!-- المسافة بين العناصر -->
     <dimen name="pageMargin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="grid_spacing">12dp</dimen>
+
 </resources>

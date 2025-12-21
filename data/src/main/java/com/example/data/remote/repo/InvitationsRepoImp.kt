@@ -92,7 +92,11 @@ class InvitationsRepoImp(
                         eq("status", Constants.STATUS_PENDING)
                     }
                 }.decodeList<Invitation>()
-                list to "Invitations fetched successfully"
+                if(list.isEmpty()){
+                    return@runCatching emptyList<Invitation>() to "No pending invitations"
+                }else{
+                list to "${list.size} Invitations fetched successfully"
+                }
             }.getOrElse {
                 emptyList<Invitation>() to "Error fetching invitations"
             }

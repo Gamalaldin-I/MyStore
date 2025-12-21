@@ -23,7 +23,7 @@ class ChangeEmailViewModel @Inject constructor(
     val msg: LiveData<String> = _msg
     fun changeEmail(newEmail: String, password: String,onFail:()->Unit,onSuccess:()->Unit){
         viewModelScope.launch {
-        val (success,msg) = changeEmailUseCase(newEmail, password)
+            val (success,msg) = changeEmailUseCase(newEmail, password)
             if(success) withContext(Dispatchers.Main) {onSuccess()}
             else withContext(Dispatchers.Main) {onFail()}
             _msg.postValue(msg)

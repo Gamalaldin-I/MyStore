@@ -33,6 +33,7 @@ class ProfileRepoImp(
         private const val AVATARS_BUCKET = "Avatars"
         private const val USERS = "users"
         private const val TAG = "ProfileRepoImp"
+        private const val  CHANGE_EMAIL_URL = "https://reset-password-api.vercel.app/confirm-email.html"
         private const val RESET_PASSWORD_URL = "https://reset-password-api.vercel.app/index.html"
     }
 
@@ -60,7 +61,7 @@ class ProfileRepoImp(
     private fun getAvatarFileName(): String = "${pref.getUser().id}.jpg"
 
     private fun buildPublicUrl(file: String): String {
-        return "${supabase.supabaseUrl}/storage/v1/object/public/$AVATARS_BUCKET/$file"
+       return "https://ayoanqjzciolnahljauc.supabase.co/storage/v1/object/public/$AVATARS_BUCKET/$file"
     }
 
     private fun logError(msg: String, e: Exception) {
@@ -202,8 +203,11 @@ class ProfileRepoImp(
                 return false to "The current password is incorrect"
             }
 
-            // Change email
-            supabase.auth.modifyUser { email = newEmail }
+            supabase.auth.modifyUser(redirectUrl = CHANGE_EMAIL_URL){
+                email = newEmail
+            }
+
+            Log.d(TAG, "Email change requested for: $newEmail")
 
             true to "Email confirmation sent. Please check your new inbox."
 

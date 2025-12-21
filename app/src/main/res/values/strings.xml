@@ -676,7 +676,7 @@
     <!-- for the home -->
     <string name="analysis">Analysis</string>
     <string name="generate_code">Generate code</string>
-    <string name="add_outcome">Add outcome</string>
+    <string name="add_outcome">Add expense</string>
     <string name="scan_code">Scan code</string>
     <string name="nota">Nota</string>
     <string name="top_10">Top 10</string>

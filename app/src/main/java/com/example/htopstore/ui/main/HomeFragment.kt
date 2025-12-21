@@ -229,8 +229,43 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+        binding.grid.gridRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), spanCount)
+            adapter = GridAdapter(displayItems)
+
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    spanCount = spanCount,
+                    spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+                )
+            )
+        }
+
 
     }
+    class GridSpacingItemDecoration(
+        private val spanCount: Int,
+        private val spacing: Int
+    ) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount
+
+            outRect.left = spacing - column * spacing / spanCount
+            outRect.right = (column + 1) * spacing / spanCount
+
+            if (position >= spanCount) {
+                outRect.top = spacing
+            }
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun observe() {

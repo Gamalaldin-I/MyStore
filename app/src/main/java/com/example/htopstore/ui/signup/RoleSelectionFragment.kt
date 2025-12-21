@@ -12,7 +12,7 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.domain.util.Constants.CASHIER_ROLE
+import com.example.domain.util.Constants
 import com.example.domain.util.Constants.OWNER_ROLE
 import com.example.htopstore.R
 import com.example.htopstore.databinding.FragmentRoleSelectionBinding
@@ -57,8 +57,8 @@ class RoleSelectionFragment() : Fragment() {
         }
 
         binding.employeeCard.setOnClickListener {
-            if (selectedRole != CASHIER_ROLE) {
-                selectedRole = CASHIER_ROLE
+            if (selectedRole != Constants.EMPLOYEE_ROLE) {
+                selectedRole = Constants.EMPLOYEE_ROLE
                 updateCardStates(animate = true)
             }
         }

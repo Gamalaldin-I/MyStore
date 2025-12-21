@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.remoteModels.Invitation
 import com.example.domain.util.Constants.STATUS_ACCEPTED
 import com.example.domain.util.Constants.STATUS_PENDING
+import com.example.domain.util.NotificationTimeUtils
 import com.example.htopstore.R
 import com.example.htopstore.databinding.InviteCardBinding
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class InvitesAdapter(
     private val onDelete: (invite: Invitation) -> Unit,
@@ -64,7 +62,7 @@ class InvitesAdapter(
             code.text = invite.code ?: "N/A"
 
             // Created At - Format timestamp
-            createdAt.text = invite.createdAt
+            createdAt.text = NotificationTimeUtils.getRelativeTime(invite.createdAt!!)
 
             // Action Buttons
             shareBtn.setOnClickListener { onShare(invite) }
@@ -78,14 +76,7 @@ class InvitesAdapter(
         }
     }
 
-    private fun formatDate(timestamp: Long?): String {
-        return if (timestamp != null) {
-            val sdf = SimpleDateFormat("MMM dd, yyyy • hh:mm a", Locale.getDefault())
-            sdf.format(Date(timestamp))
-        } else {
-            "Unknown date"
-        }
-    }
+
 
     class DiffCallback : DiffUtil.ItemCallback<Invitation>() {
         override fun areItemsTheSame(oldItem: Invitation, newItem: Invitation): Boolean =

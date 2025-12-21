@@ -149,6 +149,7 @@ class PendingSellOperationActivity : AppCompatActivity() {
 
             // Calculate totals
             val (subtotal,total) = adapter.getTotalOrderPriceAndTotalAfterDiscount(action.discount)
+            tvDiscountAmount.text = "-${subtotal - total}"
 
             // Animate price updates
             animatePrice(tvSubtotal, 0.0, subtotal)

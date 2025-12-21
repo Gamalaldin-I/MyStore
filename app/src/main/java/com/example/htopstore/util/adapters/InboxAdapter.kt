@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.remoteModels.Invitation
+import com.example.domain.util.NotificationTimeUtils
 import com.example.htopstore.R
 import com.example.htopstore.databinding.InboxInviteCardBinding
 
@@ -29,7 +30,7 @@ class InboxAdapter(private val data: MutableList<Invitation>,
         val item = data[position]
         holder.binding.apply {
             storeName.text = item.storeName
-            createdAt.text = item.createdAt
+            createdAt.text = NotificationTimeUtils.getRelativeTime(item.createdAt!!)
             Glide.with(inviteIcon.context)
                 .load(item.storeIcon)
                 .error(R.drawable.oc_invite)

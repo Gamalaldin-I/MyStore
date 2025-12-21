@@ -496,6 +496,7 @@
                     android:textColor="@color/alert_critical"
                     app:strokeColor="@color/alert_critical"
                     app:strokeWidth="2dp"
+                    android:layout_marginTop="100sp"
                     android:text="@string/delete_account"/>
 
             </LinearLayout>
