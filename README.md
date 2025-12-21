@@ -1,4 +1,4 @@
-# MyStore 🏪 - Smart POS & Inventory Management System
+# Stora 🏪 - Smart POS & Inventory Management System
 
 [![Platform](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://android.com)
 [![Language](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
@@ -8,7 +8,7 @@
 
 ## 🚀 Overview
 
-**MyStore** is a comprehensive Android application designed specifically for small and medium-sized retail businesses. It provides an all-in-one solution for inventory management, sales processing, financial tracking, and business analytics with advanced scanning capabilities and cloud synchronization.
+**Stora** is a comprehensive Android application designed specifically for small and medium-sized retail businesses. It provides an all-in-one solution for inventory management, sales processing, financial tracking, and business analytics with advanced scanning capabilities and cloud synchronization.
 
 ### 🎯 Mission Statement
 To empower retail business owners with professional-grade tools that streamline operations, increase efficiency, and drive business growth through intelligent automation and data-driven insights.
